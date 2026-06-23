@@ -385,6 +385,10 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         """Per narrated line: show it, steer the soundscape, set the face's mood."""
         text = unit.get("text", "")
         self._story_line = text
+        if unit.get("kind") == "shuffle":
+            # Random neutral nouns shouldn't steer the bed; hold the steady base.
+            self._mood_target = (0.0, 0.0, 0.0)
+            return
         cue = sound_cues.cue_for_text(text)
         if cue:
             self._sfx_target = cue              # imagery → morph the bed toward it

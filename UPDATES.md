@@ -108,8 +108,13 @@ Guardrails (every round):
       rest), 11.5 min, monotone-calm spoken cues with long quiet pauses, closing on a
       slow 8-12 breath. Auto-listed in the Sessions menu + Breathwork programs card;
       stages/names validated, offscreen run thread-stable (8 stages advance).
-- [ ] **Cognitive Shuffle** sleep-onset aid: a `stories` generator that speaks random,
-      neutral, concrete words with long breath-paced gaps; a Sleep "Shuffle" option.
+- [x] **Cognitive Shuffle** sleep-onset aid: new `breathsim/shuffle.py` (serial-diverse
+      imagining, Beaudoin) — a soft letter is chosen, 3-5 ordinary objects beginning with
+      it are named with long picture-it gaps, then a new letter, forever. 185-word neutral
+      bank; steady Brown Noise bed (a `kind="shuffle"` guard stops the noun stream pulling
+      the soundscape). Dispatched via `stories.story_units`/`ambience_for`/`extra_names`;
+      picks as "Cognitive Shuffle" in the Sleep story card. Offscreen (both faces)
+      thread-stable; selftest passes.
 - [ ] **Body-scan + PMR** guided program: slow timed tense→release cues head-to-toe,
       paced to the breath.
 - [ ] **Physiological-sigh reset**: a 2–3 min "Sigh" mini-session (double inhale, long
@@ -176,6 +181,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Cognitive Shuffle sleep-onset aid (`shuffle.py`): random neutral nouns, Sleep "Shuffle".
 - NSDR / Yoga Nidra (12 min) guided program: 8-stage body-rotation + breath, rest-close.
 - Ideas & Wonders +3 (Infinity · Symmetry · The Calendar) → 71 lectures.
 - Sing pitch scoring (% in tune) + in-tune glow + 3 exercises; Meditate guidance card.

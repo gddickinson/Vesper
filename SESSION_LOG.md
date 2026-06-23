@@ -594,6 +594,19 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — Cognitive Shuffle sleep-onset aid
+Added `breathsim/shuffle.py`: a narrated **cognitive shuffle** (Beaudoin's serial-diverse
+imagining). A soft letter is chosen, then 3-5 ordinary, neutral, easily-pictured objects
+beginning with it are named slowly with long picture-it gaps (3.6-5.2 s), then a fresh
+letter, on and on — monotone, low-arousal, crowding out rumination. 185-word bank across
+25 letters; a steady **Brown Noise** bed, with a `kind="shuffle"` guard in
+`window._on_story_unit` so the random nouns don't pull the soundscape around. Wired through
+the existing storyteller path: `stories.story_units`/`ambience_for` dispatch to it and a new
+`stories.extra_names()` surfaces it as **"Cognitive Shuffle"** in the Sleep story picker.
+Stream validated (well-formed units, ambience resolves); offscreen 50-tick Sleep session
+holds the bed steady and is thread-stable (2→3, one narrator thread) on both faces;
+selftest passes.
+
 ## App round — NSDR / Yoga Nidra guided session
 Added an 8-stage `programs.Program` "NSDR / Yoga Nidra (12 min)" (11.5 min): settle in →
 settle the mind → breath awareness → rotation of awareness right side → left side →

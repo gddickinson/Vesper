@@ -100,6 +100,12 @@ def scene_names():
     return list(SCENES.keys())
 
 
+def extra_names():
+    """Special non-templated storyteller generators (e.g. the Cognitive Shuffle)."""
+    from . import shuffle
+    return [shuffle.NAME]
+
+
 def lecture_names(category=None):
     """Names of the soothing-lecture sources, optionally one branch only."""
     from . import lectures
@@ -114,6 +120,9 @@ def lecture_categories():
 
 def ambience_for(name):
     """Ambience voice for a scene *or* a lecture (None if unknown, e.g. Random)."""
+    from . import shuffle
+    if name == shuffle.NAME:
+        return shuffle.AMBIENCE
     sc = SCENES.get(name)
     if sc:
         return sc.ambience
@@ -197,6 +206,10 @@ def story_units(scene_name, rng=None, guidance=True, run=11):
     interlude -- breath / body-scan / relaxation, cycling -- then repeats forever.
     """
     rng = rng or random.Random()
+    from . import shuffle
+    if scene_name == shuffle.NAME:
+        yield from shuffle.units(rng, guidance)
+        return
     from . import lectures
     if scene_name in lectures.names():
         yield from lectures.units(scene_name, rng, guidance)
