@@ -23,6 +23,7 @@ class _PitchMixin:
 
     def show_pitch_guide(self, spec):
         self._pitch_spec = spec
+        self._sing_in = self._sing_tot = 0       # reset the % in-tune score
         self.set_tuner(True)
         self.viz.set_scene("pitch")
         self.set_view("scene")

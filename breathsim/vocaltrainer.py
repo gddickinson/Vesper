@@ -17,6 +17,9 @@ SCALES = {
     "Octave leap": [0, 12, 0, 12, 0],
     "Major arpeggio": [0, 4, 7, 12, 7, 4, 0],
     "Fifth slide": [0, 7, 0, 7, 0],
+    "Minor scale": [0, 2, 3, 5, 7, 8, 10, 12, 10, 8, 7, 5, 3, 2, 0],
+    "Octave siren": [0, 3, 5, 7, 9, 12, 9, 7, 5, 3, 0],
+    "Sixth stretch": [0, 9, 0, 9, 0],
 }
 DEFAULT_SPN = 2.5                       # seconds per target step (scale tempo)
 

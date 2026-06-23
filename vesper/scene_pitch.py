@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import math
 
-from PySide6.QtCore import QPointF, Qt
+from PySide6.QtCore import QPointF, QRectF, Qt
 from PySide6.QtGui import QPen
 
 from breathsim import music
@@ -89,6 +89,20 @@ class PitchScene:
             r = 6 if i == 0 else max(1.0, 4.0 * (1 - i / self.N))
             p.setBrush(_qc(col, 1.0 - 0.65 * i / self.N))
             p.drawEllipse(QPointF(xx, y(hz)), r, r)
+
+        # In-tune glow: a soft green frame when the current note is on target.
+        if pitch.get("intune"):
+            for k, a in ((6, 0.10), (3, 0.22)):
+                pen = QPen(_qc(_GOOD, a))
+                pen.setWidthF(k)
+                p.setPen(pen)
+                p.setBrush(Qt.BrushStyle.NoBrush)
+                p.drawRoundedRect(QRectF(left - 3, top - 3,
+                                         right - left + 6, bottom - top + 6), 12, 12)
+        # Running "% in tune" score (once enough has been sung).
+        if pitch.get("samples", 0) > 15:
+            _text(p, right - 58, top - 18, f"{pitch.get('score', 0.0):.0f}% in tune",
+                  _GOOD, 13, bold=True)
 
         # Plain-words guidance.
         if voiced and tgt:

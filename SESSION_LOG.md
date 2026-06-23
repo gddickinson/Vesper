@@ -575,6 +575,17 @@ lines are now cleanly antialiased over the animated backgrounds (verified via a 
 edge-zoom: soft gradient, no staircase). Worker thread + transparent RGBA output
 unchanged; default 3D path thread-stable (2->2); cat path untouched; selftest passes.
 
+## App round — Sing pitch scoring/glow + Meditate guidance
+Sing: the window now tracks a running **% time-in-tune** (frames where the sung pitch is
+within 30 cents of the target, while voiced) reset on each guide start; the PitchScene
+draws a soft green **in-tune glow** frame and shows the score top-right, and the in-tune
+header carries through. Added 3 exercises to `vocaltrainer.SCALES` (Minor scale, Octave
+siren, Sixth stretch) — they appear automatically in the Sing card. Meditate: a new
+**Guidance** card (Off / Focused attention / Open monitoring) -> `set_meditation_guidance`;
+the window feeds a slow rotating cue (~every 22 s) into the scene `hint`, shown softly
+under the orb without hiding the breath count. Verified via PitchScene + orb renders and
+a 50-tick offscreen Meditate session (cues rotate, thread-stable 2->2); selftest passes.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

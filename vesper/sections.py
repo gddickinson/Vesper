@@ -297,6 +297,17 @@ class _SectionsMixin:
         mins = 0.0 if txt == "Off" else float(txt.split()[0])
         self.win.set_bell_interval(mins)
 
+    # --- meditate: focused-attention vs open-monitoring guidance -----------
+    def _card_guidance(self):
+        frame, body = card("Guidance")
+        body.addWidget(muted("Style"))
+        g = combo(["Off", "Focused attention", "Open monitoring"], "Off",
+                  self.win.set_meditation_guidance)
+        self._w["med_guidance"] = g
+        body.addWidget(g)
+        body.addWidget(muted("Gentle cues appear softly under the orb."))
+        return frame
+
     # --- breathwork: breath-hold retention --------------------------------
     def _card_retention(self):
         frame, body = card("Breath-hold timer")

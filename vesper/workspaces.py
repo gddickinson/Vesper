@@ -9,8 +9,8 @@ from __future__ import annotations
 
 # card keys map to ControlPanel._card_<key> builders.
 WORKSPACES = {
-    "Meditate":   {"cards": ["pattern", "pace", "bell", "voice", "naturalness",
-                             "cues"]},
+    "Meditate":   {"cards": ["pattern", "pace", "guidance", "bell", "voice",
+                             "naturalness", "cues"]},
     "Breathwork": {"cards": ["pattern", "retention", "programs", "voice", "cues"]},
     "Chant":      {"cards": ["phrase", "pitch", "choir", "voice"]},
     "Sing":       {"cards": ["pitch", "voice", "choir", "naturalness"]},

@@ -96,8 +96,11 @@ Guardrails (every round):
       to a single-sample texture for readback (`copy_framebuffer`), with a graceful
       single-sample fallback if the driver lacks MSAA. Worker thread + transparent
       RGBA intact; edge-zoom confirms smooth; thread-stable; cat path unaffected.
-- [ ] **Sing — pitch trainer**: scoring (% time in tune), an in-tune glow, more
-      exercises; **Meditate** — open-monitoring vs focused-attention guidance.
+- [x] **Sing — pitch trainer**: a running **% time-in-tune** score + an **in-tune glow**
+      frame on the PitchScene, and **3 more exercises** (Minor scale, Octave siren, Sixth
+      stretch). **Meditate** — a **guidance** card (Off / Focused attention / Open
+      monitoring) showing slow rotating cues softly under the orb (~every 22 s). Verified
+      via renders + offscreen ticks; thread-stable; selftest passes.
 
 ### Researched batch — restful practices (efficacy)
 - [ ] **NSDR / Yoga Nidra** guided session: a slow body-rotation + breath script with
@@ -167,6 +170,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Sing pitch scoring (% in tune) + in-tune glow + 3 exercises; Meditate guidance card.
 - GPU face MSAA (4x multisample FBO + resolve) — smooth head silhouette.
 - Earth & Sea +3 (Clouds & Weather · Caves & the Underground · The Tides) → 68 lectures.
 - Face naturalism: micro-saccades, settling-sigh + swallow, wind-down damping, head-cock.

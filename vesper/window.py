@@ -7,6 +7,8 @@ voices, patterns, modes, narration, stories, Kokoro) is the unchanged core.
 """
 from __future__ import annotations
 
+import math
+
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import (QApplication, QHBoxLayout, QMainWindow,
                                QStackedWidget, QWidget)
@@ -92,6 +94,9 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._duck_t0 = None               # in-progress ambience-duck start time
         self._mood_target = (0.0, 0.0, 0.0)   # emotion deltas from the current line
         self._smile, self._brow, self._eyeb = 0.12, 0.0, 0.0   # eased expression
+        self._sing_in = 0                  # pitch-trainer: frames sung in tune
+        self._sing_tot = 0                 # frames voiced (for the % score)
+        self._med_style = "Off"            # Meditate guidance style
         self._hg_show = False              # hourglass session timer visible?
         self._hg_spin = 0.0                # current displayed glass rotation (deg)
         self._hg_spin_from = 0.0           # flip animation endpoints + start time
@@ -184,6 +189,9 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             status = "Press Start" if self.controller.elapsed() == 0 else "Paused"
         sub = (self._story_line[:42] if (self.current_mode == "Sleep"
                                          and self._story_line) else "")
+        hint = ""                                  # Meditate: gentle rotating guidance
+        if running and self.current_mode == "Meditate" and self._med_style != "Off":
+            hint = self._med_phrase(self.controller.elapsed())
         ctx = {"running": running,
                "volume": state.volume if running else 0.5,
                "airflow": state.airflow if running else 0.0,
@@ -191,15 +199,53 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                "progress": getattr(state, "progress", 0.0),   # 0..1 through this phase
                "remaining": state.remaining, "label": state.label,
                "t": self._anim_t, "prog": prog, "subtitle": sub,
-               "status": status, "hint": "",
+               "status": status, "hint": hint,
                "bpm": (60.0 / self.controller.pattern.cycle
                        if self.controller.pattern.cycle > 0 else 0.0)}
         if self.viz.scene_name() == "pitch":
             pc = self.pitch_context(self.controller.elapsed()) or {}
             sung, clar = (self.tuner.latest() if (self.tuner and self.tuner.available)
                           else (0.0, 0.0))
-            ctx["pitch"] = {**pc, "sung": sung, "clarity": clar, "tol": 30}
+            tgt = pc.get("target")
+            intune = False
+            if running and tgt and sung > 0 and clar > 0.5:
+                intune = abs(1200.0 * math.log2(sung / tgt)) < 30.0
+                self._sing_tot += 1
+                self._sing_in += 1 if intune else 0
+            score = (100.0 * self._sing_in / self._sing_tot) if self._sing_tot else 0.0
+            ctx["pitch"] = {**pc, "sung": sung, "clarity": clar, "tol": 30,
+                            "intune": intune, "score": score,
+                            "samples": self._sing_tot}
         return ctx
+
+    # Meditate guidance — two evidence-based styles, slow rotating cues.
+    _MED_CUES = {
+        "Focused attention": [
+            "Rest your attention on the breath.",
+            "Feel the air — cool in, warm out.",
+            "When the mind wanders, gently come back.",
+            "No need to judge it; just return.",
+            "Let the breath be your anchor.",
+            "Soften the body around each breath.",
+        ],
+        "Open monitoring": [
+            "Let awareness rest open and wide.",
+            "Notice whatever arises, then let it pass.",
+            "Sounds, feelings, thoughts — hold none.",
+            "Be the sky; let it all drift like clouds.",
+            "Nothing to fix, nothing to chase.",
+            "Rest as the awareness that notices.",
+        ],
+    }
+
+    def set_meditation_guidance(self, style):
+        self._med_style = style if style in self._MED_CUES else "Off"
+
+    def _med_phrase(self, elapsed):
+        cues = self._MED_CUES.get(self._med_style)
+        if not cues:
+            return ""
+        return cues[int(elapsed / 22.0) % len(cues)]   # a new cue ~every 22 s
 
     def save_screenshot(self, path=None, face_only=False):
         """Save a PNG of the window (or just the face). Ctrl+S / Ctrl+Shift+S."""
