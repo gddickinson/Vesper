@@ -50,17 +50,18 @@ class FaceWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setMinimumSize(360, 360)
-        # VESPER_FACE=cat forces the 2D cat; =software forces the CPU ICT render.
+        # VESPER_FACE=cat starts on the 2D cat; =software forces the CPU ICT render.
         force = os.environ.get("VESPER_FACE",
                                os.environ.get("BSQT_FACE", "")).lower()
-        self._have_3d = _HAVE_FACEVIEW and force != "cat"
-        self._gpu = (self._have_3d and face_gpu.available()
+        self._faceview_ok = _HAVE_FACEVIEW           # is the 3D head usable at all?
+        self._show_cat = (not self._faceview_ok) or force == "cat"  # current choice
+        self._gpu = (self._faceview_ok and face_gpu.available()
                      and force != "software")
-        self._params = _claude_face() if self._have_3d else None
+        self._params = _claude_face() if self._faceview_ok else None
         self._breath = 0.5
         self._t = 0.0
         self._hue = theme.ACCENT
-        self._req = ((copy.copy(self._params), (480, 520)) if self._have_3d
+        self._req = ((copy.copy(self._params), (480, 520)) if self._faceview_ok
                      else (None, (480, 520)))
         self._frame = None                       # (rgba ndarray, w, h)
         self._cat = cat.CatFace()                # the 2D fallback face
@@ -78,9 +79,21 @@ class FaceWidget(QWidget):
         self._hg_click_cb = None                 # flip-to-reset callback
         self._stop = False
         self._thread = None
-        if self._have_3d:                        # ONE render thread, only for 3D
+        if self._faceview_ok:                    # ONE render thread (idles on cat)
             self._thread = threading.Thread(target=self._worker, daemon=True)
             self._thread.start()
+
+    def set_use_cat(self, on):
+        """Switch the face between the cartoon cat and the 3D head at runtime.
+        Always the cat when faceView isn't available."""
+        self._show_cat = bool(on) or not self._faceview_ok
+        self.update()
+
+    def uses_cat(self):
+        return self._show_cat
+
+    def faceview_available(self):
+        return self._faceview_ok
 
     def set_warm(self, amount):
         self._warm = max(0.0, min(1.0, float(amount)))
@@ -129,7 +142,7 @@ class FaceWidget(QWidget):
         mo = max(0.0, min(0.6, mouth))
         self._cat_state = dict(vol=vol, t=t, mouth=mo, eye_open=eye_open,
                                smile=max(0.0, min(1.0, smile)), hue=self._hue)
-        if self._have_3d:
+        if self._faceview_ok:                                # keep 3D params fresh
             p = self._params
             p._t = t                                         # GPU starfield time
             g0, g1 = self._gaze_ph                           # gently wandering gaze
@@ -153,6 +166,9 @@ class FaceWidget(QWidget):
 
     def _worker(self):
         while not self._stop:
+            if self._show_cat or not self._active:    # idle: cat shown or hidden
+                time.sleep(0.12)
+                continue
             params, (w, h) = self._req
             try:
                 img = face_gpu.render(params, (w, h)) if self._gpu else None
@@ -178,7 +194,7 @@ class FaceWidget(QWidget):
             self._bg.draw(painter, w, h, self._t, self._breath, self._hue)
         except Exception:
             pass
-        fr = self._frame if self._have_3d else None
+        fr = None if self._show_cat else self._frame
         if fr is not None:                                   # 3D avatar frame
             rgba, fw, fh = fr
             qimg = QImage(rgba.data, fw, fh, 4 * fw, QImage.Format.Format_RGBA8888)
@@ -186,7 +202,7 @@ class FaceWidget(QWidget):
             scale = 0.97 + 0.06 * self._breath               # breathing zoom
             sw, sh = int(fw * scale), int(fh * scale)
             painter.drawPixmap((w - sw) // 2, (h - sh) // 2, sw, sh, pm)
-        elif not self._have_3d:                              # 2D cartoon-cat fallback
+        elif self._show_cat:                                 # 2D cartoon cat
             try:
                 self._cat.draw(painter, w, h, self._cat_state)
             except Exception:

@@ -58,11 +58,13 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   renders on a transparent background): `None`, `Stars` (starfield, matches the
   eyes), `Aurora` (drifting colour veils), `Nebula`, `Gradient` — all tinted by the
   breath-phase hue. `make(name)`/`names()`.
-- **cat.py** — `CatFace`: the **2D cartoon-cat fallback** drawn with QPainter when
-  faceView isn't available (or `VESPER_FACE=cat`). Breathes, blinks, twitches its ears,
-  wanders its pupils, and opens its mouth to talk — driven by the same per-frame state
-  (`vol`/`mouth`/`eye_open`/`t`) as the 3D head, over the same animated background.
-  `face.py` imports faceView in a try/except and uses the cat when it's missing.
+- **cat.py** — `CatFace`: the **2D cartoon-cat face** drawn with QPainter. Breathes,
+  blinks, twitches its ears, wanders its pupils, and opens its mouth to talk — driven by
+  the same per-frame state (`vol`/`mouth`/`eye_open`/`t`) as the 3D head, over the same
+  animated background. `face.py` imports faceView in a try/except (`_faceview_ok`);
+  it's used automatically when faceView is missing, and is **switchable at runtime**
+  (`FaceWidget.set_use_cat` ← `window.set_face_cat` ← **View ▸ Cartoon cat face**,
+  persisted) when faceView *is* present. The render worker idles while the cat shows.
 - **face_gpu.py** — **moderngl GPU renderer for the ICT head** (~11 ms/frame vs
   ~65 ms software). Reuses ICT's mesh + pose pipeline (`apply_blendshapes`, incl.
   the persona identity weights) + per-material palette (`_material_palette`),

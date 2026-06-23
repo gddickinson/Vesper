@@ -517,6 +517,17 @@ rather than jumping. Added `set_soundscape_follow` + a **Sound ▸ Soundscape fo
 story** menu toggle (default on); off holds the story's base ambience. Cue-mapping
 unit checks + an offscreen Sleep duck/toggle run pass; selftest passes; threads 2->2.
 
+## Feature — choose the cartoon cat instead of the 3D head (in-app)
+Made the cat a runtime choice, not just an env/fallback. `face.py` now separates
+`_faceview_ok` (is the 3D head usable) from `_show_cat` (current choice);
+`set_use_cat(on)`/`uses_cat()`/`faceview_available()` switch live. The single render
+worker is started whenever faceView is present but **idles while the cat is shown** (so
+no wasted GPU), and `paintEvent` draws the cat or the 3D frame accordingly. Added
+`window.set_face_cat` + a checkable **View ▸ Cartoon cat face** menu item (disabled, and
+always-on, when faceView is absent), persisted in settings (`face_cat`). Verified:
+toggling cat on/off at runtime swaps the face (rendered the full Sleep window on the
+cat), default still starts on the 3D head, thread-stable (2->2), selftest passes.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

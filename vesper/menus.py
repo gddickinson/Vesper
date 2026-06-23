@@ -135,6 +135,12 @@ def _view(win, m):
     for name in face_bg.names():
         fb.addAction(name).triggered.connect(
             lambda _c=False, x=name: win.set_face_background(x))
+    catf = m.addAction("Cartoon cat face")
+    catf.setCheckable(True)
+    catf.setChecked(win.face.uses_cat())
+    catf.setEnabled(win.face.faceview_available())   # otherwise it's always the cat
+    catf.triggered.connect(lambda checked: win.set_face_cat(checked))
+    win._act_cat = catf
     m.addSeparator()
     hg = m.addAction("Hourglass timer")
     hg.setCheckable(True)

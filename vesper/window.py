@@ -137,6 +137,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         s = store.load_settings()
         self._speech_speed = float(s.get("speech_speed", self._speech_speed))
         self.toggle_hourglass(bool(s.get("hourglass", False)))
+        self.set_face_cat(bool(s.get("face_cat", False)))
         mode = s.get("mode", "Sleep")
         self.apply_mode(mode if mode in modes.names() else "Sleep")
         if "volume" in s:
@@ -161,6 +162,13 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         """Pick the animated background painted behind the 3D face."""
         self._face_bg = name
         self.face.set_background(name)
+
+    def set_face_cat(self, on):
+        """Use the cartoon cat instead of the 3D head (View menu / persisted)."""
+        self.face.set_use_cat(on)
+        act = getattr(self, "_act_cat", None)
+        if act is not None and act.isChecked() != self.face.uses_cat():
+            act.setChecked(self.face.uses_cat())
 
     def set_scene(self, name):
         """Pick which 2D scene shows, and switch to the scene view."""
@@ -498,7 +506,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                  "volume": self.user_volume,
                                  "speech_speed": self._speech_speed,
                                  "view": self._view, "face_bg": self._face_bg,
-                                 "hourglass": self._hg_show})
+                                 "hourglass": self._hg_show,
+                                 "face_cat": self.face.uses_cat()})
         except Exception:
             pass
         try:

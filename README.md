@@ -91,7 +91,8 @@ Two optional extras:
 - **faceView** — the 3D head renderer for the avatar, installed editable from its own
   project (it is large, ~1.2 GB, so it is *not* vendored here). Without it, the face
   falls back to a hand-drawn **2D cartoon cat** that breathes, blinks and lip-syncs the
-  story (force it anytime with `VESPER_FACE=cat`).
+  story. You can also choose the cat anytime in **View ▸ Cartoon cat face** (or start on
+  it with `VESPER_FACE=cat`).
 - **kokoro-onnx** — neural narration voices (`pip install kokoro-onnx` +
   `python -m breathsim.kokoro_tts --download`). Without it, narration uses macOS `say`.
 
