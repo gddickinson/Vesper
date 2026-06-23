@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Generated at runtime (rebuilt by `python -m breathsim.story_db`)
+data/*.db
+
+# Local user data lives outside the repo (~/.breathsim); never commit it.
+
+# Exported audio / screenshots produced by the app
+/exports/
+*.wav

@@ -1,0 +1,498 @@
+# SESSION_LOG — Breathing Sim (PySide6 rebuild)
+
+## Session — Phase 1: new Qt project + 3D talking-head face
+
+Started the PySide6 rebuild (chosen over a Tk-embedded face) as a **new project**
+that reuses the existing `breathsim` audio/logic core unchanged and adds a Qt
+front-end centred on faceView's face.
+
+**Decisions / findings**
+- PySide6 + moderngl already in the env; faceView `pip install -e ../faceView`.
+- `render_face(FaceParams, size) -> BGR ndarray` is a clean pure entry point.
+- All render modes work offscreen here. Software render speeds: stylised 3.3 ms,
+  **makehuman_3d 10.5 ms** (smooth at 40 fps → default), head_decimated 56 ms,
+  ict_face 65 ms (best-looking but software-slow; GPU modes are future work).
+- Fixed scanline skew by packing frames as RGBA8888 (4*w aligned stride).
+
+**Built** (`bsqt/`): `__init__` (core path bootstrap), `theme`, `face`
+(FaceWidget: breath→head nod + breathing zoom, narration amp→jaw lip-sync, slow
+blinks), `controls` (mode bar / pattern / face mode / Sleep story / volume /
+transport), `window` (MainWindow + 40 fps loop + modes + story + Sleep dimming),
+`run.py`. Reuses controller/engine/speech/narration(Kokoro)/stories/voices/
+patterns/modes/personas/choir.
+
+**Verify**: boots offscreen, applies Sleep, runs, renders the face cleanly
+(stylised + makehuman_3d + ict_face_3d grabbed to PNG — 3D head confirmed); story
+arms with matching ambience + Kokoro voice; files < 500 (window 219).
+
+## Session — ICT-only blue face + smoothness; GPU assessed
+
+- **Removed the other face modes** (makehuman/stylised/decimated/anatomical) and
+  the render-mode picker. The face is now **ICT only** (the one that rendered
+  well), coloured **blue** (`skin_hue` 206 + blue hair-cap so the crown isn't
+  brown), light smooth skin + rose lips → **younger, feminine**. Softened jaw gain
+  so lip-sync looks natural.
+- **Smoothness**: ICT is ~65 ms/frame software, so it now renders on a
+  **background thread**; the GUI blits the latest frame each tick with the
+  breathing zoom (40 fps motion, ~15 fps face). UI stays responsive.
+- **GPU support — assessed, not shipped.** ICT has no GPU path in faceView; its
+  GPU renderers (head_decimated/faceforge) target other meshes and rendered
+  **broken + un-coloured** here (verified). moderngl *does* work offscreen
+  (head_decimated_3d_gpu 5 ms, faceforge 27 ms), but a real GPU-ICT means porting
+  ICT posing + per-material palette + its camera/shading to moderngl — a focused
+  follow-up. The render thread delivers the smoothness meanwhile.
+
+## Session — GPU-ICT renderer + the Claude avatar
+
+- **Built `face_gpu.py`** — a moderngl GPU renderer for the ICT head: reuses ICT's
+  mesh + `apply_blendshapes` (incl. persona identity weights) + `_material_palette`,
+  lambert + **rim-glow** shader, orthographic aspect-correct fit, lazy standalone
+  context on the worker thread, BGR out, `None`→software fallback. **~11 ms/frame**
+  (vs ~65 ms software) → full 40 fps. Fixed orientation (base 180° yaw so the face,
+  not the back of the head, faces the camera).
+- **Switched the face to faceView's Claude avatar** = the `ict_xray_young` persona
+  (glowing-cyan xray ICT head, "young" identity), applied via
+  `personas.load_persona`/`apply_persona`. This is what the faceView characters
+  file names as the default Claude face — and it's the calm blue look wanted.
+- FaceWidget now renders the Claude avatar via GPU in the worker thread (software
+  fallback), breathing + lip-syncing as before.
+
+Verify: GPU renders the Claude avatar front-facing at 11.6 ms; full app runs with
+`gpu=True`; PNGs captured (software target + GPU). Known gap: xray eye-emissive
+glow not reproduced by the GPU shader (refinement noted).
+
+## Session — eye fixes + screenshot feature
+
+- **Screenshot feature**: File ▸ Save Screenshot (Ctrl+S) + Save Face Only
+  (Ctrl+Shift+S) → `MainWindow.save_screenshot(path, face_only)`. Used it to
+  inspect/iterate the face.
+- **Eyes** (GPU `face_gpu._color_emit`): the lambert shader couldn't reproduce
+  the xray eye look, so — sclera/iris use natural colours and a per-vertex
+  **emissive** so they self-light when open; as the lids close they **blend to
+  the eyelid skin colour and emissive fades to 0**, so a shut lid shows neither a
+  black nor a bright eyeball (the original bug). The eye socket/lashes were a
+  near-black hole → now a **soft skin-shadow**; the tear-duct catch-light is
+  dimmed. Diagnosed the layering by colour-coding the eye materials and rendering.
+- Verified open (alive eyes + catch-lights) and closed (gentle lids, no eyeball)
+  via screenshots; full app runs `gpu=True`. Teeth left as-is (look fine).
+
+## Session — starry-sky eyes + breathing nostrils/mouth
+
+- **Starry-sky eyeballs**: procedural twinkling + drifting **starfield** in the
+  GPU fragment shader (deep-space sky + hashed stars), animated by a `u_time`
+  uniform (= the face's `_t`). Gated to the eyeball verts via `v_emit`, so it still
+  fades into the eyelid when the lids close. Tuned star size/density/brightness so
+  it reads at eye scale; verified the pattern changes over time.
+- **Forward gaze**: `pupil_x/pupil_y = 0` so the eyes look forward.
+- **Breathing nostrils + mouth**: `set_state` now takes `airflow`+`phase`; nostrils
+  flare (`nose_wrinkle`) and the mouth opens gently on the in-breath, combined with
+  the narration amplitude for speaking (`jaw_open = max(speaking, breath)`).
+- Verified live (gpu=True): stars animate, mouth breathes/speaks, files < 500.
+
+## Session — mouth matches the breath type (nose-in / mouth-out + shapes)
+
+Breathing mouth was backwards (opened on inhale). Now `window._breath_routing` +
+`_mouth_shape` route it by phase + the active voice:
+- **In-breath = nose** (mouth closed, nostrils flare); out-breath = mouth.
+- **Out-breath mouth shape** from the exhale voice (`_SHAPE_AUS`): pursed-lip
+  (`mouth_pucker`), open "haa"/sigh (`jaw_open`), fricative sss/shh/fff
+  (`mouth_stretch`), round OM, or **nasal** (ujjayi/hum/nose → mouth stays shut,
+  nose breathes). Verified: Breathwork = nose-in + pursed-out; Ujjayi = nasal both.
+- `face.set_state` now takes `mouth/nose/pucker/stretch`; **speaking** (narration
+  amp) opens the mouth and relaxes the shape.
+Confirmed the ICT renderer shows distinct mouths (pursed vs open vs fricative);
+live app gpu=True.
+
+## Session — mouth stays shut during the nasal in-breath
+
+The mouth was still cracking open as the nostrils flared on a nose in-breath.
+Root cause: the only nose AU (`noseSneer`, AU9) **also lifts the upper lip**, so a
+big flare value opened the mouth. Confirmed by render sweep — jaw=0 + nose 0.0
+closed, 0.15 just-closed (lip highlight), 0.4/0.8 gaping.
+- `window._breath_routing`: nasal inhale now `jaw=0.0, nose=0.12` (was 0.03/0.8);
+  exhale nasal flare 0.12 (was 0.6), non-nasal 0.05, holds 0.03.
+- `face.set_state`: `nose_wrinkle` hard-capped at 0.16 so it can never lift the lip.
+Nostril flare is therefore only a faint hint (the AU can't truly widen nostrils);
+the closed mouth wins. Verified via routing crops (nasal-in closed, pursed-out
+puckered, open-out open) and a live gpu=True smoke run.
+
+## Session — talking takes precedence; speak on the out-breath
+
+Reworked the face's mouth so **speech overrides breathing** and the rhythm reads
+naturally: breathe in, then speak on the exhale, with a breath between sentences.
+- Precedence resolution moved to `window._face_inputs(state, running, amp)`;
+  `face.set_state` is now a dumb state-holder (dropped its internal amp mixing — new
+  signature `set_state(vol, t, prog, mouth, nose, pucker, stretch)`).
+- A voiced frame (`narrator.amp > _AMP_TH`) ⇒ **speaking**: jaw lip-syncs to amp,
+  breath shapes (pucker/stretch/nose) suppressed, and the **visible breath eases
+  *down*** (an exhale, target 0.28). Short word gaps (< `_SPEAK_HOLD` 0.35 s) still
+  count as speaking so the mouth doesn't snap shut between words.
+- A longer gap (storyteller's inter-unit pause) ⇒ **between sentences**: mouth
+  closes, faint nostril flare, and the **visible breath eases *up*** (a breath in,
+  target 0.92). After `_TALK_WINDOW` (9 s) of silence it reverts to plain breathing.
+- The eased breath now also drives the breathing zoom + head-nod, so the head
+  visibly takes a breath in during the gap then settles while speaking.
+Verified by simulating a sentence→gap→sentence amp script: jaw 0.5→0 at speech end,
+breath 0.50→0.28 while speaking then →0.92 in the gap, back to lip-sync next
+sentence; live gpu=True boot with injected amp runs clean.
+
+## Session — natural variability in the in-breath mouth opening
+
+The in-breath opened the mouth by a fixed amount every cycle (mechanical). Added a
+per-breath random scale `_sample_inhale_open()` = `random()**2` (skewed low), stored
+on `self._inhale_open` and **resampled at each inhale onset** (and at each
+between-sentence breath in the talking path).
+- `_breath_routing` inhale jaw is now a *maximum* parting (nose 0.12, oral 0.40);
+  `_face_inputs` multiplies it by `_inhale_open` only on the inhale phase.
+- Result over 400 nose breaths: median jaw 0.03, ~56% nearly closed, ~14% a slight
+  parting, capped ~0.12 — variable and usually small. Oral in-breaths went from a
+  constant 0.40 to median ~0.09 (occasional up to 0.40). Satisfies "more
+  variability, most of the time less than before." Live gpu=True boot clean.
+
+## Session — storyteller pacing: longer pauses + speech speed (slows over time)
+
+- **Core (`breathsim/narration.py`)**, backward-compatible (defaults 1.0 ⇒ old
+  behaviour, Tk app unaffected — verified): added `Narrator.speed` (rate
+  multiplier, folded into the Kokoro `_speed(lvl)` + `say` `_rate(lvl)`) and
+  `Narrator.pause_scale` (scales the **between-statement** pauses only; breath-cued
+  `phase` pauses stay matched to the breath). Pause clamp raised 12 s → 20 s.
+- **Window**: `_pause_scale = 1.4` base (longer gaps between statements) and
+  `_apply_speech_pace()` (called each running tick) **subtly slows over ~10 min** —
+  speed ×1.0→×0.82, pause_scale ×1.4→×2.1. `set_speech_speed(v)` is the user base.
+- **Controls**: a **Speech speed** slider (0.60×–1.20×) in the Sleep story panel.
+- Verified: kokoro speed 0.88→0.72 and say 140→114 wpm across the session;
+  between-statement pauses scale (900→1260→1890 ms) while breath cues stay at the
+  breath length; defaults reproduce the original numbers exactly; Qt boots clean.
+- Note: `run.py --selftest` flags a **pre-existing** "Brown Noise peak 1.04 > 1.0"
+  calibration drift (unrelated to narration — left for a separate recalibration).
+
+## Session — ported the Tk app's features (workspaces, menus, sessions, more)
+
+A large feature-parity pass, all reusing the shared core, all files < 500 lines
+(window 396, sections 252). New `bsqt/` modules:
+- **widgets.py** — `card`, `LabeledSlider` (slider + live read-out), combo helpers.
+- **workspaces.py** + **sections.py** — a **workspace-driven panel**: each mode
+  rebuilds the scroll body into a distinct card set (Meditate = pace/resonance +
+  naturalness; Breathwork = pattern + guided programs; Chant = mantra + choir;
+  Sing = voice + choir; Relax = soundscape; Sleep = story + wind-down).
+- **controls.py** rewritten as `ControlPanel(_SectionsMixin, …)`: pinned mode bar +
+  volume + transport, `build_workspace`/`sync`/`tick`. (Fixed a rebuild bug —
+  `setParent(None)` before `deleteLater` so old cards don't bleed through.)
+- **app_actions.py** — `_ActionsMixin` on MainWindow: voice/body/ambience/effect/
+  morph/naturalness/choir/phrase/cue/pace/program/wind-down/mute/slot actions.
+- **menus.py** — full menu bar (File/Modes/Sessions/Pattern/Voice/Sound/View/Help)
+  as the global escape hatch (every voice by group, Morph A▸B, background-sound
+  toggles, chime, naturalness, Mixer, Zen/Fullscreen, Stats/About).
+- **shortcuts.py** — Space/R/F/Z/Esc + **Zen** (hide panel/menus/bar).
+- **dialogs.py** — practice **Stats**, per-slot **Mixer**, About.
+- **stage_apply.py** — applies a guided-program `Stage` to the Qt app.
+- **window.py** — wired the **SessionDirector** (morph automation + guided
+  **programs** + sleep wind-down) into the loop, mute-aware volume, practice
+  **logging** (`store.log_session`), and **last-settings persistence**
+  (`_restore_settings` on boot + `save_settings` on close).
+Verified: boots; every mode's workspace builds + scrolls cleanly (screenshots);
+menus present; a guided program applies its stage 0 (pattern+voice); toggles/mute/
+wind-down/choir/pace/morph all act on the core; practice logs; settings round-trip;
+core `--selftest` passes (the earlier Brown-Noise warning was intermittent RNG).
+Deferred: Qt scenes + face/scene toggle, pitch trainer, voice/pattern editors,
+presets manager, retention timer (noted in INTERFACE roadmap).
+
+## Session — Qt scenes + face/scene toggle + pitch trainer + more controls
+
+Built the visual scenes as QPainter widgets and a central face↔scene toggle, plus
+new controls. All files < 500 (window trimmed 469→410 by extracting face_motion).
+- **scenes.py** — `OrbScene` (radial-gradient glow + guide ring + cycle dot +
+  progress arc), `NightScene` (stars + moon halo), `RippleScene` (resonance rings),
+  `WaveScene` (layered sea) + shared text overlay + `make`/`names`. Real alpha /
+  gradients (an upgrade on the Tk blend-to-bg glow).
+- **scene_pitch.py** — `PitchScene` pitch trainer: note grid + bright target line +
+  live-pitch trail (green in tune) + plain-words Higher/Lower/In-tune guidance.
+- **viz.py** — `VizWidget` hosting a persistent scene (`set_scene`/`update_state`).
+- Central area is now a **`QStackedWidget(face, viz)`**; **face↔scene toggle** via
+  pinned panel buttons + View menu (+ Scene picker) + **`V`** shortcut; auto-scene
+  per mode; the chosen view persists (store settings).
+- **pitch.py** — `_PitchMixin`: mic `Tuner` (degrades w/o mic), `show/hide_pitch_guide`
+  (switches to the pitch scene + starts mic), `pitch_context`, reference tone.
+  `_card_pitch` (Sing & Chant): hold-note / scale exercise + guide + reference.
+- **face_motion.py** — pure mouth/nostril routing extracted from window.py.
+- More controls: **mindfulness bell** (Meditate, interval chime in the loop) and
+  breath-hold **retention timer** (Breathwork, logs holds via `store.log_hold`).
+Verified offscreen: all scenes render (screenshots — orb/night/wave/pitch look
+great), view toggle + scene picker work, pitch guide switches scene + opens mic,
+bell + retention behave, every workspace builds, settings round-trip, core
+`--selftest` passes (85 voices, 21 presets).
+Remaining: Voice/Pattern editors + Presets manager; phrase-sequencing UI.
+
+## Session — backgrounds behind the face + eyeball-shadow fix
+
+- **Eyeball shadow removed**: `M_EyeOcclusion` was drawn at `skin*0.82` and further
+  darkened by lambert → a shadow ring around the eye. Now coloured to the eyelid
+  skin (`lid*1.08`, no shadow); lashes kept a faint hint (`skin*0.9`). Verified via
+  open + half-closed eye crops — clean, starry eyes, no ring.
+- **Animated backgrounds behind the face**: the GPU renderer now clears the FBO to
+  **transparent** and returns **RGBA**, so an effect can show behind the head. New
+  **face_bg.py** painters — None / **Stars** (matches the starry eyes) / **Aurora**
+  / **Nebula** / **Gradient** — all tinted by the breath-phase hue and pulsing with
+  the breath. `FaceWidget.paintEvent` paints the backdrop then composites the head;
+  `set_background` + `set_state(..., phase=)` for the tint. Picker in **View ▸ Face
+  background**, persisted (default Stars).
+- The software fallback (no GPU) stays opaque (background hidden) — graceful.
+- Perf: `FaceWidget.set_active(False)` throttles the head render thread when the
+  scene view is showing (driven by `set_view`).
+- Cleanup: removed the now-unused `_hex_rgb`; window 418 lines, all files < 500.
+Verified offscreen: head composites over each background (screenshots — Stars +
+Aurora look great), eye crops show no shadow, every mode + bg + view toggle works,
+face_bg persists, render throttles to inactive when scene shown.
+
+## Session — new story category: soothing sleep-lectures (physics)
+
+Added a **lecture** category to the bedtime storyteller (core `breathsim`, so both
+apps get it): authored, finite, poetic deep-dives that lull rather than teach.
+- Core: **lectures_physics.py** (content) + **lectures.py** (framework). First
+  lecture **"Spacetime & the Quantum"** — relativity, wave–particle duality, the
+  quantum universe, cosmology, with critical experiments (Michelson–Morley, the
+  1919 eclipse, the double-slit, Bell/Aspect, Hubble, Penzias & Wilson) and the
+  recurring *math as metaphor* thread. 7 sections, 82 lines (~1480 words), Brown-
+  Noise ambience; delivered slowly (1.4–2.1 s pauses ×pause_scale) with breath/
+  body-scan interludes woven between sections.
+- `stories.story_units` now dispatches to `lectures` by name; added
+  `lecture_names()` + `ambience_for()` (also fixes a latent "Random" KeyError).
+- Qt: the Sleep **Bedtime story** picker lists lectures under a separator;
+  ambience lookups use `ambience_for`.
+Verified: lecture yields 100 finite units (82 lecture + 18 guide), ambience voice
+registered, the narrator streams it (subtitle shows the opening line), every scene
+still infinite, "Random" no longer crashes, core `--selftest` passes (85 voices).
+Framework supports more lectures — drop a content module + one `LECTURES` entry.
+
+**Series → 16 lectures** (core, drafted in parallel batches): Spacetime & the
+Quantum · The Life of a Star · The Wandering Moon · The Northern Lights · The
+Turning Year · Deep Time · A River to the Sea · The Deep Ocean · The Song of Whales
+· The Migrating Birds · The Quiet Life of Plants · The Hidden Kingdom of Fungi ·
+The Living Cell · The Human Heart · The Breath (on-theme) · The Sleeping Brain —
+each ~1,000–1,500 words, 7 sections, real science + named experiments, closing
+toward sleep, ordered cosmos→sky→earth→ocean→life→body→sleep. The Sleep story
+picker lists all 16 under a separator; ambiences resolve via `ambience_for`.
+Also recalibrated core Pink/Brown Noise gains to 0.16 (worst peak ~0.81/0.83 over
+120 runs) so the masking-noise voices never clip — `--selftest` now passes 5/5.
+Verified: all 16 load + finite + valid ambience + 0 malformed lines; Qt picker 24
+items.
+
+## Session — lectures → 44, grouped into branches in the Sleep picker
+
+The core lecture collection grew to **44 across 6 branches** (The Cosmos · Earth &
+Sea · The Living World · The Human Body · Histories · Ideas & Wonders) — added a new
+**Histories** flavour (Tea, Silk Road, Alexandria, Bread, Maps, Clocks, Spices,
+Salt, Chocolate, Coffee, Paper, Gardens) plus more science/nature/body/ideas.
+- Qt: the Sleep **story picker now groups lectures by branch** — for each
+  `stories.lecture_categories()` a separator + a disabled "— <branch> —" header,
+  then `stories.lecture_names(branch)`. Picker = 63 items, 6 disabled headers.
+- Note: this was completed after a multi-hour Anthropic platform outage of the
+  write/command safety classifier (resumed automatically via scheduled rechecks).
+Verified: all 44 load + finite + valid ambience + unique names + 0 malformed lines;
+`--selftest` passes; offscreen Qt picker shows the 6 branch headers and lectures
+select + set their ambience.
+
+## Session — text-matched soundscape, lifelike face, +6 lectures, auto-loop
+
+Three feature workstreams + the autonomous loop the user asked for.
+- **Soothing sound matched to the text**: core `sound_cues.cue_for_text` maps imagery
+  (rain/waves/wind/hearth/stars/thunder/ice…) to ambient voices; the storyteller's
+  per-line callback (`_on_story_unit`) steers `_sfx_target`, and `_tick`
+  **crossfades the ambience bed** toward it (`_apply_soundscape`, fade 2.5s), easing
+  back to the lecture's base ambience over abstract passages. Verified live: the
+  Deep Ocean lecture morphs Ocean→Brown Noise at "abyss/stars"→Pink Noise at
+  "stillness". Fixed a "the sea**sons**" false positive.
+- **More naturalistic face** (`face.py` + `face_motion.emotion_for_text`): wandering
+  gaze, tiny head sway, **randomized blinks** (varied gap, occasional double, heavier
+  as it winds down), and an **emotion** eased from the line's mood (wonder/awe/
+  curiosity/calm → smile/brow/eye-openness), via `_ease_mood` → `set_state(...,
+  smile, brow, eye_bias)`. Decays to a serene baseline when idle.
+- **Library → 50 across 7 branches**: new **Materials & Making** branch (Glass · The
+  Potter's Wheel · The Loom · Ink · Candlelight) + The Constellations (Cosmos).
+- **Autonomous update loop**: `UPDATES.md` backlog + a self-paced scheduler — each
+  round researches/plans/implements/**tests** one item (selftest + integration must
+  pass), logs, and reschedules.
+Verified: 50 lectures load/finite/unique/0-malformed; `--selftest` passes; live Qt
+soundscape + expressive face confirmed (screenshot).
+
+## Session — self-contained project + stories database + todo tracking
+
+- **Vendored the core** into `breathsim_qt/breathsim/` (gui-free, 748K) so the
+  project is independent of the sibling `breathing_sim` folder. `bsqt/__init__.py`
+  now puts the project root on `sys.path` (local `breathsim` wins). Proved
+  independence: boots from the vendored copy even with the sibling hidden. Added
+  `selftest.py`, `requirements.txt`, `README.md`. faceView (~1.2 GB) stays an
+  external pip dep, documented. The autonomous loop now edits the VENDORED core
+  (UPDATES.md + the scheduled prompt updated; tests via `python selftest.py`).
+- **Stories database**: `breathsim/story_db.py` builds a SQLite record of every
+  lecture + scene (`data/stories.db`: 54 lectures · 8 branches · 4,520 lines ·
+  67,042 words · 5 scenes), rebuilt on startup (`python -m breathsim.story_db`).
+  Query API (`search`/`lectures_in`/`lines_of`/`stats`) + a **Help ▸ Story Library**
+  browse/search dialog.
+- **Todo tracking**: a task list now mirrors the UPDATES.md backlog (tasks #35–#45);
+  the loop maintains it each round. Round 1 (Myth & Legend) + self-contained + DB
+  are done; #36–#43 remain.
+Verified: independent boot, DB build + query + dialog, `selftest.py` passes (85
+voices, 54 lectures, 8 branches).
+
+## Auto-round 2 — The Senses (→ 57 lectures)
+
+Added The Ear and Hearing · The Sense of Smell · The Sense of Touch to The Human
+Body branch (now 9). Accurate, gentle, sensory + sleep-tie-in. Vendored core;
+selftest passes (85 voices, 57 lectures, 8 branches); DB rebuilt (4,772 lines).
+
+## Auto-round 3 — focus shift to app improvement (per-window theming)
+
+Re-aimed the autonomous loop from "more lectures" to **researched app improvement**
+(graphics, effects, sleep/meditation efficacy per window) — rewrote `UPDATES.md`
+with evidence-based research notes + a prioritized, per-window roadmap (warm
+low-blue Sleep dimming, breathwork patterns + phase visual, scene enrichments, more
+ambiences, soundscape ducking, face naturalism, MSAA, pitch scoring…). Stories
+continue secondarily (~every 3rd round).
+- Implemented: **per-window themed backdrops** — each mode auto-sets a fitting face
+  background (Meditate=Gradient · Breathwork/Sing=Aurora · Chant=Nebula ·
+  Relax=Underwater · Sleep=Stars) + two new effects: **Underwater** (light shafts +
+  bubbles) and **Embers** (warm hearth + rising sparks). Verified: renders clean,
+  per-mode theming applies, `selftest.py` passes (85 voices, 57 lectures).
+
+## Auto-round 4 — Sleep warm/low-blue progressive dimming
+
+`face_bg.warm_overlay(p,w,h,amount)` over-blends a dark amber wash that darkens AND
+pulls blue down (melatonin-friendlier than a cool screen). FaceWidget + VizWidget
+paint it last via `set_warm`; `window._tick` grows it 0→0.5 across the Sleep
+wind-down and keeps a gentle window dim (0.3·prog). Verified: selftest passes;
+early render clear, late render warm + dim (night scene moon/stars muted amber).
+
+## Hotfix — face-view crash (worker-thread storm)
+
+A regression from round 4: the `set_warm` edit accidentally displaced the render
+worker-thread start out of `FaceWidget.__init__` and into `set_warm` — which the
+loop calls every frame, so it spawned a fresh moderngl/OpenGL worker thread ~40×/s
+→ a thread storm of GL contexts → SIGSEGV (EXC_BAD_ACCESS) on a worker thread when
+the face view rendered. Fix: one worker started once in `__init__`; `set_warm` is
+now a plain setter; added a `BSQT_FACE=software` escape hatch (force the CPU
+renderer if a machine's GL driver is unhappy). Verified: thread count stays at 2
+through 60 ticks + view toggles; face renders (GPU, non-black); selftest passes.
+
+## Auto-round 5 — Breathwork patterns + phase visual
+
+Box 4-4-4-4 and 4-7-8 already in PRESETS; added a **Physiological Sigh** (2.5-1-6,
+a 4-phase take on the double-inhale). Added an orb **phase-progress ring**: a faint
+full ring + a bright arc that fills over the current phase and resets, coloured by
+the per-phase hue so inhale/hold/exhale/rest (and the holds) read at a glance
+(`_scene_ctx` now passes `progress`). Verified: selftest passes; orb renders the
+ring; thread count stable across ~84 ticks (new guardrail check).
+
+## Feature — eyelashes as individual glowing strands
+
+The ICT lashes are a smooth ribbon (12 segments, no UVs → can't alpha-texture), so
+our flat fill rendered them as a solid sheet. Now `face_gpu` hides the ribbon in the
+main pass and `_lash_lines` generates ~10 fine strands per lid from the lash line,
+radiating outward from each eye centre (length scaled by verticality — long top &
+bottom, short at corners), drawn as alpha-blended cyan lines (`_LVS`/`_LFS`) on top,
+deforming/blinking with the eyes. Verified via eye-crop + full-face renders; thread
+count stays at 2; selftest passes.
+
+## Fix — lashes now follow the eyelid rim
+The first strand pass radiated from each eye *centre*, so the lashes fanned from a
+point instead of tracking the lid. Rewrote `_lash_lines` to use the ribbon's own
+geometry: PCA each lid segment into a length axis (along the lash line) and a width
+axis, split the verts into the ribbon's two long edges, pick the **root edge** (the
+one nearer the eyeball) as the lash line and the other as the free **tip edge**.
+Strand roots are the actual root-edge vertices (so they sit on the rim and follow its
+curve); each grows toward its paired tip (interpolated at the same position along the
+line) with a gentle outward curl (quadratic bezier, perp-to-growth). Blob segments
+(aspect < 2.2, e.g. the inner corner) and roots outside the tip-edge span are skipped
+to kill the medial-corner tangle. Verified via high-res eye-zoom + both-eyes +
+half-closed renders; thread count stays at 2; selftest passes.
+Follow-up: shortened the strands a touch overall and added a length **taper along each
+segment** (`0.45 + 0.55·sin(πf)`) so lashes are longest mid-lid and short at the
+corners (where they had looked strange); curl scales with the tapered length too.
+
+## Feature — hourglass session timer (toggle, flip-to-reset)
+An optional countdown of the current session, drawn as a glass hourglass with flowing
+sand in the bottom-right corner of either view (visible but out of the way). New
+`bsqt/hourglass.py` painter: the top bulb drains and the bottom heap (+ falling
+stream) fills as `frac = elapsed/session_seconds` goes 0→1; a `spin` arg rotates it
+for the flip. `FaceWidget`/`VizWidget` draw it (`set_hourglass`) and forward corner
+taps to `_hg_click_cb`. Window logic lives in `bsqt/win_hourglass.py` (`_HourglassMixin`):
+`_tick_hourglass` pushes frac + eases the flip spin each tick (only shows when a
+session length is set), `toggle_hourglass` (View-menu toggle, persisted in store),
+`_flip_hourglass` → new `controller.restart()` (resets the session clock without
+stopping audio) + a 0.6 s smoothstep spin. Verified: painter strip across fracs +
+mid-flip; integrated offscreen run shows it in the corner, the flip reset elapsed
+24.2→0.0, view-switch moves the timer + clears the other, toggle hides it; thread
+count stays at 2; selftest passes. `window.py` kept under 500 via the mixin split.
+
+## Stories round — Histories +4 (Honey, Lighthouse, Violin, Perfume)
+Authored four new Histories sleep-lectures via parallel subagents (each 7 sections,
+~12 lines, section 1 a fact-free rest invitation, accurate content woven with calm,
+sleep-closing on "Let yourself drift." / "Rest now."): `lectures_honey.py` (Forest
+Wind), `lectures_lighthouse.py` (Ocean Waves), `lectures_violin.py` (Gentle Rain),
+`lectures_perfume.py` (Forest Wind). Registered in `lectures._CATALOG` Histories
+branch → **61 lectures across 8 branches**. Validated structure + ASCII; rebuilt the
+stories DB (5,096 lines / 74,626 words); selftest passes.
+
+## App round — enriched the four ambient scenes
+Added a shared `bsqt/scene_fx.py` (calm, seeded helpers: `Motes`, `Clouds`,
+`ShootingStar`, `starfield`) and enriched every scene in `scenes.py`: **Orb** gains
+drifting motes, soft exhale rings (emitted at each exhale onset) and a mint
+"coherence" halo when the pace is ~5-7 breaths/min (new `bpm` in the scene ctx);
+**Night** gains a deeper vertical gradient, slow drifting clouds and a rare faint
+shooting star; **Wave** becomes a moonlit sea — sky gradient + faint stars, a moon
+with a wavering reflection column on the water, foam dabs on the crests, and smoother
+swells; **Ripple** gets tone-reactive ring colour + spacing (louder = brighter,
+closer) and a central glow that pulses with the tone. Verified via per-scene PNGs and
+a 64-tick offscreen session cycling all four scenes (thread count steady at 2);
+selftest passes. `scenes.py` 320 lines, `scene_fx.py` 135 — both under 500.
+
+## App round — five procedural ambiences
+Added a new track kind `texture` (`breathsim/textures.py`, `TextureTrack` +
+`build_track` dispatch + a `texture` field on `VoiceConfig`) with four event-driven
+generators: **Campfire** (brown-noise roar/hiss + Poisson crackles & rare snaps),
+**Singing Bowl** (a struck inharmonic resonator with a slow beat, every ~7-12 s),
+**Wind Chimes** (gusts of 2-5 pentatonic strikes, panned), **Night Crickets** (4
+detuned, panned crickets: tone × trill × chirp-gate over a low hush). Plus **Rain on
+a Roof** as a warm brown-noise `NoiseTrack`. A shared `_Struck` resonator uses
+absolute-time sinusoids (continuous phase, no accumulator) with a 2 ms attack. All
+seeded deterministically; gains calibrated to ~0.75 peak at unit over a 150 s render
+(Campfire 0.16 · Bowl 1.10 · Chimes 0.55 · Crickets 0.72 · Rain 0.14) and verified
+≤ 0.80 over 300 s. 90 voices; they appear in the Relax/Sleep soundscape picker
+(`voices.names(GROUP_NATURE)`); selftest passes; each set live in the engine without
+error, thread count steady at 2. `textures.py` ~230 lines.
+
+## Fix — storytelling audio crackle
+Two causes, two fixes. (1) Narration plays each sentence via a separate `afplay`
+subprocess; the Kokoro WAV had no edge fades, so CoreAudio starting/stopping it
+clicked at sentence boundaries → added a 10 ms raised-cosine fade in/out to the
+samples before `_write_wav` (`narration._speak_kokoro`). (2) The engine callback is
+Python and was on a 1024-frame (~23 ms) buffer, so it could underrun when Kokoro's
+ONNX synth saturated the CPU → bumped `AudioEngine` default `blocksize` to 2048
+(~46 ms) for headroom (negligible latency for this app). selftest passes; engine
+builds at block 2048; fade verified (0 at both edges → 1 mid).
+
+## Parity — ported the 4 remaining authoring features
+An audit showed the vendored core was a full superset of the legacy app, but four
+GUI features had no Qt equivalent. Ported all four: **Voice Editor**
+(`bsqt/voice_editor.py` + `bsqt/waveform.py` — full VoiceConfig form, live
+wave+spectrum preview, Play/Randomize/Save custom voice, Both/In/Out phase),
+**Pattern Editor** (`bsqt/pattern_editor.py` — sliders + cycle/bpm read-out, save
+custom patterns via `patterns.add_pattern` + `store`), **Presets Manager**
+(`bsqt/presets.py` — capture/apply full preset state + save/load/delete via
+`store.presets_list`), and **Export Audio (WAV)** (`bsqt/app_io.py` —
+offline render of primary+ambience+effects to 16-bit WAV). Wired into File (Presets,
+Export), Pattern (Pattern Editor) and Voice (Voice Editor) menus. (Voice/Pattern
+editors built by parallel subagents; Presets/WAV + wiring done directly.) Integration
+test passes (menu wiring, preset round-trip, WAV render, thread-stable 2->2); selftest
+passes; all files < 500 lines. Optional remaining: word-on-exhale + downloaded sample
+assets (procedural-first app, low priority).
+
+## Roadmap to parity with the Tk app
+- Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
+- Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
+  a scene/face toggle.
+- **Dialogs**: mixer, pattern editor, voice editor (+ wave/spectrum), presets,
+  stats; **menus**; keyboard shortcuts; **guided programs** / session director.
+- **Background-sound toggles**, naturalness, morph/automation, spoken-cue picker.
+- **GPU face** (moderngl `*_gpu` modes) for smooth ICT/decimated; lip-sync
+  visemes; persona/appearance picker.

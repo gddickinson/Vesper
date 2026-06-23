@@ -1,0 +1,16 @@
+# Breathing Sim (PySide6) — external dependencies.
+# The audio/logic core + all stories are vendored in ./breathsim (no sibling needed).
+
+PySide6>=6.5        # GUI
+numpy               # synthesis + frame buffers
+moderngl            # GPU face renderer (falls back to software if absent)
+sounddevice         # audio output + mic pitch (degrades to visual-only if absent)
+soundfile           # optional: load downloaded sample voices / write WAVs
+
+# 3D face renderer — the faceView project (large; not on PyPI). Install editable:
+#   pip install -e /path/to/faceView
+# (importable as `faceview`; the app still imports it for the head render.)
+
+# Optional neural TTS for the bedtime storyteller (else macOS `say` is used):
+#   pip install kokoro-onnx
+#   python -m breathsim.kokoro_tts --download

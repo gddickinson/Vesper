@@ -1,0 +1,498 @@
+"""MainWindow — the PySide6 app. Reuses the breathsim core; the face is central.
+
+Phase 1 of the rebuild: a working session runner with the faceView face
+breathing + lip-syncing the bedtime story, a mode bar, transport, volume, a
+render-mode picker and Sleep story controls. The audio/logic (engine, controller,
+voices, patterns, modes, narration, stories, Kokoro) is the unchanged core.
+"""
+from __future__ import annotations
+
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QMainWindow,
+                               QStackedWidget, QWidget)
+
+from breathsim import choir, modes, narration, personas, sound_cues, stories
+from breathsim import story_db
+from breathsim import controller as ctrl_mod
+from breathsim import engine as eng_mod
+from breathsim import session as sess_mod
+from breathsim import speech as sp_mod
+from breathsim import store
+from breathsim.patterns import DEFAULT_PATTERN, preset_by_name
+
+from . import menus, shortcuts, theme
+from .app_actions import _ActionsMixin
+from .controls import ControlPanel
+from .face import FaceWidget
+from .face_motion import breath_routing, emotion_for_text, sample_inhale_open
+from .pitch import _PitchMixin
+from .viz import VizWidget
+from .win_hourglass import _HourglassMixin
+
+FPS = 40
+
+# Talking takes precedence over breathing. A voiced frame means the storyteller
+# is exhaling words; a gap means a breath before the next sentence.
+_AMP_TH = 0.06          # narration amp above this counts as "voicing now"
+_SPEAK_HOLD = 0.35      # s: short word/syllable gaps still count as speaking
+_TALK_WINDOW = 9.0      # s of silence after which we revert to plain breathing
+_BREATH_EASE = 0.08     # per-frame easing of the speech-driven visible breath
+
+# Each window gets a fitting backdrop behind the face (kept to its theme).
+_MODE_BG = {"Meditate": "Gradient", "Breathwork": "Aurora", "Chant": "Nebula",
+            "Sing": "Aurora", "Relax": "Underwater", "Sleep": "Stars"}
+
+
+class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Breathing Sim — PySide6")
+        self.resize(1060, 720)
+        self.setStyleSheet(theme.STYLESHEET)
+
+        store.register_all()                       # merge saved patterns/voices
+        try:
+            story_db.build()                       # refresh the stories database
+        except Exception:
+            pass
+        self.controller = ctrl_mod.BreathController(DEFAULT_PATTERN)
+        self.engine = eng_mod.AudioEngine(self.controller)
+        self.speech = sp_mod.SpeechCue()
+        self.narrator = narration.Narrator(self.speech)
+        self.director = sess_mod.SessionDirector(self)
+        self.user_volume = 0.6
+        self._is_muted = False
+        self._zen = False
+        self._scene_hint = "orb"
+        self._view = "face"                 # central view: "face" or "scene"
+        self._face_bg = "Stars"            # animated background behind the face
+        self.tuner = None                   # lazy mic pitch monitor (Sing/Chant)
+        self._pitch_spec = None
+        self._bell_interval = 0.0           # mindfulness bell interval (minutes)
+        self._next_bell = 0.0
+        self._hold_t0 = None                # breath-hold (retention) timer
+        self._hold_last = 0.0
+        self._logged_session = False
+        self._anim_t = 0.0
+        self._last_phase = None
+        self._last_speak_t = -1e9          # anim time of the last voiced frame
+        self._face_breath = 0.5            # speech-driven visible breath (eased)
+        self._inhale_open = 0.3            # per-breath mouth-parting scale (0..1)
+        self._was_speaking = False         # for detecting between-sentence breaths
+        self._speech_speed = 1.0           # user speech-speed setting (slider)
+        self._pause_scale = 1.4            # base between-statement pause multiplier
+        self._story_scene = None
+        self._story_line = ""
+        self._story_minutes = 20.0
+        self._base_ambience = None         # the story's signature ambience bed
+        self._cur_ambience = None          # what's playing now (cues morph it)
+        self._sfx_target = None            # ambience the text currently calls for
+        self._sfx_idle = 0                 # lines since the last imagery cue
+        self._mood_target = (0.0, 0.0, 0.0)   # emotion deltas from the current line
+        self._smile, self._brow, self._eyeb = 0.12, 0.0, 0.0   # eased expression
+        self._hg_show = False              # hourglass session timer visible?
+        self._hg_spin = 0.0                # current displayed glass rotation (deg)
+        self._hg_spin_from = 0.0           # flip animation endpoints + start time
+        self._hg_spin_to = 0.0
+        self._hg_spin_t0 = None
+        self.current_mode = None
+
+        accents = self.speech.accent_voices()
+        if accents:
+            self.speech.set_voice(accents[0][1])
+
+        central = QWidget()
+        lay = QHBoxLayout(central)
+        lay.setContentsMargins(0, 0, 0, 0)
+        self.face = FaceWidget()
+        self.viz = VizWidget()
+        self.face._hg_click_cb = self._flip_hourglass    # tap the timer to flip it
+        self.viz._hg_click_cb = self._flip_hourglass
+        self.stack = QStackedWidget()
+        self.stack.addWidget(self.face)            # index 0
+        self.stack.addWidget(self.viz)             # index 1
+        self.panel = ControlPanel(self)
+        lay.addWidget(self.stack, 1)
+        lay.addWidget(self.panel, 0)
+        self.setCentralWidget(central)
+        self.status = self.statusBar()
+        menus.build(self)
+        shortcuts.bind(self)
+
+        self.engine.start()
+        self.engine.set_master_volume(0.0)
+        self._restore_settings()
+
+        self._timer = QTimer(self)
+        self._timer.timeout.connect(self._tick)
+        self._timer.start(int(1000 / FPS))
+
+    def rebuild_menu(self):
+        menus.build(self)
+
+    def _restore_settings(self):
+        """Reopen in the last-used mode, volume, speed and view (store)."""
+        s = store.load_settings()
+        self._speech_speed = float(s.get("speech_speed", self._speech_speed))
+        self.toggle_hourglass(bool(s.get("hourglass", False)))
+        mode = s.get("mode", "Sleep")
+        self.apply_mode(mode if mode in modes.names() else "Sleep")
+        if "volume" in s:
+            self.set_volume(float(s["volume"]))
+            self.panel.sync()
+        self.set_view(s.get("view", "face"))   # bg is themed per-mode in apply_mode
+
+    # --- visualization view (face ↔ scene) --------------------------------
+    def set_view(self, name):
+        """Switch the central area between the 3D face and the 2D scene."""
+        self._view = "scene" if name == "scene" else "face"
+        self.stack.setCurrentWidget(
+            self.viz if self._view == "scene" else self.face)
+        self.face.set_active(self._view == "face")
+        self.panel.reflect_view(self._view)
+        menus.reflect_view(self)
+
+    def toggle_view(self):
+        self.set_view("face" if self._view == "scene" else "scene")
+
+    def set_face_background(self, name):
+        """Pick the animated background painted behind the 3D face."""
+        self._face_bg = name
+        self.face.set_background(name)
+
+    def set_scene(self, name):
+        """Pick which 2D scene shows, and switch to the scene view."""
+        self._scene_hint = name
+        self.viz.set_scene(name)
+        self.set_view("scene")
+
+    def _scene_ctx(self, state, running, prog):
+        m, s = divmod(int(self.controller.elapsed()), 60)
+        if running:
+            status = f"{m:02d}:{s:02d}"
+        else:
+            status = "Press Start" if self.controller.elapsed() == 0 else "Paused"
+        sub = (self._story_line[:42] if (self.current_mode == "Sleep"
+                                         and self._story_line) else "")
+        ctx = {"running": running,
+               "volume": state.volume if running else 0.5,
+               "airflow": state.airflow if running else 0.0,
+               "phase": state.phase, "cycle_frac": getattr(state, "cycle_frac", 0.0),
+               "progress": getattr(state, "progress", 0.0),   # 0..1 through this phase
+               "remaining": state.remaining, "label": state.label,
+               "t": self._anim_t, "prog": prog, "subtitle": sub,
+               "status": status, "hint": "",
+               "bpm": (60.0 / self.controller.pattern.cycle
+                       if self.controller.pattern.cycle > 0 else 0.0)}
+        if self.viz.scene_name() == "pitch":
+            pc = self.pitch_context(self.controller.elapsed()) or {}
+            sung, clar = (self.tuner.latest() if (self.tuner and self.tuner.available)
+                          else (0.0, 0.0))
+            ctx["pitch"] = {**pc, "sung": sung, "clarity": clar, "tol": 30}
+        return ctx
+
+    def save_screenshot(self, path=None, face_only=False):
+        """Save a PNG of the window (or just the face). Ctrl+S / Ctrl+Shift+S."""
+        pm = (self.face if face_only else self.centralWidget()).grab()
+        if path is None:
+            from PySide6.QtWidgets import QFileDialog
+            path, _ = QFileDialog.getSaveFileName(
+                self, "Save Screenshot", "breathsim.png", "PNG (*.png)")
+        if path:
+            pm.save(path)
+            self.status.showMessage(f"Saved {path}", 3000)
+        return path
+
+    # --- modes / settings --------------------------------------------------
+    def apply_mode(self, name):
+        m = modes.get(name)
+        if not m:
+            return
+        self.controller.change_pattern(preset_by_name(m.pattern) or DEFAULT_PATTERN)
+        self.engine.set_persona(personas.get(m.persona))
+        self.engine.set_voice_b(None)
+        self.engine.set_morph(0.0)
+        self.engine.set_voice_a(m.voice)
+        self.engine.set_voice_out(getattr(m, "voice_out", None))
+        self._set_base_ambience(m.ambience)
+        self.engine.set_layer("effects", m.effect,
+                              level=self.engine.slot_levels.get("effects", 0.85))
+        choir.apply(self.engine, *m.choir) if m.choir else choir.clear(self.engine)
+        self.speech.set_style(m.cue_style)
+        self.set_volume(m.volume)
+        self.controller.session_seconds = m.session
+        self.director.set_mode("Manual")           # cancel any program/wind-down
+        self.director.set_manual(0.0)
+        self._scene_hint = m.scene
+        self._pitch_spec = None                     # leave any pitch trainer
+        self.set_tuner(False)
+        self.viz.set_scene(m.scene)
+        self.narrator.stop()
+        self._story_scene = stories.scene_names()[0] if name == "Sleep" else None
+        if self._story_scene:
+            self._set_base_ambience(stories.ambience_for(self._story_scene))
+            self._story_minutes = (m.session or 1200) / 60.0
+        self.set_face_background(_MODE_BG.get(name, "Stars"))   # themed backdrop
+        self.current_mode = name
+        self.panel.reflect_mode(name)
+        self.status.showMessage(m.description, 4000)
+
+    def set_pattern(self, name):
+        p = preset_by_name(name)
+        if p:
+            self.controller.change_pattern(p)
+
+    def set_volume(self, vol):
+        self.user_volume = float(vol)
+        if self.controller.running and not self._is_muted:
+            self.engine.set_master_volume(self.user_volume)
+
+    def set_story(self, scene):
+        self._story_scene = None if scene in (None, "Off") else scene
+        if self._story_scene:
+            self._set_base_ambience(stories.ambience_for(self._story_scene))
+        if self.controller.running:
+            self._start_story()
+
+    def set_story_voice(self, v):
+        self.narrator.set_voice(v)
+        if self._story_scene and self.controller.running:
+            self._start_story()
+
+    def set_speech_speed(self, v):
+        """Base storyteller speed (1.0 = normal); it still slows over the session."""
+        self._speech_speed = max(0.6, min(1.2, float(v)))
+
+    def _apply_speech_pace(self):
+        """Subtly slow the speech + lengthen the between-statement pauses as the
+        session goes on (gentle wind-down over ~10 minutes)."""
+        prog = min(1.0, self.controller.elapsed() / 600.0)
+        self.narrator.speed = self._speech_speed * (1.0 - 0.18 * prog)
+        self.narrator.pause_scale = self._pause_scale * (1.0 + 0.5 * prog)
+
+    # --- transport ---------------------------------------------------------
+    def toggle_transport(self):
+        if self.controller.running:
+            self._log_practice()
+            self.controller.pause()
+            self.engine.set_master_volume(0.0)
+            self.narrator.stop()
+        else:
+            self.controller.start()
+            self.engine.set_master_volume(0.0 if self._is_muted else self.user_volume)
+            self._start_story()
+        self.panel.reflect_running(self.controller.running)
+
+    def reset(self):
+        self._log_practice()
+        self.narrator.stop()
+        self.controller.reset()
+        self.engine.set_master_volume(0.0)
+        self._last_phase = None
+        self._logged_session = False
+        self._next_bell = self._bell_interval * 60.0
+        self._sfx_idle = 0                     # restore the base ambience bed
+        self._sfx_target = self._base_ambience
+        self._mood_target = (0.0, 0.0, 0.0)
+        if self._base_ambience:
+            self.engine.set_voice(self._base_ambience, "ambience", fade=1.5)
+            self._cur_ambience = self._base_ambience
+        self.setWindowOpacity(1.0)
+        self.panel.reflect_running(False)
+
+    def _log_practice(self):
+        """Record a completed sit (≥30 s) to the practice history, once."""
+        if not self._logged_session and self.controller.elapsed() >= 30:
+            store.log_session(self.controller.elapsed() / 60.0)
+            self._logged_session = True
+
+    # --- bedtime story -----------------------------------------------------
+    def _start_story(self):
+        if not (self._story_scene and self.narrator.available
+                and self.controller.running):
+            return
+        units = stories.story_units(self._story_scene, guidance=True)
+        self.narrator.start(units, self._story_level, self._story_timing,
+                            self._on_story_unit)
+
+    # --- text-matched soundscape + emotion ---------------------------------
+    def _set_base_ambience(self, amb):
+        """Set the story's signature ambience bed + reset the sound-cue tracker."""
+        self._base_ambience = amb
+        self._cur_ambience = amb
+        self._sfx_target = amb
+        self._sfx_idle = 0
+        if amb:
+            self.engine.set_voice(amb, "ambience")
+
+    def _on_story_unit(self, unit):
+        """Per narrated line: show it, steer the soundscape, set the face's mood."""
+        text = unit.get("text", "")
+        self._story_line = text
+        cue = sound_cues.cue_for_text(text)
+        if cue:
+            self._sfx_target = cue              # imagery → morph the bed toward it
+            self._sfx_idle = 0
+        else:
+            self._sfx_idle += 1
+            if self._sfx_idle >= 4 and self._base_ambience:
+                self._sfx_target = self._base_ambience   # drift home over abstract lines
+        self._mood_target = emotion_for_text(text)
+
+    def _apply_soundscape(self):
+        """Crossfade the ambience bed toward the text-matched target, gently."""
+        if self._sfx_target and self._sfx_target != self._cur_ambience:
+            self.engine.set_voice(self._sfx_target, "ambience", fade=2.5)
+            self._cur_ambience = self._sfx_target
+
+    def _ease_mood(self, running):
+        """Ease the expression toward the line's emotion (decaying to calm)."""
+        ds, db, do = self._mood_target if running else (0.0, 0.0, 0.0)
+        self._smile += (0.12 + ds - self._smile) * 0.06
+        self._brow += (db - self._brow) * 0.06
+        self._eyeb += (do - self._eyeb) * 0.06
+        self._mood_target = tuple(v * 0.992 for v in self._mood_target)
+
+    def _story_level(self):
+        dur = self._story_minutes * 60.0
+        frac = self.controller.elapsed() / dur if dur > 0 else 1.0
+        if frac < 0.55:
+            return 1.0
+        return 0.0 if frac >= 0.85 else 1.0 - (frac - 0.55) / 0.30
+
+    def _story_timing(self):
+        p = self.controller.pattern
+        return (max(0.5, p.inhale), max(0.5, p.exhale))
+
+    # --- loop --------------------------------------------------------------
+    def _tick(self):
+        self._anim_t += 1.0 / FPS
+        if self.controller.running:
+            self.director.update(self.controller.elapsed())   # morph / program / sleep
+        state = self.controller.current_state()
+        running = self.controller.running
+        if running and self.controller.session_finished():
+            self._log_practice()
+            self.controller.pause()
+            self.engine.set_master_volume(0.0)
+            self.narrator.stop()
+            running = False
+            self.panel.reflect_running(False)
+        if running and state.phase != self._last_phase:
+            if state.phase in ("inhale", "exhale"):
+                self.engine.trigger_chime(
+                    "in" if state.phase == "inhale" else "out")
+            if state.phase == "inhale":
+                self._inhale_open = sample_inhale_open()    # vary the new breath
+            self.speech.cue(state.phase)
+            self._last_phase = state.phase
+        if running and self._bell_interval > 0 and \
+                self.controller.elapsed() >= self._next_bell:
+            self.engine.trigger_chime("in")                 # mindfulness bell
+            self._next_bell += self._bell_interval * 60.0
+        elif not running:
+            self._last_phase = state.phase
+
+        rem = self.controller.session_remaining()
+        total = self.controller.session_seconds
+        prog = None if (total <= 0 or rem == float("inf")) else 1.0 - rem / total
+        if running:
+            self._apply_speech_pace()
+        amp = self.narrator.amp if running else 0.0
+        if running:
+            self._apply_soundscape()           # ambience follows the words
+        self._ease_mood(running)               # expression eases toward the mood
+        if self._view == "scene":
+            self.viz.update_state(self._scene_ctx(state, running, prog))
+        else:
+            breath, mo = self._face_inputs(state, running, amp)
+            self.face.set_state(breath, self._anim_t, prog or 0.0,
+                                mouth=mo["jaw"], nose=mo["nose"],
+                                pucker=mo["pucker"], stretch=mo["stretch"],
+                                phase=state.phase, smile=self._smile,
+                                brow=self._brow, eye_bias=self._eyeb)
+        # Sleep wind-down: gentle window dim + a warm, low-blue wash on the view
+        # (grows toward sleep — kinder on melatonin than a cool, bright screen).
+        sleep = self.current_mode == "Sleep" and running and total > 0
+        warm = 0.5 * (prog or 0.0) if sleep else 0.0
+        self.face.set_warm(warm)
+        self.viz.set_warm(warm)
+        if sleep:
+            self.setWindowOpacity(1.0 - 0.3 * (prog or 0.0))
+        elif not running:
+            self.setWindowOpacity(1.0)
+        self._tick_hourglass(running, total, prog)
+        self.panel.tick()
+        self._update_status(state, running)
+
+    def _face_inputs(self, state, running, amp):
+        """Resolve the face's visible breath + mouth, talking taking precedence.
+
+        While the storyteller voices a sentence the mouth lip-syncs and the
+        visible breath eases *down* (an exhale); in the gap before the next
+        sentence the mouth closes and the breath eases *up* (a breath in). With
+        no recent speech, the ordinary phase/voice breathing mouth applies."""
+        now = self._anim_t
+        if amp > _AMP_TH:
+            self._last_speak_t = now
+        silence = now - self._last_speak_t
+        if running and silence < _TALK_WINDOW:               # storyteller active
+            if silence < _SPEAK_HOLD:                        # speaking → exhaling
+                mo = {"jaw": min(0.5, amp * 1.3), "pucker": 0.0,
+                      "stretch": 0.0, "nose": 0.0}
+                target = 0.28
+                self._was_speaking = True
+            else:                                            # between sentences
+                if self._was_speaking:                       # new breath → vary it
+                    self._inhale_open = sample_inhale_open()
+                    self._was_speaking = False
+                mo = {"jaw": 0.14 * self._inhale_open, "pucker": 0.0,
+                      "stretch": 0.0, "nose": 0.12}          # slight, varied parting
+                target = 0.92                                # breathe in
+            self._face_breath += (target - self._face_breath) * _BREATH_EASE
+            return self._face_breath, mo
+        # Not talking: ordinary breath-driven mouth (nose-in / shaped mouth-out).
+        af = state.airflow if running else 0.0
+        r = breath_routing(state.phase, self.engine.voice_a, self.engine.voice_out)
+        self._face_breath = state.volume if running else 0.5
+        jaw = af * r["jaw"]
+        if state.phase == "inhale":
+            jaw *= self._inhale_open                          # vary the in-breath
+        return self._face_breath, {"jaw": jaw, "pucker": af * r["pucker"],
+                                   "stretch": af * r["stretch"], "nose": af * r["nose"]}
+
+    def _update_status(self, state, running):
+        if not running:
+            self.status.showMessage("Press Start" if self.controller.elapsed()
+                                    == 0 else "Paused — press Start")
+            return
+        m, s = divmod(int(self.controller.elapsed()), 60)
+        label = state.label
+        line = (self._story_line[:60] if self._story_line else "")
+        self.status.showMessage(f"{label}    {m:02d}:{s:02d}    {line}")
+
+    def closeEvent(self, ev):
+        try:
+            store.save_settings({"mode": self.current_mode,
+                                 "volume": self.user_volume,
+                                 "speech_speed": self._speech_speed,
+                                 "view": self._view, "face_bg": self._face_bg,
+                                 "hourglass": self._hg_show})
+        except Exception:
+            pass
+        try:
+            self.set_tuner(False)
+            self.face.stop()
+            self.narrator.stop()
+            self.engine.stop()
+            self.speech.shutdown()
+        except Exception:
+            pass
+        super().closeEvent(ev)
+
+
+def launch():
+    app = QApplication.instance() or QApplication([])
+    win = MainWindow()
+    win.show()
+    app.exec()
