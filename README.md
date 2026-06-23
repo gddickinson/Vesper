@@ -29,8 +29,9 @@ lives in [`vesper/`](vesper/).
 - **Fully procedural sound** — 90 voices synthesised in real time from noise, filters and
   a vocal-tract (formant) model: realistic breath timbres, human voice, vocal exercises,
   pranayama, singing, and nature **ambiences** (ocean, rain, forest, a crackling campfire,
-  a struck singing bowl, wind chimes, night crickets, a cat's purr…). Nothing to
-  download.
+  a struck singing bowl, wind chimes, night crickets, a cat's purr…), plus a playful
+  **Cat** voice family — cat breath, a contented sigh, a soft meow on each out-breath,
+  and a purr. Nothing to download.
 - **The bedtime storyteller** — **65 authored sleep-lectures** across 8 branches (the
   Cosmos · Earth &amp; Sea · the Living World · the Human Body · Histories · Materials &amp;
   Making · Ideas &amp; Wonders · Myth &amp; Legend), spoken by neural **Kokoro** TTS (or macOS

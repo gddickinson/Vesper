@@ -188,7 +188,9 @@ story; `build`/`connect`/`search`/`lectures_in`/`lines_of`/`stats`; CLI
 `python -m breathsim.story_db`), `kokoro_tts`, `voices`, `patterns`, `modes`,
 `personas`, `choir`, `session` (SessionDirector), `programs`, `phrases`, `store`,
 `tracks` (+ `rhythm`, **`textures`** — the `kind="texture"` event generators for the
-Campfire / Singing Bowl / Wind Chimes / Night Crickets ambiences).
+Campfire / Singing Bowl / Wind Chimes / Night Crickets / **Purr** ambiences), and
+**`voices_cat`** — the **Cat** voice group (`GROUP_CAT`: Cat Breath, Cat Sigh, Meow,
+Cat Purr). The 2D fallback face lives in `vesper/cat.py`.
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

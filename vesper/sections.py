@@ -20,9 +20,9 @@ CUE_STYLES = ["Off", "Minimal", "Standard", "Guided"]
 
 
 def _voice_choices():
-    groups = (voices.GROUP_BREATH, voices.GROUP_VOCAL, voices.GROUP_TECHNIQUE,
-              voices.GROUP_SING, voices.GROUP_EXERCISE, voices.GROUP_SYNTH,
-              voices.GROUP_CUSTOM)
+    groups = (voices.GROUP_BREATH, voices.GROUP_CAT, voices.GROUP_VOCAL,
+              voices.GROUP_TECHNIQUE, voices.GROUP_SING, voices.GROUP_EXERCISE,
+              voices.GROUP_SYNTH, voices.GROUP_CUSTOM)
     out = []
     for g in groups:
         out += voices.names(g)

@@ -12,9 +12,9 @@ from breathsim import patterns, personas, programs, session, voices
 from . import (app_io, dialogs, face_bg, pattern_editor, presets, scenes,
                shortcuts, voice_editor)
 
-_VOICE_GROUPS = (voices.GROUP_BREATH, voices.GROUP_VOCAL, voices.GROUP_TECHNIQUE,
-                 voices.GROUP_SING, voices.GROUP_EXERCISE, voices.GROUP_SYNTH,
-                 voices.GROUP_CUSTOM)
+_VOICE_GROUPS = (voices.GROUP_BREATH, voices.GROUP_CAT, voices.GROUP_VOCAL,
+                 voices.GROUP_TECHNIQUE, voices.GROUP_SING, voices.GROUP_EXERCISE,
+                 voices.GROUP_SYNTH, voices.GROUP_CUSTOM)
 
 
 def build(win):

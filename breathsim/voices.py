@@ -27,6 +27,7 @@ GROUP_SYNTH = "Synthetic Breath"
 GROUP_EFFECTS = "Effects"
 GROUP_WORDS = "Spoken Words"
 GROUP_CUSTOM = "Custom"
+GROUP_CAT = "Cat"
 
 # Voice families whose primary slot supports the human<->synthetic morph and
 # per-voice morphing (everything voice/breath based).
@@ -256,3 +257,4 @@ from . import voices_synth  # noqa: E402,F401
 from . import voices_extra  # noqa: E402,F401
 from . import rhythm  # noqa: E402,F401
 from . import textures  # noqa: E402,F401
+from . import voices_cat  # noqa: E402,F401

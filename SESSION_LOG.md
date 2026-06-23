@@ -539,6 +539,12 @@ Added cat **content**: a new **"Purr"** procedural ambience (`textures._Purr` â€
 warm ~26 Hz rumble swelling with the breath; calibrated gain 0.18), a **"The Cat"**
 sleep-lecture (Living World, narrated over the Purr) -> **65 lectures**, and a
 **cat/purr sound cue**. selftest passes; DB rebuilt (5,433 lines).
+Then made cat sounds **selectable voices**: a new **"Cat"** voice group
+(`breathsim/voices_cat.py`) with **Cat Breath** (airflow), **Cat Sigh** + **Meow**
+(both gated to the out-breath via `env="exhale"` â€” the cat answers each exhale; meow
+is a vocal `ee`->`oh` glide with an up-down pitch arc) and **Cat Purr** (the purr
+texture). Wired `GROUP_CAT` into the voice menus + the panel voice card; gains
+calibrated. 95 voices; each plays live, thread-stable, selftest passes.
 
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
