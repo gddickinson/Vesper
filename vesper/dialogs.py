@@ -158,7 +158,7 @@ def open_about(win):
     dlg.setWindowTitle("About")
     dlg.setStyleSheet(win.styleSheet())
     v = QVBoxLayout(dlg)
-    t = QLabel("Breathing Sim — PySide6")
+    t = QLabel("Vesper")
     t.setObjectName("title")
     v.addWidget(t)
     body = QLabel(

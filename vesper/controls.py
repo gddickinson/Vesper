@@ -31,7 +31,7 @@ class ControlPanel(_SectionsMixin, QWidget):
         v.setContentsMargins(14, 14, 14, 12)
         v.setSpacing(8)
 
-        title = QLabel("Breathing Sim")
+        title = QLabel("Vesper")
         title.setObjectName("title")
         v.addWidget(title)
         self._head = muted("")

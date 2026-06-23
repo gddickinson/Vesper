@@ -494,6 +494,17 @@ Authored three new Living World sleep-lectures via parallel subagents (7 section
 (Ocean Waves). Registered in the Living World branch → **64 lectures / 8 branches**.
 Validated structure + ASCII; DB rebuilt (5,348 lines / 77,698 words); selftest passes.
 
+## Polish — README + screenshots, and a cartoon-cat fallback face
+Rewrote README around rendered screenshots (full window in Sleep + Meditate, the four
+scenes, the avatar, the cat) under `docs/images/`. Fixed the last "Breathing Sim"
+strings (panel title, About, `__init__` docstring) -> "Vesper".
+New `vesper/cat.py` (`CatFace`): a hand-drawn **2D cartoon cat** that breathes, blinks,
+twitches its ears, wanders its pupils and opens its mouth to talk — the fallback face
+when faceView isn't installed. `face.py` now imports faceView in a try/except
+(`_HAVE_FACEVIEW`); when absent (or `VESPER_FACE=cat`) it skips the GPU worker and paints
+the cat from the same per-frame state. Verified: forced cat mode renders (talking +
+quiet), default 3D mode still thread-stable (2->2), selftest passes.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

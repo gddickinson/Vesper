@@ -1,4 +1,4 @@
-"""Breathing Sim — PySide6 (face-centred), a self-contained project.
+"""Vesper -- a breath-paced meditation & sleep companion (self-contained).
 
 The audio/logic core — engine, controller, voices, patterns, modes, narration,
 stories + the whole **lecture library**, sound cues, Kokoro TTS — is **vendored**
