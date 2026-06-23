@@ -1,7 +1,7 @@
-# INTERFACE.md — Breathing Sim (PySide6 rebuild) navigation map
+# INTERFACE.md — Vesper navigation map
 
 Read this before opening source. This is a **self-contained project**: the Qt
-front-end lives in `bsqt/`, and the audio / breath / voice / story logic core is
+front-end lives in `vesper/`, and the audio / breath / voice / story logic core is
 **vendored** at `breathsim/` (no sibling dependency). External pip deps only — see
 `requirements.txt` (PySide6, numpy, moderngl, sounddevice, soundfile, faceview, and
 optionally kokoro-onnx). `python selftest.py` runs headless checks; `python run.py`
@@ -10,7 +10,7 @@ launches the app.
 ## Big picture
 
 ```
-run.py ── launches ──> bsqt.window.MainWindow (QMainWindow)
+run.py ── launches ──> vesper.window.MainWindow (QMainWindow)
                           │ owns (from the shared breathsim core)
    ┌──────────┬──────────┼─────────┬────────────┬───────────┬──────────────┐
 BreathController AudioEngine SpeechCue+ SessionDirector FaceWidget ControlPanel
@@ -33,9 +33,9 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 ## Files
 
 ### Entry
-- **run.py** — adds this dir to `sys.path`, calls `bsqt.window.launch()`.
+- **run.py** — adds this dir to `sys.path`, calls `vesper.window.launch()`.
 
-### `bsqt/` (the Qt package)
+### `vesper/` (the Qt package)
 - **__init__.py** — puts the sibling `breathsim` core on `sys.path` on import.
 - **theme.py** — colours + a Qt `STYLESHEET` mirroring the breathsim night theme.
 - **face.py** — `FaceWidget(QWidget)`: faceView's **Claude avatar**
@@ -191,7 +191,7 @@ Campfire / Singing Bowl / Wind Chimes / Night Crickets ambiences).
 
 ## Conventions
 - All files < 500 lines; one concept per file. Core logic lives in the vendored
-  `breathsim/`; `bsqt/` is view/wiring. Face frames → `QImage` RGBA8888.
+  `breathsim/`; `vesper/` is view/wiring. Face frames → `QImage` RGBA8888.
 
 ## GPU note
 The **GPU-ICT renderer** (`face_gpu.py`) is built and is the default path

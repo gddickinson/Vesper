@@ -1,7 +1,7 @@
 """Hourglass session-timer behaviour for the MainWindow (mixed in).
 
 Keeps `window.py` lean: the per-tick state push, the View-menu toggle and the
-flip-to-reset gesture live here. The painter itself is ``bsqt.hourglass``; the
+flip-to-reset gesture live here. The painter itself is ``vesper.hourglass``; the
 FaceWidget / VizWidget draw it in a corner and report taps back via
 ``_hg_click_cb`` (wired to ``_flip_hourglass``)."""
 from __future__ import annotations

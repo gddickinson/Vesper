@@ -1,12 +1,15 @@
-# Breathing Sim — PySide6
+# Vesper
 
-A meditation / breathing pacer whose centrepiece is a 3D talking-head **Claude
-avatar** that breathes, lip-syncs and emotes a procedural **bedtime storyteller** —
-including a library of 50+ soothing **sleep-lectures** across many branches.
+**Vesper** is a breath-paced meditation & sleep companion. Its centrepiece is a 3D
+talking-head **avatar** that breathes, lip-syncs and emotes a procedural **bedtime
+storyteller** — a library of 60+ soothing **sleep-lectures** across many branches —
+with fully procedural breath, voice, chant and nature sound (no required audio
+assets), guided breathwork/pranayama, a chant + singing pitch trainer, and calming
+per-mode visual scenes.
 
 This is a **self-contained project**: the audio / breath / voice / story logic core
 is vendored at [`breathsim/`](breathsim/) (no dependency on any sibling folder), and
-the PySide6 front-end lives in [`bsqt/`](bsqt/).
+the PySide6 front-end lives in [`vesper/`](vesper/).
 
 ## Run
 
@@ -18,7 +21,7 @@ python selftest.py                   # headless checks (no display/audio needed)
 
 ## Layout
 
-- `bsqt/` — the Qt app (window, control panel, the 3D face, scenes, menus…).
+- `vesper/` — the Qt app (window, control panel, the 3D face, scenes, menus…).
   See [`INTERFACE.md`](INTERFACE.md) for the module map.
 - `breathsim/` — the **vendored core**: engine, controller, voices, patterns,
   modes, narration, `stories.py` + the whole **lecture library** (`lectures*.py`),

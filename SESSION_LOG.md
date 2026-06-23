@@ -14,7 +14,7 @@ front-end centred on faceView's face.
   ict_face 65 ms (best-looking but software-slow; GPU modes are future work).
 - Fixed scanline skew by packing frames as RGBA8888 (4*w aligned stride).
 
-**Built** (`bsqt/`): `__init__` (core path bootstrap), `theme`, `face`
+**Built** (`vesper/`): `__init__` (core path bootstrap), `theme`, `face`
 (FaceWidget: breath→head nod + breathing zoom, narration amp→jaw lip-sync, slow
 blinks), `controls` (mode bar / pattern / face mode / Sleep story / volume /
 transport), `window` (MainWindow + 40 fps loop + modes + story + Sleep dimming),
@@ -169,7 +169,7 @@ between-sentence breath in the talking path).
 ## Session — ported the Tk app's features (workspaces, menus, sessions, more)
 
 A large feature-parity pass, all reusing the shared core, all files < 500 lines
-(window 396, sections 252). New `bsqt/` modules:
+(window 396, sections 252). New `vesper/` modules:
 - **widgets.py** — `card`, `LabeledSlider` (slider + live read-out), combo helpers.
 - **workspaces.py** + **sections.py** — a **workspace-driven panel**: each mode
   rebuilds the scroll body into a distinct card set (Meditate = pace/resonance +
@@ -317,8 +317,8 @@ soundscape + expressive face confirmed (screenshot).
 
 ## Session — self-contained project + stories database + todo tracking
 
-- **Vendored the core** into `breathsim_qt/breathsim/` (gui-free, 748K) so the
-  project is independent of the sibling `breathing_sim` folder. `bsqt/__init__.py`
+- **Vendored the core** into `vesper/breathsim/` (gui-free, 748K) so the
+  project is independent of the sibling `breathing_sim` folder. `vesper/__init__.py`
   now puts the project root on `sys.path` (local `breathsim` wins). Proved
   independence: boots from the vendored copy even with the sibling hidden. Added
   `selftest.py`, `requirements.txt`, `README.md`. faceView (~1.2 GB) stays an
@@ -412,10 +412,10 @@ corners (where they had looked strange); curl scales with the tapered length too
 ## Feature — hourglass session timer (toggle, flip-to-reset)
 An optional countdown of the current session, drawn as a glass hourglass with flowing
 sand in the bottom-right corner of either view (visible but out of the way). New
-`bsqt/hourglass.py` painter: the top bulb drains and the bottom heap (+ falling
+`vesper/hourglass.py` painter: the top bulb drains and the bottom heap (+ falling
 stream) fills as `frac = elapsed/session_seconds` goes 0→1; a `spin` arg rotates it
 for the flip. `FaceWidget`/`VizWidget` draw it (`set_hourglass`) and forward corner
-taps to `_hg_click_cb`. Window logic lives in `bsqt/win_hourglass.py` (`_HourglassMixin`):
+taps to `_hg_click_cb`. Window logic lives in `vesper/win_hourglass.py` (`_HourglassMixin`):
 `_tick_hourglass` pushes frac + eases the flip spin each tick (only shows when a
 session length is set), `toggle_hourglass` (View-menu toggle, persisted in store),
 `_flip_hourglass` → new `controller.restart()` (resets the session clock without
@@ -434,7 +434,7 @@ branch → **61 lectures across 8 branches**. Validated structure + ASCII; rebui
 stories DB (5,096 lines / 74,626 words); selftest passes.
 
 ## App round — enriched the four ambient scenes
-Added a shared `bsqt/scene_fx.py` (calm, seeded helpers: `Motes`, `Clouds`,
+Added a shared `vesper/scene_fx.py` (calm, seeded helpers: `Motes`, `Clouds`,
 `ShootingStar`, `starfield`) and enriched every scene in `scenes.py`: **Orb** gains
 drifting motes, soft exhale rings (emitted at each exhale onset) and a mint
 "coherence" halo when the pace is ~5-7 breaths/min (new `bpm` in the scene ctx);
@@ -474,18 +474,25 @@ builds at block 2048; fade verified (0 at both edges → 1 mid).
 ## Parity — ported the 4 remaining authoring features
 An audit showed the vendored core was a full superset of the legacy app, but four
 GUI features had no Qt equivalent. Ported all four: **Voice Editor**
-(`bsqt/voice_editor.py` + `bsqt/waveform.py` — full VoiceConfig form, live
+(`vesper/voice_editor.py` + `vesper/waveform.py` — full VoiceConfig form, live
 wave+spectrum preview, Play/Randomize/Save custom voice, Both/In/Out phase),
-**Pattern Editor** (`bsqt/pattern_editor.py` — sliders + cycle/bpm read-out, save
+**Pattern Editor** (`vesper/pattern_editor.py` — sliders + cycle/bpm read-out, save
 custom patterns via `patterns.add_pattern` + `store`), **Presets Manager**
-(`bsqt/presets.py` — capture/apply full preset state + save/load/delete via
-`store.presets_list`), and **Export Audio (WAV)** (`bsqt/app_io.py` —
+(`vesper/presets.py` — capture/apply full preset state + save/load/delete via
+`store.presets_list`), and **Export Audio (WAV)** (`vesper/app_io.py` —
 offline render of primary+ambience+effects to 16-bit WAV). Wired into File (Presets,
 Export), Pattern (Pattern Editor) and Voice (Voice Editor) menus. (Voice/Pattern
 editors built by parallel subagents; Presets/WAV + wiring done directly.) Integration
 test passes (menu wiring, preset round-trip, WAV render, thread-stable 2->2); selftest
 passes; all files < 500 lines. Optional remaining: word-on-exhale + downloaded sample
 assets (procedural-first app, low priority).
+
+## Stories round — The Living World +3 (Moths & Fireflies, Sloth, Coral Reefs)
+Authored three new Living World sleep-lectures via parallel subagents (7 sections,
+12 lines each, section 1 fact-free, accurate content woven with calm, sleep-closing):
+`lectures_moths.py` (Forest Wind), `lectures_sloth.py` (Gentle Rain), `lectures_coral.py`
+(Ocean Waves). Registered in the Living World branch → **64 lectures / 8 branches**.
+Validated structure + ASCII; DB rebuilt (5,348 lines / 77,698 words); selftest passes.
 
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).

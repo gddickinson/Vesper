@@ -2,8 +2,8 @@
 
 The audio/logic core — engine, controller, voices, patterns, modes, narration,
 stories + the whole **lecture library**, sound cues, Kokoro TTS — is **vendored**
-into this project at ``breathsim_qt/breathsim`` (no dependency on any sibling
-folder). The PySide6 front-end (this ``bsqt`` package) adds the 3D faceView head
+into this project at ``vesper/breathsim`` (no dependency on any sibling
+folder). The PySide6 front-end (this ``vesper`` package) adds the 3D faceView head
 that breathes and lip-syncs the bedtime stories.
 
 External (pip) dependencies only: PySide6, numpy, moderngl, sounddevice,

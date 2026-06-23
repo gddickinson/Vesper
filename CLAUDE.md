@@ -14,7 +14,7 @@ and **lip-syncs** the bedtime story. **Always read `INTERFACE.md` first.**
   `breathsim/` (engine, controller, voices, patterns, modes, naturalness, dsp,
   formants, tracks, vocal, narration, `stories` + the **lecture library**,
   `sound_cues`, `story_db`, Kokoro TTS, personas, choir, speech). It is
-  toolkit-agnostic (numpy/sounddevice); `bsqt/__init__.py` puts the project root on
+  toolkit-agnostic (numpy/sounddevice); `vesper/__init__.py` puts the project root on
   `sys.path` so `import breathsim` resolves the **local** copy. Do NOT reintroduce a
   dependency on `../breathing_sim` (now a legacy Tk fork). Edit the core HERE.
 - External pip deps only (see `requirements.txt`): PySide6, numpy, moderngl,
@@ -27,7 +27,7 @@ and **lip-syncs** the bedtime story. **Always read `INTERFACE.md` first.**
 
 ## Architecture rules
 - Keep every file under 500 lines; one concept per file.
-- This package (`bsqt/`) is **only the Qt front-end** + face integration. Any
+- This package (`vesper/`) is **only the Qt front-end** + face integration. Any
   audio/breath/voice logic belongs in the shared `breathsim` core.
 - The `BreathController` remains the single timing authority; the Qt loop and the
   audio engine both read breath state from it.

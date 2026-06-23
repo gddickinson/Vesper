@@ -46,7 +46,7 @@ _MODE_BG = {"Meditate": "Gradient", "Breathwork": "Aurora", "Chant": "Nebula",
 class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Breathing Sim — PySide6")
+        self.setWindowTitle("Vesper")
         self.resize(1060, 720)
         self.setStyleSheet(theme.STYLESHEET)
 

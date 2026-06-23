@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Headless self-test for the self-contained breathsim_qt project.
+"""Headless self-test for the self-contained vesper project.
 
 Checks the **vendored** core (`./breathsim`): every voice renders finite and peaks
 <= 1.0 (airflow voices silent on holds), and every lecture loads, is finite, has a

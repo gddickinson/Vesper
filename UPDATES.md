@@ -11,7 +11,7 @@ Guardrails (every round):
   `[x]` only when tests pass.
 - Keep every file **< 500 lines**; one concept per file.
 - **Self-contained project**: the live core is the VENDORED copy at
-  `breathsim_qt/breathsim/` — edit code/lectures THERE (not `../breathing_sim`).
+  `vesper/breathsim/` — edit code/lectures THERE (not `../breathing_sim`).
 - Audio voice gains are **calibrated**: build at unit gain, set `gain = 0.8/peak`.
   Keep all motion/colour/sound **slow, low-contrast, predictable** (calming).
 - Test from the project root: **`python selftest.py`**. If lectures changed, rebuild
@@ -53,7 +53,7 @@ Guardrails (every round):
       wavering reflection column on the water, foam dabs on crests, smoother swells.
 - [x] **Ripple scene** (Chant/Sing): tone-reactive ring colour + spacing (louder =
       brighter, closer) + a central glow that pulses with the tone.
-      (All four via shared calm helpers in new `bsqt/scene_fx.py`; thread-stable.)
+      (All four via shared calm helpers in new `vesper/scene_fx.py`; thread-stable.)
 - [x] **More procedural ambiences** (range of effects): Campfire, Singing Bowl,
       Wind Chimes, Night Crickets (new `kind="texture"` event generators in
       `breathsim/textures.py`) + Rain on a Roof (NoiseTrack). Deterministically
@@ -74,11 +74,15 @@ Guardrails (every round):
       `lectures_{honey,lighthouse,violin,perfume}.py` (7×~12 lines, accurate, ASCII,
       sleep-closing), registered in the Histories branch → **61 lectures / 8 branches**;
       DB rebuilt (5,096 lines); selftest passes.
-- [ ] **The Living World** (3): Moths & Fireflies · The Sloth · Coral Reefs.
+- [x] **The Living World** (3): Moths & Fireflies · The Sloth · Coral Reefs — added
+      `lectures_{moths,sloth,coral}.py` (7×12 lines, accurate, ASCII, sleep-closing),
+      registered in the Living World branch → **64 lectures / 8 branches**; DB rebuilt
+      (5,348 lines); selftest passes.
 - [ ] **Earth & Sea** (3): Clouds & Weather · Caves & the Underground · The Tides.
 - [ ] **Ideas & Wonders** (3): Infinity · Symmetry · The Calendar.
 
 ## Done
+- The Living World +3 (Moths & Fireflies · The Sloth · Coral Reefs) → 64 lectures.
 - 5 new procedural ambiences (Campfire · Singing Bowl · Wind Chimes · Night Crickets
   · Rain on a Roof) via new `kind="texture"` generators; calibrated.
 - Enriched all 4 ambient scenes (motes/rings/coherence · clouds/shooting star ·
