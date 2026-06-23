@@ -141,17 +141,37 @@ def _init(w, h):
 
 
 def _ensure_fbo(w, h):
+    """A render FBO sized (w, h). When the driver supports it, the draw target is
+    **multisampled** (MSAA) so the head silhouette + lash lines have smooth edges;
+    a single-sample 'resolve' FBO receives the resolved image for readback. Falls
+    back to a plain single-sample FBO if multisampling is unavailable."""
     ctx = _S["ctx"]
     if _S.get("fbo_size") == (w, h):
         return _S["fbo"]
-    if _S.get("fbo") is not None:
-        _S["fbo"].release()
-        _S["ctex"].release()
-        _S["dbuf"].release()
-    ctex = ctx.texture((w, h), 4)               # RGBA: transparent background
-    dbuf = ctx.depth_renderbuffer((w, h))
-    fbo = ctx.framebuffer(color_attachments=[ctex], depth_attachment=dbuf)
-    _S.update(fbo=fbo, ctex=ctex, dbuf=dbuf, fbo_size=(w, h))
+    for k in ("fbo", "ctex", "dbuf", "resolve_fbo", "resolve_tex"):
+        obj = _S.get(k)
+        if obj is not None:
+            try:
+                obj.release()
+            except Exception:
+                pass
+    samples = _S.get("samples")
+    if samples is None:                         # probe once: 4x MSAA if available
+        samples = min(4, int(getattr(ctx, "max_samples", 0) or 0))
+        _S["samples"] = samples
+    resolve_fbo = resolve_tex = None
+    if samples >= 2:
+        ctex = ctx.renderbuffer((w, h), 4, samples=samples)      # MSAA colour
+        dbuf = ctx.depth_renderbuffer((w, h), samples=samples)
+        fbo = ctx.framebuffer(color_attachments=[ctex], depth_attachment=dbuf)
+        resolve_tex = ctx.texture((w, h), 4)                     # single-sample read
+        resolve_fbo = ctx.framebuffer(color_attachments=[resolve_tex])
+    else:
+        ctex = ctx.texture((w, h), 4)           # RGBA: transparent background
+        dbuf = ctx.depth_renderbuffer((w, h))
+        fbo = ctx.framebuffer(color_attachments=[ctex], depth_attachment=dbuf)
+    _S.update(fbo=fbo, ctex=ctex, dbuf=dbuf, resolve_fbo=resolve_fbo,
+              resolve_tex=resolve_tex, fbo_size=(w, h))
     return fbo
 
 
@@ -408,7 +428,12 @@ def render(params, size):
             _S["lvao"].render(mgl.LINES, vertices=cp.shape[0])
             ctx.disable(mgl.BLEND)
             ctx.enable(mgl.DEPTH_TEST)
-        buf = fbo.read(components=4)
+        read_fbo = _S.get("resolve_fbo")
+        if read_fbo is not None:                  # resolve MSAA -> single-sample
+            ctx.copy_framebuffer(read_fbo, fbo)
+        else:
+            read_fbo = fbo
+        buf = read_fbo.read(components=4)
         rgba = np.flipud(np.frombuffer(buf, "u1").reshape(h, w, 4))
         return np.ascontiguousarray(rgba)                       # -> RGBA
     except Exception:

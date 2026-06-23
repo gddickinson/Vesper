@@ -566,6 +566,15 @@ a slow breath to follow. Registered in the Earth & Sea branch → **68 lectures 
 branches**. Validated structure + ASCII; DB rebuilt (5,688 lines / 81,766 words);
 selftest passes.
 
+## App round — GPU face MSAA (smooth silhouette)
+`face_gpu._ensure_fbo` now probes `ctx.max_samples` once and, when available, renders to
+a **4x multisample** colour+depth renderbuffer FBO; `render()` resolves it to a
+single-sample RGBA texture via `ctx.copy_framebuffer` before readback. Falls back to the
+old single-sample texture FBO if MSAA is unavailable. The head silhouette and the lash
+lines are now cleanly antialiased over the animated backgrounds (verified via a 4x
+edge-zoom: soft gradient, no staircase). Worker thread + transparent RGBA output
+unchanged; default 3D path thread-stable (2->2); cat path untouched; selftest passes.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

@@ -91,8 +91,11 @@ Guardrails (every round):
       **head-cock on curious lines** (brow -> yaw on the 3D head, a true roll on the
       cat). Shared by both faces via the gaze/tilt in `_cat_state`. Both verified
       (renders + >=40-tick offscreen, thread-stable); selftest passes.
-- [ ] **GPU face**: antialias the silhouette (MSAA) so the head edge is smooth over
-      the backgrounds.
+- [x] **GPU face**: antialias the silhouette (MSAA) so the head edge is smooth over
+      the backgrounds — `face_gpu` now renders to a **4x multisample FBO** and resolves
+      to a single-sample texture for readback (`copy_framebuffer`), with a graceful
+      single-sample fallback if the driver lacks MSAA. Worker thread + transparent
+      RGBA intact; edge-zoom confirms smooth; thread-stable; cat path unaffected.
 - [ ] **Sing — pitch trainer**: scoring (% time in tune), an in-tune glow, more
       exercises; **Meditate** — open-monitoring vs focused-attention guidance.
 
@@ -164,6 +167,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- GPU face MSAA (4x multisample FBO + resolve) — smooth head silhouette.
 - Earth & Sea +3 (Clouds & Weather · Caves & the Underground · The Tides) → 68 lectures.
 - Face naturalism: micro-saccades, settling-sigh + swallow, wind-down damping, head-cock.
 - Cat: richer face (markings/breathing/expressions) + Purr ambience + "The Cat" lecture
