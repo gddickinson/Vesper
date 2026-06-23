@@ -33,6 +33,7 @@ from . import lectures_hearing, lectures_smell, lectures_touch
 from . import (lectures_honey, lectures_lighthouse, lectures_perfume,
                lectures_violin)
 from . import lectures_cat, lectures_coral, lectures_moths, lectures_sloth
+from . import lectures_caves, lectures_clouds, lectures_tides
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -55,7 +56,8 @@ _CATALOG = [
                     lectures_planets, lectures_aurora, lectures_blackholes,
                     lectures_milkyway, lectures_constellations]),
     ("Earth & Sea", [lectures_seasons, lectures_deeptime, lectures_water,
-                     lectures_ocean, lectures_volcanoes, lectures_glaciers]),
+                     lectures_ocean, lectures_volcanoes, lectures_glaciers,
+                     lectures_clouds, lectures_caves, lectures_tides]),
     ("The Living World", [lectures_whales, lectures_birds, lectures_plants,
                           lectures_fungi, lectures_bees, lectures_octopus,
                           lectures_redwoods, lectures_ants, lectures_spiders,

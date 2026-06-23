@@ -558,6 +558,14 @@ shares the same life (its eyes use the shared gaze; FaceParams has no roll, so t
 cocks via yaw). Verified: 3D head + cat both render (PNGs), >=40-tick offscreen sessions
 thread-stable (2->2), selftest passes.
 
+## Stories round — Earth & Sea +3 (Clouds & Weather, Caves & the Underground, The Tides)
+Authored three new Earth & Sea sleep-lectures via parallel subagents (7 sections, 12-13
+lines, section 1 fact-free, accurate, sleep-closing): `lectures_clouds.py` (Forest Wind),
+`lectures_caves.py` (Brown Noise), `lectures_tides.py` (Ocean Waves) — the tide framed as
+a slow breath to follow. Registered in the Earth & Sea branch → **68 lectures / 8
+branches**. Validated structure + ASCII; DB rebuilt (5,688 lines / 81,766 words);
+selftest passes.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
