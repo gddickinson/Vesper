@@ -594,6 +594,16 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — The Cosmos +3 (Comets, Nebulae, Saturn's Rings)
+Authored three new Cosmos sleep-lectures via parallel subagents (7 sections, 12-13 lines,
+fact-free section 1, accurate astronomy, ASCII, sleep-closing): `lectures_comets.py` (Brown
+Noise — dirty snowballs, Oort Cloud, tails point away from the Sun, Halley), `lectures_nebulae.py`
+(Singing Bowl — gas/dust clouds, stellar nurseries, planetary/supernova remnants, "star
+stuff"), `lectures_saturnsrings.py` (Wind Chimes — icy particles, paper-thin disc, Cassini
+Division, ring rain). Registered in the Cosmos branch → **74 lectures / 8 branches**.
+Validated structure + ASCII + sleep-close; DB rebuilt (6,196 lines / 89,069 words); selftest
+passes.
+
 ## App round — Cognitive Shuffle sleep-onset aid
 Added `breathsim/shuffle.py`: a narrated **cognitive shuffle** (Beaudoin's serial-diverse
 imagining). A soft letter is chosen, then 3-5 ordinary, neutral, easily-pictured objects

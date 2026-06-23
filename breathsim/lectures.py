@@ -35,6 +35,7 @@ from . import (lectures_honey, lectures_lighthouse, lectures_perfume,
 from . import lectures_cat, lectures_coral, lectures_moths, lectures_sloth
 from . import lectures_caves, lectures_clouds, lectures_tides
 from . import lectures_calendar, lectures_infinity, lectures_symmetry
+from . import lectures_comets, lectures_nebulae, lectures_saturnsrings
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -55,7 +56,8 @@ class Lecture:
 _CATALOG = [
     ("The Cosmos", [lectures_physics, lectures_star, lectures_moon,
                     lectures_planets, lectures_aurora, lectures_blackholes,
-                    lectures_milkyway, lectures_constellations]),
+                    lectures_milkyway, lectures_constellations, lectures_comets,
+                    lectures_nebulae, lectures_saturnsrings]),
     ("Earth & Sea", [lectures_seasons, lectures_deeptime, lectures_water,
                      lectures_ocean, lectures_volcanoes, lectures_glaciers,
                      lectures_clouds, lectures_caves, lectures_tides]),

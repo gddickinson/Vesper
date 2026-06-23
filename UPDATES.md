@@ -173,7 +173,11 @@ Guardrails (every round):
       `lectures_{infinity,symmetry,calendar}.py` (7×12 lines, accurate, ASCII,
       sleep-closing), registered in the Ideas & Wonders branch → **71 lectures /
       8 branches**; DB rebuilt (5,942 lines); selftest passes.
-- [ ] **The Cosmos** (3): Comets · Nebulae · Saturn's Rings.
+- [x] **The Cosmos** (3): Comets · Nebulae · Saturn's Rings — added
+      `lectures_{comets,nebulae,saturnsrings}.py` (7×12-13 lines, accurate, ASCII,
+      sleep-closing; ambiences Brown Noise / Singing Bowl / Wind Chimes), registered in
+      the Cosmos branch → **74 lectures / 8 branches**; DB rebuilt (6,196 lines); selftest
+      passes.
 - [ ] **New branch — Voyages & Journeys** (4): The Compass · The Caravan · The Railway ·
       The Hot-Air Balloon.
 - [ ] **New branch — The Quiet Crafts** (4): Bookbinding · The Blacksmith · Basketry ·
@@ -181,6 +185,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- The Cosmos +3 (Comets · Nebulae · Saturn's Rings) → 74 lectures / 8 branches.
 - Cognitive Shuffle sleep-onset aid (`shuffle.py`): random neutral nouns, Sleep "Shuffle".
 - NSDR / Yoga Nidra (12 min) guided program: 8-stage body-rotation + breath, rest-close.
 - Ideas & Wonders +3 (Infinity · Symmetry · The Calendar) → 71 lectures.
