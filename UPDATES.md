@@ -65,8 +65,13 @@ Guardrails (every round):
       crossfade (via live `set_layer_level`, leaving the user level intact); added a
       **Sound ▸ Soundscape follows story** toggle (default on) that holds the base
       ambience when off. Cue + offscreen duck/toggle tests pass; thread-stable.
-- [ ] **Face naturalism**: micro-saccades, a rare settling-sigh, occasional swallow,
-      flatter affect as the session winds down, a slight head-tilt on curious lines.
+- [x] **Face naturalism**: `face.set_state` now adds micro-**saccades** on top of the
+      slow gaze drift, a rare **settling-sigh** and **swallow** (one-shot gesture
+      bumps -> head dip + soft mouth), **flatter affect** as the session winds down
+      (gaze/saccade/smile/brow all damped by a `calm = 1-0.6*prog` factor), and a gentle
+      **head-cock on curious lines** (brow -> yaw on the 3D head, a true roll on the
+      cat). Shared by both faces via the gaze/tilt in `_cat_state`. Both verified
+      (renders + >=40-tick offscreen, thread-stable); selftest passes.
 - [ ] **GPU face**: antialias the silhouette (MSAA) so the head edge is smooth over
       the backgrounds.
 - [ ] **Sing — pitch trainer**: scoring (% time in tune), an in-tune glow, more
@@ -85,6 +90,9 @@ Guardrails (every round):
 - [ ] **Ideas & Wonders** (3): Infinity · Symmetry · The Calendar.
 
 ## Done
+- Face naturalism: micro-saccades, settling-sigh + swallow, wind-down damping, head-cock.
+- Cat: richer face (markings/breathing/expressions) + Purr ambience + "The Cat" lecture
+  + Cat voice group (breath/sigh/meow/purr) + runtime cat/3D toggle.
 - Soundscape: richer text→ambience cues + crossfade ducking + follow-story toggle.
 - The Living World +3 (Moths & Fireflies · The Sloth · Coral Reefs) → 64 lectures.
 - 5 new procedural ambiences (Campfire · Singing Bowl · Wind Chimes · Night Crickets

@@ -71,6 +71,13 @@ class FaceWidget(QWidget):
         self._active = True                      # throttle render thread when hidden
         self._gaze_ph = (random.random() * 6.283, random.random() * 6.283)
         self._head_ph = random.random() * 6.283
+        self._sacc = (0.0, 0.0)                  # micro-saccade gaze offset
+        self._next_sacc = 1.5
+        self._sigh_t0 = None                     # rare settling-sigh
+        self._next_sigh = 9.0
+        self._swallow_t0 = None                  # occasional swallow
+        self._next_swallow = 16.0
+        self._tilt = 0.0                         # eased head-tilt (curiosity)
         self._next_blink = 2.5                   # randomized idle blink schedule
         self._blink_end = -1.0
         self._warm = 0.0                         # warm low-blue Sleep dimming (0..1)
@@ -129,37 +136,71 @@ class FaceWidget(QWidget):
         self._breath = vol
         self._t = t                                          # background anim time
         self._hue = theme.phase_hue(phase)                   # tint bg by breath phase
+        prog = prog or 0.0
+        calm = 1.0 - 0.6 * prog                              # wind-down: stiller late
         # Randomized blinks — varied gap, occasional double, heavier when drowsy.
-        # Shared by both faces so the cat blinks on the same schedule as the avatar.
         if t >= self._next_blink:
             self._blink_end = t + 0.16
             gap = (0.30 if random.random() < 0.15
-                   else random.uniform(2.5, 6.0) * (1.0 - 0.45 * (prog or 0.0)))
+                   else random.uniform(2.5, 6.0) * (1.0 - 0.45 * prog))
             self._next_blink = t + max(0.22, gap)
         blink = 1.0 if t < self._blink_end else 0.0
-        rest = 0.10 + 0.5 * (prog or 0.0)                    # lids grow heavy late
+        rest = 0.10 + 0.5 * prog                             # lids grow heavy late
         eye_open = max(0.04, min(1.0, 1.0 - rest - blink + eye_bias))
-        mo = max(0.0, min(0.6, mouth))
+        # Gaze: a slow drift plus rare micro-saccades (quick darts), both damped
+        # as the session winds down so the face grows calm and still.
+        g0, g1 = self._gaze_ph
+        dx = 0.05 * math.sin(0.11 * t + g0) + 0.03 * math.sin(0.29 * t + g0)
+        dy = 0.035 * math.sin(0.15 * t + g1) + 0.02 * math.sin(0.33 * t + g1)
+        if t >= self._next_sacc:
+            a = 0.11 * calm
+            self._sacc = (random.uniform(-a, a), random.uniform(-0.7 * a, 0.7 * a))
+            self._next_sacc = t + random.uniform(0.7, 1.8) * (1.0 + 1.6 * prog)
+        gaze_x = max(-0.25, min(0.25, dx * calm + self._sacc[0]))
+        gaze_y = max(-0.18, min(0.18, dy * calm + self._sacc[1]))
+        sigh = self._gesture("_sigh_t0", "_next_sigh", t, 1.6, 24.0, 52.0)
+        swal = self._gesture("_swallow_t0", "_next_swallow", t, 0.5, 16.0, 38.0)
+        tilt_t = max(0.0, min(1.0, brow)) * 0.6              # curiosity head-cock
+        self._tilt += (tilt_t - self._tilt) * 0.05
+        smile_eff = 0.06 + (max(0.0, min(1.0, smile)) - 0.06) * (0.5 + 0.5 * calm)
+        brow_eff = max(0.0, min(1.0, brow)) * calm           # flatter affect late
+        mo = max(0.0, min(0.6, mouth + sigh * 0.1 + swal * 0.06))
+        pitch = (0.5 - vol) * 0.18 + 0.02 * math.sin(0.09 * t) + sigh * 0.1 + swal * 0.05
         self._cat_state = dict(vol=vol, t=t, mouth=mo, eye_open=eye_open,
-                               smile=max(0.0, min(1.0, smile)), hue=self._hue)
+                               smile=smile_eff, hue=self._hue,
+                               gaze=(gaze_x, gaze_y), tilt=self._tilt)
         if self._faceview_ok:                                # keep 3D params fresh
             p = self._params
             p._t = t                                         # GPU starfield time
-            g0, g1 = self._gaze_ph                           # gently wandering gaze
-            p.pupil_x = 0.09 * math.sin(0.11 * t + g0) + 0.04 * math.sin(0.29 * t + g0)
-            p.pupil_y = 0.06 * math.sin(0.15 * t + g1) + 0.03 * math.sin(0.33 * t + g1)
+            p.pupil_x, p.pupil_y = gaze_x, gaze_y
             p.jaw_open = mo                                  # mouth resolved upstream
             p.mouth_pucker = max(0.0, min(1.0, pucker))
             p.mouth_stretch = max(0.0, min(1.0, stretch))
             p.nose_wrinkle = max(0.0, min(0.16, nose))       # noseSneer lifts the lip
-            p.smile = max(0.0, min(1.0, smile))              # eased emotion
-            p.brow_raise = max(0.0, min(1.0, brow))
-            p.pitch = (0.5 - vol) * 0.18 + 0.02 * math.sin(0.09 * t)  # breath nod
-            p.yaw = 0.04 * math.sin(0.07 * t + self._head_ph)
+            p.smile = smile_eff
+            p.brow_raise = brow_eff
+            p.pitch = pitch                                  # breath nod + sigh/swallow
+            p.yaw = (0.04 * math.sin(0.07 * t + self._head_ph) * calm
+                     + self._tilt * 0.1)                     # idle sway + head-cock
             p.eye_open = eye_open
             self._req = (copy.copy(p),
                          (max(2, self.width()), max(2, self.height())))
         self.update()
+
+    def _gesture(self, t0_attr, next_attr, t, dur, lo, hi):
+        """A rare one-shot bump (0->1->0 over *dur* s), rescheduled lo..hi s later.
+        Used for the settling-sigh and the swallow."""
+        t0 = getattr(self, t0_attr)
+        if t0 is None:
+            if t >= getattr(self, next_attr):
+                setattr(self, t0_attr, t)
+            return 0.0
+        u = (t - t0) / dur
+        if u >= 1.0:
+            setattr(self, t0_attr, None)
+            setattr(self, next_attr, t + random.uniform(lo, hi))
+            return 0.0
+        return math.sin(math.pi * u)
 
     def stop(self):
         self._stop = True

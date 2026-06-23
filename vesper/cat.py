@@ -48,10 +48,17 @@ class CatFace:
         eye_open = max(0.04, min(1.0, float(st.get("eye_open", 1.0))))
         smile = max(0.0, min(1.0, float(st.get("smile", 0.12))))
         hue = st.get("hue", _EYE)
+        gaze = st.get("gaze", (0.0, 0.0))
+        tilt = float(st.get("tilt", 0.0))
         cx = w / 2.0
         cy = h * 0.47 + math.sin(t * 0.6) * h * 0.006        # gentle breathing bob
         R = min(w, h) * 0.23 * (0.97 + 0.05 * vol)           # head radius (breathes)
         p.setPen(_NOPEN)
+        p.save()
+        if tilt:                                             # curiosity head-cock
+            p.translate(cx, cy)
+            p.rotate(tilt * 7.0)
+            p.translate(-cx, -cy)
 
         # breath aura: a soft halo that swells on the in-breath, tinted by phase
         aura = QRadialGradient(cx, cy, R * 2.1)
@@ -77,9 +84,10 @@ class CatFace:
         p.setBrush(_qc(_MUZZLE, 0.92))                       # pale muzzle
         p.drawEllipse(QPointF(cx, my + R * 0.08), R * 0.62, R * 0.48)
 
-        self._eyes(p, cx, cy, R, t, vol, eye_open, smile)
+        self._eyes(p, cx, cy, R, t, vol, eye_open, smile, gaze)
         self._nose_mouth(p, cx, cy, R, my, mouth, smile)
         self._whiskers(p, cx, cy, R, t, mouth, my)
+        p.restore()
 
     # --- parts -------------------------------------------------------------
     def _body(self, p, cx, cy, R, vol):
@@ -135,7 +143,7 @@ class CatFace:
                        QPointF(cx + s * R * 0.22, top + R * 0.27))
         p.setPen(_NOPEN)
 
-    def _eyes(self, p, cx, cy, R, t, vol, eye_open, smile):
+    def _eyes(self, p, cx, cy, R, t, vol, eye_open, smile, gaze):
         eyey = cy - R * 0.1
         ew = R * 0.31
         squint = max(0.0, smile - 0.3) / 0.7                 # happy -> narrow eyes
@@ -154,8 +162,8 @@ class CatFace:
                 p.setBrush(_qc(_EYE))                        # mint iris
                 p.drawEllipse(QPointF(ex, eyey), ew * 0.74, eh * 0.86)
                 pw = ew * (0.13 + 0.16 * vol)                # pupil dilates on inhale
-                px = ex + math.sin(0.18 * t + s) * ew * 0.14
-                py = eyey + math.sin(0.13 * t + s * 1.7) * eh * 0.1
+                px = ex + gaze[0] * ew * 1.1                 # shared gaze + saccades
+                py = eyey + gaze[1] * eh * 1.0
                 p.setBrush(_qc("#07121a"))
                 p.drawEllipse(QPointF(px, py), pw, eh * 0.82)
                 p.setBrush(_qc("#ffffff", 0.9))             # catchlight

@@ -546,6 +546,18 @@ is a vocal `ee`->`oh` glide with an up-down pitch arc) and **Cat Purr** (the pur
 texture). Wired `GROUP_CAT` into the voice menus + the panel voice card; gains
 calibrated. 95 voices; each plays live, thread-stable, selftest passes.
 
+## App round — face naturalism (both faces)
+`face.set_state` is now the single place for naturalistic motion: a slow gaze drift
+plus rare micro-**saccades** (quick darts, rescheduled randomly); a rare
+**settling-sigh** and **swallow** as one-shot bumps (`_gesture` helper -> a head dip +
+soft mouth part); **flatter affect** as the session winds down (gaze, saccade size,
+smile and brow all scaled by `calm = 1 - 0.6*prog`, lids already grow heavy); and a
+gentle **head-cock on curious lines** (driven by `brow` -> a yaw offset on the 3D head,
+a true painter roll on the cat). Gaze + tilt are passed through `_cat_state` so the cat
+shares the same life (its eyes use the shared gaze; FaceParams has no roll, so the head
+cocks via yaw). Verified: 3D head + cat both render (PNGs), >=40-tick offscreen sessions
+thread-stable (2->2), selftest passes.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
