@@ -59,9 +59,12 @@ Guardrails (every round):
       `breathsim/textures.py`) + Rain on a Roof (NoiseTrack). Deterministically
       seeded; gains calibrated (~0.75 peak; 300 s worst peak ≤ 0.80). 90 voices now;
       appear in the Relax/Sleep soundscape picker; selftest passes, engine-safe.
-- [ ] **Soundscape**: map the new ambiences + birds/fire/bells into `sound_cues`;
-      **duck** the bed during a crossfade; a **Sound ▸ Soundscape follows story**
-      toggle (default on).
+- [x] **Soundscape**: extended `sound_cues` to map the new ambiences + fire / bells /
+      wind-chimes / crickets / rain-on-roof / birds (with false-hit guards for
+      belly/remember/chimney); the bed now **ducks to 0.5 then eases back** on each
+      crossfade (via live `set_layer_level`, leaving the user level intact); added a
+      **Sound ▸ Soundscape follows story** toggle (default on) that holds the base
+      ambience when off. Cue + offscreen duck/toggle tests pass; thread-stable.
 - [ ] **Face naturalism**: micro-saccades, a rare settling-sigh, occasional swallow,
       flatter affect as the session winds down, a slight head-tilt on curious lines.
 - [ ] **GPU face**: antialias the silhouette (MSAA) so the head edge is smooth over
@@ -82,6 +85,7 @@ Guardrails (every round):
 - [ ] **Ideas & Wonders** (3): Infinity · Symmetry · The Calendar.
 
 ## Done
+- Soundscape: richer text→ambience cues + crossfade ducking + follow-story toggle.
 - The Living World +3 (Moths & Fireflies · The Sloth · Coral Reefs) → 64 lectures.
 - 5 new procedural ambiences (Campfire · Singing Bowl · Wind Chimes · Night Crickets
   · Rain on a Roof) via new `kind="texture"` generators; calibrated.

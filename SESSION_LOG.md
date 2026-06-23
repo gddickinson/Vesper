@@ -505,6 +505,18 @@ when faceView isn't installed. `face.py` now imports faceView in a try/except
 the cat from the same per-frame state. Verified: forced cat mode renders (talking +
 quiet), default 3D mode still thread-stable (2->2), selftest passes.
 
+## App round — soundscape: richer cues + crossfade ducking + follow toggle
+Extended `breathsim/sound_cues.py` to steer the bedtime soundscape toward the new
+procedural ambiences — fire/hearth → Campfire, crickets/fireflies → Night Crickets,
+bell/gong/singing-bowl → Singing Bowl, wind-chime → Wind Chimes, rain-on-roof/eaves →
+Rain on a Roof, birds/forest → Forest Wind — with guards so "belly"/"remember"/
+"chimney" don't false-trigger. In `window._apply_soundscape`, each cue crossfade now
+**ducks the ambience to 0.5 and eases it back over 1.8 s** (smoothstep) using live
+`engine.set_layer_level` (the user's slot level is left untouched), so a cue blooms in
+rather than jumping. Added `set_soundscape_follow` + a **Sound ▸ Soundscape follows
+story** menu toggle (default on); off holds the story's base ambience. Cue-mapping
+unit checks + an offscreen Sleep duck/toggle run pass; selftest passes; threads 2->2.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

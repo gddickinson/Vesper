@@ -88,6 +88,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._cur_ambience = None          # what's playing now (cues morph it)
         self._sfx_target = None            # ambience the text currently calls for
         self._sfx_idle = 0                 # lines since the last imagery cue
+        self._soundscape_follow = True     # ambience follows the story's words?
+        self._duck_t0 = None               # in-progress ambience-duck start time
         self._mood_target = (0.0, 0.0, 0.0)   # emotion deltas from the current line
         self._smile, self._brow, self._eyeb = 0.12, 0.0, 0.0   # eased expression
         self._hg_show = False              # hourglass session timer visible?
@@ -339,11 +341,30 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                 self._sfx_target = self._base_ambience   # drift home over abstract lines
         self._mood_target = emotion_for_text(text)
 
+    def set_soundscape_follow(self, on):
+        """Sound ▸ Soundscape follows story toggle. Off → hold the base ambience."""
+        self._soundscape_follow = bool(on)
+
     def _apply_soundscape(self):
-        """Crossfade the ambience bed toward the text-matched target, gently."""
-        if self._sfx_target and self._sfx_target != self._cur_ambience:
-            self.engine.set_voice(self._sfx_target, "ambience", fade=2.5)
-            self._cur_ambience = self._sfx_target
+        """Crossfade the ambience toward the text-matched target and gently DUCK
+        the bed as it swaps, so a cue blooms in rather than jumps. When the follow
+        toggle is off, ease home to the story's base ambience and hold it."""
+        amb = self.engine.slot_levels.get("ambience", 0.8)   # user's base level
+        target = (self._sfx_target if self._soundscape_follow
+                  else self._base_ambience)
+        if target and target != self._cur_ambience:
+            self.engine.set_voice(target, "ambience", fade=2.5)
+            self._cur_ambience = target
+            self._duck_t0 = self._anim_t                     # start the duck
+            self.engine.set_layer_level("ambience", amb * 0.5)
+        if self._duck_t0 is not None:                        # ease the bed back up
+            u = (self._anim_t - self._duck_t0) / 1.8
+            if u >= 1.0:
+                self.engine.set_layer_level("ambience", amb)
+                self._duck_t0 = None
+            else:
+                e = u * u * (3.0 - 2.0 * u)                  # smoothstep recovery
+                self.engine.set_layer_level("ambience", amb * (0.5 + 0.5 * e))
 
     def _ease_mood(self, running):
         """Ease the expression toward the line's emotion (decaying to calm)."""

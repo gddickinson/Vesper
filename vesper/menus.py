@@ -111,6 +111,10 @@ def _sound(win, m):
     nat.setCheckable(True)
     nat.setChecked(win.controller.naturalness.amount > 1e-3)
     nat.toggled.connect(lambda on: win.set_naturalness(0.5 if on else 0.0, on))
+    ss = m.addAction("Soundscape follows story")
+    ss.setCheckable(True)
+    ss.setChecked(getattr(win, "_soundscape_follow", True))
+    ss.toggled.connect(win.set_soundscape_follow)
     m.addSeparator()
     m.addAction("Mixer…").triggered.connect(lambda: dialogs.open_mixer(win))
 
