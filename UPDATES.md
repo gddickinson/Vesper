@@ -34,6 +34,25 @@ Guardrails (every round):
 - **Plotless, low-arousal narration + body-scan/PMR** reduce rumination (a calm
   "cognitive shuffle"). Predictable, slow, low-contrast visuals soothe; avoid abrupt
   change. **Per-window coherence**: look + sound + guidance match the activity.
+- **NSDR / Yoga Nidra**: a slow, guided rotation of awareness through the body + breath
+  ("non-sleep deep rest") restores alertness and lowers stress — monotone calm, long
+  pauses, no goal but rest.
+- **Cognitive shuffle (serial diverse imagining)**: gently picturing a stream of random,
+  neutral, concrete objects mimics pre-sleep micro-dreams and crowds out rumination — an
+  evidence-based sleep-onset aid (Beaudoin); deliver random nouns with long breath gaps.
+- **Dawn/dusk light**: gradual **dawn simulation** (warm→bright over ~20–30 min) eases
+  waking, lifts mood, helps seasonal low mood; warm dim **dusk** light cues wind-down.
+- **Generative ambient sound**: slow, **non-repeating** tonal textures (Eno-style) relax
+  better than loops — the brain habituates less and there's no loop-seam to notice.
+- **ASMR & soft repetition**: for many, soft whispers, gentle taps and slow repetitive
+  sounds trigger a calming low-arousal "tingle"; keep them quiet, regular, optional.
+- **Honest framing**: binaural beats need headphones and the evidence is mixed; true
+  slow-wave boosting (closed-loop pink-noise bursts) needs EEG. Offer gentle ~0.8 Hz
+  pink pulsing / headphone tones, framed honestly — never over-claim.
+- **Awe & nature (Attention Restoration)**: vast, slow, awe-evoking nature (night sky,
+  ocean, forest) restores attention and lowers rumination — keep scenes nature-rich.
+- **Gentle habit support**: a consistent wind-down ritual aids sleep; **non-judgemental**
+  streaks / feedback support adherence without pressure.
 
 ## App improvements — FOCUS (do these first)
 - [x] Per-window **themed backdrops** behind the face + two new effects
@@ -77,6 +96,52 @@ Guardrails (every round):
 - [ ] **Sing — pitch trainer**: scoring (% time in tune), an in-tune glow, more
       exercises; **Meditate** — open-monitoring vs focused-attention guidance.
 
+### Researched batch — restful practices (efficacy)
+- [ ] **NSDR / Yoga Nidra** guided session: a slow body-rotation + breath script with
+      long pauses (a `programs.Program` + narration), ~12 min, closing toward rest.
+- [ ] **Cognitive Shuffle** sleep-onset aid: a `stories` generator that speaks random,
+      neutral, concrete words with long breath-paced gaps; a Sleep "Shuffle" option.
+- [ ] **Body-scan + PMR** guided program: slow timed tense→release cues head-to-toe,
+      paced to the breath.
+- [ ] **Physiological-sigh reset**: a 2–3 min "Sigh" mini-session (double inhale, long
+      exhale) + a matching visual, for a quick down-regulation.
+
+### Researched batch — light & circadian
+- [ ] **Sunrise / Wake mode**: a gradual dawn-simulation (warm→bright over N min) with a
+      soft rising chime + optional dawn chorus — a gentle wake-up (inverse of wind-down).
+- [ ] **Clock-aware theming**: bias palette/brightness by local time (warm+dim at night,
+      brighter by day) and suggest a fitting mode on launch.
+
+### Researched batch — new visual scenes
+- [ ] **Fireplace scene** (flickering flame + embers; pairs with Campfire) for Relax/Sleep.
+- [ ] **Rain-on-window scene**: droplets sliding down glass over a soft blurred glow.
+- [ ] **Aurora scene**: slow northern-lights ribbons for Sleep/Relax.
+- [ ] **Breathing mandala**: a symmetric sacred-geometry pattern that unfolds/rotates
+      with the breath (Meditate/Chant).
+- [ ] **Particle weather**: an optional gentle snow / drifting leaves / rising bubbles
+      layer per scene (a toggle).
+
+### Researched batch — audio & synthesis
+- [ ] **Generative ambient pad**: an evolving, non-repeating drone in a selectable
+      scale/key (a `kind="generative"` track) for Relax/Sleep.
+- [ ] **More ambiences**: Whale Song · Distant Train · Rain on a Tent · Wind in Pines ·
+      Womb Heartbeat · Fan (white-noise machine). Calibrated.
+- [ ] **Slow-wave pink pulses**: pink noise gently pulsing at ~0.8 Hz (open-loop,
+      honestly framed) for deep-sleep support.
+- [ ] **Gong bath / tuned bowl set**: a slow sequence of struck bowls/gongs.
+- [ ] **Spatial polish**: subtle auto-pan / width on ambiences for headphone immersion.
+
+### Researched batch — engagement & structure
+- [ ] **Streaks + calendar heatmap** in Stats (gentle, non-judgemental) + weekly minutes.
+- [ ] **Mood check-in**: a 1-tap before/after mood, tracked over time.
+- [ ] **Multi-night courses**: sequenced programs — "7 Nights to Sleep", "21 Days of Calm".
+- [ ] **Launch suggestion**: recommend a mode/lecture by time of day + recent history.
+- [ ] **First-run onboarding**: a gentle goal pick (sleep / focus / calm) that presets it.
+
+### Researched batch — storyteller
+- [ ] **Optional spoken name**: greet/settle the listener by name (off by default).
+- [ ] **Narration language**: expose Kokoro's languages/voices where available.
+
 ## Stories (ongoing — every ~3rd round)
 - [x] More **Histories** (4): Honey · The Lighthouse · The Violin · Perfume — added
       `lectures_{honey,lighthouse,violin,perfume}.py` (7×~12 lines, accurate, ASCII,
@@ -88,6 +153,12 @@ Guardrails (every round):
       (5,348 lines); selftest passes.
 - [ ] **Earth & Sea** (3): Clouds & Weather · Caves & the Underground · The Tides.
 - [ ] **Ideas & Wonders** (3): Infinity · Symmetry · The Calendar.
+- [ ] **The Cosmos** (3): Comets · Nebulae · Saturn's Rings.
+- [ ] **New branch — Voyages & Journeys** (4): The Compass · The Caravan · The Railway ·
+      The Hot-Air Balloon.
+- [ ] **New branch — The Quiet Crafts** (4): Bookbinding · The Blacksmith · Basketry ·
+      Stained Glass.
+- [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
 - Face naturalism: micro-saccades, settling-sigh + swallow, wind-down damping, head-cock.
