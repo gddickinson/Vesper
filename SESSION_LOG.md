@@ -594,6 +594,16 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — NSDR / Yoga Nidra guided session
+Added an 8-stage `programs.Program` "NSDR / Yoga Nidra (12 min)" (11.5 min): settle in →
+settle the mind → breath awareness → rotation of awareness right side → left side →
+back & front → whole-body heaviness → rest. Monotone-calm spoken cues (the classic
+"rotation of consciousness") with long quiet pauses between them — each stage speaks once,
+then breath alone — closing on a slow 8-12 breath at low volume over the night scene.
+Auto-listed in the Sessions menu + the Breathwork programs card via the existing
+`programs.names()` wiring; all stage patterns/voices/ambience/effect resolve; offscreen
+60-tick run advances through all 8 stages, thread-stable (2→2); selftest passes.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

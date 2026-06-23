@@ -103,8 +103,11 @@ Guardrails (every round):
       via renders + offscreen ticks; thread-stable; selftest passes.
 
 ### Researched batch — restful practices (efficacy)
-- [ ] **NSDR / Yoga Nidra** guided session: a slow body-rotation + breath script with
-      long pauses (a `programs.Program` + narration), ~12 min, closing toward rest.
+- [x] **NSDR / Yoga Nidra** guided session: an 8-stage `programs.Program` (settle →
+      breath → rotation of awareness right/left/back+front → whole-body heaviness →
+      rest), 11.5 min, monotone-calm spoken cues with long quiet pauses, closing on a
+      slow 8-12 breath. Auto-listed in the Sessions menu + Breathwork programs card;
+      stages/names validated, offscreen run thread-stable (8 stages advance).
 - [ ] **Cognitive Shuffle** sleep-onset aid: a `stories` generator that speaks random,
       neutral, concrete words with long breath-paced gaps; a Sleep "Shuffle" option.
 - [ ] **Body-scan + PMR** guided program: slow timed tense→release cues head-to-toe,
@@ -173,6 +176,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- NSDR / Yoga Nidra (12 min) guided program: 8-stage body-rotation + breath, rest-close.
 - Ideas & Wonders +3 (Infinity · Symmetry · The Calendar) → 71 lectures.
 - Sing pitch scoring (% in tune) + in-tune glow + 3 exercises; Meditate guidance card.
 - GPU face MSAA (4x multisample FBO + resolve) — smooth head silhouette.

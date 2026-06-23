@@ -163,3 +163,38 @@ _add("Body & Breath (10 min)", "A breath-paced body scan from feet to head.",
       _st("Shoulders & head", 2, "Release your shoulders, your jaw, your brow."),
       _st("Whole body", 3, "Breathe through the whole body, completely at ease.",
           voice="Ocean Breath (Ujjayi)", pattern="Coherent 5.5 (Resonance)")])
+
+# NSDR / Yoga Nidra: a slow rotation of awareness through the body, then breath
+# and stillness. Non-sleep deep rest - monotone-calm cues with long, quiet pauses
+# between them (each stage speaks once, then breath alone), closing toward rest.
+_add("NSDR / Yoga Nidra (12 min)",
+     "Non-sleep deep rest: a slow body rotation + breath, settling toward rest.",
+     [_st("Settle in", 1.5, "Lie down on your back, and let yourself be "
+          "completely still. This is non-sleep deep rest. Make any last "
+          "adjustments, then let the body grow heavy.",
+          pattern="Calming 4-6 (Long Exhale)", voice="Sleepy Warm", scene="night",
+          ambience="Soft Rainstorm", cue_style="Guided", volume=0.6),
+      _st("Settle the mind", 1, "There is nothing to do, and nowhere to be. You "
+          "do not need to fall asleep. Simply stay softly awake, and at ease.",
+          voice="Soft Whisper"),
+      _st("Breath awareness", 1.5, "Let the breath move on its own. Feel the cool "
+          "air arrive, and the long, slow release of each out-breath.",
+          pattern="Calming 4-6 (Long Exhale)", voice="Soft Whisper"),
+      _st("Rotation - right side", 1.5, "Bring your attention to your right hand. "
+          "The thumb, and each finger in turn. The palm, the wrist, the forearm, "
+          "the elbow, the upper arm, the shoulder. The right hip, the thigh, the "
+          "knee, the calf, the foot, and each toe.", voice="Sleepy Warm"),
+      _st("Rotation - left side", 1.5, "Now the left hand. The thumb, and each "
+          "finger. The palm, the wrist, the forearm, the elbow, the upper arm, "
+          "the shoulder. The left hip, the thigh, the knee, the calf, the foot, "
+          "and each toe.", voice="Sleepy Warm"),
+      _st("Rotation - back & front", 1.5, "Feel the whole back of the body, "
+          "resting and supported. Now the front: the forehead, the eyes, the jaw, "
+          "the throat, the chest, and the soft belly, rising and falling.",
+          voice="Sleepy Warm"),
+      _st("Heavy & still", 1.5, "Feel the whole body at once, heavy, warm, and "
+          "completely still. Each out-breath lets it sink a little deeper.",
+          pattern="Extended 7-11", voice="Sleepy Warm",
+          effect="Heartbeat (slow)", volume=0.5),
+      _st("Rest", 1.5, "", pattern=(8, 0, 12, 0), voice="Sleepy Warm",
+          cue_style="Off", volume=0.45)])
