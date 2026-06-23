@@ -13,7 +13,7 @@ Vesper paces your breath with a soft animated visualization and real-time synthe
 sound. It spans six activities — **Meditate, Breathwork, Chant, Sing, Relax, Sleep** —
 each with its own purpose-built control panel, visual scene and soundscape. At its
 centre is a 3D talking-head **avatar** that breathes, blinks, gazes around, emotes, and
-narrates a library of **64 soothing sleep-lectures**.
+narrates a library of **65 soothing sleep-lectures**.
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
@@ -29,8 +29,9 @@ lives in [`vesper/`](vesper/).
 - **Fully procedural sound** — 90 voices synthesised in real time from noise, filters and
   a vocal-tract (formant) model: realistic breath timbres, human voice, vocal exercises,
   pranayama, singing, and nature **ambiences** (ocean, rain, forest, a crackling campfire,
-  a struck singing bowl, wind chimes, night crickets…). Nothing to download.
-- **The bedtime storyteller** — **64 authored sleep-lectures** across 8 branches (the
+  a struck singing bowl, wind chimes, night crickets, a cat's purr…). Nothing to
+  download.
+- **The bedtime storyteller** — **65 authored sleep-lectures** across 8 branches (the
   Cosmos · Earth &amp; Sea · the Living World · the Human Body · Histories · Materials &amp;
   Making · Ideas &amp; Wonders · Myth &amp; Legend), spoken by neural **Kokoro** TTS (or macOS
   `say`), slowing and quietening as you drift off, with the ambience gently **following

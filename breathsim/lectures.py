@@ -32,7 +32,7 @@ from . import (lectures_creation, lectures_phoenix, lectures_selkie,
 from . import lectures_hearing, lectures_smell, lectures_touch
 from . import (lectures_honey, lectures_lighthouse, lectures_perfume,
                lectures_violin)
-from . import lectures_coral, lectures_moths, lectures_sloth
+from . import lectures_cat, lectures_coral, lectures_moths, lectures_sloth
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -59,7 +59,8 @@ _CATALOG = [
     ("The Living World", [lectures_whales, lectures_birds, lectures_plants,
                           lectures_fungi, lectures_bees, lectures_octopus,
                           lectures_redwoods, lectures_ants, lectures_spiders,
-                          lectures_moths, lectures_sloth, lectures_coral]),
+                          lectures_moths, lectures_sloth, lectures_coral,
+                          lectures_cat]),
     ("The Human Body", [lectures_cell, lectures_heart, lectures_breath,
                         lectures_eye, lectures_hearing, lectures_smell,
                         lectures_touch, lectures_memory, lectures_sleep]),

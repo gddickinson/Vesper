@@ -187,9 +187,28 @@ class _Chimes(_Strikes):
         return self._mix(tarr, frames, end)
 
 
+class _Purr:
+    """A soft cat purr: a low rumble pulsed at ~26 Hz, swelling slowly with the
+    cat's own breathing -- warm, steady and deeply soothing."""
+
+    def __init__(self, sr, rng):
+        self.sr = sr
+        self.low = dsp.Noise("brown", sr, seed=171)
+        self.lp = dsp.OnePoleLP()
+
+    def step(self, tarr, frames):
+        rumble = self.lp.process(self.low.generate(frames), 220.0, self.sr) * 1.3
+        tone = 0.5 * np.sin(TWO_PI * 50.0 * tarr) + 0.28 * np.sin(TWO_PI * 100.0 * tarr)
+        body = rumble + tone * 0.45
+        purr = 0.55 + 0.45 * np.sin(TWO_PI * 26.0 * tarr)    # ~26 Hz purr pulse
+        breath = 0.7 + 0.3 * np.sin(TWO_PI * 0.55 * tarr)    # slow breathing swell
+        mono = body * purr * breath
+        return np.column_stack([mono, mono])
+
+
 _GENS = {"campfire": _Campfire, "bowl": _Bowl, "chimes": _Chimes,
-         "crickets": _Crickets}
-_SEED = {"campfire": 41, "bowl": 42, "chimes": 43, "crickets": 44}
+         "crickets": _Crickets, "purr": _Purr}
+_SEED = {"campfire": 41, "bowl": 42, "chimes": 43, "crickets": 44, "purr": 45}
 
 
 class TextureTrack:
@@ -227,3 +246,5 @@ _t("Wind Chimes", "chimes", 0.55,
    "Scattered chimes drifting in on the breeze, in a gentle pentatonic.")
 _t("Night Crickets", "crickets", 0.72,
    "A summer night: a field of crickets chirping over a low hush.")
+_t("Purr", "purr", 0.18,
+   "A soft cat purr: a warm low rumble that swells gently with each breath.")

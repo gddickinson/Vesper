@@ -13,6 +13,8 @@ from __future__ import annotations
 # false hits (no bare "sea"/"room"/"season").
 _CUES = [
     (("thunder", "storm", "lightning", "tempest"), "Distant Thunder"),
+    (("purr", "purring", "a cat", "the cat", "kitten", "tabby", "whiskers"),
+     "Purr"),
     (("wind chime", "wind chimes"), "Wind Chimes"),
     (("temple bell", "church bell", "the bells", "bell rang", "bell tolled",
       "singing bowl", "gong", "chimes", "a chime", "tolling"), "Singing Bowl"),

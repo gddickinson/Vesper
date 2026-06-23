@@ -528,6 +528,18 @@ always-on, when faceView is absent), persisted in settings (`face_cat`). Verifie
 toggling cat on/off at runtime swaps the face (rendered the full Sleep window on the
 cat), default still starts on the 3D head, thread-stable (2->2), selftest passes.
 
+## Cat — richer face + cat content + cat voices
+Reviewed and overhauled the cartoon cat (`vesper/cat.py`): soft **tabby markings**
+("M" forehead + body stripes), **cheek tufts**, a pale **chest blaze**; it now
+**breathes** (a phase-tinted aura that swells, a widening/rising chest, pupils that
+dilate on the in-breath), **smiles** (happy eye-squint + lifted mouth) and **talks**
+with a wider-than-tall mouth (tongue + lower lip), perked ears and lifted whiskers;
+nose highlight, philtrum, curved whiskers. Examined render grids before/after.
+Added cat **content**: a new **"Purr"** procedural ambience (`textures._Purr` — a
+warm ~26 Hz rumble swelling with the breath; calibrated gain 0.18), a **"The Cat"**
+sleep-lecture (Living World, narrated over the Purr) -> **65 lectures**, and a
+**cat/purr sound cue**. selftest passes; DB rebuilt (5,433 lines).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
