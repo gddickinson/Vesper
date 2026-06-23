@@ -34,6 +34,7 @@ from . import (lectures_honey, lectures_lighthouse, lectures_perfume,
                lectures_violin)
 from . import lectures_cat, lectures_coral, lectures_moths, lectures_sloth
 from . import lectures_caves, lectures_clouds, lectures_tides
+from . import lectures_calendar, lectures_infinity, lectures_symmetry
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -75,7 +76,8 @@ _CATALOG = [
     ("Materials & Making", [lectures_glass, lectures_pottery, lectures_weaving,
                             lectures_ink, lectures_candles]),
     ("Ideas & Wonders", [lectures_numbers, lectures_light, lectures_music,
-                         lectures_goldenratio]),
+                         lectures_goldenratio, lectures_infinity,
+                         lectures_symmetry, lectures_calendar]),
     ("Myth & Legend", [lectures_starmyths, lectures_creation, lectures_phoenix,
                        lectures_selkie]),
 ]

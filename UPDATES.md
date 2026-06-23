@@ -161,7 +161,10 @@ Guardrails (every round):
       `lectures_{clouds,caves,tides}.py` (7×12 lines, accurate, ASCII, sleep-closing),
       registered in the Earth & Sea branch → **68 lectures / 8 branches**; DB rebuilt
       (5,688 lines); selftest passes.
-- [ ] **Ideas & Wonders** (3): Infinity · Symmetry · The Calendar.
+- [x] **Ideas & Wonders** (3): Infinity · Symmetry · The Calendar — added
+      `lectures_{infinity,symmetry,calendar}.py` (7×12 lines, accurate, ASCII,
+      sleep-closing), registered in the Ideas & Wonders branch → **71 lectures /
+      8 branches**; DB rebuilt (5,942 lines); selftest passes.
 - [ ] **The Cosmos** (3): Comets · Nebulae · Saturn's Rings.
 - [ ] **New branch — Voyages & Journeys** (4): The Compass · The Caravan · The Railway ·
       The Hot-Air Balloon.
@@ -170,6 +173,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Ideas & Wonders +3 (Infinity · Symmetry · The Calendar) → 71 lectures.
 - Sing pitch scoring (% in tune) + in-tune glow + 3 exercises; Meditate guidance card.
 - GPU face MSAA (4x multisample FBO + resolve) — smooth head silhouette.
 - Earth & Sea +3 (Clouds & Weather · Caves & the Underground · The Tides) → 68 lectures.

@@ -586,6 +586,14 @@ the window feeds a slow rotating cue (~every 22 s) into the scene `hint`, shown 
 under the orb without hiding the breath count. Verified via PitchScene + orb renders and
 a 50-tick offscreen Meditate session (cues rotate, thread-stable 2->2); selftest passes.
 
+## Stories round — Ideas & Wonders +3 (Infinity, Symmetry, The Calendar)
+Authored three new Ideas & Wonders sleep-lectures via parallel subagents (7 sections,
+12-13 lines, fact-free section 1, accurate, sleep-closing): `lectures_infinity.py` (Brown
+Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether), and
+`lectures_calendar.py` (Forest Wind — sun/moon, leap days, Julian/Gregorian). Registered
+in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
+ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
