@@ -115,11 +115,12 @@ class CatFace:
             p.drawArc(QRectF(cx, my0 - r2 * 0.2, r2, r2), 180 * 16, 160 * 16)
             p.setPen(Qt.PenStyle.NoPen)
         else:
-            oh = R * (0.1 + 0.5 * mouth)
+            oh = R * (0.06 + 0.34 * mouth)         # smaller; opens downward only
+            mcy = my0 + R * 0.04 + oh              # top edge sits below the nose
             p.setBrush(_qc("#26141c"))
-            p.drawEllipse(QPointF(cx, my0 + oh * 0.4), R * 0.3, oh)
-            p.setBrush(_qc(_NOSE, 0.9))
-            p.drawEllipse(QPointF(cx, my0 + oh * 0.7), R * 0.16, oh * 0.55)
+            p.drawEllipse(QPointF(cx, mcy), R * 0.2, oh)
+            p.setBrush(_qc(_NOSE, 0.9))            # tongue, low in the mouth
+            p.drawEllipse(QPointF(cx, mcy + oh * 0.35), R * 0.1, oh * 0.5)
 
         # whiskers (slight sway)
         wp = QPen(_qc("#dfeef5", 0.7))
