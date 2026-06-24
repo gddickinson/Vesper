@@ -30,7 +30,8 @@ class _StoryMixin:
         """Subtly slow the speech + lengthen the between-statement pauses as the
         session goes on (gentle wind-down over ~10 minutes)."""
         prog = min(1.0, self.controller.elapsed() / 600.0)
-        self.narrator.speed = self._speech_speed * (1.0 - 0.18 * prog)
+        rate = getattr(self, "_char_rate", 1.0)             # the character's own pace
+        self.narrator.speed = self._speech_speed * rate * (1.0 - 0.18 * prog)
         self.narrator.pause_scale = self._pause_scale * (1.0 + 0.5 * prog)
 
     def set_mood_checkins(self, on):

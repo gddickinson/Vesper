@@ -71,11 +71,21 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
     eyes** (blink / gaze / pupil dilation / happy squint / catchlight), `blush`,
     `head_box` framing, and the `Character` base + `Head` anchor (so a costume fits
     any character).
-  - **char_cat.py / char_penguin.py / char_dog.py** — the characters (the cat is the
-    default; tail swish, ear twitch, body breathing, bristle, blush).
+  - **char_<name>.py** — one file per character (all subclass `Character`, return a
+    `Head`): **Cat** (default) · Penguin · Dog · Owl · Fox · Chicken · Bunny · Bear ·
+    Panda · Frog · Duckling · Hedgehog · **Robot** (brushed-metal head, glowing eyes,
+    pulsing antenna, LED mouth, chest core) · Woman · Man (chibi humans). Each uses
+    the shared kit (tail swish, ear twitch, body breathing, bristle, blush) with its
+    own drawing + signature touches.
   - **char_costume.py** — costume overlays positioned from the `Head` anchor (None,
-    Wizard Hat, Party Hat, Beanie, Headphones, Sunglasses, Scarf), with a faint
-    cyber glow.
+    Wizard/Party/Top Hat, Beanie, Crown, Halo, Headphones, Sunglasses, Flower, Scarf,
+    Bow Tie), with a faint cyber glow.
+  - **char_voice.py** — per-character **voice + personality** profiles (`CharVoice`:
+    ordered TTS name/prefix `hints`, speaking `rate`, signature eye/aura `hue`,
+    `greeting`, `persona`); `get(name)`, `pick_voice(hints, available)` (first
+    case-insensitive match, works for Kokoro ids + macOS `say` names). Applied when
+    **Sound ▸ Character voices** is on; sets the narrator voice + the eye hue + a
+    short greeting. Pure + testable.
   - **characters.py** — the registry (`names`/`get`, costume names + `draw_costume`).
   `FaceWidget` advances one `AnimState` per frame and draws `character + costume`;
   `window.set_character`/`set_costume` (persisted `character`/`costume`) pick them.

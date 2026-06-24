@@ -287,6 +287,10 @@ def _view(win, m):
         a = csm.addAction(nm); a.setCheckable(True); a.setChecked(nm == curco)
         cog.addAction(a)
         a.triggered.connect(lambda _c=False, x=nm: win.set_costume(x))
+    cv = m.addAction("Character voices")               # each character its own voice
+    cv.setCheckable(True)
+    cv.setChecked(getattr(win, "_char_voices", True))
+    cv.toggled.connect(win.set_character_voices)
     m.addSeparator()
     hg = m.addAction("Hourglass timer")
     hg.setCheckable(True)

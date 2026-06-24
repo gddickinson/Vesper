@@ -1,0 +1,84 @@
+"""Per-character voice + personality profiles. Each character gets a fitting
+narrator voice (chosen from whatever the active TTS engine offers, by ordered
+name/prefix hints that work for both Kokoro ids like ``af_heart`` and macOS
+``say`` names like ``Samantha``), a speaking-rate multiplier, a signature greeting
+and a signature eye/aura hue. Pure + testable; the window applies it when the
+"Character voices" toggle is on.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class CharVoice:
+    hints: tuple             # ordered voice name/prefix hints (first match wins)
+    rate: float = 1.0        # speaking-rate multiplier
+    hue: str = "#86e6bf"     # signature eye + aura glow
+    greeting: str = ""
+    persona: str = ""
+
+
+_F_SOFT = ("af_heart", "af_", "bf_", "samantha", "karen", "fiona", "moira")
+_F_BRIGHT = ("bf_", "af_sky", "af_", "tessa", "kate", "karen")
+_M_WARM = ("am_adam", "am_", "bm_", "daniel", "alex", "tom")
+_M_DEEP = ("bm_george", "bm_", "am_michael", "am_", "lee", "daniel")
+
+VOICES = {
+    "Cat": CharVoice(_F_SOFT, 1.0, "#86e6bf",
+                     "Mrrp. Let's find some calm together.", "soft and warm"),
+    "Penguin": CharVoice(_F_BRIGHT, 1.06, "#7fd0ff",
+                         "Waddle in and settle down.", "chipper and tidy"),
+    "Dog": CharVoice(_M_WARM, 1.0, "#ffd27a",
+                     "Good to see you. Let's breathe.", "loyal and friendly"),
+    "Owl": CharVoice(_M_DEEP, 0.9, "#b9a0ff",
+                     "Whoo's ready to rest? Settle in.", "wise and unhurried"),
+    "Fox": CharVoice(("af_nicole", "af_", "bf_", "nicky", "samantha"), 1.05,
+                     "#ffb04a", "Sly and serene -- let's begin.", "clever and calm"),
+    "Chicken": CharVoice(_F_BRIGHT, 1.12, "#ffd86b",
+                         "Cluck. Time to unwind.", "busy but kind"),
+    "Bunny": CharVoice(("af_heart", "af_", "bf_", "samantha"), 1.05, "#f4a6cf",
+                       "Hop in, soft and slow.", "gentle and shy"),
+    "Bear": CharVoice(("bm_", "am_michael", "am_", "daniel", "lee"), 0.88,
+                      "#ffcf8a", "Mmm. Let's hibernate the stress away.",
+                      "deep and cosy"),
+    "Panda": CharVoice(("am_", "bm_", "daniel", "alex"), 0.95, "#9fe8ff",
+                       "Easy does it. Breathe.", "mellow and content"),
+    "Frog": CharVoice(("am_fenrir", "am_", "fred", "junior"), 1.05, "#9be86b",
+                      "Ribbit. Breathe with me.", "playful and bouncy"),
+    "Duckling": CharVoice(("af_sky", "bf_", "af_", "junior", "tessa"), 1.13,
+                          "#ffe27a", "Peep! Let's be calm together.",
+                          "tiny and eager"),
+    "Hedgehog": CharVoice(("af_", "bf_", "tom", "daniel"), 1.0, "#d8b27a",
+                          "Curl up cosy with me.", "small and snug"),
+    "Robot": CharVoice(("am_michael", "bm_lewis", "bm_", "am_", "fred", "ralph",
+                        "daniel"), 0.97, "#4fd6ff",
+                       "Beep. Systems calm. Let us begin.",
+                       "level and synthetic"),
+    "Woman": CharVoice(("af_bella", "af_", "bf_emma", "bf_", "samantha",
+                        "victoria"), 1.0, "#86e6bf",
+                       "Hello. Let's take a moment together.", "warm and human"),
+    "Man": CharVoice(("am_michael", "am_", "bm_daniel", "bm_", "daniel", "alex"),
+                     1.0, "#86e6bf", "Hey. Let's slow down together.",
+                     "warm and human"),
+}
+
+DEFAULT = CharVoice(("af_", "bf_"), 1.0, "#86e6bf", "", "")
+
+
+def get(name):
+    """The CharVoice profile for *name* (a gentle default for unknowns)."""
+    return VOICES.get(name, DEFAULT)
+
+
+def pick_voice(hints, available):
+    """The first voice in *available* matching a hint (case-insensitive, in hint
+    order), or None to leave the current voice. Works for Kokoro ids + say names."""
+    av = [v for v in (available or []) if v]
+    low = [(v, v.lower()) for v in av]
+    for h in hints:
+        h = h.lower()
+        for v, vl in low:
+            if h in vl:
+                return v
+    return None

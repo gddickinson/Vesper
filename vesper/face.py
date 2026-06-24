@@ -67,6 +67,7 @@ class FaceWidget(QWidget):
                      else (None, (480, 520)))
         self._frame = None                       # (rgba ndarray, w, h)
         self._char_name = "Cat"                  # chosen 2D character (cat/penguin/dog)
+        self._char_hue = None                    # character's signature eye/aura glow
         self._costume = "None"                   # optional costume overlay
         self._anim = char_anim.AnimState()       # shared character animation engine
         self._anim_cur = None                    # latest Anim snapshot
@@ -106,8 +107,11 @@ class FaceWidget(QWidget):
         return self._show_cat
 
     def set_character(self, name):
-        """Pick the 2D character (Cat / Penguin / Dog / ...). Unknown -> Cat."""
+        """Pick the 2D character (Cat / Penguin / Dog / ...). Unknown -> Cat.
+        Also adopts the character's signature eye/aura glow."""
+        from . import char_voice
         self._char_name = name if name in characters.CHARACTERS else "Cat"
+        self._char_hue = char_voice.get(self._char_name).hue
         self.update()
 
     def character(self):
@@ -204,7 +208,7 @@ class FaceWidget(QWidget):
         mo = max(0.0, min(0.6, mouth + sigh * 0.1 + swal * 0.06))
         pitch = (0.5 - vol) * 0.18 + 0.02 * math.sin(0.09 * t) + sigh * 0.1 + swal * 0.05
         self._cat_state = dict(vol=vol, t=t, mouth=mo, eye_open=eye_open,
-                               smile=smile_eff, hue=self._hue,
+                               smile=smile_eff, hue=(self._char_hue or self._hue),
                                gaze=(gaze_x, gaze_y), tilt=self._tilt)
         dt = (t - self._anim_last_t) if self._anim_last_t is not None else 0.0
         self._anim_last_t = t

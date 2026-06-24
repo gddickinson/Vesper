@@ -2050,6 +2050,25 @@ Auto-listed in the Sessions menu + the Breathwork programs card via the existing
 `programs.names()` wiring; all stage patterns/voices/ambience/effect resolve; offscreen
 60-tick run advances through all 8 stages, thread-stable (2→2); selftest passes.
 
+## Character round — Duckling + Hedgehog + Robot + per-character voices
+Finished the 2D-character cast and gave each one a personality. Added three more
+characters on the shared framework: **Duckling** (sunny chick, soft bill, head tuft),
+**Hedgehog** (snug ball, quills that stand on end when startled), and a **Robot**
+(brushed-metal head, dark screen face, glowing cyan eyes, a pulsing antenna that sparks
+when excited, an LED mouth that bars when talking / smiles when calm, and a glowing chest
+core). Cast is now **15** (Cat default → … → Robot, Woman, Man) × 12 costumes.
+New **`char_voice.py`**: a `CharVoice` profile per character (ordered TTS name/prefix
+hints, speaking-rate multiplier, signature eye/aura hue, greeting, persona) +
+`pick_voice(hints, available)` that matches against whatever the live engine offers
+(Kokoro ids like `af_heart` or macOS `say` names). When **Sound ▸ Character voices** is
+on, picking a character sets the narrator voice, tints the eyes to its hue, and shows a
+short greeting; the rate folds into the storyteller's wind-down pacing. Default eye look
+of the 3D head is untouched. Verified: selftest passes; char_voice unit test (Cat→
+`af_heart`, Bear/Owl→`bm_george`, Robot→`am_michael`); Robot contact sheet reviewed
+(cute + clearly cyber, costume fits); integration test drew all 15 characters via the
+real worker, applied per-character hue/rate/greeting, toggle on/off, persistence; drive
+clean on both faces (0 issues, thread-stable); all files < 500 lines.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

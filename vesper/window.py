@@ -68,6 +68,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self._face_reactive = False        # reactive face: style follows mode/chant/breath
         self._character = "Cat"            # chosen 2D character (cat/penguin/dog)
         self._costume = "None"             # costume overlay for the 2D character
+        self._char_voices = True           # give each character its own voice + rate
+        self._char_rate = 1.0              # current character's speaking-rate multiplier
         self.tuner = None                   # lazy mic pitch monitor (Sing/Chant)
         self._pitch_spec = None
         self._bell_interval = 0.0           # mindfulness bell interval (minutes)
@@ -199,6 +201,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self.set_face_cat(bool(s.get("face_cat", False)))
         self.set_face_style(s.get("face_style", "Default"))    # cyberpunk render style
         self.set_face_reactive(bool(s.get("face_reactive", False)))   # reactive face
+        self._char_voices = bool(s.get("character_voices", True))   # before set_character
         self.set_character(s.get("character", "Cat"))         # 2D character + costume
         self.set_costume(s.get("costume", "None"))
         self._clock_light = bool(s.get("clock_light", True))   # time-of-day warmth
@@ -248,9 +251,41 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self.face.set_style(name)
 
     def set_character(self, name):
-        """Pick the 2D cartoon character (Cat / Penguin / Dog / ...). Persisted."""
+        """Pick the 2D cartoon character (Cat / Penguin / Dog / ...). Persisted.
+        Adopts the character's signature look, and (when Character voices is on)
+        its narrator voice + speaking rate, with a brief greeting in the status bar."""
         self._character = name
         self.face.set_character(name)
+        from . import char_voice
+        cv = char_voice.get(name)
+        if getattr(self, "_char_voices", True):
+            self._apply_character_voice(name)
+        if cv.greeting:
+            self.status.showMessage(f"{name}: “{cv.greeting}”", 5000)
+
+    def _apply_character_voice(self, name):
+        """Set the narrator to the character's preferred voice + rate (best match
+        among the active TTS engine's voices); falls back gracefully."""
+        from breathsim import narration
+        from . import char_voice
+        cv = char_voice.get(name)
+        self._char_rate = cv.rate
+        try:
+            v = char_voice.pick_voice(cv.hints, narration.available_voices(self.speech))
+            if v:
+                self.narrator.set_voice(v)
+                if self._story_scene and self.controller.running:
+                    self._start_story()
+        except Exception:
+            pass
+
+    def set_character_voices(self, on):
+        """Toggle whether each character speaks in its own voice (persisted)."""
+        self._char_voices = bool(on)
+        if self._char_voices:
+            self._apply_character_voice(self._character)
+        else:
+            self._char_rate = 1.0
 
     def set_costume(self, name):
         """Pick a costume overlay for the 2D character (persisted)."""
@@ -455,6 +490,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
                                  "face_reactive": getattr(self, "_face_reactive", False),
                                  "character": getattr(self, "_character", "Cat"),
                                  "costume": getattr(self, "_costume", "None"),
+                                 "character_voices": getattr(self, "_char_voices", True),
                                  "hourglass": self._hg_show,
                                  "face_cat": self.face.uses_cat(),
                                  "clock_light": self._clock_light,
