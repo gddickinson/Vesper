@@ -36,6 +36,7 @@ from . import lectures_cat, lectures_coral, lectures_moths, lectures_sloth
 from . import lectures_caves, lectures_clouds, lectures_tides
 from . import lectures_calendar, lectures_infinity, lectures_symmetry
 from . import lectures_comets, lectures_nebulae, lectures_saturnsrings
+from . import lectures_galaxies, lectures_meteors, lectures_sun
 from . import (lectures_balloon, lectures_caravan, lectures_compass,
                lectures_railway)
 from . import (lectures_basketry, lectures_blacksmith, lectures_bookbinding,
@@ -62,7 +63,8 @@ _CATALOG = [
     ("The Cosmos", [lectures_physics, lectures_star, lectures_moon,
                     lectures_planets, lectures_aurora, lectures_blackholes,
                     lectures_milkyway, lectures_constellations, lectures_comets,
-                    lectures_nebulae, lectures_saturnsrings]),
+                    lectures_nebulae, lectures_saturnsrings, lectures_sun,
+                    lectures_galaxies, lectures_meteors]),
     ("Earth & Sea", [lectures_seasons, lectures_deeptime, lectures_water,
                      lectures_ocean, lectures_volcanoes, lectures_glaciers,
                      lectures_clouds, lectures_caves, lectures_tides]),

@@ -594,6 +594,16 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — The Cosmos +3 (The Sun, Galaxies, Meteor Showers)
+Expanded the Cosmos branch via 3 parallel subagents (7 sections, 12 lines, fact-free section 1,
+accurate astronomy, ASCII, sleep-closing): `lectures_sun.py` (Brown Noise - a nearby yellow-dwarf
+star, core fusion, 8-light-minute light, corona, sunspots), `lectures_galaxies.py` (Pink Noise -
+island of stars, the Milky Way barred spiral, Andromeda, the galactic year, the cosmic web) and
+`lectures_meteors.py` (Wind Chimes - Earth crossing a comet's dust trail, the radiant,
+Perseids/Geminids, meteoroid/meteor/meteorite). Cosmos branch now 14 -> **89 lectures /
+11 branches**. Validated structure + ASCII + sleep-close; DB rebuilt (7,459 lines / 111,678
+words); selftest passes.
+
 ## Feature (user request) — Rhythmic / environmental FX (instrument suite complete)
 Added `breathsim/synth_fx.py` (instrument suite, part 4, final): composite filtered-noise + event
 generators. `_Train` (Steam + Diesel) = paired wheel "clickety-clack" clacks on a tempo + a

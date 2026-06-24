@@ -247,6 +247,10 @@ Guardrails (every round):
       sleep-closing; ambiences Brown Noise / Singing Bowl / Wind Chimes), registered in
       the Cosmos branch → **74 lectures / 8 branches**; DB rebuilt (6,196 lines); selftest
       passes.
+- [x] **The Cosmos** (+3): The Sun · Galaxies · Meteor Showers — added
+      `lectures_{sun,galaxies,meteors}.py` (7×12 lines, accurate astronomy, ASCII,
+      sleep-closing; Brown Noise / Pink Noise / Wind Chimes), Cosmos branch now 14 →
+      **89 lectures / 11 branches**; DB rebuilt (7,459 lines / 111,678 words); selftest passes.
 - [x] **New branch — Voyages & Journeys** (4): The Compass · The Caravan · The Railway ·
       The Hot-Air Balloon — added `lectures_{compass,caravan,railway,balloon}.py` (7x12-13
       lines, accurate, ASCII, sleep-closing), new branch in `_CATALOG` → **78 lectures /
@@ -261,6 +265,7 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- The Cosmos +3 (The Sun · Galaxies · Meteor Showers) → 89 lectures / 11 branches.
 - Environmental FX synth (`synth_fx.py`): Train (Steam/Diesel), Ship/Harbour, Thunderstorm,
   Ocean Buoy Bell - completes the instrument suite (31 synthesised voices across 4 modules).
 - Winds & Organs synth (`synth_wind.py`): 7 sustained voices - Pipe Organ, Harmonium/Shruti,
