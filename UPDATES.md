@@ -259,6 +259,11 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Trees of the World** (4): The Oak · Bamboo · The Baobab · Cherry Blossom —
+      added `lectures_{oak,bamboo,baobab,cherryblossom}.py` (7x12-13 lines, fact-free section 1,
+      accurate botany/history, ASCII, sleep-closing; Forest Wind / Soft Rainstorm / Night Crickets /
+      Gentle Rain), new branch in `_CATALOG` → **101 lectures / 14 branches**; DB rebuilt (8,495
+      lines / 128,801 words); selftest passes. Done: validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Gems & Stones** (4): Amber · Pearl · Jade · Diamond — added
       `lectures_{amber,pearl,jade,diamond}.py` (7x12-13 lines, accurate science/history, ASCII,
       sleep-closing; Forest Wind / Ocean Waves / Singing Bowl / Brown Noise), new branch in

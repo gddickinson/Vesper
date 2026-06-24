@@ -45,6 +45,8 @@ from . import (lectures_balloon, lectures_caravan, lectures_compass,
 from . import (lectures_basketry, lectures_blacksmith, lectures_bookbinding,
                lectures_stainedglass)
 from . import (lectures_dew, lectures_dust, lectures_seeds, lectures_snowflakes)
+from . import (lectures_baobab, lectures_bamboo, lectures_cherryblossom,
+               lectures_oak)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -102,6 +104,8 @@ _CATALOG = [
                        lectures_diamond]),
     ("Myth & Legend", [lectures_starmyths, lectures_creation, lectures_phoenix,
                        lectures_selkie]),
+    ("Trees of the World", [lectures_oak, lectures_bamboo, lectures_baobab,
+                            lectures_cherryblossom]),
 ]
 
 LECTURES = {}

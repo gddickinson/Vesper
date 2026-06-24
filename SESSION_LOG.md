@@ -594,6 +594,23 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Trees of the World (Oak, Bamboo, Baobab, Cherry Blossom)
+Added a 14th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate botany/history, ASCII, sleep-closing): `lectures_oak.py` (The Oak, Forest Wind - Quercus,
+slow centuries, a single tree as a kingdom of life, mast years + the forgetful jay, mycorrhizal
+web, ship timber + iron-gall ink + thunder gods), `lectures_bamboo.py` (Bamboo, Soft Rainstorm - a
+giant grass, near a metre a day, hollow silica-strong culms that bend not break, one rhizome-joined
+grove, once-in-decades synchronous world-wide flowering and death, panda food, flutes + the first
+lightbulb filament), `lectures_baobab.py` (The Baobab, Night Crickets - the upside-down tree, a
+trunk holding thousands of litres against drought, one-to-two-thousand-year lives, hollow trunks as
+shelters, the tree of life, night-only bat-pollinated flowers, Madagascar's avenue), and
+`lectures_cherryblossom.py` (Cherry Blossom, Gentle Rain - sakura, the grafted Somei-yoshino clone
+flowering as one, mono no aware + the thousand-year hanami custom, the blossom front, Kyoto's
+millennium of records showing warming, the blossom blizzard, the gift to Washington). New branch in
+`_CATALOG` -> **101 lectures / 14 branches**. Validated all four (7 sections, 12-13 lines, pure
+ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (8,495 lines / 128,801
+words / 5 scenes). The storyteller `units()` stream renders each (e.g. Cherry Blossom = 112 units).
+
 ## App round — Slow-Wave Pulse sleep ambience (~0.8 Hz pink-noise swell)
 Added `textures._SlowPulse` -> the **"Slow-Wave Pulse"** GROUP_NATURE ambience (now 148 voices). A
 warm pink+brown noise wash (one-pole-LP'd at 900 Hz) amplitude-modulated by a slow ~0.8 Hz sine
