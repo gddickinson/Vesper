@@ -271,6 +271,14 @@ Guardrails (every round):
       restarts each fresh session; stops the narrator + pauses via the existing path. Honest: it just
       fades + pauses. Done: selftest passes; pure `fade_gain`/`remaining` unit-tested; offscreen both
       faces — full volume before the mark, ~half mid-fade, silent + paused after, thread-stable.
+- [x] **Richer Stats insights** (`breathsim/insights.py`): gentle, honest summaries computed from
+      the existing logs — total sessions/minutes, average sit length, your usual **time of day** and
+      most regular **weekday**, and a **week-over-week** minutes line — all pure + unit-tested with
+      injected history, with graceful empty states (a new user just sees fewer lines). Added an
+      honest **hour histogram** to `store.log_session` (older histories without it skip the
+      time-of-day line, no overclaiming). Shown as a few calm lines in the Practice Stats dialog.
+      Done: selftest passes; helpers unit-tested (empty/new, a week of data, mood, week-over-week);
+      offscreen both faces build the Stats widget without a blocking exec, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

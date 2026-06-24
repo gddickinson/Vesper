@@ -114,7 +114,8 @@ def save_settings(d):
 
 # --- practice history (gentle progress + breath-hold log) ------------------
 
-_HIST_DEFAULT = {"sits": 0, "minutes": 0.0, "holds": [], "days": {}, "moods": []}
+_HIST_DEFAULT = {"sits": 0, "minutes": 0.0, "holds": [], "days": {}, "moods": [],
+                 "hours": {}}
 
 
 def history():
@@ -127,11 +128,16 @@ def log_session(minutes: float):
     mins = max(0.0, float(minutes))
     h["sits"] += 1
     h["minutes"] = round(h["minutes"] + mins, 1)
-    day = _dt.date.today().isoformat()             # per-day log for streaks/heatmap
+    now = _dt.datetime.now()
+    day = now.date().isoformat()                    # per-day log for streaks/heatmap
     d = dict(h.get("days", {}))
     cur = d.get(day, {"min": 0.0, "sits": 0})
     d[day] = {"min": round(cur["min"] + mins, 1), "sits": cur["sits"] + 1}
     h["days"] = d
+    hours = dict(h.get("hours", {}))               # hour-of-day histogram (added later)
+    hr = str(now.hour)
+    hours[hr] = int(hours.get(hr, 0)) + 1
+    h["hours"] = hours
     _write("history.json", h)
 
 

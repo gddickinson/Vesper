@@ -99,6 +99,12 @@ def build(win=None):
         empty.setWordWrap(True)
         empty.setStyleSheet(f"color:{theme.MUTED};")
         v.addWidget(empty)
+    from breathsim import insights                   # gentle, honest summaries
+    for line in insights.lines():
+        il = QLabel(line)
+        il.setWordWrap(True)
+        il.setStyleSheet(f"color:{theme.MUTED};")
+        v.addWidget(il)
     from . import mood                               # a kind mood-trend line
     mt = mood.summary_text()
     if mt:

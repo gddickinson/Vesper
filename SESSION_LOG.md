@@ -594,6 +594,22 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — richer Stats insights (honest summaries from the existing logs)
+Added `breathsim/insights.py` (115 lines, pure + testable): `average_minutes`, `busiest_weekday`
+(by minutes, needs >=2 weekdays to be meaningful), `time_of_day` (morning/afternoon/evening/night
+from an hour histogram, needs >=3 logged hours), `week_over_week` (this vs last 7 days via
+`store.daily_minutes`), and `lines(hist, today)` which assembles a few kind one-liners (total
+sessions/minutes, average sit, usual time of day, most regular weekday, week-over-week up/down) --
+each skipped honestly when the data isn't there, so a brand-new user simply sees nothing. To support
+time-of-day without overclaiming, `store.log_session` now also keeps an **hour histogram**
+(`history["hours"]`, added to `_HIST_DEFAULT`); older histories lacking it just skip that one line.
+The Stats widget (`vesper/stats_heatmap.build`) now appends these lines beneath the streak/heatmap
+and above the mood-trend line. Honest framing: descriptive, never clinical. Verified: `selftest.py`
+passes (109 lectures / 16 branches); the helpers are unit-tested (empty/new user -> [], averages,
+evening time-of-day with the <3 guard, busiest weekday, week-over-week up, and a full 5-line set);
+offscreen both faces -- two logged sits stamp the hour histogram, the Stats widget builds with the
+insight lines present **without any blocking exec**, thread-stable.
+
 ## App round — sleep-timer auto-stop (gentle fade-out + pause after N minutes)
 Added `vesper/sleeptimer.py` (50 lines, pure + testable): `fade_gain(armed_minutes, elapsed,
 fade_seconds=30)` -> `(gain, done)` -- full volume before the mark, a slow linear ramp to 0 over the
