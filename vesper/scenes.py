@@ -18,7 +18,7 @@ from PySide6.QtGui import (QBrush, QColor, QFont, QLinearGradient, QPen,
 
 from . import scene_fx, theme
 
-AMBIENT = ["orb", "night", "ripple", "wave"]
+AMBIENT = ["orb", "night", "ripple", "wave", "fireplace"]
 
 
 def _qc(hexstr, alpha=1.0):
@@ -305,8 +305,86 @@ class RippleScene:
         _overlay(p, w, cx, cy - 70, cy + 4, h - 56, h - 22, c, hue)
 
 
+class FireplaceScene:
+    """A soft hearth: a warm pulsing glow, gently flickering flame tongues and a
+    few embers rising and fading. Slow and low-contrast (no strobing); pairs with
+    the Campfire ambience. Motion is derived from anim time, so it is smooth and
+    reproducible with no per-frame randomness."""
+    name = "fireplace"
+    _BG_TOP, _BG_BOT = "#0c0a08", "#1b1008"
+    _BASE, _MID, _TIP, _EMBER = "#c0461a", "#e8842c", "#f4c350", "#f0b860"
+
+    def __init__(self):
+        rng = np.random.default_rng(21)
+        self.tongues = [dict(
+            dx=(float(rng.random()) * 2 - 1) * 0.11, wd=0.045 + 0.045 * float(rng.random()),
+            ht=0.17 + 0.12 * float(rng.random()), swp=float(rng.random()) * 6.28,
+            sws=0.5 + float(rng.random()) * 0.7, flp=float(rng.random()) * 6.28,
+            fls=0.7 + float(rng.random()) * 0.9) for _ in range(7)]
+        self.embers = [dict(
+            x0=(float(rng.random()) * 2 - 1) * 0.17, sp=0.5 + float(rng.random()) * 0.8,
+            ph=float(rng.random()), dr=float(rng.random()) * 6.28,
+            sz=1.0 + float(rng.random()) * 1.7) for _ in range(14)]
+
+    def draw(self, p, w, h, c):
+        grad = QLinearGradient(0.0, 0.0, 0.0, float(h))
+        grad.setColorAt(0.0, _qc(self._BG_TOP))
+        grad.setColorAt(1.0, _qc(self._BG_BOT))
+        p.fillRect(0, 0, w, h, QBrush(grad))
+        t, running = c["t"], c["running"]
+        vol = c["volume"] if running else 0.5
+        cx, base = w * 0.5, h * 0.78
+        breath = 0.85 + 0.30 * vol                       # the fire breathes with you
+        p.setPen(Qt.PenStyle.NoPen)
+        gr = min(w, h) * 0.55                             # warm hearth glow
+        glow = QRadialGradient(cx, base, gr)
+        glow.setColorAt(0.0, _qc(self._MID, 0.20 + 0.16 * vol))
+        glow.setColorAt(0.5, _qc(self._BASE, 0.10 + 0.07 * vol))
+        glow.setColorAt(1.0, _qc(self._BASE, 0.0))
+        p.setBrush(QBrush(glow))
+        p.drawEllipse(QPointF(cx, base), gr, gr)
+        for sgn in (-1, 1):                               # two dark logs at the base
+            p.save()
+            p.translate(cx + sgn * w * 0.05, base + 10)
+            p.rotate(sgn * 11)
+            p.setBrush(_qc("#1c0f08"))
+            p.drawRoundedRect(QRectF(-w * 0.14, -7, w * 0.28, 14), 6, 6)
+            p.restore()
+        for tg in self.tongues:                           # soft, swaying flame tongues
+            flick = 0.82 + 0.18 * math.sin(t * tg["fls"] + tg["flp"])
+            sway = math.sin(t * tg["sws"] + tg["swp"]) * w * 0.012
+            tx, th, tw = cx + tg["dx"] * w, tg["ht"] * h * breath * flick, tg["wd"] * w
+            steps = 7
+            for i in range(steps):
+                f = i / (steps - 1)                       # 0 base -> 1 tip
+                yy, xx = base - f * th, tx + sway * f
+                rad = tw * (1.0 - 0.65 * f)
+                col = theme.blend(theme.blend(self._BASE, self._MID, min(1.0, f * 1.6)),
+                                  self._TIP, max(0.0, f * 1.5 - 0.5))
+                a = (0.13 + 0.10 * vol) * (1.0 - 0.45 * f)
+                bg = QRadialGradient(xx, yy, rad)
+                bg.setColorAt(0.0, _qc(col, min(1.0, a * 1.7)))
+                bg.setColorAt(1.0, _qc(col, 0.0))
+                p.setBrush(QBrush(bg))
+                p.drawEllipse(QPointF(xx, yy), rad, rad * 1.4)
+        core = QRadialGradient(cx, base - h * 0.05, w * 0.11)   # bright heart
+        core.setColorAt(0.0, _qc(self._TIP, 0.16 + 0.16 * vol))
+        core.setColorAt(1.0, _qc(self._TIP, 0.0))
+        p.setBrush(QBrush(core))
+        p.drawEllipse(QPointF(cx, base - h * 0.05), w * 0.11, w * 0.11)
+        for e in self.embers:                             # embers drifting upward
+            cyc = (t * 0.08 * e["sp"] + e["ph"]) % 1.0
+            ey = base - cyc * h * 0.55
+            ex = cx + e["x0"] * w + math.sin(t * 0.6 + e["dr"]) * w * 0.02
+            a = max(0.0, 1.0 - cyc) * 0.7
+            p.setBrush(_qc(theme.blend(self._EMBER, "#ffffff", 0.2), a))
+            p.drawEllipse(QPointF(ex, ey), e["sz"], e["sz"])
+        _overlay(p, w, cx, h * 0.30, h * 0.30 + 40, h * 0.30 + 78, h - 22,
+                 c, self._MID)
+
+
 _CLASSES = {"orb": OrbScene, "night": NightScene, "ripple": RippleScene,
-            "wave": WaveScene}
+            "wave": WaveScene, "fireplace": FireplaceScene}
 
 
 def make(name):

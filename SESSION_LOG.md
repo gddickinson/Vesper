@@ -594,6 +594,16 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — Fireplace scene (warm flickering fire)
+Added `scenes.FireplaceScene` (a 5th ambient scene): a warm pulsing hearth glow that breathes
+with the breath, seven soft swaying flame tongues built from stacked warm radial-gradient blobs
+(slow flicker derived from anim time - no strobing), two crossed dark logs, a bright central
+heart, and 14 embers drifting upward and fading. Warm, low-contrast, melatonin-friendly; pairs
+with the Campfire ambience. Registered in `AMBIENT`/`_CLASSES` so it appears in the View > Scene
+menu (`win.set_scene("fireplace")`). Deterministic (seeded params, anim-time motion - no
+per-frame randomness or thread spawns). selftest passes; offscreen scene session thread-stable
+(2->2); PNG confirms a cosy fire. scenes.py ~395 lines.
+
 ## App round — Sunrise / Wake mode (dawn simulation, inverse of the wind-down)
 Added a gentle dawn wake-up. `session.SessionDirector.start_wake` + `_update_wake` mirror the
 sleep path inverted: over the duration the breath pattern eases slow->normal (Extended 7-11 ->

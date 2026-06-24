@@ -130,7 +130,10 @@ Guardrails (every round):
       brighter by day) and suggest a fitting mode on launch.
 
 ### Researched batch — new visual scenes
-- [ ] **Fireplace scene** (flickering flame + embers; pairs with Campfire) for Relax/Sleep.
+- [x] **Fireplace scene** (`scenes.FireplaceScene`): a warm pulsing hearth glow, soft swaying
+      flame tongues (slow flicker, no strobing), crossed logs and embers rising + fading; the
+      fire breathes with you. In the View > Scene menu; pairs with Campfire. Verified PNG +
+      thread-stable offscreen.
 - [ ] **Rain-on-window scene**: droplets sliding down glass over a soft blurred glow.
 - [ ] **Aurora scene**: slow northern-lights ribbons for Sleep/Relax.
 - [ ] **Breathing mandala**: a symmetric sacred-geometry pattern that unfolds/rotates
@@ -221,6 +224,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Fireplace scene: warm flickering flame + embers + breathing hearth glow (View > Scene).
 - Sunrise / Wake mode: gradual dawn simulation (brighten + volume rise + breath quicken +
   dawn chorus), the inverse of the Sleep wind-down; from the Sessions menu.
 - New lecture branch The Quiet Crafts (Bookbinding · Blacksmith · Basketry · Stained Glass)
