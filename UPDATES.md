@@ -389,6 +389,13 @@ Guardrails (every round):
       Done: selftest passes; `next_ambience` unit-tested (period boundaries, wrap, single, empty,
       negative); offscreen both faces — beds advance per period (Ocean Waves -> Gentle Rain ->
       Forest Wind), hold stable when off, are suppressed under the storyteller, thread-stable.
+- [x] **Voice loudness-consistency audit** (`tools/loudness.py`): a read-only offline tool that
+      renders each bed in a voices group for a fixed time and reports peak + rms, flagging rms
+      outliers (>2x / <0.4x the group median). Ran it on the ambience beds (the set the soundscape
+      switches between): all **21** GROUP_NATURE beds already sit within **0.64x-1.36x** the median
+      rms (0.12), every peak <= 0.75 — i.e. no jarring outliers — so **no gains were changed**
+      (the honest outcome; the calibrated gains stand). Done: tool added + numbers recorded; selftest
+      peaks <= 1.0 unchanged; offscreen both faces thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

@@ -594,6 +594,20 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — voice loudness-consistency audit (measure, no rebalance needed)
+Added `tools/loudness.py` (65 lines, read-only): renders each voice in a group (default GROUP_NATURE,
+the ambience beds the soundscape switches between) for a fixed 12 s at a steady breath pattern and
+reports **peak + rms**, sorted, with each bed's rms as a multiple of the group median and a LOUD/quiet
+flag for outliers beyond 2x / 0.4x. It changes nothing -- it just measures, so the numbers are
+auditable (`python -m tools.loudness [GROUP]`). Findings on the **21** ambience beds: median rms
+0.1201, and every bed sits within **0.64x-1.36x** of it (quietest Forest Wind 0.0765, loudest Whale
+Song 0.1638), with all peaks <= 0.752 -- i.e. they are already well matched, **no jarring outliers**.
+Per the careful brief (voice gains are calibrated), the honest outcome is to change **no gains**: the
+beds are consistent as they stand. Verified: `selftest.py` passes (137 lectures / 23 branches, all
+peaks <= 1.0) and is unchanged by this round (no synthesis edits); offscreen both faces tick a Relax
+session thread-stable. The tool stays available for future audits (e.g. after adding beds, or to
+check GROUP_MUSIC/BELLS/etc by passing the group name).
+
 ## App round — ambience auto-rotate (slowly cycle calm beds)
 Added an opt-in mode that lets the soundscape gently evolve over a long session instead of looping
 one bed. `breathsim/ambrotate.py` (pure + testable): `next_ambience(beds, elapsed, period=360)` ->
