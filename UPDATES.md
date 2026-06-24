@@ -211,11 +211,15 @@ Guardrails (every round):
       The Hot-Air Balloon — added `lectures_{compass,caravan,railway,balloon}.py` (7x12-13
       lines, accurate, ASCII, sleep-closing), new branch in `_CATALOG` → **78 lectures /
       9 branches**; DB rebuilt (6,533 lines); selftest passes.
-- [ ] **New branch — The Quiet Crafts** (4): Bookbinding · The Blacksmith · Basketry ·
-      Stained Glass.
+- [x] **New branch — The Quiet Crafts** (4): Bookbinding · The Blacksmith · Basketry ·
+      Stained Glass — added `lectures_{bookbinding,blacksmith,basketry,stainedglass}.py`
+      (7x12-13 lines, accurate craft history, ASCII, sleep-closing), new branch in `_CATALOG`
+      → **82 lectures / 10 branches**; DB rebuilt (6,871 lines); selftest passes.
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- New lecture branch The Quiet Crafts (Bookbinding · Blacksmith · Basketry · Stained Glass)
+  -> 82 lectures / 10 branches.
 - Cosmic music +2 (Aurora Tones · Saturn Ring Shimmer) -> 10 Cosmic Music voices.
 - Sound > Cosmic Music menu: all 8 generative music voices one click away.
 - Cosmic music data sonification: "The Planets" (real orbital-ratio scale) + real pulsar beat.

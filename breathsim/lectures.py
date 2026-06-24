@@ -38,6 +38,8 @@ from . import lectures_calendar, lectures_infinity, lectures_symmetry
 from . import lectures_comets, lectures_nebulae, lectures_saturnsrings
 from . import (lectures_balloon, lectures_caravan, lectures_compass,
                lectures_railway)
+from . import (lectures_basketry, lectures_blacksmith, lectures_bookbinding,
+               lectures_stainedglass)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -84,6 +86,8 @@ _CATALOG = [
                          lectures_symmetry, lectures_calendar]),
     ("Voyages & Journeys", [lectures_compass, lectures_caravan, lectures_railway,
                             lectures_balloon]),
+    ("The Quiet Crafts", [lectures_bookbinding, lectures_blacksmith,
+                          lectures_basketry, lectures_stainedglass]),
     ("Myth & Legend", [lectures_starmyths, lectures_creation, lectures_phoenix,
                        lectures_selkie]),
 ]

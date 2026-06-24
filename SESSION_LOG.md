@@ -594,6 +594,17 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch The Quiet Crafts (Bookbinding, Blacksmith, Basketry, Stained Glass)
+Added a 10th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section
+1, accurate craft history, ASCII, sleep-closing): `lectures_bookbinding.py` (Soft Rainstorm -
+signatures, the bone folder, the codex, sewn cords, headbands, gold tooling), `lectures_blacksmith.py`
+(Campfire forge - bellows, iron softening not melting, anvil, quench + temper, the Iron Age),
+`lectures_basketry.py` (Forest Wind - older than pottery, soaked willow, the slath, stakes and
+weavers, the border) and `lectures_stainedglass.py` (Singing Bowl - metal-oxide colours, the
+cartoon, fired glass-paint, lead cames, Gothic rose windows). Registered the new
+`("The Quiet Crafts", [...])` branch in `_CATALOG` -> **82 lectures / 10 branches**. Validated
+structure + ASCII + sleep-close; DB rebuilt (6,871 lines / 101,327 words); selftest passes.
+
 ## Music round — Aurora Tones + Saturn Ring Shimmer presets
 Added two more Cosmic Music presets to `cosmic.py`: **Aurora Tones** (ethereal, slowly shifting
 mid/high pentatonic pads, wide stereo, gentle high shimmer, large reverb, breath-synced - cold
