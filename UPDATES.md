@@ -302,6 +302,14 @@ Guardrails (every round):
       Sleep/clock warm+dim overlay. Done: selftest passes; `scenes.py` stays 430 lines; offscreen
       both faces render the night scene (564x557) to non-empty PNGs that change frame-to-frame,
       thread-stable.
+- [x] **Breathing-pattern visual guide** (`vesper/pattern_bar.py`): a compact phase diagram in the
+      pattern card. Pure `segments(pattern)` -> the non-zero inhale/hold/exhale/hold phases with
+      their seconds + width fractions; `PatternBar` paints them proportional, tinted with the theme
+      per-phase hues, each labelled with its duration, and softly highlights the **live phase** while
+      running (refreshed via the panel `sync`/`tick`). Honest: it just visualises the numbers. Done:
+      selftest passes; `segments` unit-tested (4-7-8 -> 3 segments / correct fractions, zero-holds
+      -> 2, box -> 4 equal); offscreen both faces show the bar, switching patterns updates the
+      segments, the live phase highlights, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

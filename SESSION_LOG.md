@@ -594,6 +594,22 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — breathing-pattern visual guide (phase bar in the pattern card)
+Added `vesper/pattern_bar.py` (88 lines): a compact diagram of the current pattern's phases. Pure
+`segments(pattern)` turns a `BreathPattern`'s four durations (inhale / hold_full / exhale /
+hold_empty) into the **non-zero** phases with their seconds and width fractions; `PatternBar`
+(QWidget) paints them as a proportional bar, each segment tinted with the theme's per-phase hue
+(`theme.phase_hue`) and labelled with its duration, and softly **highlights the live phase** (a
+glow + brighter label) while a session runs. It is change-guarded (a signature on the pattern +
+phase) so it only repaints when something actually changes. Wired into `_card_pattern` (combo now
+routes through `_on_pattern`, which refreshes the bar), and refreshed from the panel `sync()` (e.g.
+when the pace slider or a guided stage changes the pattern) and each frame in `tick()` via
+`bar.refresh(controller)`. Honest framing: it just visualises the numbers. Verified: `selftest.py`
+passes (117 lectures / 18 branches); `segments` unit-tested (4-7-8 -> 3 segments with fractions
+4/19, 7/19, 8/19; zero holds -> 2 equal; box 4-4-4-4 -> 4 equal); offscreen both faces -- the bar is
+present in the pattern card, switching to a 4-7-8 pattern updates it to 3 segments and renders to a
+non-empty PNG, the live phase highlights ("inhale") while running, thread-stable.
+
 ## App round — richer Sleep night scene (parallax stars, horizon glow, moon phase)
 Deepened `vesper/scenes.NightScene` with three gentle, low-contrast additions, all driven by the
 existing `anim_t` (no new clock) and kept dark/melatonin-friendly so they respect the Sleep + clock

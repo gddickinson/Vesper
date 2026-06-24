@@ -124,6 +124,9 @@ class ControlPanel(_SectionsMixin, QWidget):
         self.vol.blockSignals(False)
         eng = self.win.engine
         self._set_combo("pattern", self.win.controller.pattern.name)
+        bar = self._w.get("pattern_bar")
+        if bar is not None:
+            bar.set_pattern(self.win.controller.pattern)
         self._set_combo("voice_a", eng.voice_a)
         self._set_combo("voice_out", eng.voice_out or "Same as inhale")
         self._set_combo("persona", eng.persona.name)
@@ -150,6 +153,9 @@ class ControlPanel(_SectionsMixin, QWidget):
                 stage.setText("")
         if "hold_btn" in self._w:
             self._refresh_hold()
+        bar = self._w.get("pattern_bar")
+        if bar is not None:
+            bar.refresh(self.win.controller)         # live phase highlight + segments
 
     # --- reflection from the window ---------------------------------------
     def reflect_mode(self, name):

@@ -35,10 +35,21 @@ class _SectionsMixin:
         frame, body = card("Breath pattern")
         box = combo([p.name for p in PRESETS],
                     self.win.controller.pattern.name,
-                    self.win.set_pattern)
+                    self._on_pattern)
         self._w["pattern"] = box
         body.addWidget(box)
+        from .pattern_bar import PatternBar           # a small phase diagram
+        bar = PatternBar()
+        bar.set_pattern(self.win.controller.pattern)
+        self._w["pattern_bar"] = bar
+        body.addWidget(bar)
         return frame
+
+    def _on_pattern(self, name):
+        self.win.set_pattern(name)
+        bar = self._w.get("pattern_bar")
+        if bar is not None:
+            bar.set_pattern(self.win.controller.pattern)
 
     def _card_pace(self, _b=None):
         frame, body = card("Pace — breaths per minute")
