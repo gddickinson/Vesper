@@ -197,8 +197,10 @@ Guardrails (every round):
       menu. Hemony bell partials, gong bloom, bowl beating; calibrated; selftest passes.
 
 ### Researched batch — instrument & effect synthesis (user-requested "sonorous sounds")
-- [ ] **Drums**: a membrane/percussion synth (frame drum, taiko, tabla, hand drum, log/slit drum,
-      woodblock) - pitched mode + noise transient, struck on a tempo. New module `synth_drum.py`.
+- [x] **Drums** (`synth_drum.py`): a membrane/percussion synth (pitched modes with a downward
+      pitch glide + a noise attack transient), struck on a slow tempo. 7 drums - Frame Drum,
+      Taiko, Tabla, Djembe (bass/slap), Log Drum, Woodblock, Bodhran - in a new GROUP_DRUMS, in
+      the effects-slot picker + a Sound > Drums menu. Calibrated ~0.72 peak; selftest passes.
 - [ ] **Whistles / organs / horns**: sustained tonal sources - whistles (near-sine + breath chiff),
       organ (additive flue-pipe harmonics), train + ship + fog horns (detuned harmonic stacks,
       slow attack). New module `synth_wind.py`.
@@ -254,6 +256,8 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- Drums synth (`synth_drum.py`): 7 membrane drums (frame/taiko/tabla/djembe/log/woodblock/
+  bodhran) struck on a tempo; in the effects picker + Sound menu.
 - Bells & Gongs synth (`synth_bell.py`): 12 struck instruments (bells/bowls/gong/triangle/
   tingsha/tubular + a sung bowl) - struck-resonator engine; in the soundscape + Sound menu.
 - Aurora scene: slow shimmering northern-lights curtains over a starry sky (View > Scene).

@@ -179,7 +179,8 @@ class _SectionsMixin:
                            on_change=lambda v: self.win.set_slot_level("ambience", v))
         self._w["amb_lvl"] = al
         body.addWidget(al)
-        effs = ["None"] + voices.names(voices.GROUP_EFFECTS)
+        effs = (["None"] + voices.names(voices.GROUP_EFFECTS)
+                + voices.names(voices.GROUP_DRUMS))
         e = combo(effs, self.win.engine.slot_voice.get("effects") or "None",
                   self.win.set_effect)
         self._w["effect"] = e

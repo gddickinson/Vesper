@@ -30,6 +30,7 @@ GROUP_CUSTOM = "Custom"
 GROUP_CAT = "Cat"
 GROUP_MUSIC = "Cosmic Music"
 GROUP_BELLS = "Bells & Gongs"
+GROUP_DRUMS = "Drums"
 
 # Voice families whose primary slot supports the human<->synthetic morph and
 # per-voice morphing (everything voice/breath based).
@@ -263,3 +264,4 @@ from . import voices_cat  # noqa: E402,F401
 from . import voices_breath_nature  # noqa: E402,F401  (natural-sound breaths)
 from . import cosmic  # noqa: E402,F401  (generative Cosmic Music; needs textures)
 from . import synth_bell  # noqa: E402,F401  (Bells & Gongs; needs textures)
+from . import synth_drum  # noqa: E402,F401  (Drums; needs textures)

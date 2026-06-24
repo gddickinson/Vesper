@@ -594,6 +594,20 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Feature (user request) — Drums synthesis module
+Added `breathsim/synth_drum.py` (instrument suite, part 2): a membrane/percussion synth. Each hit
+(`_Hit`) is one-or-two membrane modes - decaying sines with a gentle **downward pitch glide** (a
+struck head slackens as it rings, via the integrate-frequency-to-phase trick) - plus a short
+**noise attack transient** (shared seeded noise gated by per-hit envelopes, bandpassed). `_DrumGen`
+strikes on a steady slow tempo with a little swing, cycling a per-spec hit **pattern** (djembe
+bass/slap, slit-drum two tones, tabla cycle). 7 drums in a new **Drums** group (GROUP_DRUMS):
+Frame Drum, Taiko, Tabla, Djembe, Log Drum, Woodblock, Bodhran - plugged in via
+`textures.register_generator`, offered in the **effects-slot** picker (`vesper/sections.py`) + a
+**Sound > Drums** menu (`win.set_effect`). Gains calibrated over a 120 s render (~0.72 peak); FFT
+confirms the right pitches (Frame 87 Hz, Taiko 61 Hz, Tabla 207 Hz, Woodblock 890 Hz). selftest
+passes (130 voices); offscreen Relax session selects + crossfades drums in the effects slot,
+thread-stable (2->2) on both faces. 164 lines.
+
 ## Feature (user request) — Bells & Gongs synthesis module
 Researched bell/gong/bowl acoustics (Hemony partials hum 0.5 / prime 1 / tierce 1.2 / quint 1.5 /
 nominal 2 with long-quiet lows + short-bright highs; gong bloom; bowl beating from close modes;

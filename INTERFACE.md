@@ -201,7 +201,9 @@ Starlight Choir · Deep Space): endless, non-repeating, just-intonation pads sch
 near-coprime cycles over a drone with slow root drift, washed through a block-delay
 feedback-comb `reverb.Reverb`; and **`synth_bell`** — a struck-resonator engine + 12-instrument
 **Bells & Gongs** library (`GROUP_BELLS`: bells / bowls / gong / triangle / tingsha / tubular +
-a sung bowl) tolling slowly as a meditation/ambience bed. The 2D fallback face lives in
+a sung bowl) tolling slowly as a meditation/ambience bed; and **`synth_drum`** — a
+membrane/percussion synth + **Drums** library (`GROUP_DRUMS`: frame/taiko/tabla/djembe/log/
+woodblock/bodhran) struck on a tempo (effects slot). The 2D fallback face lives in
 `vesper/cat.py`.
 
 ## Other project files

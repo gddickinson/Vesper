@@ -125,6 +125,9 @@ def _sound(win, m):
     bells = voices.names(voices.GROUP_BELLS)         # bells / bowls / gongs (tolling)
     if bells:
         _list_menu(m.addMenu("Bells & Gongs"), bells, win.set_ambience)
+    drums = voices.names(voices.GROUP_DRUMS)         # rhythmic drum layers (effects slot)
+    if drums:
+        _list_menu(m.addMenu("Drums"), drums, win.set_effect)
     m.addSeparator()
     m.addAction("Mixer…").triggered.connect(lambda: dialogs.open_mixer(win))
 
