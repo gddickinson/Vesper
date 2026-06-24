@@ -449,7 +449,10 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
     def _log_practice(self):
         """Record a completed sit (≥30 s) to the practice history, once."""
         if not self._logged_session and self.controller.elapsed() >= 30:
-            store.log_session(self.controller.elapsed() / 60.0)
+            p = self.controller.pattern                # log the session's pace (bpm)
+            cycle = p.inhale + p.hold_full + p.exhale + p.hold_empty
+            bpm = 60.0 / cycle if cycle > 0 else None
+            store.log_session(self.controller.elapsed() / 60.0, bpm)
             self._logged_session = True
             ac = getattr(self, "_active_course", None)
             if ac:                                  # a course day completed -> advance

@@ -594,6 +594,22 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — breath-rate (pace) insight in Stats
+Surfaced the breathing pace a user tends to practise at, computed honestly from what is logged.
+`store.log_session(minutes, bpm=None)` now records the session's breaths-per-minute into a capped
+`bpm` list in `history.json` (added to `_HIST_DEFAULT`; older histories without it just skip the
+line). `window._log_practice` computes the bpm from the live pattern's cycle (`60 / (inhale +
+hold_full + exhale + hold_empty)`) and passes it when logging. `breathsim/insights` gains pure
+`avg_bpm(history)` and `pace_line(history)` -> "You tend to breathe around 6 a minute - a calm,
+resonant pace" when the average sits in the ~4-7/min resonance/coherence sweet spot, or a plain
+statement otherwise; `insights.lines()` appends it (so it shows in the Practice Stats dialog via
+`stats_heatmap`), and there is no pace line at all without data. Honest framing: descriptive, with
+resonance noted gently, not prescribed. Verified: `selftest.py` passes (133 lectures / 22 branches);
+the helpers are unit-tested (no-data -> None, average of logged bpms, the resonance note for ~6/min
+vs none for ~10/min, and `lines()` inclusion); offscreen both faces -- two logged Meditate sits
+record bpm (5.45 each -> avg 5.5) and the Stats widget builds with the pace line present,
+thread-stable.
+
 ## App round — sleep-onset "lights out" auto-dim
 Deepened the tail of the Sleep wind-down so the screen eases toward near-dark as you fall asleep.
 Added `vesper/sleepdim.py` (pure + testable): `sleep_dim(prog, knee=0.85, floor=0.55)` returns the

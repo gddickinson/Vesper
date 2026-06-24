@@ -115,7 +115,7 @@ def save_settings(d):
 # --- practice history (gentle progress + breath-hold log) ------------------
 
 _HIST_DEFAULT = {"sits": 0, "minutes": 0.0, "holds": [], "days": {}, "moods": [],
-                 "hours": {}}
+                 "hours": {}, "bpm": []}
 
 
 def history():
@@ -123,7 +123,7 @@ def history():
     return {**_HIST_DEFAULT, **h}
 
 
-def log_session(minutes: float):
+def log_session(minutes: float, bpm=None):
     h = history()
     mins = max(0.0, float(minutes))
     h["sits"] += 1
@@ -138,6 +138,8 @@ def log_session(minutes: float):
     hr = str(now.hour)
     hours[hr] = int(hours.get(hr, 0)) + 1
     h["hours"] = hours
+    if bpm and float(bpm) > 0:                      # breaths/min (added later; optional)
+        h["bpm"] = (list(h.get("bpm", [])) + [round(float(bpm), 2)])[-200:]
     _write("history.json", h)
 
 

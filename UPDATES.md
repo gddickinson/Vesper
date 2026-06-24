@@ -370,6 +370,14 @@ Guardrails (every round):
       passes; `sleep_dim` unit-tested (knee continuity at 0.745, deeper past it, monotonic, floor
       0.55); offscreen both faces — opacity is ~0.85 mid-session and ~0.57 deep in the wind-down, and
       returns to ~0.96 after reset, thread-stable.
+- [x] **Breath-rate (pace) insight** (`store.log_session` bpm + `breathsim/insights`): each logged
+      session now also records its breaths-per-minute (60 / the pattern's cycle), an optional field
+      older entries simply lack. `insights.avg_bpm`/`pace_line` average it into a kind, honest line
+      ("You tend to breathe around 6 a minute - a calm, resonant pace" for the ~4-7/min resonance
+      range, plain otherwise), shown in Practice Stats; no line without data. Honest: descriptive, and
+      resonance is a gentle note not a prescription. Done: selftest passes; helpers unit-tested
+      (no-data None, average, resonance note vs fast, lines() inclusion); offscreen both faces — two
+      logged sits record bpm and the Stats widget shows the pace line, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

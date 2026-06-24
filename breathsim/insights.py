@@ -83,6 +83,27 @@ def week_over_week(hist, today=None):
     return (total(this0, today), total(last0, last1))
 
 
+def avg_bpm(hist):
+    """Average logged breaths-per-minute, or None if none recorded."""
+    bs = [float(x) for x in hist.get("bpm", []) if isinstance(x, (int, float))]
+    if not bs:
+        return None
+    return round(sum(bs) / len(bs), 1)
+
+
+def pace_line(hist):
+    """A kind one-liner on the usual breathing pace, or None without data."""
+    a = avg_bpm(hist)
+    if a is None:
+        return None
+    txt = f"You tend to breathe around {a:g} a minute"
+    if 4.0 <= a <= 7.0:                  # the resonance / coherence sweet spot
+        txt += " - a calm, resonant pace."
+    else:
+        txt += "."
+    return txt
+
+
 def lines(hist=None, today=None):
     """A short list of friendly insight strings (possibly empty for a new user)."""
     hist = hist if hist is not None else store.history()
@@ -112,4 +133,7 @@ def lines(hist=None, today=None):
         elif last_w > 0 and this_w <= last_w * 0.6:
             out.append(f"A quieter week ({this_w:.0f} min) than last "
                        f"({last_w:.0f} min) - that is perfectly fine.")
+    pace = pace_line(hist)
+    if pace:
+        out.append(pace)
     return out
