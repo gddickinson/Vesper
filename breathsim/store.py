@@ -124,6 +124,8 @@ _HIST_DEFAULT = {"sits": 0, "minutes": 0.0, "holds": [], "days": {}, "moods": []
 
 def history():
     h = _read("history.json", {})
+    if not isinstance(h, dict):                     # a corrupted file -> safe default
+        h = {}
     return {**_HIST_DEFAULT, **h}
 
 
@@ -149,10 +151,36 @@ def log_session(minutes: float, bpm=None):
 
 # --- streaks / heatmap (gentle, computed from the per-day log) --------------
 
+def _valid_day(key):
+    """True if *key* is a parseable ISO date. Guards against corrupted/legacy
+    history files whose ``days`` map holds a junk key (which would otherwise
+    crash streak / week computations downstream)."""
+    try:
+        _dt.date.fromisoformat(str(key))
+        return True
+    except (ValueError, TypeError):
+        return False
+
+
 def daily_minutes(hist=None):
-    """{ 'YYYY-MM-DD': minutes } from the per-day practice log (pure / testable)."""
+    """{ 'YYYY-MM-DD': minutes } from the per-day practice log (pure / testable).
+
+    Only well-formed ISO date keys mapping to a dict-like value are included, so
+    a damaged history file degrades gracefully instead of crashing the Stats
+    view, streaks, or the insight lines built on top of this."""
     h = hist if hist is not None else history()
-    return {d: float(v.get("min", 0.0)) for d, v in h.get("days", {}).items()}
+    days = h.get("days", {})
+    if not isinstance(days, dict):
+        return {}
+    out = {}
+    for d, v in days.items():
+        if not _valid_day(d) or not isinstance(v, dict):
+            continue
+        try:
+            out[d] = float(v.get("min", 0.0))
+        except (TypeError, ValueError):
+            continue
+    return out
 
 
 def streak(hist=None, today=None):
@@ -228,7 +256,8 @@ def clear_history():
 
 def course_state():
     """{ course_name: {'day': next-0-based-index, 'done': [iso...], 'completed': bool} }."""
-    return _read("courses.json", {})
+    d = _read("courses.json", {})
+    return d if isinstance(d, dict) else {}
 
 
 def course_day(name):

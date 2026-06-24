@@ -473,7 +473,17 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self.engine.set_master_volume(0.0 if self._is_muted else self.user_volume)
         self._start_story()
         self._arm_intro(fresh)
+        self._note_if_silent()                         # honest visual-only message
         self.panel.reflect_running(self.controller.running)
+
+    def _note_if_silent(self):
+        """If the audio device could not be opened, gently say so once, so a
+        visual-only session doesn't seem broken. The breath/visuals carry on."""
+        if getattr(self, "_silent_noted", False):
+            return
+        if not getattr(self.engine, "available", True):
+            self._silent_noted = True
+            self.status.showMessage("Audio unavailable - visual only", 6000)
 
     def _arm_intro(self, fresh):
         """A gentle settle-in lead-in over the first breath, so the first inhale
@@ -693,6 +703,19 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
 
     # --- loop --------------------------------------------------------------
     def _tick(self):
+        """Per-frame slot (~40fps). Guarded so a single bad frame can't spam
+        tracebacks every tick or stall the animation; the first error is logged
+        once and the loop keeps running."""
+        try:
+            self._tick_impl()
+        except Exception:
+            if not getattr(self, "_tick_errored", False):
+                self._tick_errored = True
+                import traceback
+                print("[vesper] tick error (suppressed after first):")
+                traceback.print_exc()
+
+    def _tick_impl(self):
         self._anim_t += 1.0 / FPS
         if self.controller.running:
             self.director.update(self.controller.elapsed())   # morph / program / sleep

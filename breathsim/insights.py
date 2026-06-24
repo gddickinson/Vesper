@@ -33,11 +33,13 @@ def busiest_weekday(hist):
     """The weekday you have practised most (by minutes), or None."""
     totals = {}
     for iso, v in hist.get("days", {}).items():
+        if not isinstance(v, dict):
+            continue
         try:
             wd = _dt.date.fromisoformat(iso).weekday()
-        except ValueError:
+            totals[wd] = totals.get(wd, 0.0) + float(v.get("min", 0.0))
+        except (ValueError, TypeError):
             continue
-        totals[wd] = totals.get(wd, 0.0) + float(v.get("min", 0.0))
     totals = {k: m for k, m in totals.items() if m > 0}
     if len(totals) < 2:                  # need a little spread to be meaningful
         return None
@@ -112,13 +114,15 @@ def this_month(hist, today=None):
     sits = 0
     mins = 0.0
     for iso, v in hist.get("days", {}).items():
+        if not isinstance(v, dict):
+            continue                          # ignore malformed day entries
         try:
             d = _dt.date.fromisoformat(iso)
+            if d.year == today.year and d.month == today.month:
+                sits += int(v.get("sits", 0))
+                mins += float(v.get("min", 0.0))
         except (ValueError, TypeError):
-            continue                          # ignore malformed date keys
-        if d.year == today.year and d.month == today.month:
-            sits += int(v.get("sits", 0))
-            mins += float(v.get("min", 0.0))
+            continue                          # ignore malformed date keys / values
     if sits <= 0 and mins <= 0:
         return None                           # nothing this month yet
     s = "sit" if sits == 1 else "sits"
