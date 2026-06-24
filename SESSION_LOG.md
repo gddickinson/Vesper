@@ -594,6 +594,20 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch The Elements (Fire, Water, Air, Earth)
+Added a 12th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate science, ASCII, sleep-closing): `lectures_fire.py` (Campfire - combustion as released
+sunlight, the fire triangle, flame colour/soot, embers), `lectures_waterelement.py` (Mountain
+Stream - the water cycle, ice floating, heat capacity, surface tension, a drop's long journey),
+`lectures_air.py` (Forest Wind - nitrogen/oxygen, air pressure, wind, the thin blue shell, shared
+breath) and `lectures_earth.py` (Brown Noise - crust over moving rock, living soil, the rock cycle
++ deep-time layers, the iron core + gravity holding you). NOTE: the existing `lectures_water.py`
+("A River to the Sea", Earth & Sea) was accidentally overwritten by the Water subagent; restored it
+from git and kept the new Elements water as `lectures_waterelement` (NAME "Water", distinct from "A
+River to the Sea") to avoid a name/file collision. Registered the new `("The Elements", [...])`
+branch in `_CATALOG` -> **93 lectures / 12 branches**. Validated structure + ASCII + sleep-close +
+no duplicate names; DB rebuilt (7,797 lines / 117,646 words); selftest passes.
+
 ## App round — practice streaks + calendar heatmap in Stats
 `breathsim/store.py` now keeps a per-day practice log (a `days` dict of {date: {min, sits}}, written
 by `log_session` using `datetime.date.today()`; backward-compatible via the history default). Added

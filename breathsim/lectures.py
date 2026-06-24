@@ -37,6 +37,8 @@ from . import lectures_caves, lectures_clouds, lectures_tides
 from . import lectures_calendar, lectures_infinity, lectures_symmetry
 from . import lectures_comets, lectures_nebulae, lectures_saturnsrings
 from . import lectures_galaxies, lectures_meteors, lectures_sun
+from . import (lectures_air, lectures_earth, lectures_fire,
+               lectures_waterelement)
 from . import (lectures_balloon, lectures_caravan, lectures_compass,
                lectures_railway)
 from . import (lectures_basketry, lectures_blacksmith, lectures_bookbinding,
@@ -93,6 +95,8 @@ _CATALOG = [
                           lectures_basketry, lectures_stainedglass]),
     ("Small Wonders", [lectures_dew, lectures_dust, lectures_seeds,
                        lectures_snowflakes]),
+    ("The Elements", [lectures_fire, lectures_waterelement, lectures_air,
+                      lectures_earth]),
     ("Myth & Legend", [lectures_starmyths, lectures_creation, lectures_phoenix,
                        lectures_selkie]),
 ]

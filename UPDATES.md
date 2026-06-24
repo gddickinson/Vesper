@@ -247,6 +247,12 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — The Elements** (4): Fire · Water · Air · Earth — added
+      `lectures_{fire,waterelement,air,earth}.py` (7x12-13 lines, accurate science, ASCII,
+      sleep-closing; Campfire / Mountain Stream / Forest Wind / Brown Noise). The "Water" module is
+      `lectures_waterelement` to avoid clobbering the existing `lectures_water` ("A River to the
+      Sea"). New branch in `_CATALOG` → **93 lectures / 12 branches**; DB rebuilt (7,797 lines);
+      selftest passes.
 - [x] More **Histories** (4): Honey · The Lighthouse · The Violin · Perfume — added
       `lectures_{honey,lighthouse,violin,perfume}.py` (7×~12 lines, accurate, ASCII,
       sleep-closing), registered in the Histories branch → **61 lectures / 8 branches**;
@@ -286,6 +292,7 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- New lecture branch The Elements (Fire · Water · Air · Earth) → 93 lectures / 12 branches.
 - Stats: gentle practice streak + 13-week calendar heatmap of minutes (store per-day log).
 - Best voices: British-female default (Kokoro bf_emma); UK-female say fallback; ★-marked best
   voices + friendly accent/gender labels in the narration picker; researched Kokoro vs Fish/XTTS.
