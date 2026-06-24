@@ -105,6 +105,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self.current_mode = None
         self._win_op = 1.0                 # last applied window opacity (intro fade + dim)
         self._closing_msg = None           # gentle "well done" line after a finished sit
+        self._amb_rotate = False           # ambience auto-rotate (opt-in; off by default)
         self._font_scale = 1.0             # accessibility: global UI text size
         self._base_pt = 0.0                # app font point size before any scaling
         self._active_course = None         # (course name, total) while a course day runs
@@ -188,6 +189,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._spatial = bool(s.get("spatial", True))           # ambience stereo width
         self.engine.set_spatial(self._spatial)
         self.set_text_scale(float(s.get("font_scale", 1.0)))   # accessibility text size
+        self._amb_rotate = bool(s.get("ambience_rotate", False))  # opt-in bed rotation
         mode = s.get("mode")                          # no saved mode -> suit the clock
         if mode not in modes.names():
             from . import clocktheme
@@ -501,6 +503,19 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                 self._sfx_target = self._base_ambience   # drift home over abstract lines
         self._mood_target = emotion_for_text(text)
 
+    def set_ambience_rotate(self, on):
+        """Toggle ambience auto-rotate (opt-in, persisted); slowly cycles beds."""
+        self._amb_rotate = bool(on)
+
+    def _apply_ambience_rotate(self):
+        """Crossfade the ambience slot to the curated bed for the current elapsed
+        time (every ~6 min), reusing the engine's gain-ramped crossfade."""
+        from breathsim import ambrotate, voices
+        beds = [b for b in ambrotate.BEDS if voices.get_voice(b)]
+        target = ambrotate.next_ambience(beds, self.controller.elapsed())
+        if target and target != self.engine.slot_voice.get("ambience"):
+            self.engine.set_voice(target, "ambience", fade=3.0)
+
     def set_soundscape_follow(self, on):
         """Sound ▸ Soundscape follows story toggle. Off → hold the base ambience."""
         self._soundscape_follow = bool(on)
@@ -599,6 +614,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         amp = self.narrator.amp if running else 0.0
         if running:
             self._apply_soundscape()           # ambience follows the words
+            if self._amb_rotate and not self._story_scene:
+                self._apply_ambience_rotate()  # slowly cycle beds (when no storyteller)
         self._ease_mood(running)               # expression eases toward the mood
         if self._view == "scene":
             self.viz.update_state(self._scene_ctx(state, running, prog))
@@ -700,7 +717,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                  "mood_checkins": self._mood_on,
                                  "onboarded": getattr(self, "_onboarded", False),
                                  "spatial": getattr(self, "_spatial", True),
-                                 "font_scale": getattr(self, "_font_scale", 1.0)})
+                                 "font_scale": getattr(self, "_font_scale", 1.0),
+                                 "ambience_rotate": getattr(self, "_amb_rotate", False)})
         except Exception:
             pass
         try:

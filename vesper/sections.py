@@ -205,6 +205,11 @@ class _SectionsMixin:
                            on_change=lambda v: self.win.set_slot_level("effects", v))
         self._w["eff_lvl"] = el
         body.addWidget(el)
+        rot = QCheckBox("Auto-rotate ambience (slowly cycle calm beds)")
+        rot.setChecked(getattr(self.win, "_amb_rotate", False))
+        rot.toggled.connect(self.win.set_ambience_rotate)
+        self._w["amb_rotate"] = rot
+        body.addWidget(rot)
         return frame
 
     def _card_story(self):

@@ -378,6 +378,17 @@ Guardrails (every round):
       resonance is a gentle note not a prescription. Done: selftest passes; helpers unit-tested
       (no-data None, average, resonance note vs fast, lines() inclusion); offscreen both faces — two
       logged sits record bpm and the Stats widget shows the pace line, thread-stable.
+- [x] **Ambience auto-rotate** (`breathsim/ambrotate.py` + `window._apply_ambience_rotate`): an opt-in
+      mode that slowly cycles the ambience through a curated set of calm GROUP_NATURE beds (Ocean
+      Waves / Gentle Rain / Forest Wind / Mountain Stream / Night Crickets / Soft Rainstorm) every
+      ~6 min, reusing the engine's gain-ramped crossfade. Pure `next_ambience(beds, elapsed, period)`
+      (deterministic, wraps, empty/single-tolerant). Driven off the per-frame loop + controller
+      elapsed (no new clock) and **suppressed while the Sleep storyteller is active** so it never
+      fights the story cues. Off by default, persisted (`ambience_rotate`); toggled in the
+      Relax/Sleep soundscape card + **Sound > Auto-rotate ambience**. Honest: it just rotates the bed.
+      Done: selftest passes; `next_ambience` unit-tested (period boundaries, wrap, single, empty,
+      negative); offscreen both faces — beds advance per period (Ocean Waves -> Gentle Rain ->
+      Forest Wind), hold stable when off, are suppressed under the storyteller, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

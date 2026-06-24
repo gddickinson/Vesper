@@ -594,6 +594,24 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — ambience auto-rotate (slowly cycle calm beds)
+Added an opt-in mode that lets the soundscape gently evolve over a long session instead of looping
+one bed. `breathsim/ambrotate.py` (pure + testable): `next_ambience(beds, elapsed, period=360)` ->
+`beds[(elapsed // period) % n]`, deterministic, wrapping, and tolerant of an empty/single list, plus
+a curated `BEDS` list of calm GROUP_NATURE beds (Ocean Waves / Gentle Rain / Forest Wind / Mountain
+Stream / Night Crickets / Soft Rainstorm). `window._apply_ambience_rotate` crossfades the ambience
+slot to that bed (filtered to ones in the registry) via the **existing** gain-ramped
+`engine.set_voice(..., "ambience", fade=3.0)`, only firing when the target differs (so it doesn't
+re-trigger each frame). It is driven from `_tick` off `controller.elapsed()` (no new clock), guarded
+`if self._amb_rotate and not self._story_scene` so it is **suppressed while the Sleep storyteller is
+active** and never fights the story-driven soundscape cues. `set_ambience_rotate(on)` toggles it; off
+by default, persisted as `ambience_rotate` and restored on launch; surfaced in the Relax/Sleep
+soundscape card (a checkbox) and **Sound > Auto-rotate ambience**. Honest framing: it just rotates
+the bed. Verified: `selftest.py` passes (137 lectures / 23 branches); `next_ambience` unit-tested
+(period boundaries, wrap-around, single bed, empty -> None, negative clamp); offscreen both faces --
+with rotation on in Relax the ambience advances Ocean Waves -> Gentle Rain -> Forest Wind across
+periods, holds stable once toggled off, and is suppressed when a Sleep story is armed, thread-stable.
+
 ## Stories round — new branch Great Train Journeys (Trans-Siberian, Orient Express, Darjeeling, Ghan)
 Added a 23rd lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate geography/history, ASCII, sleep-closing), leaning into the soothing rhythm of the rails:
