@@ -188,8 +188,9 @@ Guardrails (every round):
       sliders is still open as a stretch.)
 - [ ] **Add reverb as a shared send**: offer the new `Reverb` as an optional space on other
       ambiences (bowls, chimes) and the drone.
-- [ ] **More ambiences**: Whale Song · Distant Train · Rain on a Tent · Wind in Pines ·
-      Womb Heartbeat · Fan (white-noise machine). Calibrated.
+- [x] **More ambiences** (+5): Rain on a Tent · Wind in Pines · Fan (White Noise) [NoiseTrack]
+      and Womb Heartbeat · Whale Song [new `textures.py` generators], all GROUP_NATURE in the
+      soundscape picker. Calibrated (300 s peak <= 0.78). **147 voices.**
 - [ ] **Slow-wave pink pulses**: pink noise gently pulsing at ~0.8 Hz (open-loop,
       honestly framed) for deep-sleep support.
 - [x] **Gong bath / tuned bowl set** (user-requested, delivered by `synth_bell.py`): a
@@ -267,6 +268,7 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- 5 more ambiences (Rain on a Tent · Wind in Pines · Fan · Womb Heartbeat · Whale Song) -> 147.
 - Breathing mandala scene: radially-symmetric rings that breathe + counter-rotate (View > Scene).
 - Poetry (`poetry.py`): 8 original soothing nocturnes recited slowly as a Sleep "Poetry"
   storyteller option (more poems can be added over future rounds).

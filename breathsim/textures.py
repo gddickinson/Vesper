@@ -206,9 +206,77 @@ class _Purr:
         return np.column_stack([mono, mono])
 
 
+class _Womb:
+    """A muffled heartbeat (lub-dub) over a soft, low blood-flow wash - the cosy,
+    regressive hush heard in the womb, deeply soothing for sleep."""
+
+    def __init__(self, sr, rng):
+        self.sr = sr
+        self.low = dsp.Noise("brown", sr, seed=181)
+        self.lp = dsp.OnePoleLP()
+        self.beats = []
+        self.next = 0.5
+        self.beat = 60.0 / 64.0                       # ~64 bpm, restful
+
+    def step(self, tarr, frames):
+        wash = self.lp.process(self.low.generate(frames), 170.0, self.sr) * 1.5
+        mono = wash * 0.55
+        end = float(tarr[-1])
+        while self.next < end:
+            self.beats.append((self.next, 1.0))       # lub
+            self.beats.append((self.next + 0.22, 0.7))  # dub
+            self.next += self.beat
+        alive = []
+        for t0, a in self.beats:
+            ts = tarr - t0
+            env = np.where(ts >= 0.0, np.exp(-np.maximum(ts, 0.0) / 0.085), 0.0)
+            thump = np.sin(TWO_PI * 54.0 * (1.0 - 0.18 * np.clip(ts, 0, 0.2)) * tarr)
+            mono += thump * env * a * 0.7
+            if (end - t0) < 1.0:
+                alive.append((t0, a))
+        self.beats = alive
+        return np.column_stack([mono, mono])
+
+
+class _Whale:
+    """Slow whale-song moans (sine glissandi that swell and fade) over a deep,
+    lowpassed sea wash - vast, distant and calming."""
+
+    def __init__(self, sr, rng):
+        self.sr, self.rng = sr, rng
+        self.deep = dsp.Noise("brown", sr, seed=191)
+        self.lp = dsp.OnePoleLP()
+        self.moans = []
+        self.next = 2.0
+
+    def step(self, tarr, frames):
+        sea = self.lp.process(self.deep.generate(frames), 300.0, self.sr) * 1.3
+        mono = sea * 0.35
+        end = float(tarr[-1])
+        while self.next < end:
+            f0 = self.rng.uniform(95.0, 200.0)
+            f1 = f0 * self.rng.uniform(0.6, 1.7)       # glide down or up
+            dur = self.rng.uniform(2.6, 5.0)
+            self.moans.append((self.next, f0, f1, dur, self.rng.uniform(0.5, 0.8)))
+            self.next += self.rng.uniform(5.0, 11.0)
+        alive = []
+        for t0, f0, f1, dur, a in self.moans:
+            ts = tarr - t0
+            u = np.clip(ts / dur, 0.0, 1.0)
+            phase = TWO_PI * (f0 * ts + 0.5 * (f1 - f0) * ts * u)   # glissando
+            env = np.where((ts >= 0.0) & (ts <= dur), np.sin(np.pi * u), 0.0)
+            tone = np.sin(phase) + 0.3 * np.sin(2.0 * phase)
+            mono += tone * env * a * 0.5
+            if (end - t0) < dur + 0.5:
+                alive.append((t0, f0, f1, dur, a))
+        self.moans = alive
+        return np.column_stack([mono, mono])
+
+
 _GENS = {"campfire": _Campfire, "bowl": _Bowl, "chimes": _Chimes,
-         "crickets": _Crickets, "purr": _Purr}
-_SEED = {"campfire": 41, "bowl": 42, "chimes": 43, "crickets": 44, "purr": 45}
+         "crickets": _Crickets, "purr": _Purr, "womb": _Womb, "whale": _Whale}
+_SEED = {"campfire": 41, "bowl": 42, "chimes": 43, "crickets": 44, "purr": 45,
+         "womb": 46, "whale": 47}
 
 
 def register_generator(key, factory, seed):
@@ -262,3 +330,7 @@ _t("Night Crickets", "crickets", 0.72,
    "A summer night: a field of crickets chirping over a low hush.")
 _t("Purr", "purr", 0.18,
    "A soft cat purr: a warm low rumble that swells gently with each breath.")
+_t("Womb Heartbeat", "womb", 0.179,
+   "A muffled heartbeat over a soft blood-flow hush - the cosy sound of the womb.")
+_t("Whale Song", "whale", 0.393,
+   "Distant whale song: slow moans gliding over a deep, dark sea.")

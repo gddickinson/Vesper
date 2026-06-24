@@ -594,6 +594,16 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — 5 more procedural ambiences
+Added five GROUP_NATURE ambiences. NoiseTrack voices in `voices.py`: **Rain on a Tent** (mid-band
+pink patter on canvas), **Wind in Pines** (steady pink wind, slow auto-pan), **Fan (White Noise)**
+(smooth lowpassed masking). Two new event/tonal generators in `textures.py`: **Womb Heartbeat** (a
+muffled ~54 Hz lub-dub at 64 bpm over a lowpassed brown blood-flow wash) and **Whale Song** (slow
+sine-glissando moans via integrated phase, swelling, over a deep sea wash). All env="volume", in
+the soundscape ambience picker. Gains calibrated; worst peak over 300 s <= 0.78 (the noise beds got
+extra headroom). selftest passes (147 voices); offscreen Relax session selects + crossfades them,
+thread-stable (2->2) on both faces.
+
 ## App round — Breathing mandala scene
 Added `vesper/scene_mandala.py` (a `MandalaScene`, registered at the bottom of scenes.py via
 `_CLASSES["mandala"]` + `AMBIENT.append`): a calm, centred mandala of 5 concentric rings (6/12/24-

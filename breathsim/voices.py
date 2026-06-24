@@ -251,6 +251,24 @@ register(VoiceConfig(
     floor=0.85, gain=0.22, width=0.85, pan_rate=0.04, pan_depth=0.2,
     description="A warm, distant hubbub - soft background chatter of a room."))
 
+register(VoiceConfig(
+    "Rain on a Tent", GROUP_NATURE, noise="pink", env="volume",
+    filt=("bandpass", 1700.0, 0.8), bright_base=2800.0, bright_mod=0.0,
+    floor=1.0, gain=0.34, width=0.5, pan_rate=0.03, pan_depth=0.15,
+    description="Rain pattering on taut canvas - cosy under a tent."))
+
+register(VoiceConfig(
+    "Wind in Pines", GROUP_NATURE, noise="pink", env="volume",
+    filt=("bandpass", 700.0, 0.6), bright_base=1400.0, bright_mod=300.0,
+    floor=0.9, gain=0.30, width=0.7, pan_rate=0.05, pan_depth=0.35,
+    description="A steady wind sighing through pine boughs, drifting side to side."))
+
+register(VoiceConfig(
+    "Fan (White Noise)", GROUP_NATURE, noise="pink", env="volume",
+    filt=("lowpass", 1400.0, 0.7), bright_base=1400.0, bright_mod=0.0,
+    floor=1.0, gain=0.17, width=0.3,
+    description="A smooth, steady fan / white-noise machine for masking."))
+
 
 # Additional voice families live in their own modules to keep files small;
 # importing them registers each into the same registry.
