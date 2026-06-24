@@ -79,6 +79,8 @@ def _sessions(win, m):
     m.addSeparator()
     m.addAction("Sunrise (gentle wake-up)").triggered.connect(
         lambda: win.start_sunrise())
+    m.addAction("Tonight's pick (random story)").triggered.connect(
+        lambda: win.tonights_pick())
 
 
 def _voice(win, m):

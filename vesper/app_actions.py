@@ -115,6 +115,21 @@ class _ActionsMixin:
         store.reset_course(name)
         self.start_course_day(name)
 
+    def tonights_pick(self):
+        """One-tap: pick a random bedtime lecture (avoiding recent ones), arm it
+        as the Sleep story and begin. Reuses the normal story-start plumbing."""
+        from breathsim import stories, store, tonight
+        name = tonight.pick(stories.lecture_names(), store.recent_picks())
+        if not name:
+            return
+        store.push_recent_pick(name)
+        if self.current_mode != "Sleep":
+            self.apply_mode("Sleep")
+        self.set_story(name)                          # arms _story_scene + ambience
+        self._ensure_running()                        # start the Sleep session + story
+        self.status.showMessage(f"Tonight's pick: {name}", 5000)
+        self.panel.sync()
+
     def toggle_favourite_voice(self):
         """Star/unstar the current inhale voice for quick access (persisted)."""
         name = self.engine.voice_a

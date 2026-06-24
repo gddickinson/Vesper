@@ -274,6 +274,22 @@ def toggle_favourite(name):
     return favs
 
 
+# --- recent "tonight's pick" lectures (avoid repeating two nights running) ---
+
+def recent_picks():
+    return [x for x in _read("recent_picks.json", []) if isinstance(x, str)]
+
+
+def push_recent_pick(name, keep=5):
+    """Record *name* as just-picked (most recent last); keeps the last *keep*."""
+    if not name:
+        return recent_picks()
+    rp = [x for x in recent_picks() if x != name] + [name]
+    rp = rp[-int(keep):]
+    _write("recent_picks.json", rp)
+    return rp
+
+
 def register_all():
     """Merge saved custom patterns and voices into the live registries."""
     for d in patterns_list():

@@ -351,6 +351,16 @@ Guardrails (every round):
       the theme palette + warm/dim overlay. Done: selftest passes; `scenes.py` stays 440 lines;
       offscreen both faces render the wave scene (564x557) to non-empty PNGs that change
       frame-to-frame, thread-stable.
+- [x] **"Tonight's pick" — one-tap random lecture** (`breathsim/tonight.py` + `app.tonights_pick`):
+      pick a random bedtime lecture from the 129-strong library, gently avoiding recently-heard ones,
+      and start the Sleep story in one tap. Pure `pick(names, recent, rng)` (deterministic with a
+      seeded rng, falls back when all are recent, None on empty); `store.recent_picks`/
+      `push_recent_pick` keep the last 5 so it doesn't repeat night to night. Surfaced as a Sleep
+      story-card **"Surprise me - tonight's pick"** button + **Sessions > Tonight's pick (random
+      story)**; reuses the existing `set_story` + `_ensure_running` plumbing. Honest: it just picks at
+      random. Done: selftest passes; `pick` unit-tested (deterministic, avoids recent, fallback,
+      empty); offscreen both faces — the action switches to Sleep, arms a real lecture, starts, and
+      records the pick, with no blocking dialog, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

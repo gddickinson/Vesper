@@ -222,6 +222,9 @@ class _SectionsMixin:
         self._w["story"] = sc
         body.addWidget(muted("Scene or lecture"))
         body.addWidget(sc)
+        pick = QPushButton("Surprise me - tonight's pick")
+        pick.clicked.connect(self.win.tonights_pick)
+        body.addWidget(pick)
         ids = narration.available_voices(self.win.speech)
         self._story_voice_id = {narration.voice_label(v): v for v in ids}
         labels = list(self._story_voice_id) or ["(no voice)"]

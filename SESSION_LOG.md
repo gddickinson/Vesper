@@ -594,6 +594,23 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — "tonight's pick" one-tap random bedtime lecture
+Added a one-tap "surprise me" for the storyteller. `breathsim/tonight.py` (22 lines, pure):
+`pick(names, recent, rng)` returns a random name from *names*, preferring one not in *recent*, falling
+back to the full list when all are recent, and returning None on empty -- deterministic with a seeded
+`random.Random`. `breathsim/store` gains `recent_picks()` / `push_recent_pick(name, keep=5)`
+(`recent_picks.json`, most-recent-last, capped) so a pick doesn't repeat night to night.
+`app.tonights_pick()` picks from `stories.lecture_names()` avoiding the recent list, records it,
+switches to **Sleep** (only if not already there), arms it via the existing `set_story(name)`
+(which sets `_story_scene` + the matching ambience) and calls `_ensure_running()` to begin -- reusing
+the normal story-start plumbing, no duplication. Surfaced as a **"Surprise me - tonight's pick"**
+button on the Sleep story card and a **Sessions > Tonight's pick (random story)** menu action. Honest
+framing: it just picks a lecture at random. Verified: `selftest.py` passes (129 lectures / 21
+branches); `pick` unit-tested (deterministic with a seed, avoids the recent list, falls back when all
+recent, None on empty, always valid); offscreen both faces -- the action switches to Sleep, arms a
+real lecture (e.g. "Shangri-La"), starts the session, and records the pick in `recent_picks`, with no
+blocking dialog, thread-stable.
+
 ## App round — richer Relax wave scene (horizon glow + moonlight glint)
 Deepened `vesper/scenes.WaveScene` with two gentle, low-contrast touches layered onto the existing
 swells / stars / moon / shimmer / foam, both driven by the existing `anim_t` (no new clock) and
