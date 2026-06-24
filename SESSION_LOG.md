@@ -594,6 +594,32 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Tea & Coffee of the World (Green Tea, Coffee, Mate, Masala Chai)
+Added a 32nd lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
+fact-free section 1, accurate botany/history/ritual, ASCII, every section sleep-closing, and no
+health/medical claims): `lectures_greentea.py` (Green Tea, Wind in Pines - one Camellia sinensis behind
+all true teas, the leaf steamed or pan-fired to stay green, tea's journey from China to Japan with
+monks, matcha whisked with a chasen, and the way of tea / chanoyu with Sen no Rikyu; the Bodhidharma
+eyelid tale framed as legend), `lectures_coffeebean.py` (Coffee, Cafe Murmur - the Coffea cherry and
+its bean, the Ethiopian goatherd Kaldi legend framed AS legend, the spread through Yemen and the first
+coffee houses, roasting/Maillard browning, and grinding and brewing from Turkish pot to espresso to
+pour-over), `lectures_mate.py` (Mate, Forest Wind - the holly Ilex paraguariensis, the Guarani who
+first drank it, drying and grinding the yerba, the hollow gourd and the bombilla strainer-straw, and
+the sharing circle led by the cebador across Argentina/Uruguay/Paraguay/southern Brazil), and
+`lectures_chai.py` (Masala Chai, Rain on a Roof - black tea simmered with milk, sugar, and spices like
+cardamom, ginger, cinnamon, cloves, and pepper, each household's own blend, the chai wallah and the
+clay kulhad cups, and the Assam/Darjeeling plantation history). Distinct NAMEs and modules from the
+existing "The Story of Tea" / "The Story of Coffee" (the new coffee module is `lectures_coffeebean` to
+avoid the `lectures_coffee` filename clash). New branch in `_CATALOG` -> **173 lectures / 32
+branches**. Verified: `selftest.py` passes (148 voices; 173 lectures / 32 branches); a lint confirmed
+each lecture has 7 x [13,12,13,12,12,13,13] sentences, a fact-free section 1 (no names/dates/numbers),
+all 7 sections sleep-closing, ASCII-only, an ambience resolving to a real GROUP_NATURE voice, no
+NAME/module collisions, and a health-claim scan that finds nothing unframed (the single "wakefulness"
+token sits inside an explicitly legend-framed line of the green-tea Bodhidharma story); offscreen both
+faces - all four dispatch through `stories.story_units` (all 7 sections stream, ~107 units each) and a
+Sleep session narrates one with the storyteller, thread-stable across a 24-frame loop; story DB rebuilt
+(14,809 lines / 234,702 words / 5 scenes).
+
 ## App round — gentle Stats "this month" total
 The Stats dialog now shows a calm tally of the current calendar month -- e.g. "This month: 7 sits, 84
 min" -- placed right after the all-time total. New pure `insights.this_month(hist, today)` sums sits

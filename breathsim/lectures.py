@@ -79,6 +79,8 @@ from . import (lectures_alhambra, lectures_kew, lectures_ryoanji,
                lectures_versailles)
 from . import (lectures_lunarcalendars, lectures_milkywaymyths,
                lectures_pleiades, lectures_southerncross)
+from . import (lectures_chai, lectures_coffeebean, lectures_greentea,
+               lectures_mate)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -173,6 +175,8 @@ _CATALOG = [
     ("The Night Sky Across Cultures", [lectures_pleiades, lectures_milkywaymyths,
                                        lectures_southerncross,
                                        lectures_lunarcalendars]),
+    ("Tea & Coffee of the World", [lectures_greentea, lectures_coffeebean,
+                                   lectures_mate, lectures_chai]),
 ]
 
 LECTURES = {}

@@ -556,6 +556,22 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Tea & Coffee of the World** (4): Green Tea · Coffee · Mate · Masala Chai — added
+      `lectures_{greentea,coffeebean,mate,chai}.py` (7x[13,12,13,12,12,13,13] lines, fact-free section
+      1, accurate botany/history/ritual — one Camellia plant + steaming/pan-firing + matcha + chanoyu;
+      Coffea cherries + the Kaldi goatherd legend framed AS legend + coffee houses + roasting/brewing;
+      Ilex paraguariensis + the Guarani + the gourd, bombilla and sharing circle; spiced black tea
+      simmered with milk + the chai wallah + Assam/Darjeeling), ASCII, every section sleep-closing, and
+      **no health/medical claims** (no caffeine/alertness/benefit claims). Ambiences Wind in Pines /
+      Cafe Murmur / Forest Wind / Rain on a Roof. Distinct NAMEs + modules from the existing "The Story
+      of Tea" / "The Story of Coffee" (new module `lectures_coffeebean` avoids the `lectures_coffee`
+      clash). New branch in `_CATALOG` → **173 lectures / 32 branches**; story DB rebuilt (14,809 lines
+      / 234,702 words). Done: selftest (173/32); lint — each lecture 7x[13,12,13,12,12,13,13], section
+      1 fact-free, all 7 sections sleep-close, ASCII-only, ambience resolves to a real GROUP_NATURE
+      voice, no NAME/module collisions, and a health-claim scan finds nothing unframed (the one
+      "wakefulness" token sits inside an explicitly legend-framed line); offscreen both faces — all four
+      dispatch through `stories.story_units` (all 7 sections stream) and a Sleep session narrates one,
+      thread-stable.
 - [x] **New branch — The Night Sky Across Cultures** (4): The Pleiades · Milky Way Myths · The Southern
       Cross · Lunar Calendars — added `lectures_{pleiades,milkywaymyths,southerncross,lunarcalendars}.py`
       (7x[13,12,13,12,12,13,13] lines, fact-free section 1, accurate astronomy + cross-cultural lore
