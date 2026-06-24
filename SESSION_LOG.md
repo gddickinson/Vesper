@@ -594,6 +594,26 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Wonders of the Ancient World (Pyramid, Hanging Gardens, Colossus, Artemis)
+Added a 22nd lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate history with legend framed honestly, ASCII, sleep-closing): `lectures_pyramid.py` (The Great
+Pyramid, Fan (White Noise) - oldest and only surviving wonder, Khufu's ~4,500-year-old tomb, tallest
+on Earth for 3,500+ years, millions of fitted blocks, the honest "we are not sure how" with the
+fed-and-housed-workers correction over the slave myth, compass alignment, the lost gleaming casing),
+`lectures_babylon.py` (The Hanging Gardens, Mountain Stream - the rising green terraces by the
+Euphrates and Nebuchadnezzar's homesick queen, framed with the **honest core mystery** that this is
+the one wonder whose very existence is unproven -- no trace found, Babylon's own scribes near-silent,
+all accounts second-hand, perhaps confused with Nineveh), `lectures_colossus.py` (The Colossus of
+Rhodes, Ocean Waves - the giant bronze Helios over the harbour, paid for with the enemy's war
+machines, Statue-of-Liberty height, the harbour-straddling pose named honestly as later legend,
+felled at the knees by an earthquake, the word "colossus"), and `lectures_artemis.py` (The Temple of
+Artemis, Wind Chimes - the vast forest of marble columns at Ephesus, rebuilt grander after a flood
+and a fire, Antipater's most-awe-inspiring wonder, slow ruin to a single column). Complements the
+existing Pharos + Library of Alexandria lectures. New branch in `_CATALOG` -> **133 lectures / 22
+branches**. Validated all four (7 sections, 12-13 lines, pure ASCII, no NAME collisions); `selftest.py`
+passes (148 voices); DB rebuilt (11,294 lines / 176,512 words / 5 scenes). The `units()` stream
+renders each (e.g. The Great Pyramid = 111 units).
+
 ## App round — "tonight's pick" one-tap random bedtime lecture
 Added a one-tap "surprise me" for the storyteller. `breathsim/tonight.py` (22 lines, pure):
 `pick(names, recent, rng)` returns a random name from *names*, preferring one not in *recent*, falling

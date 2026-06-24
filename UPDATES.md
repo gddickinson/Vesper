@@ -386,6 +386,14 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Wonders of the Ancient World** (4): the Great Pyramid · the Hanging Gardens ·
+      the Colossus of Rhodes · the Temple of Artemis — added
+      `lectures_{pyramid,babylon,colossus,artemis}.py` (7x12-13 lines, fact-free section 1, accurate
+      history with legends framed honestly (the Hanging Gardens' very existence is uncertain; the
+      Colossus did not straddle the harbour), ASCII, sleep-closing; Fan (White Noise) / Mountain
+      Stream / Ocean Waves / Wind Chimes). Complements the existing Pharos lighthouse + Library of
+      Alexandria lectures. New branch in `_CATALOG` → **133 lectures / 22 branches**; DB rebuilt
+      (11,294 lines / 176,512 words); selftest passes. Done: validated 7x12-13 + ASCII + no collisions.
 - [x] **New branch — Great Lakes & Inland Seas** (4): Lake Baikal · the Caspian Sea · the Dead Sea ·
       Lake Titicaca — added `lectures_{baikal,caspian,deadsea,titicaca}.py` (7x12-13 lines, fact-free
       section 1, accurate geography/ecology/history (Inca tradition framed respectfully), ASCII,
