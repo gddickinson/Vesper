@@ -232,7 +232,10 @@ class TextureTrack:
 
     def render(self, frames, s0, s1):
         tarr = self._t + np.arange(frames) / self.sr
-        out = self.gen.step(tarr, frames)
+        if getattr(self.gen, "wants_state", False):   # breath-aware generators
+            out = self.gen.step(tarr, frames, s0, s1)
+        else:
+            out = self.gen.step(tarr, frames)
         self._t += frames / self.sr
         f = self.cfg.floor
         a0 = f + (1.0 - f) * getattr(s0, "volume", 0.5)

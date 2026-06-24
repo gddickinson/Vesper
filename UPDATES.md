@@ -152,8 +152,11 @@ Guardrails (every round):
       formant chords), Pulsar Pulse (a 0.7 Hz beat), Gravity Well (a click-free descending
       black-hole "ringdown" glide via frequency->phase integration in `_Pad`). Calibrated
       ~0.74 peak; 7 Cosmic Music voices now. (Aurora Tones / Saturn Ring shimmer still open.)
-- [ ] **Breath-synced harmony**: let the pad density/brightness rise on the inhale and settle
-      on the exhale (read the breath state in the generator) so the music breathes with you.
+- [x] **Breath-synced harmony**: the Cosmic Music now breathes WITH you — `TextureTrack` feeds
+      the breath state to generators that opt in (`wants_state`); `_Cosmic` reads lung volume to
+      gently raise pad density, brightness and a click-free level swell on the inhale and settle
+      them on the exhale (per-palette `breath` amount). Verified it tracks the breath
+      (Solar Wind vol/RMS corr +0.65, slow presets +0.15..0.22), recalibrated, selftest passes.
 - [ ] **Dedicated Music workspace / menu**: a first-class "Music" mode or a Sound-menu
       section (key/scale/space sliders), not just an ambience entry.
 - [ ] **Add reverb as a shared send**: offer the new `Reverb` as an optional space on other
@@ -205,6 +208,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Breath-synced cosmic music: pads gently swell/brighten on the inhale, settle on the exhale.
 - Cosmic music +4 (Solar Wind · Nebula Bloom · Pulsar Pulse · Gravity Well) + ringdown
   pitch-glide + pulsar beat → 7 Cosmic Music voices.
 - Cosmic generative music (`cosmic.py` + `reverb.py`): Music of the Spheres · Starlight

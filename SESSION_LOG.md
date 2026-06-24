@@ -594,6 +594,18 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Music round — breath-synced cosmic music (it breathes with you)
+Made the Cosmic Music breathe with the listener. `textures.TextureTrack` now feeds the breath
+state to opt-in generators (`wants_state`), keeping the existing nature textures unchanged.
+`cosmic._Cosmic` reads lung volume (`BreathState.volume`) and, per a new per-palette `breath`
+amount, gently (a) raises pad spawn density, (b) opens a brightness lowpass, and (c) applies a
+click-free level swell (ramped across the block) on the inhale, settling them on the exhale.
+All 7 presets opt in at gentle amounts (Solar Wind strongest at 0.6, deep/slow ones 0.3-0.35).
+Recalibrated all gains under a 4-2-6-2 breath (peaks ~0.73); verified the music tracks the
+breath (Solar Wind vol/RMS corr +0.65; slow presets +0.15..0.22) while staying tonal +
+non-repeating. selftest passes (102 voices); offscreen Relax session selects/crossfades the
+music, thread-stable (2->2) on both faces.
+
 ## Music round — Cosmic music +4 presets (ringdown glide + pulsar beat)
 Expanded `cosmic.py`: added an optional **click-free pitch glide** to `_Pad` (integrate
 frequency to phase, f0->f1 over the note) and a **pulsar amplitude pulse** to the drone, then

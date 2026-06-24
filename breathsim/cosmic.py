@@ -102,6 +102,9 @@ class _Cosmic:
             self.fr = [(dsp.Biquad(*dsp.bandpass(sr, fc, q)), g) for fc, q, g in fmt]
         else:
             self.fl = None
+        self.breath = p.get("breath", 0.0)   # 0..1: how much it breathes with you
+        self.blp, self.brp = dsp.OnePoleLP(), dsp.OnePoleLP()
+        self.wants_state = True              # TextureTrack feeds us the breath state
 
     def _spawn(self, t):
         p = self.p
@@ -116,14 +119,21 @@ class _Cosmic:
             (self.rng.random() * 2 - 1) * p["pan"], p["partials"], p["vib"],
             f_end))
 
-    def step(self, tarr, frames):
+    def step(self, tarr, frames, s0=None, s1=None):
         end = float(tarr[-1])
+        bd = 0.5                                       # breath drive: lung volume
+        if s0 is not None:
+            bd = 0.5 * (getattr(s0, "volume", 0.5) + getattr(s1, "volume", 0.5))
+        br = self.breath
         if tarr[0] >= self.root_next:                 # slow consonant root drift
             self.root = self.base * float(self.rng.choice(self.p["roots"]))
             self.root_next += self.rng.uniform(*self.p["root_period_range"])
         while self.next < end:
             self._spawn(self.next)
-            self.next += self.rng.uniform(*self.p["interval"])
+            gap = self.rng.uniform(*self.p["interval"])
+            if br:
+                gap *= 1.0 - 0.4 * br * bd            # gently denser as lungs fill
+            self.next += gap
 
         L, R = np.zeros(frames), np.zeros(frames)
         alive = []
@@ -156,6 +166,16 @@ class _Cosmic:
             L += air
             R += air * 0.9
 
+        if br:                                         # breathe with the listener
+            v0 = getattr(s0, "volume", 0.5) if s0 is not None else 0.5
+            v1 = getattr(s1, "volume", 0.5) if s1 is not None else 0.5
+            lvl = 1.0 + br * 0.3 * (np.linspace(v0, v1, frames) - 0.5)  # gentle swell
+            L = L * lvl
+            R = R * lvl
+            fc = 6500.0 - br * 4800.0 * (1.0 - bd)     # ...and opens on the inhale
+            L = self.blp.process(L, fc, self.sr)
+            R = self.brp.process(R, fc, self.sr)
+
         wL, wR = self.rev.process(L, R)
         amt = self.p.get("reverb", 0.5)
         return np.column_stack([L * (1.0 - 0.25 * amt) + wL * amt,
@@ -168,7 +188,7 @@ _SPHERES = dict(
     root_period=42.0, root_period_range=(30.0, 60.0), interval=(3.0, 6.5),
     attack=(4.0, 7.0), hold=(3.0, 9.0), release=(6.0, 11.0), amp=(0.25, 0.5),
     pan=0.7, partials=[(1.0, 1.0), (2.0, 0.35), (3.0, 0.12), (4.0, 0.05)],
-    vib=(0.18, 0.6), drone=0.16, reverb=0.55, damp=2800.0)
+    vib=(0.18, 0.6), drone=0.16, reverb=0.55, damp=2800.0, breath=0.5)
 
 _CHOIR = dict(
     base=146.83, scale=_PENTA, roots=[1 / 1, 3 / 2, 5 / 4, 4 / 3],
@@ -179,7 +199,7 @@ _CHOIR = dict(
               (6.0, 0.12)],
     vib=(5.2, 0.5), formant=[(700.0, 3.0, 1.0), (1100.0, 4.0, 0.7),
                              (2600.0, 6.0, 0.3)],
-    drone=0.10, reverb=0.6, damp=3200.0)
+    drone=0.10, reverb=0.6, damp=3200.0, breath=0.45)
 
 _DEEP = dict(
     base=55.0, scale=_MINOR, roots=[1 / 1, 6 / 5, 4 / 3, 3 / 2],
@@ -187,14 +207,14 @@ _DEEP = dict(
     interval=(7.0, 14.0), attack=(6.0, 10.0), hold=(6.0, 12.0),
     release=(8.0, 14.0), amp=(0.30, 0.55), pan=0.6,
     partials=[(0.5, 0.6), (1.0, 1.0), (2.0, 0.25), (3.0, 0.08)],
-    vib=(0.12, 0.4), shimmer=(3800.0, 0.06), drone=0.22, reverb=0.7, damp=1900.0)
+    vib=(0.12, 0.4), shimmer=(3800.0, 0.06), drone=0.22, reverb=0.7, damp=1900.0, breath=0.35)
 
 _SOLAR = dict(           # bright, airy, streaming - the solar wind
     base=164.81, scale=_PENTA, roots=_ROOTS, octaves=[1.0, 2.0, 2.0, 4.0],
     root_period=34.0, root_period_range=(24.0, 48.0), interval=(2.5, 5.0),
     attack=(3.0, 6.0), hold=(2.0, 6.0), release=(5.0, 9.0), amp=(0.18, 0.36),
     pan=0.9, partials=[(1.0, 1.0), (2.0, 0.4), (3.0, 0.18), (5.0, 0.06)],
-    vib=(0.22, 0.7), shimmer=(5200.0, 0.10), drone=0.10, reverb=0.6, damp=4200.0)
+    vib=(0.22, 0.7), shimmer=(5200.0, 0.10), drone=0.10, reverb=0.6, damp=4200.0, breath=0.6)
 
 _NEBULA = dict(          # lush chords blooming slowly - a star nursery
     base=130.81, scale=_PENTA, roots=_ROOTS, octaves=[1.0, 2.0, 2.0],
@@ -202,14 +222,14 @@ _NEBULA = dict(          # lush chords blooming slowly - a star nursery
     attack=(6.0, 10.0), hold=(4.0, 10.0), release=(8.0, 13.0), amp=(0.22, 0.45),
     pan=0.8, partials=[(1.0, 1.0), (2.0, 0.5), (3.0, 0.3), (4.0, 0.18), (5.0, 0.1)],
     vib=(0.16, 0.6), formant=[(520.0, 3.0, 0.8), (1500.0, 5.0, 0.4)],
-    drone=0.16, reverb=0.7, damp=2600.0)
+    drone=0.16, reverb=0.7, damp=2600.0, breath=0.4)
 
 _PULSAR = dict(          # a slow, steady cosmic beat from a spinning star
     base=73.42, scale=_PENTA, roots=[1 / 1, 3 / 2, 4 / 3, 5 / 4],
     octaves=[1.0, 2.0, 2.0, 4.0], root_period=40.0, root_period_range=(30.0, 56.0),
     interval=(4.0, 8.0), attack=(3.0, 6.0), hold=(2.0, 6.0), release=(5.0, 9.0),
     amp=(0.20, 0.40), pan=0.85, partials=[(1.0, 1.0), (2.0, 0.35), (3.0, 0.12)],
-    vib=(0.20, 0.6), pulse=(0.7, 0.7), drone=0.22, reverb=0.6, damp=3000.0)
+    vib=(0.20, 0.6), pulse=(0.7, 0.7), drone=0.22, reverb=0.6, damp=3000.0, breath=0.4)
 
 _GRAVITY = dict(         # deep tones sliding down - a black-hole ringdown
     base=49.0, scale=_MINOR, roots=[1 / 1, 6 / 5, 4 / 3, 3 / 2],
@@ -218,31 +238,31 @@ _GRAVITY = dict(         # deep tones sliding down - a black-hole ringdown
     amp=(0.30, 0.55), pan=0.6,
     partials=[(0.5, 0.5), (1.0, 1.0), (2.0, 0.22), (3.0, 0.07)],
     vib=(0.10, 0.3), glide=(0.5, 0.78), shimmer=(3000.0, 0.05),
-    drone=0.20, reverb=0.78, damp=1700.0)
+    drone=0.20, reverb=0.78, damp=1700.0, breath=0.3)
 
 # (key, display name, palette, seed, calibrated gain, description). Gains are set
 # so the worst peak over a long deterministic render sits near 0.75 (see
 # tools-style calibration in SESSION_LOG); reverb buildup is included.
 _PRESETS = [
-    ("spheres", "Music of the Spheres", _SPHERES, 71, 0.46,
+    ("spheres", "Music of the Spheres", _SPHERES, 71, 0.441,
      "Slow, consonant pads drifting in just intonation over a soft drone - the "
      "harmony of the spheres."),
-    ("choir", "Starlight Choir", _CHOIR, 72, 0.50,
+    ("choir", "Starlight Choir", _CHOIR, 72, 0.563,
      "An endless, wordless choir of vowel-like voices, swelling and fading among "
      "the stars."),
-    ("deep", "Deep Space", _DEEP, 73, 0.40,
+    ("deep", "Deep Space", _DEEP, 73, 0.436,
      "Vast, low, slow tones with an airy shimmer - the hush of the deep, dark "
      "between the stars."),
-    ("solar", "Solar Wind", _SOLAR, 74, 0.66,
+    ("solar", "Solar Wind", _SOLAR, 74, 0.541,
      "Bright, airy tones streaming past on the solar wind, with a high silver "
      "shimmer."),
-    ("nebula", "Nebula Bloom", _NEBULA, 75, 0.60,
+    ("nebula", "Nebula Bloom", _NEBULA, 75, 0.536,
      "Lush chords blooming and fading slowly, like glowing clouds where stars are "
      "born."),
-    ("pulsar", "Pulsar Pulse", _PULSAR, 76, 0.64,
+    ("pulsar", "Pulsar Pulse", _PULSAR, 76, 0.611,
      "A slow, steady cosmic beat from a spinning star, with soft tones drifting "
      "over it."),
-    ("gravity", "Gravity Well", _GRAVITY, 77, 0.48,
+    ("gravity", "Gravity Well", _GRAVITY, 77, 0.457,
      "Deep tones sliding slowly downward into the dark - the long ringdown of a "
      "black hole."),
 ]
