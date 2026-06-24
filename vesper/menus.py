@@ -144,6 +144,8 @@ def _voice(win, m):
 def _pattern(win, m):
     m.addAction("Pattern Editor…").triggered.connect(
         lambda: pattern_editor.open_pattern_editor(win))
+    _toggle(m, "Settle in (ease to your pace)", getattr(win, "_settle", False),
+            win.set_settle)
     m.addSeparator()
     _list_menu(m, [p.name for p in patterns.PRESETS], win.set_pattern)
 

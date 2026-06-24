@@ -61,6 +61,17 @@ class _ActionsMixin:
         self._spatial = bool(on)
         self.engine.set_spatial(self._spatial)
 
+    def set_settle(self, on):
+        """Ease-to-resonance: gently lead the breath from a comfortable, faster
+        rate down to the chosen (slower) pattern over the first couple of minutes,
+        then hold — a kinder entry to slow / resonance breathing. Opt-in; persisted.
+        Arms now if a session is already running, else at the next fresh start."""
+        self._settle = bool(on)
+        if on and self.controller.running:
+            self.director.start_settle(self.controller.pattern)
+        elif not on:
+            self.director.stop_settle()
+
     def show_xtts_setup(self):
         """Explain / point at the opt-in high-quality XTTS voice engine."""
         from PySide6.QtWidgets import QMessageBox

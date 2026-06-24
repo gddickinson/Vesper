@@ -203,12 +203,16 @@ Set with the user after the realistic-chanting round. Tick as completed.
 ### Researched batch — next (added 2026-06-24; focus list had emptied)
 Grounded in the research notes above; calming, honest, self-contained. Do one per round
 (top-down), Stories every ~3rd. Tick `[x]` only when tests pass.
-- [ ] **Ease-to-resonance pacing** (Meditate/Breathwork): an opt-in "Settle in" that eases
-      the breath period from a comfortable start down to the pattern's target over the first
-      ~2-3 min, then holds — a gentler entry to ~6 breaths/min than starting there cold.
-      Drive it on the breath clock (extend the wind-down/ramp machinery in `session.py`/
-      `controller.py`); a small toggle + a faint "easing to your pace" read-out. Evidence:
-      slow-breathing training is better tolerated when ramped, not jumped into.
+- [x] **Ease-to-resonance pacing** (Meditate/Breathwork): an opt-in **Settle in (ease to
+      your pace)** toggle (Pattern menu, persisted). A fresh session starts a touch faster
+      than the chosen pattern and the breath period eases up to the target over ~2.5 min,
+      then holds — a gentler entry to ~6 breaths/min than starting there cold. Implemented in
+      `SessionDirector` (`start_settle`/`stop_settle`/`_update_settle`/`settle_info`, a cosine
+      ease from a `ratio`-scaled faster start up to the target, then locks; mirrors the wind-
+      down lerp); `app_actions.set_settle` arms it at the next fresh start (or now if running,
+      and re-aims at a newly chosen pattern); faint "easing to your pace…" read-out under the
+      scene. Verified: numeric ease test (11.0s target: 6.6->8.8->11.0, locks + restores),
+      window+menu integration test, selftest, both-faces drive (0 issues).
 - [ ] **Breath-paced auditory swell**: an optional toggle so a nature bed (ocean/rain/wind)
       gently rises on the inhale and falls on the exhale — an external auditory pacer that
       entrains slow breathing without a spoken count. Modulate the ambience slot level from

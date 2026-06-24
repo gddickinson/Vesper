@@ -23,7 +23,8 @@ A ~40 fps `QTimer` reads the controller's `BreathState` each frame and drives:
 either the **face** (breath → head nod + breathing zoom; narration `amp` → jaw
 lip-sync) **or** the current **scene** (whichever is shown in the central
 `QStackedWidget`), the **SessionDirector** (morph automation / guided programs /
-sleep wind-down), transition chimes / spoken cues, the mindfulness bell, the
+sleep wind-down / **ease-to-resonance "settle in"** pacing), transition chimes /
+spoken cues, the mindfulness bell, the
 bedtime story, Sleep dimming, the panel's live read-outs, and practice logging.
 
 The central area is a **`QStackedWidget(FaceWidget, VizWidget)`**; the user toggles
@@ -256,13 +257,17 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   before the next sentence the mouth closes and the breath eases *up* (a breath in);
   with no recent speech the `_breath_routing` mouth applies.
   `MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _StoryMixin,
-  _FrameMixin, QMainWindow)` — now **lifecycle-focused** (~460 lines, under the
-  500 rule): builds the core (controller / engine / speech / narrator /
-  **SessionDirector**), `_restore_settings` on boot + `save_settings` on close,
-  `apply_mode` (audio preset + `panel.reflect_mode` → workspace rebuild; resets
-  the director), transport (`toggle_transport`/`reset`), volume (mute-aware),
-  `set_pattern`, blackout + quiet-hours, `save_screenshot`. The per-frame loop
-  and storyteller runtime were split out into the two mixins below.
+  _FrameMixin, _SettingsMixin, QMainWindow)` — now **lifecycle-focused** (~490
+  lines, under the 500 rule): builds the core (controller / engine / speech /
+  narrator / **SessionDirector**), `apply_mode` (audio preset + `panel.reflect_mode`
+  → workspace rebuild; resets the director), transport (`toggle_transport`/`reset`,
+  arming **settle-in** at a fresh start), volume (mute-aware), `set_pattern`
+  (re-aims settle), blackout + quiet-hours, `save_screenshot`. The per-frame loop,
+  storyteller runtime and settings round-trip were split into the mixins below.
+- **win_settings.py** — `_SettingsMixin`: the preferences round-trip via
+  `breathsim.store` — `_restore_settings` (reopen in the last mode / volume / view /
+  toggles; suit the clock when nothing is saved) and `_persist_settings` (gather the
+  live state into the settings dict on close). Split from `window` for the size rule.
 - **win_consts.py** — shared frame-loop constants (`FPS`, the talk-detection
   thresholds), in a neutral module so `window` and `win_frame` both import them
   with no circular dependency.

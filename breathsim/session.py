@@ -38,6 +38,11 @@ class SessionDirector:
         self.wake_duration = 900.0
         self.wake_a = None
         self.wake_b = None
+        self.settle = False               # ease-to-resonance: faster start -> target
+        self.settle_duration = 150.0
+        self.settle_target = None
+        self.settle_start = None
+        self.settle_t0 = 0.0
         self.program = None
         self.program_stage = -1
         self.program_t0 = 0.0
@@ -69,6 +74,7 @@ class SessionDirector:
             return
         self.mode = "Program"
         self.sleep = False
+        self.settle = False
         self.program = prog
         self.program_stage = -1
         self.program_t0 = self.app.controller.elapsed()
@@ -95,6 +101,7 @@ class SessionDirector:
     def start_sleep(self, duration, start_pattern, end_pattern):
         self.sleep = True
         self.wake = False
+        self.settle = False
         self.mode = "Manual"
         self.program = None
         self.sleep_duration = max(60.0, float(duration))
@@ -110,6 +117,7 @@ class SessionDirector:
         brightens (warm dim -> clear) in :meth:`window._tick`."""
         self.wake = True
         self.sleep = False
+        self.settle = False
         self.mode = "Manual"
         self.program = None
         self.wake_duration = max(60.0, float(duration))
@@ -118,6 +126,40 @@ class SessionDirector:
 
     def stop_wake(self):
         self.wake = False
+
+    def start_settle(self, target, duration=None, ratio=0.62):
+        """Ease the breath from a comfortable, faster rate **up to** *target* (the
+        user's chosen — slower — pattern) over the first couple of minutes, then
+        hold. A gentler way to arrive at slow / resonance breathing than starting
+        at the full slow pace cold. *ratio* is the starting fraction of the target
+        period (0.62 -> begin ~1.6x faster). Off by default; opt-in per the menu."""
+        if target is None:
+            return
+        self.settle_duration = max(20.0, float(duration if duration else 150.0))
+        self.settle_target = target
+        r = max(0.4, min(0.95, float(ratio)))
+        self.settle_start = BreathPattern(
+            "Settling in", target.inhale * r, target.hold_full * r,
+            target.exhale * r, target.hold_empty * r)
+        self.settle_t0 = self.app.controller.elapsed()
+        self.settle = True
+        self.app.controller.set_pattern(self.settle_start)
+
+    def stop_settle(self):
+        if self.settle and self.settle_target is not None:
+            self.app.controller.set_pattern(self.settle_target)
+        self.settle = False
+
+    def settle_info(self):
+        """(remaining_seconds, frac 0..1) while easing in, else None."""
+        if not self.settle:
+            return None
+        frac = self._settle_frac(self.app.controller.elapsed())
+        return (max(0.0, self.settle_duration * (1.0 - frac)), frac)
+
+    def _settle_frac(self, t):
+        d = self.settle_duration
+        return 1.0 if d <= 0 else min(1.0, max(0.0, (t - self.settle_t0) / d))
 
     def set_manual(self, value):
         self.manual = float(value)
@@ -137,6 +179,8 @@ class SessionDirector:
         if self.wake:
             self._update_wake(t)
             return
+        if self.settle:                       # ease the pace down to the target
+            self._update_settle(t)
         eng = self.app.engine
         if self.mode == "Auto drift":
             ph = (t % self.period) / self.period
@@ -190,6 +234,22 @@ class SessionDirector:
             vol *= max(0.0, 1.0 - (frac - 0.7) / 0.3)
         if self.app.controller.running:
             self.app.engine.set_master_volume(vol)
+
+    def _update_settle(self, t):
+        a, b = self.settle_start, self.settle_target
+        if a is None or b is None:
+            self.settle = False
+            return
+        frac = self._settle_frac(t)
+        s = 0.5 - 0.5 * math.cos(math.pi * frac)        # smooth ease faster -> target
+        def lerp(x, y):
+            return x + (y - x) * s
+        self.app.controller.set_pattern(BreathPattern(
+            "Settling in", lerp(a.inhale, b.inhale), lerp(a.hold_full, b.hold_full),
+            lerp(a.exhale, b.exhale), lerp(a.hold_empty, b.hold_empty)))
+        if frac >= 1.0:                                  # arrived: lock to the target
+            self.app.controller.set_pattern(b)
+            self.settle = False
 
     def _update_wake(self, t):
         d = self.wake_duration

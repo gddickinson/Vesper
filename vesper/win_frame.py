@@ -56,6 +56,8 @@ class _FrameMixin:
         hint = ""                                  # Meditate: gentle rotating guidance
         if running and self.current_mode == "Meditate" and self._med_style != "Off":
             hint = self._med_phrase(self.controller.elapsed())
+        if running and not hint and self.director.settle_info() is not None:
+            hint = "easing to your pace…"           # ease-to-resonance in progress
         ctx = {"running": running,
                "volume": state.volume if running else 0.5,
                "airflow": state.airflow if running else 0.0,

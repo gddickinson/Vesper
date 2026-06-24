@@ -2253,6 +2253,27 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Efficacy round — ease-to-resonance "settle in" pacing
+Added an opt-in **Settle in (ease to your pace)** toggle (Pattern menu, persisted).
+When on, a fresh session begins a touch faster than the chosen pattern and the breath
+period **eases up to the target over the first ~2.5 min, then holds** — a kinder way to
+arrive at slow / resonance breathing (~6 breaths/min) than starting at the full slow
+pace cold (slow-breathing training is better tolerated when ramped). Implemented in
+`SessionDirector` (`start_settle`/`stop_settle`/`_update_settle`/`settle_info`,
+mirroring the wind-down/sunrise pattern-lerp: a smooth cosine ease from a `ratio`-scaled
+faster start up to the user's target, then locks to the exact target and clears itself);
+`app_actions.set_settle` arms it (now if running, else at the next fresh start, and
+re-aims at a newly chosen pattern); a faint **"easing to your pace…"** read-out shows
+under the scene while it eases. Cleared whenever a program/sleep/sunrise takes over the
+pattern. Verified: a numeric test (target 11.0s → start 6.6s → 8.8s → 11.0s, locks, and
+`stop` restores instantly); a window+menu integration test (toggle present + checkable,
+arming starts faster 6.82 < 11.0s, read-out appears, disarm restores); selftest passes;
+both-faces drive 9 scenes / threads 2→2 / 0 issues.
+`window.py` had crept back to 545 lines (over the rule), so this round also extracted the
+settings round-trip (`_restore_settings` + a new `_persist_settings`) into a
+`win_settings._SettingsMixin`, bringing `window.py` to 488. Persistence round-trip
+re-verified. All files < 500 lines.
+
 ## Scene round — Candle (trataka) gazing scene
 Added `vesper/scene_candle.py` (`CandleScene`): a single warm candle flame in the
 dark to rest the gaze on. Gazing softly at a candle (*trataka*) is a traditional
