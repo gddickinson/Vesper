@@ -108,7 +108,7 @@ class _Editor(QDialog):
 
         self.setWindowTitle("Voice Editor")
         self.setStyleSheet(win.styleSheet())
-        self.resize(470, 720)
+        self.resize(500, 720)
         outer = QVBoxLayout(self)
         outer.setContentsMargins(14, 12, 14, 12)
         outer.setSpacing(8)
@@ -141,7 +141,7 @@ class _Editor(QDialog):
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         holder = QWidget()
         self._body = QVBoxLayout(holder)
-        self._body.setContentsMargins(0, 4, 6, 4)
+        self._body.setContentsMargins(0, 4, 14, 4)    # right gap clears the scrollbar
         self._body.setSpacing(10)
         self.scroll.setWidget(holder)
         outer.addWidget(self.scroll, 1)
