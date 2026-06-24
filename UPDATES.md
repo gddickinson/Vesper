@@ -463,6 +463,13 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Legendary Beasts** (4): the Dragon · the Unicorn · the Mermaid · the Griffin —
+      added `lectures_{dragon,unicorn,mermaid,griffin}.py` (7x12-13 lines, fact-free section 1,
+      folklore framed honestly AS legend with real roots — narwhal tusks -> unicorn horns, manatees ->
+      mermaids, Protoceratops fossils -> griffins, dino bones -> dragons — ASCII, sleep-closing;
+      Distant Thunder / Forest Wind / Ocean Waves / Wind in Pines). Distinct from the existing
+      Phoenix/Selkie lectures. New branch in `_CATALOG` → **149 lectures / 26 branches**; DB rebuilt
+      (12,698 lines / 200,782 words); selftest passes. Done: validated 7x12-13 + ASCII + no collisions.
 - [x] **New branch — Ancient Roads & Walls** (4): the Great Wall · the Appian Way · Hadrian's Wall ·
       the Inca Roads — added `lectures_{greatwall,appianway,hadrianswall,incaroads}.py` (7x12-13
       lines, fact-free section 1, accurate history (myths corrected — the wall isn't visible from the

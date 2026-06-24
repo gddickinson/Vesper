@@ -68,6 +68,8 @@ from . import (lectures_galapagos, lectures_hawaii, lectures_iceland,
                lectures_krakatoa)
 from . import (lectures_appianway, lectures_greatwall, lectures_hadrianswall,
                lectures_incaroads)
+from . import (lectures_dragon, lectures_griffin, lectures_mermaid,
+               lectures_unicorn)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -149,6 +151,8 @@ _CATALOG = [
                              lectures_krakatoa, lectures_galapagos]),
     ("Ancient Roads & Walls", [lectures_greatwall, lectures_appianway,
                                lectures_hadrianswall, lectures_incaroads]),
+    ("Legendary Beasts", [lectures_dragon, lectures_unicorn, lectures_mermaid,
+                          lectures_griffin]),
 ]
 
 LECTURES = {}

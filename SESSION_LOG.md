@@ -610,6 +610,23 @@ quipu, tambo rest-houses). Distinct from the existing Silk/Spice Road lectures. 
 ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (12,348 lines / 194,754
 words / 5 scenes). The `units()` stream renders each (e.g. The Great Wall = 109 units).
 
+## Stories round — new branch Legendary Beasts (Dragon, Unicorn, Mermaid, Griffin)
+Added a 26th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+folklore framed **honestly as legend** with its real roots, ASCII, sleep-closing): `lectures_dragon.py`
+(The Dragon, Distant Thunder - a worldwide legend, the wise rain-bringing Eastern dragon vs the
+treasure-guarding Western one, possible roots in dinosaur bones and Komodo monitors, leaning into the
+calm sleeping guardian), `lectures_unicorn.py` (The Unicorn, Forest Wind - Ctesias's traveller's
+tale, the alicorn poison-cure belief, the narwhal-tusk truth, the medieval tapestries and Scotland's
+emblem), `lectures_mermaid.py` (The Mermaid, Ocean Waves - Atargatis, sailors mistaking manatees and
+dugongs (the sirenians), Columbus's honest log note, Andersen's little mermaid), and
+`lectures_griffin.py` (The Griffin, Wind in Pines - lion + eagle guardian of gold, and Adrienne
+Mayor's idea that Protoceratops fossils weathering from the Gobi goldfields seeded the legend). Each
+is kept soothing, not frightening, and clearly framed as a story people told. Distinct from the
+existing Phoenix/Selkie lectures. New branch in `_CATALOG` -> **149 lectures / 26 branches**.
+Validated all four (7 sections, 12-13 lines, pure ASCII, no NAME collisions); `selftest.py` passes
+(148 voices); DB rebuilt (12,698 lines / 200,782 words / 5 scenes) -- the library passes 200k words.
+The `units()` stream renders each (e.g. The Dragon = 110 units).
+
 ## App round — quiet-hours auto-volume cap
 Late at night the output volume is now gently capped so a session begun in the small hours is never
 jarring, without changing the user's chosen setting. `clocktheme.quiet_cap(hour)` (pure) returns an
