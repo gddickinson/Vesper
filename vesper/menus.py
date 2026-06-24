@@ -82,6 +82,20 @@ def _sessions(win, m):
 
 
 def _voice(win, m):
+    from breathsim import store                        # quick-access favourites
+    favs = [f for f in store.favourites() if voices.get_voice(f)]
+    fm = m.addMenu("Favourites")
+    if favs:
+        _list_menu(fm, favs, win.set_voice_a)
+    else:
+        none = fm.addAction("(none yet - star a voice below)")
+        none.setEnabled(False)
+    cur = win.engine.voice_a
+    if cur:
+        starred = store.is_favourite(cur)
+        m.addAction(f"{'Unstar' if starred else 'Star'} \"{cur}\"").triggered.connect(
+            lambda: win.toggle_favourite_voice())
+    m.addSeparator()
     va = m.addMenu("Inhale voice")
     for g in _VOICE_GROUPS:
         names = voices.names(g)

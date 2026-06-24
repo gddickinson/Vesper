@@ -594,6 +594,22 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — per-voice favourites (star/pin voices for quick access)
+Added favourite-voice persistence + a Voice-menu surface. `breathsim/store` gains `favourites()`
+(reads `favourites.json`, de-duplicated and order-preserving), `is_favourite(name)` and
+`toggle_favourite(name)` (star/unstar; empty-name no-op) -- mirroring the existing courses/history
+JSON persistence, no new machinery. `app.toggle_favourite_voice()` stars/unstars the current inhale
+voice (`engine.voice_a`), reports it in the status bar and rebuilds the menu. `vesper/menus._voice`
+now opens with a **Favourites** submenu -- quick `set_voice_a` over the starred voices, filtered to
+those that still exist in the registry (so a removed/renamed voice is silently dropped), with a
+friendly disabled placeholder when there are none -- plus a **Star/Unstar "<voice>"** action for the
+current inhale voice. Honest framing: a convenience shortcut, nothing more. Verified: `selftest.py`
+passes (121 lectures / 19 branches); the helpers are unit-tested (add then remove, `is_favourite`,
+empty no-op, external-dupes de-duplicated on read, persistence round-trip via a temp
+`BREATHSIM_HOME`); offscreen both faces -- starring the current voice persists and appears in the
+menu's favourites list, `menus.build` succeeds with favourites both present and empty, selecting a
+favourite sets the inhale voice, and unstarring round-trips, thread-stable.
+
 ## Stories round — new branch Great Forests (Taiga, Black Forest, Daintree, Cloud Forest)
 Added a 19th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate ecology/history/culture, ASCII, sleep-closing): `lectures_taiga.py` (The Taiga, Forest Wind

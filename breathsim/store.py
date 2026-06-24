@@ -249,6 +249,31 @@ def reset_course(name):
     _write("courses.json", st)
 
 
+# --- favourite voices (quick-access stars) ----------------------------------
+
+def favourites():
+    """The starred voice names, de-duplicated, order preserved."""
+    out = []
+    for f in _read("favourites.json", []):
+        if isinstance(f, str) and f not in out:
+            out.append(f)
+    return out
+
+
+def is_favourite(name):
+    return name in favourites()
+
+
+def toggle_favourite(name):
+    """Star/unstar a voice name; returns the new favourites list. No-op on empty."""
+    if not name:
+        return favourites()
+    favs = favourites()
+    favs = [f for f in favs if f != name] if name in favs else favs + [name]
+    _write("favourites.json", favs)
+    return favs
+
+
 def register_all():
     """Merge saved custom patterns and voices into the live registries."""
     for d in patterns_list():

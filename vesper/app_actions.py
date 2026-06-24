@@ -115,6 +115,17 @@ class _ActionsMixin:
         store.reset_course(name)
         self.start_course_day(name)
 
+    def toggle_favourite_voice(self):
+        """Star/unstar the current inhale voice for quick access (persisted)."""
+        name = self.engine.voice_a
+        if not name:
+            return
+        from breathsim import store
+        favs = store.toggle_favourite(name)
+        self.status.showMessage(
+            f"{'Starred' if name in favs else 'Unstarred'} {name}", 3000)
+        self.rebuild_menu()
+
     def set_sleep_timer(self, minutes):
         """Arm (or clear, minutes<=0) the sleep auto-stop: after the chosen time
         the sound gently fades out and transport pauses. Counts from now."""

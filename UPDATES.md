@@ -310,6 +310,15 @@ Guardrails (every round):
       selftest passes; `segments` unit-tested (4-7-8 -> 3 segments / correct fractions, zero-holds
       -> 2, box -> 4 equal); offscreen both faces show the bar, switching patterns updates the
       segments, the live phase highlights, thread-stable.
+- [x] **Per-voice favourites** (`store` + `vesper/menus._voice`): star/pin favourite voices for
+      quick access. `store.favourites()`/`is_favourite()`/`toggle_favourite()` persist a de-duplicated,
+      order-preserving list in `favourites.json`; `app.toggle_favourite_voice()` stars/unstars the
+      current inhale voice and reports it. The **Voice menu** gains a **Favourites** submenu (quick
+      `set_voice_a`, only listing voices that still exist) and a **Star/Unstar "<voice>"** action.
+      Honest: a convenience shortcut. Done: selftest passes; helpers unit-tested (add/remove,
+      is_favourite, empty no-op, dedupe, persistence round-trip); offscreen both faces — starring
+      persists, the menu builds with favourites present and empty, selecting a favourite sets the
+      inhale voice, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never
