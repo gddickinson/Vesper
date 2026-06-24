@@ -496,6 +496,13 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Musical Instruments** (4): the Piano · the Harp · the Flute · the Drum — added
+      `lectures_{piano,harp,flute,drum}.py` (7x12-13 lines, fact-free section 1, accurate
+      acoustics/history (Cristofori's pianoforte, 40,000-year bone flutes, Boehm, talking drums),
+      ASCII, sleep-closing; Gentle Rain / Wind Chimes / Wind in Pines / Campfire). Distinct from the
+      existing "Music and Sound" / "The Story of the Violin". New branch in `_CATALOG` → **157
+      lectures / 28 branches**; DB rebuilt (13,401 lines / 212,552 words); selftest passes. Done:
+      validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Spices & Herbs** (4): Cinnamon · Saffron · Black Pepper · Vanilla — added
       `lectures_{cinnamon,saffron,pepper,vanilla}.py` (7x12-13 lines, fact-free section 1, accurate
       botany/trade history (Herodotus's bird tale framed as legend; Edmond Albius & hand-pollination;

@@ -626,6 +626,22 @@ branches**. Validated all four (7 sections, 12-13 lines, pure ASCII, no NAME col
 passes (148 voices); DB rebuilt (13,047 lines / 206,664 words / 5 scenes). The `units()` stream
 renders each (e.g. Saffron = 104 units).
 
+## Stories round — new branch Musical Instruments (Piano, Harp, Flute, Drum)
+Added a 28th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate acoustics/history, ASCII, sleep-closing): `lectures_piano.py` (The Piano, Gentle Rain -
+"pianoforte"/soft-loud vs the harpsichord, Cristofori around 1700, the iron frame under many tons,
+88 keys and the damper pedal, two-to-three strings per note), `lectures_harp.py` (The Harp, Wind
+Chimes - among the oldest strings from Egypt/Mesopotamia, the open frame plucked by hand, 47 strings
+and 7 pedals, red-C/blue-F colour coding, Ireland's emblem, the harp of poets framed as legend),
+`lectures_flute.py` (The Flute, Wind in Pines - sound from breath alone over an edge, no reed,
+40,000-year bone/ivory cave flutes, holes shortening the air column, Boehm's silver flute, still a
+woodwind), and `lectures_drum.py` (The Drum, Campfire - kept slow and calm: a membrane over a hollow
+body, tighter/warmer skin raises pitch, bigger drums boom deeper, talking drums echoing speech, a
+slow beat like a heartbeat). Distinct from the existing "Music and Sound" / "The Story of the
+Violin". New branch in `_CATALOG` -> **157 lectures / 28 branches**. Validated all four (7 sections,
+12-13 lines, pure ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (13,401
+lines / 212,552 words / 5 scenes). The `units()` stream renders each (e.g. The Piano = 105 units).
+
 ## App round — "fall asleep" one-tap preset
 Added `app.start_fall_asleep(minutes=40)`: a single action that composes the existing sleep features
 into the honest best set-up for drifting off -- it applies **Sleep mode** (`apply_mode("Sleep")`,
