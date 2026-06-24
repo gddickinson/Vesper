@@ -594,6 +594,24 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Feature (user request) — Bells & Gongs synthesis module
+Researched bell/gong/bowl acoustics (Hemony partials hum 0.5 / prime 1 / tierce 1.2 / quint 1.5 /
+nominal 2 with long-quiet lows + short-bright highs; gong bloom; bowl beating from close modes;
+triangle = mostly high overtones) and built `breathsim/synth_bell.py`: a configurable struck
+resonator (`_Bell`: decaying, optionally blooming sine partials with a soft onset) + a slow strike
+scheduler (`_BellGen`) + a sustained rubbed-bowl drone (`_SungBowl`). A library of 12 instruments
+in a new **Bells & Gongs** group (GROUP_BELLS): Meditation Bell (rin), Temple Bell (bonsho),
+Church Bell, Hand Bell, Tibetan + Crystal + Sung Singing Bowls, Tam-tam Gong, Nipple Gong,
+Triangle, Tingsha, Tubular Bell. They toll slowly on their own as a meditation/chant/ambience bed,
+plugged in via `textures.register_generator` (kind="texture", env="volume", floor=1.0), surfaced in
+the Relax/Sleep soundscape picker AND a global **Sound > Bells & Gongs** menu. Gains calibrated over
+a 160 s render (~0.72 peak); FFT confirms the right spectra (Meditation Bell at 523 Hz, Gong dense
+& low 75-158 Hz, Bowl beating 196/197, Triangle all-high 4.5-12 kHz). selftest passes (124 voices);
+offscreen Relax session selects + crossfades bells, thread-stable (2->2) on both faces. This also
+ticks the backlog's "Gong bath / tuned bowl set". Queued follow-on modules (researched + tasks):
+drums (`synth_drum.py`), whistles/organs/horns (`synth_wind.py`), rhythmic/environmental FX -
+train/ship/thunder (`synth_fx.py`).
+
 ## App round — Aurora scene (northern lights)
 Added `vesper/scene_aurora.py` (an `AuroraScene`, registered at the bottom of scenes.py via
 `_CLASSES["aurora"]` + `AMBIENT.append`): a dark starry night with four slow northern-lights

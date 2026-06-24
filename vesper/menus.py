@@ -122,6 +122,9 @@ def _sound(win, m):
     music = voices.names(voices.GROUP_MUSIC)        # generative cosmic music beds
     if music:
         _list_menu(m.addMenu("Cosmic Music"), music, win.set_ambience)
+    bells = voices.names(voices.GROUP_BELLS)         # bells / bowls / gongs (tolling)
+    if bells:
+        _list_menu(m.addMenu("Bells & Gongs"), bells, win.set_ambience)
     m.addSeparator()
     m.addAction("Mixer…").triggered.connect(lambda: dialogs.open_mixer(win))
 

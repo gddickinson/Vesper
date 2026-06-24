@@ -199,7 +199,10 @@ Campfire / Singing Bowl / Wind Chimes / Night Crickets / **Purr** ambiences;
 — the **Cosmic Music** generative engine (`GROUP_MUSIC`: Music of the Spheres ·
 Starlight Choir · Deep Space): endless, non-repeating, just-intonation pads scheduled on
 near-coprime cycles over a drone with slow root drift, washed through a block-delay
-feedback-comb `reverb.Reverb`. The 2D fallback face lives in `vesper/cat.py`.
+feedback-comb `reverb.Reverb`; and **`synth_bell`** — a struck-resonator engine + 12-instrument
+**Bells & Gongs** library (`GROUP_BELLS`: bells / bowls / gong / triangle / tingsha / tubular +
+a sung bowl) tolling slowly as a meditation/ambience bed. The 2D fallback face lives in
+`vesper/cat.py`.
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

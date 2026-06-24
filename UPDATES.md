@@ -190,7 +190,21 @@ Guardrails (every round):
       Womb Heartbeat · Fan (white-noise machine). Calibrated.
 - [ ] **Slow-wave pink pulses**: pink noise gently pulsing at ~0.8 Hz (open-loop,
       honestly framed) for deep-sleep support.
-- [ ] **Gong bath / tuned bowl set**: a slow sequence of struck bowls/gongs.
+- [x] **Gong bath / tuned bowl set** (user-requested, delivered by `synth_bell.py`): a
+      physically-grounded struck-resonator engine + 12 instruments (Meditation/Temple/Church/Hand
+      Bell, Tibetan + Crystal + Sung Bowl, Tam-tam + Nipple Gong, Triangle, Tingsha, Tubular Bell)
+      that toll slowly as a meditation/chant/ambience bed - in the soundscape picker + a Sound
+      menu. Hemony bell partials, gong bloom, bowl beating; calibrated; selftest passes.
+
+### Researched batch — instrument & effect synthesis (user-requested "sonorous sounds")
+- [ ] **Drums**: a membrane/percussion synth (frame drum, taiko, tabla, hand drum, log/slit drum,
+      woodblock) - pitched mode + noise transient, struck on a tempo. New module `synth_drum.py`.
+- [ ] **Whistles / organs / horns**: sustained tonal sources - whistles (near-sine + breath chiff),
+      organ (additive flue-pipe harmonics), train + ship + fog horns (detuned harmonic stacks,
+      slow attack). New module `synth_wind.py`.
+- [ ] **Rhythmic / environmental FX**: train (wheel clacks on a tempo + engine chuff + rumble),
+      ship (water lapping hull + creak + horn), thunder & lightning (a crack + a long rolling
+      rumble), ocean buoy bell. New module `synth_fx.py`.
 - [ ] **Spatial polish**: subtle auto-pan / width on ambiences for headphone immersion.
 
 ### Researched batch — engagement & structure
@@ -240,6 +254,8 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- Bells & Gongs synth (`synth_bell.py`): 12 struck instruments (bells/bowls/gong/triangle/
+  tingsha/tubular + a sung bowl) - struck-resonator engine; in the soundscape + Sound menu.
 - Aurora scene: slow shimmering northern-lights curtains over a starry sky (View > Scene).
 - New lecture branch Small Wonders (Dew · Dust in Sunlight · Seeds · Snowflakes) -> 86 / 11.
 - Rain-on-window scene: drops + rivulets on glass over a warm blurred lamp glow (View > Scene).
