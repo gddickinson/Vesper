@@ -594,6 +594,18 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — Sunrise / Wake mode (dawn simulation, inverse of the wind-down)
+Added a gentle dawn wake-up. `session.SessionDirector.start_wake` + `_update_wake` mirror the
+sleep path inverted: over the duration the breath pattern eases slow->normal (Extended 7-11 ->
+Coherent 5.5, raised-cosine) and the master volume rises from 15% to full by ~80%. `window._tick`
+gains a wake branch that BRIGHTENS the view: the warm dim wash fades (0.4 -> 0) and the window
+opacity rises (0.55 -> 1.0) as the wake progresses (the inverse of the Sleep warm-dim). `app.start_sunrise`
+arms it (Forest Wind dawn-chorus bed + a soft waking chime, clock restarted from 0), wired to a
+new **Sessions > Sunrise (gentle wake-up)** menu entry; switching mode/program cancels it via
+`set_mode` (now clears `wake`). selftest passes; offscreen wake verified early-dim vs late-bright
+(warm 0.40->0.03, breath cycle 18.0s->11.1s), thread-stable (2->2), both faces; PNGs confirm the
+visible brightening.
+
 ## Stories round — new branch The Quiet Crafts (Bookbinding, Blacksmith, Basketry, Stained Glass)
 Added a 10th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section
 1, accurate craft history, ASCII, sleep-closing): `lectures_bookbinding.py` (Soft Rainstorm -

@@ -56,6 +56,9 @@ def _sessions(win, m):
     for name in programs.names():
         m.addAction(name).triggered.connect(
             lambda _c=False, x=name: win.start_session_mode(x))
+    m.addSeparator()
+    m.addAction("Sunrise (gentle wake-up)").triggered.connect(
+        lambda: win.start_sunrise())
 
 
 def _voice(win, m):

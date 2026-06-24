@@ -490,16 +490,24 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                 pucker=mo["pucker"], stretch=mo["stretch"],
                                 phase=state.phase, smile=self._smile,
                                 brow=self._brow, eye_bias=self._eyeb)
-        # Sleep wind-down: gentle window dim + a warm, low-blue wash on the view
-        # (grows toward sleep — kinder on melatonin than a cool, bright screen).
-        sleep = self.current_mode == "Sleep" and running and total > 0
-        warm = 0.5 * (prog or 0.0) if sleep else 0.0
-        self.face.set_warm(warm)
-        self.viz.set_warm(warm)
-        if sleep:
-            self.setWindowOpacity(1.0 - 0.3 * (prog or 0.0))
-        elif not running:
-            self.setWindowOpacity(1.0)
+        # Sleep wind-down dims + warms toward sleep; the Sunrise wake-up does the
+        # inverse, brightening from a warm pre-dawn dimness to a clear, full view.
+        wake = getattr(self.director, "wake", False) and running and total > 0
+        sleep = self.current_mode == "Sleep" and running and total > 0 and not wake
+        if wake:
+            wf = prog or 0.0                              # 0 = pre-dawn, 1 = full day
+            warm = 0.4 * (1.0 - wf)                       # dawn warmth fades to clear
+            self.face.set_warm(warm)
+            self.viz.set_warm(warm)
+            self.setWindowOpacity(0.55 + 0.45 * wf)       # dim -> bright
+        else:
+            warm = 0.5 * (prog or 0.0) if sleep else 0.0
+            self.face.set_warm(warm)
+            self.viz.set_warm(warm)
+            if sleep:
+                self.setWindowOpacity(1.0 - 0.3 * (prog or 0.0))
+            elif not running:
+                self.setWindowOpacity(1.0)
         self._tick_hourglass(running, total, prog)
         self.panel.tick()
         self._update_status(state, running)

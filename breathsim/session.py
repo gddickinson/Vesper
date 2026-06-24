@@ -34,6 +34,10 @@ class SessionDirector:
         self.sleep_duration = 1200.0
         self.sleep_a = None
         self.sleep_b = None
+        self.wake = False                 # Sunrise dawn-simulation (inverse of sleep)
+        self.wake_duration = 900.0
+        self.wake_a = None
+        self.wake_b = None
         self.program = None
         self.program_stage = -1
         self.program_t0 = 0.0
@@ -51,6 +55,7 @@ class SessionDirector:
 
     def set_mode(self, mode: str):
         self.sleep = False
+        self.wake = False
         self.program = None
         if programs.get(mode):
             self.start_program(mode)
@@ -89,6 +94,7 @@ class SessionDirector:
 
     def start_sleep(self, duration, start_pattern, end_pattern):
         self.sleep = True
+        self.wake = False
         self.mode = "Manual"
         self.program = None
         self.sleep_duration = max(60.0, float(duration))
@@ -97,6 +103,21 @@ class SessionDirector:
 
     def stop_sleep(self):
         self.sleep = False
+
+    def start_wake(self, duration, start_pattern, end_pattern):
+        """Sunrise wake-up: the inverse of the wind-down. Over *duration* the
+        breath quickens slow->normal and the volume rises quiet->full; the GUI
+        brightens (warm dim -> clear) in :meth:`window._tick`."""
+        self.wake = True
+        self.sleep = False
+        self.mode = "Manual"
+        self.program = None
+        self.wake_duration = max(60.0, float(duration))
+        self.wake_a = start_pattern
+        self.wake_b = end_pattern
+
+    def stop_wake(self):
+        self.wake = False
 
     def set_manual(self, value):
         self.manual = float(value)
@@ -112,6 +133,9 @@ class SessionDirector:
             return
         if self.sleep:
             self._update_sleep(t)
+            return
+        if self.wake:
+            self._update_wake(t)
             return
         eng = self.app.engine
         if self.mode == "Auto drift":
@@ -166,6 +190,23 @@ class SessionDirector:
             vol *= max(0.0, 1.0 - (frac - 0.7) / 0.3)
         if self.app.controller.running:
             self.app.engine.set_master_volume(vol)
+
+    def _update_wake(self, t):
+        d = self.wake_duration
+        frac = min(1.0, t / d) if d > 0 else 1.0
+        a, b = self.wake_a, self.wake_b
+        if a is not None and b is not None:
+            s = 0.5 - 0.5 * math.cos(math.pi * frac)        # smooth ease slow->normal
+            def lerp(x, y):
+                return x + (y - x) * s
+            self.app.controller.set_pattern(BreathPattern(
+                "Sunrise wake-up", lerp(a.inhale, b.inhale),
+                lerp(a.hold_full, b.hold_full), lerp(a.exhale, b.exhale),
+                lerp(a.hold_empty, b.hold_empty)))
+        vol = self.app.user_volume
+        rise = min(1.0, 0.15 + frac / 0.8 * 0.85)           # quiet -> full by ~80%
+        if self.app.controller.running:
+            self.app.engine.set_master_volume(vol * rise)
 
     def _morphable_names(self):
         return (voices.names(voices.GROUP_VOCAL) + voices.names(voices.GROUP_SING)

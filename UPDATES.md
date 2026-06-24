@@ -121,8 +121,11 @@ Guardrails (every round):
       exhale) + a matching visual, for a quick down-regulation.
 
 ### Researched batch — light & circadian
-- [ ] **Sunrise / Wake mode**: a gradual dawn-simulation (warm→bright over N min) with a
-      soft rising chime + optional dawn chorus — a gentle wake-up (inverse of wind-down).
+- [x] **Sunrise / Wake mode**: `director.start_wake` + `app.start_sunrise` + a Sessions menu
+      "Sunrise (gentle wake-up)" - over N min the view brightens (warm dim->clear, inverse of
+      the Sleep wash), the volume rises (quiet->full), the breath quickens (Extended 7-11 ->
+      Coherent 5.5) and a Forest Wind dawn bed + soft chime fade in. Verified early-dim vs
+      late-bright renders (warm 0.40->0.03, cycle 18s->11s), thread-stable, both faces.
 - [ ] **Clock-aware theming**: bias palette/brightness by local time (warm+dim at night,
       brighter by day) and suggest a fitting mode on launch.
 
@@ -218,6 +221,8 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Sunrise / Wake mode: gradual dawn simulation (brighten + volume rise + breath quicken +
+  dawn chorus), the inverse of the Sleep wind-down; from the Sessions menu.
 - New lecture branch The Quiet Crafts (Bookbinding · Blacksmith · Basketry · Stained Glass)
   -> 82 lectures / 10 branches.
 - Cosmic music +2 (Aurora Tones · Saturn Ring Shimmer) -> 10 Cosmic Music voices.

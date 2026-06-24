@@ -100,6 +100,22 @@ class _ActionsMixin:
         else:
             self.director.stop_sleep()
 
+    def start_sunrise(self, minutes=15.0):
+        """A gentle dawn wake-up: over *minutes* the breath quickens (slow->normal),
+        the volume rises (quiet->full), the view brightens (warm dim->clear) and a
+        soft morning bed fades in - the inverse of the Sleep wind-down."""
+        a = preset_by_name("Extended 7-11") or self.controller.pattern
+        b = preset_by_name("Coherent 5.5 (Resonance)") or a
+        self.controller.change_pattern(a)
+        self.controller.session_seconds = float(minutes) * 60.0
+        self.director.start_wake(float(minutes) * 60.0, a, b)
+        self.engine.set_voice("Forest Wind", "ambience")     # a gentle dawn chorus bed
+        self._ensure_running()
+        self.controller.restart()                            # ramp from t=0
+        self.engine.set_master_volume(self.user_volume * 0.15)
+        self.engine.trigger_chime("in")                      # a soft waking chime
+        self.panel.sync()
+
     def _ensure_running(self):
         if not self.controller.running:
             self.toggle_transport()
