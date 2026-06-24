@@ -239,3 +239,21 @@ _add("Body Scan & PMR (15 min)",
           "soft and heavy, and simply rest in the calm you have made.",
           pattern="Extended 7-11", voice="Sleepy Warm", cue_style="Off",
           volume=0.5)])
+
+# Physiological-sigh reset: a quick, well-studied way to settle in a couple of
+# minutes -- two inhales (a second sip of air on top of the first) then a long,
+# slow sigh out. The "Physiological Sigh" pattern's brief top-of-breath hold
+# stands in for the second inhale; the long exhale carries a soft sigh voice.
+_add("Physiological Sigh Reset (3 min)",
+     "A quick reset: two inhales, then a long sigh out. Calms in a couple of minutes.",
+     [_st("Settle", 0.5, "Sit or lie comfortably. We'll take a few physiological "
+          "sighs - the body's own quick way to settle.",
+          pattern="Coherent 5.5 (Resonance)", voice="Deep Calm", scene="orb",
+          cue_style="Guided", volume=0.7),
+      _st("Double-inhale sighs", 2.0, "Breathe in through your nose... then sip a "
+          "little more air on top, filling the lungs... and let it go with a long, "
+          "slow sigh out through the mouth. Again, gently, at your own pace.",
+          pattern="Physiological Sigh", voice="Deep Sigh (relief)", scene="orb"),
+      _st("Rest & notice", 0.5, "Let the breath return to its own easy rhythm, and "
+          "notice how you feel now.", pattern="Coherent 5.5 (Resonance)",
+          voice="Gentle Sigh", cue_style="Off", volume=0.6)])

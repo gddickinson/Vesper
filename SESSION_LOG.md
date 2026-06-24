@@ -2127,6 +2127,14 @@ Extended 7-11 to rest. Auto-listed in Sessions + the Breathwork programs card vi
 applies cleanly and the program starts as a guided session on both faces; selftest
 passes; thread-stable.
 
+## Round 4 (roadmap) — Physiological Sigh Reset mini-session
+Added the short **"Physiological Sigh Reset (3 min)"** program: settle → ~2 min of
+double-inhale sighs (the "Physiological Sigh" pattern's top-of-breath hold stands in for
+the second inhale; a soft "Deep Sigh (relief)" voice carries the long exhale) → rest &
+notice. A quick, well-studied way to settle, framed modestly (no clinical claims).
+Auto-listed in Sessions / the Breathwork programs card. Verified: settings resolve,
+applies + starts on both faces, thread-stable, 3.0 min.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

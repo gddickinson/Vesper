@@ -63,7 +63,8 @@ Set with the user after the realistic-chanting round. Tick as completed.
    (`engine.current_syllable`). Done.
 3. [x] **Body-scan + PMR guided program** — "Body Scan & PMR (15 min)" in
    `programs.py`: tense->release feet-to-head on a (4,3,9,0) breath, then melt. Done.
-4. [ ] **Physiological-sigh reset** — a 2-3 min one-tap "Sigh" mini-session.
+4. [x] **Physiological-sigh reset** — "Physiological Sigh Reset (3 min)" program
+   (double inhale -> long sigh), auto-listed in Sessions / Breathwork. Done.
 5. [ ] **Characters -> story binding + story-following dynamic backgrounds**
    - a) the storyteller picks a fitting character + costume per scene; characters react
      to story mood (ties the 15-character cast into the Sleep experience).
