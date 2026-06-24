@@ -243,7 +243,21 @@ class _SectionsMixin:
                           on_change=lambda _v: self._on_winddown())
         self._w["wind_min"] = s
         body.addWidget(s)
+        from . import sleeptimer
+        body.addWidget(muted("Sleep timer: fade out and pause after a set time."))
+        tmr = combo([lbl for lbl, _m in sleeptimer.OPTIONS],
+                    sleeptimer.label_for(self.win._sleep_timer_min),
+                    self._on_sleep_timer)
+        self._w["sleep_timer"] = tmr
+        body.addWidget(tmr)
         return frame
+
+    def _on_sleep_timer(self, label):
+        from . import sleeptimer
+        for lbl, m in sleeptimer.OPTIONS:
+            if lbl == label:
+                self.win.set_sleep_timer(m)
+                return
 
     def _on_winddown(self):
         chk, s = self._w.get("wind_on"), self._w.get("wind_min")

@@ -158,6 +158,14 @@ def _sound(win, m):
     if fx:
         _list_menu(m.addMenu("Environmental FX"), fx, win.set_ambience)
     m.addSeparator()
+    from . import sleeptimer                              # fade out + pause after N min
+    stm = m.addMenu("Sleep timer")
+    for lbl, mins in sleeptimer.OPTIONS:
+        a = stm.addAction(lbl)
+        a.setCheckable(True)
+        a.setChecked(int(getattr(win, "_sleep_timer_min", 0)) == mins)
+        a.triggered.connect(lambda _c=False, x=mins: win.set_sleep_timer(x))
+    m.addSeparator()
     m.addAction("Mixer…").triggered.connect(lambda: dialogs.open_mixer(win))
 
 

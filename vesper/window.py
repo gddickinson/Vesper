@@ -104,6 +104,9 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._hg_spin_t0 = None
         self.current_mode = None
         self._active_course = None         # (course name, total) while a course day runs
+        self._sleep_timer_min = 0.0        # sleep auto-stop: 0 = off (default each launch)
+        self._sleep_timer_t0 = 0.0         # elapsed when the timer was armed
+        self._sleep_timer_done = False
         self._mood_on = False              # optional mood check-ins (opt-in; off by default)
         self._mood_after_done = False
 
@@ -392,6 +395,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         fresh = self.controller.elapsed() < 1.0
         self._started_once = True                     # retire the launch hint
         if fresh:
+            self._sleep_timer_t0 = 0.0                # restart the sleep-timer countdown
+            self._sleep_timer_done = False
             self._mood_after_done = False
             from . import mood
             mood.maybe_check_in(self, "before")      # only on a fresh start
@@ -409,6 +414,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._last_phase = None
         self._logged_session = False
         self._next_bell = self._bell_interval * 60.0
+        self._sleep_timer_t0 = 0.0             # the countdown restarts with the session
+        self._sleep_timer_done = False
         self._sfx_idle = 0                     # restore the base ambience bed
         self._sfx_target = self._base_ambience
         self._mood_target = (0.0, 0.0, 0.0)
@@ -524,6 +531,22 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             running = False
             self.panel.reflect_running(False)
             QTimer.singleShot(400, self._after_mood)   # offer mood, after the tick
+        if running and self._sleep_timer_min > 0 and not self._sleep_timer_done:
+            from . import sleeptimer                    # gentle fade-out, then pause
+            local = self.controller.elapsed() - self._sleep_timer_t0
+            gain, done = sleeptimer.fade_gain(self._sleep_timer_min, local)
+            if done:
+                self._log_practice()
+                self.controller.pause()
+                self.engine.set_master_volume(0.0)
+                self.narrator.stop()
+                self._sleep_timer_done = True
+                running = False
+                self.panel.reflect_running(False)
+                QTimer.singleShot(400, self._after_mood)
+            elif gain < 1.0:                            # ease the volume down
+                base = 0.0 if self._is_muted else self.user_volume
+                self.engine.set_master_volume(base * gain)
         if running and state.phase != self._last_phase:
             if state.phase in ("inhale", "exhale"):
                 self.engine.trigger_chime(

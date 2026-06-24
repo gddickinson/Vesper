@@ -115,6 +115,19 @@ class _ActionsMixin:
         store.reset_course(name)
         self.start_course_day(name)
 
+    def set_sleep_timer(self, minutes):
+        """Arm (or clear, minutes<=0) the sleep auto-stop: after the chosen time
+        the sound gently fades out and transport pauses. Counts from now."""
+        self._sleep_timer_min = float(minutes)
+        self._sleep_timer_t0 = self.controller.elapsed()
+        self._sleep_timer_done = False
+        if self._sleep_timer_min > 0:
+            self.status.showMessage(
+                f"Sleep timer set for {int(self._sleep_timer_min)} min", 4000)
+        else:
+            self.status.showMessage("Sleep timer off", 3000)
+        self.panel.sync()
+
     def set_winddown(self, on, minutes):
         if on:
             a = self.controller.pattern

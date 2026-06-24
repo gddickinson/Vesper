@@ -263,6 +263,14 @@ Guardrails (every round):
       passes; helper unit-tested (morning/night, fresh vs 3-day streak vs mid-course vs completed);
       offscreen both faces — suggestion produced on launch with no blocking dialog, shown while idle,
       retired after Start, thread-stable.
+- [x] **Sleep-timer auto-stop** (`vesper/sleeptimer.py`): an optional timer that gently fades the
+      sound out (a ~30 s ramp on the master volume) and then pauses the session after a set time, so
+      you can fall asleep without the audio playing all night. Off by default; Off / 15 / 30 / 45 /
+      60 min in the **Sleep wind-down card** and a **Sound > Sleep timer** submenu. Reuses the
+      per-frame loop + the master-volume path (no second clock); counts from when armed/started and
+      restarts each fresh session; stops the narrator + pauses via the existing path. Honest: it just
+      fades + pauses. Done: selftest passes; pure `fade_gain`/`remaining` unit-tested; offscreen both
+      faces — full volume before the mark, ~half mid-fade, silent + paused after, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

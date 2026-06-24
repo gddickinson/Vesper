@@ -594,6 +594,23 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — sleep-timer auto-stop (gentle fade-out + pause after N minutes)
+Added `vesper/sleeptimer.py` (50 lines, pure + testable): `fade_gain(armed_minutes, elapsed,
+fade_seconds=30)` -> `(gain, done)` -- full volume before the mark, a slow linear ramp to 0 over the
+fade once reached, then `done` (time to pause); plus `remaining_seconds`, `OPTIONS` (Off/15/30/45/60)
+and `label_for`. The window keeps **no second clock**: `_tick` passes the session's elapsed-since-
+armed into `fade_gain` each frame and eases the master volume down via the existing
+`engine.set_master_volume` path (respecting mute), then on `done` stops the narrator and pauses
+transport through the same route the session-finished path uses (and offers the after-mood check-in).
+`set_sleep_timer(minutes)` arms it (counts from now); it is **off by default each launch** (not
+persisted, so it never silently stops a future session) and the countdown restarts on a fresh Start
+and on reset. Surfaced in the **Sleep wind-down card** (a combo) and a **Sound > Sleep timer**
+submenu. Honest framing: it only fades + pauses, no claims. Verified: `selftest.py` passes (109
+lectures / 16 branches); the pure helper is unit-tested (off / before-mark / at-mark / mid-fade=0.5 /
+after=done / remaining / labels); offscreen both faces -- master holds at 0.8 before the mark, eases
+to 0.4 at mid-fade (15 min + 15 s) while still running, then reaches 0.0 with transport paused and
+the timer marked done after the fade, thread-stable.
+
 ## Stories round — new branch Great Rivers (Nile, Amazon, Ganges, Yangtze)
 Added a 16th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate geography/history/culture, ASCII, sleep-closing): `lectures_nile.py` (The Nile, Night
