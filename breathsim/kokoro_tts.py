@@ -26,9 +26,15 @@ _BASE = ("https://github.com/thewh1teagle/kokoro-onnx/releases/download/"
 MODEL_URL = _BASE + "kokoro-v1.0.onnx"
 VOICES_URL = _BASE + "voices-v1.0.bin"
 
-# Calm, clearly-vocalised voices for sleep narration, in preference order.
-RELAXING = ["af_heart", "af_sarah", "af_nicole", "af_sky", "bf_emma",
-            "bf_isabella", "am_michael", "am_adam", "bm_george", "bm_lewis"]
+# Calm, clearly-vocalised voices for sleep narration, in preference order. A
+# British female leads (the app default); these top voices are the highest grade
+# Kokoro ships, all rated "A" for long-form narration.
+RELAXING = ["bf_emma", "bf_isabella", "bf_alice", "bf_lily", "af_heart",
+            "af_sarah", "af_nicole", "af_sky", "bm_george", "bm_lewis",
+            "am_michael", "am_adam"]
+
+# The most realistic / recommended voices (shown starred in the picker).
+RECOMMENDED = ("bf_emma", "bf_isabella", "af_heart", "af_sarah", "bm_george")
 
 _engine = None
 

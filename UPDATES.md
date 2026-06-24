@@ -225,6 +225,19 @@ Guardrails (every round):
 - [ ] **First-run onboarding**: a gentle goal pick (sleep / focus / calm) that presets it.
 
 ### Researched batch — storyteller
+- [x] **Best voices + British-female default** (user-requested): the default narration voice is
+      now **Kokoro `bf_emma` (British female)** - reordered `kokoro_tts.RELAXING` (British females
+      first) and the macOS `say` fallback (UK females first; `_say_best` prefers a UK female), and
+      default the spoken-cue voice to a UK female too. The Sleep "Narration voice" picker now shows
+      **friendly labels with accent/gender and a ★ on the most realistic** (e.g. "★ Emma -
+      British female"), best-first. Research (offline TTS): **Kokoro** is the right shipping engine
+      - 300 MB, faster-than-real-time on CPU (~45 ms first chunk vs XTTS ~320 ms), Apache, #1 on
+      TTS Arena, true British voices; **Fish Speech** (12-16 GB GPU) and **XTTS/Coqui** (2-8 GB
+      VRAM, ~1.8 GB, sub-real-time on CPU) are higher-ceiling for cloning/emotion but break the
+      offline/laptop/graceful-degrade guarantees - documented as an optional future engine below.
+- [ ] **Optional high-fidelity neural engine**: behind the same optional-dependency pattern as
+      `kokoro_tts` (degrade gracefully), allow an opt-in heavier engine (XTTS-v2 / Fish Speech) for
+      users with a GPU - voice cloning + emotion. NOT bundled (size/GPU); a documented add-on.
 - [ ] **Optional spoken name**: greet/settle the listener by name (off by default).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
@@ -268,6 +281,8 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- Best voices: British-female default (Kokoro bf_emma); UK-female say fallback; ★-marked best
+  voices + friendly accent/gender labels in the narration picker; researched Kokoro vs Fish/XTTS.
 - 5 more ambiences (Rain on a Tent · Wind in Pines · Fan · Womb Heartbeat · Whale Song) -> 147.
 - Breathing mandala scene: radially-symmetric rings that breathe + counter-rotate (View > Scene).
 - Poetry (`poetry.py`): 8 original soothing nocturnes recited slowly as a Sleep "Poetry"

@@ -19,9 +19,13 @@ import time
 
 from . import kokoro_tts
 
-# macOS ``say`` fallback voices, in preference order (Premium > Enhanced > base).
-RELAXING = ["Zoe", "Anna", "Samantha", "Ava", "Serena", "Evan", "Tom",
-            "Nathan", "Joelle", "Allison", "Susan", "Daniel", "Karen", "Moira"]
+# macOS ``say`` fallback voices, in preference order. A British female leads (to
+# match the app's British-female default), then other soft, clear voices.
+RELAXING = ["Serena", "Stephanie", "Kate", "Martha", "Jamie", "Zoe", "Ava",
+            "Samantha", "Allison", "Susan", "Moira", "Daniel", "Oliver"]
+
+# British-female say voices (the preferred fallback when Kokoro isn't installed).
+_UK_FEMALE = {"Serena", "Stephanie", "Kate", "Martha", "Jamie", "Kathryn"}
 
 
 def _say_voices(speech):
@@ -40,9 +44,21 @@ def _say_voices(speech):
     return out
 
 
+def _base(v):
+    return str(v).split(" (")[0]
+
+
 def _say_best(speech):
     vs = _say_voices(speech)
+    # Prefer a British female, ideally a Premium/Enhanced one.
     for tag in ("(Premium)", "(Enhanced)"):
+        for v in vs:
+            if _base(v) in _UK_FEMALE and tag in v:
+                return v
+    for v in vs:
+        if _base(v) in _UK_FEMALE:
+            return v
+    for tag in ("(Premium)", "(Enhanced)"):     # else the best non-UK voice
         for v in vs:
             if tag in v:
                 return v
@@ -56,6 +72,44 @@ def available_voices(speech):
 
 def best_voice(speech):
     return kokoro_tts.best_voice() if kokoro_tts.ready() else _say_best(speech)
+
+
+# --- friendly labels for the voice picker ----------------------------------
+_LANG = {"a": "American", "b": "British", "e": "Spanish", "f": "French",
+         "h": "Hindi", "i": "Italian", "j": "Japanese", "p": "Portuguese",
+         "z": "Chinese"}
+_GENDER = {"f": "female", "m": "male"}
+
+
+def recommended(speech=None):
+    """The set of 'best' voice ids/names for the active engine (shown starred)."""
+    if kokoro_tts.ready():
+        return set(kokoro_tts.RECOMMENDED)
+    return set(_UK_FEMALE)
+
+
+def is_recommended(voice, speech=None):
+    v = str(voice)
+    rec = recommended(speech)
+    return (v in rec or _base(v) in rec
+            or "(Premium)" in v or "(Enhanced)" in v)
+
+
+def voice_label(voice, speech=None):
+    """A human label for *voice*: friendly name + accent/gender, a leading star if
+    it is one of the most realistic. Works for Kokoro ids (e.g. ``bf_emma``) and
+    macOS ``say`` names alike."""
+    if not voice:
+        return "(no voice)"
+    v = str(voice)
+    star = "★ " if is_recommended(v, speech) else ""
+    if len(v) >= 4 and v[2] == "_" and v[0] in _LANG and v[1] in _GENDER:
+        name = v[3:].replace("_", " ").title()
+        return f"{star}{name} - {_LANG[v[0]]} {_GENDER[v[1]]}"
+    base = _base(v)
+    tag = (" - premium" if "(Premium)" in v
+           else " - enhanced" if "(Enhanced)" in v else "")
+    return f"{star}{base}{tag}"
 
 
 def engine_label(speech):

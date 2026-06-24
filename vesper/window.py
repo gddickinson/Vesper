@@ -105,8 +105,11 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self.current_mode = None
 
         accents = self.speech.accent_voices()
-        if accents:
-            self.speech.set_voice(accents[0][1])
+        if accents:                                  # default cues to a UK female
+            uk_fem = ("Serena", "Stephanie", "Kate", "Martha", "Jamie")
+            pick = next((vid for _d, vid in accents
+                         if vid.split(" (")[0] in uk_fem), accents[0][1])
+            self.speech.set_voice(pick)
 
         central = QWidget()
         lay = QHBoxLayout(central)

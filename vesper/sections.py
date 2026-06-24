@@ -211,10 +211,17 @@ class _SectionsMixin:
         self._w["story"] = sc
         body.addWidget(muted("Scene or lecture"))
         body.addWidget(sc)
-        vs = narration.available_voices(self.win.speech) or ["(no voice)"]
-        vc = combo(vs, None, self.win.set_story_voice)
+        ids = narration.available_voices(self.win.speech)
+        self._story_voice_id = {narration.voice_label(v): v for v in ids}
+        labels = list(self._story_voice_id) or ["(no voice)"]
+        cur = narration.voice_label(self.win.narrator.voice
+                                    or narration.best_voice(self.win.speech))
+        if cur not in self._story_voice_id:
+            cur = labels[0]
+        vc = combo(labels, cur, lambda lbl: self.win.set_story_voice(
+            self._story_voice_id.get(lbl, lbl)))
         self._w["story_voice"] = vc
-        body.addWidget(muted("Narration voice"))
+        body.addWidget(muted("Narration voice  (★ = most realistic)"))
         body.addWidget(vc)
         s = LabeledSlider("Speech speed", 0.6, 1.2, self.win._speech_speed,
                           decimals=2, suffix="x",

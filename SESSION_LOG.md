@@ -594,6 +594,24 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Feature (user request) — best voices: British-female default + marked best + TTS research
+Researched offline TTS engines and set the most realistic voice we can ship as the default.
+**Decision**: Kokoro neural (already integrated, ~300 MB ONNX, Apache, faster-than-real-time on
+CPU, #1 on TTS Arena, true British voices) is the right shipping engine; Fish Speech (12-16 GB
+GPU) and XTTS/Coqui (2-8 GB VRAM, ~1.8 GB model, sub-real-time on CPU) are higher-ceiling for
+cloning/emotion but would break the offline/laptop/graceful-degrade guarantees, so they are
+documented as an optional future GPU add-on, not bundled. **Implemented**: default narration voice
+is now **Kokoro `bf_emma` (British female)** - reordered `kokoro_tts.RELAXING` (British females
+first) + added `RECOMMENDED`; reordered the `say` fallback `RELAXING` (UK females first) and made
+`_say_best` prefer a UK female (Premium/Enhanced); defaulted the spoken-cue voice to a UK female in
+`window` init. Added `narration.voice_label/recommended/is_recommended` - the Sleep "Narration
+voice" picker (`sections._card_story`) now shows friendly labels with accent + gender and a leading
+★ on the most realistic voices, best-first (e.g. "★ Emma - British female"), mapping label->id so
+selection still passes the engine id. Verified: bf_emma synthesises clean audio (2.9 s, finite,
+peak 0.65); `best_voice` -> bf_emma; picker labels starred + British-female-first; selftest passes;
+offscreen Sleep workspace builds the labeled picker and switches voices, thread-stable on both
+faces.
+
 ## App round — 5 more procedural ambiences
 Added five GROUP_NATURE ambiences. NoiseTrack voices in `voices.py`: **Rain on a Tent** (mid-band
 pink patter on canvas), **Wind in Pines** (steady pink wind, slow auto-pan), **Fan (White Noise)**
