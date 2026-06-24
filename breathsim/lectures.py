@@ -83,6 +83,8 @@ from . import (lectures_chai, lectures_coffeebean, lectures_greentea,
                lectures_mate)
 from . import (lectures_eddystone, lectures_fresnel, lectures_keepers,
                lectures_pharos)
+from . import (lectures_ashurbanipal, lectures_houseofwisdom,
+               lectures_scriptorium, lectures_timbuktu)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -181,6 +183,8 @@ _CATALOG = [
                                    lectures_mate, lectures_chai]),
     ("Lighthouses of the World", [lectures_pharos, lectures_eddystone,
                                   lectures_fresnel, lectures_keepers]),
+    ("Great Libraries", [lectures_ashurbanipal, lectures_houseofwisdom,
+                         lectures_scriptorium, lectures_timbuktu]),
 ]
 
 LECTURES = {}

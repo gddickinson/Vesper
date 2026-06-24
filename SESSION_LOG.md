@@ -614,6 +614,30 @@ returns an in-branch name, arms it as `_story_scene`, enters Sleep, and records 
 submenu; an unknown branch is a safe no-op that leaves the scene unchanged; a 24-frame tick loop is
 thread-stable.
 
+## Stories round — new branch Great Libraries (Ashurbanipal, House of Wisdom, Scriptorium, Timbuktu)
+Added a 34th lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
+fact-free section 1, accurate history, ASCII, every section sleep-closing): `lectures_ashurbanipal.py`
+(The Library of Ashurbanipal, Distant Thunder - the seventh-century-BCE Assyrian king's clay-tablet
+library at Nineveh, cuneiform pressed in wet clay, the Epic of Gilgamesh, and the fire that destroyed
+the city baking and so preserving the tablets), `lectures_houseofwisdom.py` (The House of Wisdom,
+Gentle Rain - Abbasid Baghdad's golden age of translation from Greek/Persian/Indian/Syriac, al-Khwarizmi
+and the roots of algebra and algorithm, paper-making, and the 1258 ruin with the ink-black-Tigris tale
+framed AS uncertain story), `lectures_scriptorium.py` (The Monastic Scriptorium, Rain on a Roof - the
+silent medieval writing room, parchment and vellum from skins, oak-gall ink and quills, illuminated
+initials and gold leaf, weary scribes' marginalia, copying that carried texts to the age of print), and
+`lectures_timbuktu.py` (The Libraries of Timbuktu, Night Crickets - the Sahel trading city where salt,
+gold, and books met, the Sankore scholars, family manuscript collections hidden across generations, and
+the modern rescue, with the "mythical place" idea framed AS a misconception). NOTE: "The Library of
+Alexandria" already exists (Histories branch), so **Timbuktu was substituted** to avoid a near-duplicate;
+also reverted a subagent's stray addition of Scriptorium into "The Quiet Crafts" so that branch stays at
+its original four. New branch in `_CATALOG` -> **181 lectures / 34 branches**. Verified: `selftest.py`
+passes (148 voices; 181 lectures / 34 branches); a lint confirmed each lecture has 7 x
+[13,12,13,12,12,13,13] sentences, a fact-free section 1 (no names/dates/numbers), all 7 sections
+sleep-closing, ASCII-only, an ambience resolving to a real GROUP_NATURE voice, no NAME/module
+collisions, and that "The Quiet Crafts" is back to its four; offscreen both faces - all four dispatch
+through `stories.story_units` (all 7 sections stream, ~110 units each) and a Sleep session narrates one,
+thread-stable; story DB rebuilt (15,513 lines / 246,044 words / 5 scenes).
+
 ## Stories round — new branch Lighthouses of the World (Pharos, Eddystone, Fresnel Lens, Keepers)
 Added a 33rd lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
 fact-free section 1, accurate history/engineering/optics, ASCII, every section sleep-closing):

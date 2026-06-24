@@ -580,6 +580,22 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Great Libraries** (4): The Library of Ashurbanipal · The House of Wisdom · The
+      Monastic Scriptorium · The Libraries of Timbuktu — added `lectures_{ashurbanipal,houseofwisdom,
+      scriptorium,timbuktu}.py` (7x[13,12,13,12,12,13,13] lines, fact-free section 1, accurate history —
+      Nineveh's cuneiform clay tablets baked by the fire that destroyed the city; Baghdad's translators,
+      al-Khwarizmi, paper, the 1258 ruin with the "ink-black Tigris" framed AS uncertain story; monks
+      preparing vellum + quill + months of copying + marginalia; Timbuktu's Sankore scholars and family
+      manuscript collections, the "mythical place" idea framed AS misconception), ASCII, every section
+      sleep-closing; ambiences Distant Thunder / Gentle Rain / Rain on a Roof / Night Crickets. NOTE:
+      "The Library of Alexandria" already exists (Histories), so **Timbuktu was substituted** to avoid a
+      duplicate; also reverted a subagent's stray add of Scriptorium into "The Quiet Crafts" (kept it at
+      its original 4). New branch in `_CATALOG` → **181 lectures / 34 branches**; story DB rebuilt
+      (15,513 lines / 246,044 words). Done: selftest (181/34); lint — each lecture
+      7x[13,12,13,12,12,13,13], section 1 fact-free, all 7 sections sleep-close, ASCII-only, ambience
+      resolves to a real GROUP_NATURE voice, no NAME/module collisions, Quiet Crafts back to 4; offscreen
+      both faces — all four dispatch through `stories.story_units` (all 7 sections stream) and a Sleep
+      session narrates one, thread-stable.
 - [x] **New branch — Lighthouses of the World** (4): The Pharos of Alexandria · Eddystone · The Fresnel
       Lens · Keepers of the Light — added `lectures_{pharos,eddystone,fresnel,keepers}.py`
       (7x[13,12,13,12,12,13,13] lines, fact-free section 1, accurate history/engineering/optics — the
