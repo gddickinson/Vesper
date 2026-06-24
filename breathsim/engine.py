@@ -14,7 +14,7 @@ import threading
 import numpy as np
 import sounddevice as sd
 
-from . import dsp, personas, timestretch, tracks, voices
+from . import dsp, personas, reverb, timestretch, tracks, voices
 from .controller import BreathController
 
 WORD_FILL = 0.95          # a stretched word fills this fraction of the exhale
@@ -121,6 +121,7 @@ class AudioEngine:
         self._req_vol = 0.0           # last requested master volume (pre-cap)
         self.vol_cap = 1.0            # upper bound on output (e.g. quiet-hours softening)
         self.chime_enabled = False
+        self.space = reverb.SpaceReverb(self.sr)   # master "room" send (Off by default)
         self.spatial = True               # gentle stereo width + auto-pan on ambience
         self._chime_q: queue.Queue = queue.Queue()
         self._chimes: list[Chime] = []
@@ -397,6 +398,14 @@ class AudioEngine:
         self.vol_cap = float(min(max(cap, 0.0), 1.0))
         self.master_target = min(self._req_vol, self.vol_cap)
 
+    def set_space(self, name: str):
+        """Select the master reverb 'space' (Off / Room / Hall / Cathedral)."""
+        with self.lock:
+            self.space.set_space(name)
+
+    def space_name(self) -> str:
+        return self.space.name
+
     def set_chime(self, enabled: bool):
         self.chime_enabled = bool(enabled)
 
@@ -457,6 +466,8 @@ class AudioEngine:
                     self._chimes = keep
                     buf[:, 0] += mono
                     buf[:, 1] += mono
+                if self.space.active():
+                    buf = self.space.process(buf)      # master "room" / sacred space
                 target = self.master_target
             gain = np.linspace(self.master, target, frames)[:, None]
             self.master = target

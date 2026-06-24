@@ -54,6 +54,26 @@ Guardrails (every round):
 - **Gentle habit support**: a consistent wind-down ritual aids sleep; **non-judgemental**
   streaks / feedback support adherence without pressure.
 
+## Agreed roadmap (current — do in this order)
+Set with the user after the realistic-chanting round. Tick as completed.
+1. [x] **Reverb / sacred-space send** — `reverb.SpaceReverb` master room
+   (Off/Room/Hall/Cathedral), Sound ▸ Space menu, persisted. Done.
+2. [ ] **Chant workspace controls + sing-along** — surface engine controls missing from
+   the Qt UI: per-breath <-> per-phrase toggle (style is auto now, no manual override) +
+   the reciting-tone toggle; on-screen **syllable highlight** to chant along.
+3. [ ] **Body-scan + PMR guided program** — timed tense->release head-to-toe cues.
+4. [ ] **Physiological-sigh reset** — a 2-3 min one-tap "Sigh" mini-session.
+5. [ ] **Characters -> story binding + story-following dynamic backgrounds**
+   - a) the storyteller picks a fitting character + costume per scene; characters react
+     to story mood (ties the 15-character cast into the Sleep experience).
+   - b) **story-following themed backgrounds**: subtle dynamic scene backdrops that
+     follow what's being narrated -- themes like **starry sky, fire/hearth, weather
+     (rain/snow/wind/clouds), natural scenes (forest/sea/meadow), urban scenes** --
+     with **gentle, slow crossfades** between them as the imagery shifts. Soothing and
+     low-contrast; reuse the existing `sound_cues` text->imagery mapping so picture +
+     soundscape move together. NEVER startling/dramatic: long fades (multi-second),
+     small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
+
 ## App improvements — FOCUS (do these first)
 - [x] Per-window **themed backdrops** behind the face + two new effects
       (**Underwater** for Relax, **Embers** cozy). Modes auto-theme the bg.

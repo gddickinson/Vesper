@@ -61,6 +61,15 @@ class _ActionsMixin:
         self._spatial = bool(on)
         self.engine.set_spatial(self._spatial)
 
+    def set_space(self, name):
+        """Select the master reverb 'space' (Off / Room / Hall / Cathedral) and
+        persist it. A little hall makes chants and singing sound real."""
+        self._space = name
+        self.engine.set_space(name)
+        from breathsim import store
+        store.save_settings({"space": name})
+        self.status.showMessage(f"Space: {name}", 2500)
+
     def toggle_layer(self, slot, on):
         self.engine.set_slot_muted(slot, not on)
 

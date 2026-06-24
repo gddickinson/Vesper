@@ -2090,6 +2090,20 @@ the word tail vs ~0.5% in the vowel; selftest now renders all **66 phrases** (ea
 a reciting-tone pass) finite & peak <= 1.0; offscreen Chant drive plays 8 phrases on both
 faces, 0 issues, thread-stable, each phrase adopting its own style + recite working.
 
+## Round 1 (roadmap) — reverb "sacred space" send on the master bus
+A little hall is what makes a chant or sung vowel sound real. Added
+`reverb.SpaceReverb` (master room: **Off / Room / Hall / Cathedral**), reusing the
+existing click-free comb bank (`_Comb`, delays >= block, longer blocks chunked) with
+preset-scaled delay length + feedback + wet + damping; applied to the mixed stereo bus
+just before master gain/soft-clip (`engine.set_space`/`space_name`, guarded by
+`space.active()` so Off is a no-op). Surfaced as **Sound ▸ Space (reverb)** (exclusive
+check group), with a `win.set_space` that persists `space` and restores it on launch
+(global user choice, not mode-forced). The existing cosmic-pad `Reverb` is untouched.
+Verified: measured peaks Off 0.66 → Hall 0.90 → Cathedral 0.85 (safe under soft-clip),
+tail energy rises Room→Hall→Cathedral; selftest passes; offscreen Chant drive on both
+faces runs the real audio callback through every preset finite & non-clipping, menu
+builds, space persists ("Hall"), thread-stable. Demo: scratchpad/SPACE_DEMO.wav.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

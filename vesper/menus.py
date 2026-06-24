@@ -157,6 +157,14 @@ def _sound(win, m):
     chime.setCheckable(True)
     chime.setChecked(getattr(win.engine, "chime_enabled", True))
     chime.toggled.connect(win.engine.set_chime)
+    from breathsim import reverb
+    spm = m.addMenu("Space (reverb)")                  # master room: Off..Cathedral
+    spg = QActionGroup(spm); spg.setExclusive(True)
+    cur_sp = win.engine.space_name()
+    for nm in reverb.space_names():
+        a = spm.addAction(nm); a.setCheckable(True); a.setChecked(nm == cur_sp)
+        spg.addAction(a)
+        a.triggered.connect(lambda _c=False, x=nm: win.set_space(x))
     nat = m.addAction("Naturalness")
     nat.setCheckable(True)
     nat.setChecked(win.controller.naturalness.amount > 1e-3)

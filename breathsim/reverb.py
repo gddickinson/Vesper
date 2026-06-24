@@ -66,3 +66,72 @@ class Reverb:
             outL.append(self._bank(self.cl, L[i:i + self.min_d], self.olp))
             outR.append(self._bank(self.cr, R[i:i + self.min_d], self.orp))
         return np.concatenate(outL), np.concatenate(outR)
+
+
+# --- master-bus "space" send ---------------------------------------------
+# A selectable room around the whole mix -- a little hall is what makes a chant
+# or a sung vowel sound real. (name -> delay scale, feedback scale, wet, damping).
+SPACES = {
+    "Off":       (1.0, 1.00, 0.00, 2600.0),
+    "Room":      (0.55, 0.92, 0.17, 3200.0),
+    "Hall":      (1.00, 1.00, 0.25, 2600.0),
+    "Cathedral": (1.55, 1.04, 0.32, 2200.0),
+}
+
+
+def space_names():
+    return list(SPACES)
+
+
+class SpaceReverb:
+    """A preset stereo room placed on the master bus. ``process(buf)`` takes a
+    (frames, 2) block and returns dry + wet (the dry signal is preserved). ``Off``
+    short-circuits to the input. Click-free across callbacks (reuses :class:`_Comb`,
+    whose delays stay >= the audio block, chunking longer blocks)."""
+
+    def __init__(self, sr: int):
+        self.sr = sr
+        self.wet = 0.0
+        self.name = "Off"
+        self._build("Off")
+
+    def _build(self, name):
+        scale, fbk, wet, damp = SPACES.get(name, SPACES["Off"])
+        self.name = name if name in SPACES else "Off"
+        self.wet = wet
+        self.cl, self.cr = [], []
+        for d, g in _COMBS:
+            dd = max(64, int(d * scale))
+            gg = min(0.94, g * fbk)
+            self.cl.append(_Comb(self.sr, dd, gg, damp))
+            self.cr.append(_Comb(self.sr, dd + _STEREO, gg, damp))
+        self.olp, self.orp = dsp.OnePoleLP(), dsp.OnePoleLP()
+        self.n = len(_COMBS)
+        self.min_d = min(c.D for c in self.cl)
+
+    def set_space(self, name: str):
+        if name != self.name:
+            self._build(name)
+
+    def active(self) -> bool:
+        return self.wet > 0.0
+
+    def _bank(self, bank, x, olp):
+        wet = np.zeros(len(x))
+        for c in bank:
+            wet += c.process(x)
+        return olp.process(wet / self.n, 5200.0, self.sr)
+
+    def process(self, buf: np.ndarray) -> np.ndarray:
+        if self.wet <= 0.0:
+            return buf
+        L, R = buf[:, 0], buf[:, 1]
+        wl, wr = [], []
+        step = self.min_d
+        for i in range(0, len(L), step):
+            wl.append(self._bank(self.cl, L[i:i + step], self.olp))
+            wr.append(self._bank(self.cr, R[i:i + step], self.orp))
+        out = buf.copy()
+        out[:, 0] += self.wet * np.concatenate(wl)
+        out[:, 1] += self.wet * np.concatenate(wr)
+        return out
