@@ -438,6 +438,15 @@ Guardrails (every round):
       default on, persisted. Done: selftest passes; the curve is unit-tested; offscreen both faces —
       at 2am the engine target is capped to 0.6 with `user_volume` still 0.8, off/by-day it equals
       0.8, thread-stable.
+- [x] **Session-history export** (`breathsim/history_export.py`): export your practice log as a
+      portable **CSV** (one row per day: date, minutes, sits) with a summary block (total sessions/
+      minutes, current & best streak, avg breaths-per-min, mood shift) or a friendly **text** report
+      (reusing `store.streak`/`insights`/`mood_summary` so figures match the Stats dialog). Pure +
+      testable; **File > Export Practice History (CSV)…** picks .csv or .txt and mirrors the existing
+      export dialogs (save dialog, status report, never crash). Honest: it just writes your logged
+      data. Done: selftest passes; the builder is unit-tested (empty -> header + zero summary / note,
+      populated -> correct daily rows + summary + bpm); offscreen both faces — two logged sits write a
+      non-empty .csv (header + total_sessions,2) and .txt, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

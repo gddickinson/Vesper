@@ -47,6 +47,8 @@ def _file(win, m):
         lambda: session_export.export_summary(win))
     m.addAction("Save Summary Card (PNG)…").triggered.connect(
         lambda: session_export.save_card(win))
+    m.addAction("Export Practice History (CSV)…").triggered.connect(
+        lambda: app_io.export_history(win))
     m.addSeparator()
     q = m.addAction("Quit")
     q.setShortcut("Ctrl+Q")

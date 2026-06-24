@@ -610,6 +610,22 @@ quipu, tambo rest-houses). Distinct from the existing Silk/Spice Road lectures. 
 ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (12,348 lines / 194,754
 words / 5 scenes). The `units()` stream renders each (e.g. The Great Wall = 109 units).
 
+## App round — session-history export (CSV / text of the practice log)
+Added `breathsim/history_export.py` (59 lines, pure + testable): `history_csv(hist)` turns
+`store.history()` into a tidy CSV -- a daily table (`date,minutes,sits` sorted by date) then a blank
+line and a `metric,value` summary block (total sessions, total minutes, current & best streak, average
+breaths-per-minute, average mood shift), with the bpm/mood rows omitted when there's no such data;
+`history_text(hist)` gives a short friendly report (summary lines + the `insights.lines` figures) with
+a graceful "nothing logged yet" note for a new user. Both reuse `store.streak` / `insights.avg_bpm` /
+`store.mood_summary` so the numbers match the Practice Stats dialog. `app_io.export_history(win)` adds
+**File > Export Practice History (CSV)...** -- a save dialog that writes `.txt` as the text report or
+`.csv` otherwise, reports the path in the status bar, and never crashes the app (mirrors export_wav /
+the session-summary card). Honest framing: it just writes the data you have logged. Verified:
+`selftest.py` passes (149 lectures / 26 branches); the builders are unit-tested (empty -> header +
+zeroed summary and the friendly text note; populated -> correct per-day rows, totals, streak and avg
+bpm; bpm/mood rows present only with data); offscreen both faces -- two logged Meditate sits produce a
+non-empty .csv (header `date,minutes,sits` + `total_sessions,2`) and .txt, thread-stable.
+
 ## Stories round — new branch Legendary Beasts (Dragon, Unicorn, Mermaid, Griffin)
 Added a 26th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 folklore framed **honestly as legend** with its real roots, ASCII, sleep-closing): `lectures_dragon.py`

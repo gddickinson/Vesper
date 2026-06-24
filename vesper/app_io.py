@@ -42,6 +42,24 @@ def render_export(win, path, seconds=30):
     return path
 
 
+def export_history(win):
+    """Save the practice history as CSV (File menu). Never crashes the app."""
+    path, _ = QFileDialog.getSaveFileName(
+        win, "Export Practice History (CSV)", "vesper-history.csv",
+        "CSV files (*.csv);;Text files (*.txt)")
+    if not path:
+        return
+    try:
+        from breathsim import history_export
+        text = (history_export.history_text() if path.lower().endswith(".txt")
+                else history_export.history_csv())
+        with open(path, "w") as fh:
+            fh.write(text)
+        win.status.showMessage(f"Exported history to {path}", 4000)
+    except Exception as exc:                            # never crash on export
+        win.status.showMessage(f"Export failed: {exc}", 5000)
+
+
 def export_wav(win, seconds=30):
     path, _ = QFileDialog.getSaveFileName(
         win, "Export Audio (WAV)", "breathing.wav", "WAV files (*.wav)")
