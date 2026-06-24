@@ -642,6 +642,26 @@ Violin". New branch in `_CATALOG` -> **157 lectures / 28 branches**. Validated a
 12-13 lines, pure ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (13,401
 lines / 212,552 words / 5 scenes). The `units()` stream renders each (e.g. The Piano = 105 units).
 
+## App round — breathe-with-me intro countdown (gentle settle-in lead-in)
+A fresh session now eases the user in with a brief "settle in" lead-in over the first breath, so the
+very first inhale isn't abrupt instead of pacing snapping on instantly. New pure `breathsim/intro.py`:
+`schedule(cycle_seconds, lines=None, min_total=8, max_total=12)` lays a few calm preparatory lines
+("Settle in." / "Find a comfortable position." / "Let your shoulders soften." / "We'll begin
+together.") evenly across roughly one breath cycle, clamped to a readable 8-12 s; `line_at(sched, t)`
+returns the active line (None once over) and `duration(sched)` its length. In the window: a new
+`_intro_on` flag (default on, persisted as `intro_lead_in`) + `_intro_sched`; `_arm_intro(fresh)`
+builds the schedule on a fresh Start only, and skips it when the Sleep storyteller is about to speak
+(the narration is its own lead-in); `_intro_text()` reads the active line and self-clears when the
+lead-in ends; `_update_status` and `_scene_ctx` show it (status bar + scene subtitle) ahead of the
+normal time/label/story line until it finishes. It's skippable -- a click skips it (extends
+`mousePressEvent`), and pause/reset clears it -- and toggleable via **View > Settle-in lead-in**.
+Honest framing: purely on-screen text -- no audio, no change to breath timing, no claims. Verified:
+`selftest.py` passes (157 lectures / 28 branches); `intro` unit-tested (cycle clamping to 8-12 s,
+line order, contiguous non-overlapping spans, first/last/over-the-end via `line_at`, empty/None/custom
+lines); offscreen both faces -- the lead-in arms on a fresh non-story Start and shows "Settle in." in
+both the status bar and the scene subtitle, expires and clears itself, a click skips it, the setting
+off never arms it, and a Sleep storyteller suppresses it; thread-stable across a 24-frame loop.
+
 ## App round — per-lecture resume (pick up a long lecture where you left off)
 A long bedtime lecture you drifted off during now gently resumes near where you stopped instead of
 always restarting at section 1. `lectures.units(name, rng, guidance, start_section=0)` gained an

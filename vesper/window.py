@@ -111,6 +111,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._cur_cap = 1.0                # last applied output cap (see _tick)
         self._blackout = False             # near-dark sleep screen (audio keeps playing)
         self._coach = False                # breathing-coach on-screen count cue (opt-in)
+        self._intro_on = True              # gentle "settle in" lead-in on a fresh start
+        self._intro_sched = []             # active lead-in [(start, end, text), ...]
         self._last_logged_section = -1     # per-lecture resume: last recorded section
         self._font_scale = 1.0             # accessibility: global UI text size
         self._base_pt = 0.0                # app font point size before any scaling
@@ -199,6 +201,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._quiet_hours = bool(s.get("quiet_hours", True))      # late-night soften
         self._apply_quiet_cap()
         self._coach = bool(s.get("breath_coach", False))         # opt-in count cue
+        self._intro_on = bool(s.get("intro_lead_in", True))      # gentle settle-in lead-in
         mode = s.get("mode")                          # no saved mode -> suit the clock
         if mode not in modes.names():
             from . import clocktheme
@@ -262,6 +265,9 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             status = "Press Start" if self.controller.elapsed() == 0 else "Paused"
         sub = (self._story_line[:42] if (self.current_mode == "Sleep"
                                          and self._story_line) else "")
+        intro_line = self._intro_text()            # settle-in lead-in takes precedence
+        if intro_line:
+            sub = intro_line
         if running and self._coach and not sub:    # gentle in/hold/out counting
             from breathsim import coach
             plen = self._phase_len(state.phase)
@@ -444,6 +450,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             self.controller.pause()
             self.engine.set_master_volume(0.0)
             self.narrator.stop()
+            self._intro_sched = []                   # retire any settle-in lead-in
             self.panel.reflect_running(False)
             self._after_mood()                       # offer it after we've paused
             return
@@ -459,7 +466,36 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self.controller.start()
         self.engine.set_master_volume(0.0 if self._is_muted else self.user_volume)
         self._start_story()
+        self._arm_intro(fresh)
         self.panel.reflect_running(self.controller.running)
+
+    def _arm_intro(self, fresh):
+        """A gentle settle-in lead-in over the first breath, so the first inhale
+        isn't abrupt. Only on a fresh start, and not when a storyteller is about
+        to speak (its narration is its own lead-in). Purely on-screen text."""
+        self._intro_sched = []
+        story_narrating = bool(self._story_scene and self.narrator.available)
+        if fresh and self._intro_on and not story_narrating:
+            from breathsim import intro
+            self._intro_sched = intro.schedule(self.controller.pattern.cycle)
+
+    def set_intro_lead_in(self, on):
+        """Toggle the settle-in lead-in (persisted); clears any active one."""
+        self._intro_on = bool(on)
+        if not self._intro_on:
+            self._intro_sched = []
+
+    def _intro_text(self):
+        """The gentle settle-in line to show now, or '' once the lead-in is over."""
+        sched = getattr(self, "_intro_sched", None)
+        if not sched or not self.controller.running:
+            return ""
+        from breathsim import intro
+        line = intro.line_at(sched, self.controller.elapsed())
+        if line is None:
+            self._intro_sched = []                   # finished -> normal status resumes
+            return ""
+        return line
 
     def reset(self):
         self._log_practice()
@@ -467,6 +503,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self.narrator.stop()
         self.controller.reset()
         self.engine.set_master_volume(0.0)
+        self._intro_sched = []                 # retire any settle-in lead-in
         self._last_phase = None
         self._logged_session = False
         self._next_bell = self._bell_interval * 60.0
@@ -576,6 +613,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         if self._blackout:                            # tap to wake from blackout
             self.toggle_blackout(False)
             return
+        if getattr(self, "_intro_sched", None):       # tap to skip the settle-in lead-in
+            self._intro_sched = []
         super().mousePressEvent(ev)
 
     def set_quiet_hours(self, on):
@@ -788,6 +827,10 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             self.status.showMessage("Press Start" if self.controller.elapsed()
                                     == 0 else "Paused — press Start")
             return
+        intro_line = self._intro_text()              # gentle settle-in over the first breath
+        if intro_line:
+            self.status.showMessage(intro_line)
+            return
         m, s = divmod(int(self.controller.elapsed()), 60)
         label = state.label
         line = (self._story_line[:60] if self._story_line else "")
@@ -808,7 +851,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                  "font_scale": getattr(self, "_font_scale", 1.0),
                                  "ambience_rotate": getattr(self, "_amb_rotate", False),
                                  "quiet_hours": getattr(self, "_quiet_hours", True),
-                                 "breath_coach": getattr(self, "_coach", False)})
+                                 "breath_coach": getattr(self, "_coach", False),
+                                 "intro_lead_in": getattr(self, "_intro_on", True)})
         except Exception:
             pass
         try:

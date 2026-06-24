@@ -230,6 +230,10 @@ def _view(win, m):
     cc.setCheckable(True)
     cc.setChecked(getattr(win, "_coach", False))
     cc.toggled.connect(win.set_breath_coach)
+    il = m.addAction("Settle-in lead-in")            # gentle text over the first breath
+    il.setCheckable(True)
+    il.setChecked(getattr(win, "_intro_on", True))
+    il.toggled.connect(win.set_intro_lead_in)
     cl = m.addAction("Clock-aware light")            # gentle time-of-day warmth
     cl.setCheckable(True)
     cl.setChecked(getattr(win, "_clock_light", True))

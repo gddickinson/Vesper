@@ -471,6 +471,19 @@ Guardrails (every round):
       returns to normal). Honest: it just configures sleep features. Done: selftest passes; offscreen
       both faces — leaves the app in Sleep + Calming 4-6 + wind-down armed + a sleep-timer set +
       running with no blocking dialog, and switching modes clears the wind-down, thread-stable.
+- [x] **Breathe-with-me intro countdown** (`breathsim/intro.py` + window): on a fresh start, a brief
+      "settle in" lead-in plays over the first breath so the very first inhale isn't abrupt. Pure
+      `intro.schedule(cycle_seconds)` lays a few calm lines ("Settle in." -> "We'll begin together.")
+      across ~one breath cycle (clamped to a readable 8-12 s); `line_at(sched, t)` / `duration(sched)`
+      drive it. `window._arm_intro(fresh)` builds it only on a fresh start (and not when the Sleep
+      storyteller is about to speak — its narration is its own lead-in); `_intro_text()` surfaces the
+      current line in the status bar AND the scene subtitle, then auto-clears so normal status resumes.
+      Skippable (a click skips it; pause/reset clears it) and toggleable — **View > Settle-in lead-in**,
+      default on, persisted (`intro_lead_in`). Honest: purely on-screen text — no audio, no timing
+      change, no claims. Done: selftest passes; `schedule`/`line_at`/`duration` unit-tested (clamping,
+      order, contiguity, expiry, empty/None/custom lines); offscreen both faces — the lead-in arms on a
+      fresh non-story start and shows "Settle in." in status + subtitle, expires and clears on its own,
+      a click skips it, the setting off never arms, and a Sleep storyteller suppresses it, thread-stable.
 - [x] **Per-lecture resume** (`lectures.units` start_section + `breathsim/resume.py` + store): a long
       lecture you didn't finish gently resumes near where you left off. `lectures.units(name, ...,
       start_section=0)` (default unchanged) skips earlier sections and stamps each unit with its
