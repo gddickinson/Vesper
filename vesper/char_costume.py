@@ -114,6 +114,80 @@ def _scarf(p, hd, a, hue):                        # snug scarf at the neck
                       R * 0.1, R * 0.1)
 
 
+def _crown(p, hd, a, hue):                        # golden zigzag crown
+    cx, R, top = hd.cx, hd.R, hd.top
+    y = top + R * 0.12
+    gold = theme.blend(hue, "#ffd86b", 0.7)
+    p.setPen(B.NOPEN)
+    p.setBrush(B.qc(gold))
+    pts = [(cx - R * 0.62, y)]
+    for k in range(5):                                       # 5 spikes
+        x = cx - R * 0.62 + R * 1.24 * k / 4.0
+        pts.append((x - R * 0.155, y))
+        pts.append((x, y - R * (0.34 if k % 2 == 0 else 0.5)))
+        pts.append((x + R * 0.155, y))
+    pts.append((cx + R * 0.62, y + R * 0.16))
+    pts.append((cx - R * 0.62, y + R * 0.16))
+    p.drawPolygon(B.poly(*pts))
+    for k in range(5):                                       # glowing gems
+        gx = cx - R * 0.5 + R * 1.0 * k / 4.0
+        _star(p, gx, y - R * (0.34 if k % 2 == 0 else 0.5) + R * 0.04, R * 0.06,
+              hue, 0.6 + 0.4 * math.sin(a.t * 3 + k))
+
+
+def _tophat(p, hd, a, hue):                       # sleek cyber top hat
+    cx, R, top = hd.cx, hd.R, hd.top
+    sway = a.sway * R
+    p.setPen(B.NOPEN)
+    p.setBrush(B.qc("#15202c"))
+    p.drawEllipse(QPointF(cx, top + R * 0.06), R * 0.95, R * 0.2)   # brim
+    p.drawRoundedRect(QRectF(cx - R * 0.5 + sway, top - R * 0.95,
+                             R * 1.0, R * 1.05), R * 0.08, R * 0.08)
+    p.setBrush(B.qc(theme.blend(hue, "#15202c", 0.3)))             # glowing band
+    p.drawRect(QRectF(cx - R * 0.5 + sway, top - R * 0.18, R * 1.0, R * 0.18))
+
+
+def _flower(p, hd, a, hue):                       # a little flower by the ear
+    cx, R, top = hd.cx, hd.R, hd.top
+    fx, fy = cx - R * 0.66, top + R * 0.34
+    pet = theme.blend(hue, "#ffffff", 0.45)
+    p.setPen(B.NOPEN)
+    for k in range(5):
+        an = a.t * 0.5 + k * 1.2566
+        p.setBrush(B.qc(pet, 0.95))
+        p.drawEllipse(QPointF(fx + math.cos(an) * R * 0.16,
+                              fy + math.sin(an) * R * 0.16), R * 0.12, R * 0.12)
+    p.setBrush(B.qc("#ffe27a"))
+    p.drawEllipse(QPointF(fx, fy), R * 0.1, R * 0.1)
+
+
+def _bowtie(p, hd, a, hue):                       # bow tie at the neck
+    cx, cy, R = hd.cx, hd.cy, hd.R
+    ny = cy + R * 0.98
+    col = theme.blend(hue, "#13202c", 0.2)
+    p.setPen(B.NOPEN)
+    p.setBrush(B.qc(col))
+    for s in (-1, 1):
+        p.drawPolygon(B.poly((cx, ny), (cx + s * R * 0.42, ny - R * 0.22),
+                             (cx + s * R * 0.42, ny + R * 0.22)))
+    p.setBrush(B.qc(theme.blend(col, "#ffffff", 0.2)))
+    p.drawEllipse(QPointF(cx, ny), R * 0.1, R * 0.13)         # knot
+
+
+def _halo(p, hd, a, hue):                         # glowing floating halo
+    cx, R, top = hd.cx, hd.R, hd.top
+    y = top - R * 0.34 + math.sin(a.t * 1.4) * R * 0.04
+    gl = QRadialGradient(cx, y, R * 0.7)
+    gl.setColorAt(0.0, B.qc(theme.blend(hue, "#ffffff", 0.4), 0.0))
+    gl.setColorAt(0.7, B.qc(theme.blend(hue, "#ffffff", 0.4), 0.5 + 0.4 * a.breath))
+    gl.setColorAt(1.0, B.qc(hue, 0.0))
+    p.setPen(B.NOPEN); p.setBrush(QBrush(gl))
+    p.drawEllipse(QPointF(cx, y), R * 0.6, R * 0.24)
+    B.pen(p, B.qc(theme.blend(hue, "#ffffff", 0.5), 0.9), R * 0.06)
+    p.drawArc(QRectF(cx - R * 0.5, y - R * 0.16, R * 1.0, R * 0.32), 0, 360 * 16)
+    p.setPen(B.NOPEN)
+
+
 def _star(p, x, y, s, hue, glow):
     p.setBrush(B.qc(theme.blend(hue, "#ffffff", 0.4), 0.6 + 0.4 * glow))
     p.drawPolygon(B.poly((x, y - s), (x + s * 0.28, y - s * 0.28), (x + s, y),
@@ -132,7 +206,8 @@ def _pompom(p, x, y, r, hue, a):
 
 _COSTUMES = {
     "None": _none, "Wizard Hat": _wizard, "Party Hat": _party, "Beanie": _beanie,
-    "Headphones": _headphones, "Sunglasses": _shades, "Scarf": _scarf,
+    "Top Hat": _tophat, "Crown": _crown, "Halo": _halo, "Headphones": _headphones,
+    "Sunglasses": _shades, "Flower": _flower, "Scarf": _scarf, "Bow Tie": _bowtie,
 }
 
 
