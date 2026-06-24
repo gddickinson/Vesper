@@ -148,8 +148,10 @@ Guardrails (every round):
 - [ ] **True data sonification**: map real astronomy to pitch (NASA scales the Perseus black
       hole's pressure-wave note up ~57 octaves into hearing; planet/pulsar Chandra
       sonifications) — e.g. a pulsar pulse rhythm, planetary orbital-ratio chords (Kepler).
-- [ ] **More presets / themes**: Solar Wind, Nebula Bloom, Pulsar Pulse, Aurora Tones,
-      Gravity Well (slow descending black-hole "ringdown" glide), Saturn Ring shimmer.
+- [x] **More presets / themes** (+4): Solar Wind (airy shimmer), Nebula Bloom (lush
+      formant chords), Pulsar Pulse (a 0.7 Hz beat), Gravity Well (a click-free descending
+      black-hole "ringdown" glide via frequency->phase integration in `_Pad`). Calibrated
+      ~0.74 peak; 7 Cosmic Music voices now. (Aurora Tones / Saturn Ring shimmer still open.)
 - [ ] **Breath-synced harmony**: let the pad density/brightness rise on the inhale and settle
       on the exhale (read the breath state in the generator) so the music breathes with you.
 - [ ] **Dedicated Music workspace / menu**: a first-class "Music" mode or a Sound-menu
@@ -203,6 +205,8 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Cosmic music +4 (Solar Wind · Nebula Bloom · Pulsar Pulse · Gravity Well) + ringdown
+  pitch-glide + pulsar beat → 7 Cosmic Music voices.
 - Cosmic generative music (`cosmic.py` + `reverb.py`): Music of the Spheres · Starlight
   Choir · Deep Space — endless just-intonation pads + drone + reverb, in the soundscape.
 - The Cosmos +3 (Comets · Nebulae · Saturn's Rings) → 74 lectures / 8 branches.

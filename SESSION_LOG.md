@@ -594,6 +594,17 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Music round — Cosmic music +4 presets (ringdown glide + pulsar beat)
+Expanded `cosmic.py`: added an optional **click-free pitch glide** to `_Pad` (integrate
+frequency to phase, f0->f1 over the note) and a **pulsar amplitude pulse** to the drone, then
+4 new Cosmic Music presets: **Solar Wind** (bright airy shimmer, E3), **Nebula Bloom** (lush
+formant-tinged blooming chords, C3), **Pulsar Pulse** (a soft 0.7 Hz beat over sparse tones,
+D2) and **Gravity Well** (deep minor tones sliding down an octave - a black-hole ringdown,
+G1). Gains calibrated over a 200 s render (peaks ~0.74); verified tonal/consonant + non-
+repeating (window corr ~0), glide descends click-free (max sample jump 0.005), pulsar beat
+measured at 0.70 Hz. 7 Cosmic Music voices now; selftest passes (102 voices); offscreen Relax
+session selects + crossfades the new voices, thread-stable (2->2) on both faces.
+
 ## Feature (user request) — Cosmic generative music ("music of the spheres")
 Researched generative-music best practice (Eno/Reich phasing of near-coprime loops; constrain
 randomness to a consonant scale; drone + slow harmonic drift for gentle tension/release;

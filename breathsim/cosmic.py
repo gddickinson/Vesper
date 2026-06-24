@@ -41,8 +41,9 @@ class _Pad:
     """A slow, soft sustained note: a small additive partial stack under a
     raised-cosine attack / hold / release, with gentle vibrato and a stereo pan."""
 
-    def __init__(self, sr, f, t0, atk, hold, rel, amp, pan, partials, vib):
-        self.f, self.t0 = f, t0
+    def __init__(self, sr, f, t0, atk, hold, rel, amp, pan, partials, vib,
+                 f_end=None):
+        self.f0, self.f1, self.t0 = f, (f if f_end is None else f_end), t0
         self.atk, self.hold, self.rel = atk, hold, rel
         self.life = atk + hold + rel
         self.amp = amp / (sum(a for _, a in partials) + 1e-9)
@@ -59,9 +60,13 @@ class _Pad:
         env *= 0.5 + 0.5 * np.cos(np.pi * rs)                  # smooth fade out
         env = np.where((ts >= 0.0) & (ts <= self.life), env, 0.0)
         vib = self.vd * np.sin(TWO_PI * self.vr * tarr) if self.vd else 0.0
+        # Integrate frequency -> phase so an optional linear pitch glide (f0->f1
+        # over the note, e.g. a black-hole ringdown) stays perfectly click-free.
+        u = np.clip(ts / self.life, 0.0, 1.0)
+        phase = TWO_PI * (self.f0 * ts + 0.5 * (self.f1 - self.f0) * ts * u)
         tone = np.zeros(len(tarr))
         for ratio, pa in self.partials:
-            tone += pa * np.sin(TWO_PI * self.f * ratio * tarr + vib)
+            tone += pa * np.sin(ratio * phase + vib)
         sig = tone * env * self.amp
         return sig * self.gl, sig * self.gr
 
@@ -83,6 +88,7 @@ class _Cosmic:
         self.root_next = p["root_period"]
         self.rev = Reverb(sr, p.get("damp", 2600.0))
         self.drone = p.get("drone", 0.0)
+        self.pulse = p.get("pulse")          # (rate_hz, depth) slow pulsar beat
         sh = p.get("shimmer")
         if sh:
             self.nz = dsp.Noise("white", sr, seed=909)
@@ -101,11 +107,14 @@ class _Cosmic:
         p = self.p
         f = self.root * float(self.rng.choice(p["scale"])) * \
             float(self.rng.choice(p["octaves"]))
+        gl = p.get("glide")
+        f_end = f * self.rng.uniform(*gl) if gl else None
         self.pads.append(_Pad(
             self.sr, f, t,
             self.rng.uniform(*p["attack"]), self.rng.uniform(*p["hold"]),
             self.rng.uniform(*p["release"]), self.rng.uniform(*p["amp"]),
-            (self.rng.random() * 2 - 1) * p["pan"], p["partials"], p["vib"]))
+            (self.rng.random() * 2 - 1) * p["pan"], p["partials"], p["vib"],
+            f_end))
 
     def step(self, tarr, frames):
         end = float(tarr[-1])
@@ -132,6 +141,10 @@ class _Cosmic:
             L, R = 0.6 * L + 1.3 * vL, 0.6 * R + 1.3 * vR
         if self.drone:                                # steady tonal anchor
             swell = 0.6 + 0.4 * np.sin(TWO_PI * 0.03 * tarr)
+            if self.pulse:                            # slow pulsar beat
+                rate, depth = self.pulse
+                beat = np.clip(np.sin(TWO_PI * rate * tarr), 0.0, 1.0) ** 2
+                swell = swell * ((1.0 - depth) + depth * beat)
             d = (np.sin(TWO_PI * self.base * tarr)
                  + 0.5 * np.sin(TWO_PI * self.base * 2.0 * tarr)
                  + 0.3 * np.sin(TWO_PI * self.base * 1.5 * tarr)) * swell * self.drone
@@ -176,6 +189,37 @@ _DEEP = dict(
     partials=[(0.5, 0.6), (1.0, 1.0), (2.0, 0.25), (3.0, 0.08)],
     vib=(0.12, 0.4), shimmer=(3800.0, 0.06), drone=0.22, reverb=0.7, damp=1900.0)
 
+_SOLAR = dict(           # bright, airy, streaming - the solar wind
+    base=164.81, scale=_PENTA, roots=_ROOTS, octaves=[1.0, 2.0, 2.0, 4.0],
+    root_period=34.0, root_period_range=(24.0, 48.0), interval=(2.5, 5.0),
+    attack=(3.0, 6.0), hold=(2.0, 6.0), release=(5.0, 9.0), amp=(0.18, 0.36),
+    pan=0.9, partials=[(1.0, 1.0), (2.0, 0.4), (3.0, 0.18), (5.0, 0.06)],
+    vib=(0.22, 0.7), shimmer=(5200.0, 0.10), drone=0.10, reverb=0.6, damp=4200.0)
+
+_NEBULA = dict(          # lush chords blooming slowly - a star nursery
+    base=130.81, scale=_PENTA, roots=_ROOTS, octaves=[1.0, 2.0, 2.0],
+    root_period=48.0, root_period_range=(36.0, 70.0), interval=(3.5, 7.0),
+    attack=(6.0, 10.0), hold=(4.0, 10.0), release=(8.0, 13.0), amp=(0.22, 0.45),
+    pan=0.8, partials=[(1.0, 1.0), (2.0, 0.5), (3.0, 0.3), (4.0, 0.18), (5.0, 0.1)],
+    vib=(0.16, 0.6), formant=[(520.0, 3.0, 0.8), (1500.0, 5.0, 0.4)],
+    drone=0.16, reverb=0.7, damp=2600.0)
+
+_PULSAR = dict(          # a slow, steady cosmic beat from a spinning star
+    base=73.42, scale=_PENTA, roots=[1 / 1, 3 / 2, 4 / 3, 5 / 4],
+    octaves=[1.0, 2.0, 2.0, 4.0], root_period=40.0, root_period_range=(30.0, 56.0),
+    interval=(4.0, 8.0), attack=(3.0, 6.0), hold=(2.0, 6.0), release=(5.0, 9.0),
+    amp=(0.20, 0.40), pan=0.85, partials=[(1.0, 1.0), (2.0, 0.35), (3.0, 0.12)],
+    vib=(0.20, 0.6), pulse=(0.7, 0.7), drone=0.22, reverb=0.6, damp=3000.0)
+
+_GRAVITY = dict(         # deep tones sliding down - a black-hole ringdown
+    base=49.0, scale=_MINOR, roots=[1 / 1, 6 / 5, 4 / 3, 3 / 2],
+    octaves=[1.0, 1.0, 2.0], root_period=60.0, root_period_range=(45.0, 85.0),
+    interval=(6.0, 12.0), attack=(4.0, 7.0), hold=(3.0, 7.0), release=(7.0, 12.0),
+    amp=(0.30, 0.55), pan=0.6,
+    partials=[(0.5, 0.5), (1.0, 1.0), (2.0, 0.22), (3.0, 0.07)],
+    vib=(0.10, 0.3), glide=(0.5, 0.78), shimmer=(3000.0, 0.05),
+    drone=0.20, reverb=0.78, damp=1700.0)
+
 # (key, display name, palette, seed, calibrated gain, description). Gains are set
 # so the worst peak over a long deterministic render sits near 0.75 (see
 # tools-style calibration in SESSION_LOG); reverb buildup is included.
@@ -189,6 +233,18 @@ _PRESETS = [
     ("deep", "Deep Space", _DEEP, 73, 0.40,
      "Vast, low, slow tones with an airy shimmer - the hush of the deep, dark "
      "between the stars."),
+    ("solar", "Solar Wind", _SOLAR, 74, 0.66,
+     "Bright, airy tones streaming past on the solar wind, with a high silver "
+     "shimmer."),
+    ("nebula", "Nebula Bloom", _NEBULA, 75, 0.60,
+     "Lush chords blooming and fading slowly, like glowing clouds where stars are "
+     "born."),
+    ("pulsar", "Pulsar Pulse", _PULSAR, 76, 0.64,
+     "A slow, steady cosmic beat from a spinning star, with soft tones drifting "
+     "over it."),
+    ("gravity", "Gravity Well", _GRAVITY, 77, 0.48,
+     "Deep tones sliding slowly downward into the dark - the long ringdown of a "
+     "black hole."),
 ]
 
 
