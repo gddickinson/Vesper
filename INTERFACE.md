@@ -58,13 +58,27 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   renders on a transparent background): `None`, `Stars` (starfield, matches the
   eyes), `Aurora` (drifting colour veils), `Nebula`, `Gradient` — all tinted by the
   breath-phase hue. `make(name)`/`names()`.
-- **cat.py** — `CatFace`: the **2D cartoon-cat face** drawn with QPainter. Breathes,
-  blinks, twitches its ears, wanders its pupils, and opens its mouth to talk — driven by
-  the same per-frame state (`vol`/`mouth`/`eye_open`/`t`) as the 3D head, over the same
-  animated background. `face.py` imports faceView in a try/except (`_faceview_ok`);
-  it's used automatically when faceView is missing, and is **switchable at runtime**
-  (`FaceWidget.set_use_cat` ← `window.set_face_cat` ← **View ▸ Cartoon cat face**,
-  persisted) when faceView *is* present. The render worker idles while the cat shows.
+- **2D character cast** — the QPainter face shown when faceView is missing or the
+  user picks **Sound ▸ Cartoon cat face** (then **Character** / **Costume** submenus,
+  persisted). A small framework, all driven by the same per-frame state as the 3D
+  head:
+  - **char_anim.py** — `AnimState.step(dt, state) -> Anim`: the shared animation
+    engine turning breath/mouth/eye/smile/gaze (+ optional `excite`) into rich,
+    character-agnostic signals — breathing bob + squash, idle sway, blinks (incl.
+    spontaneous), a continuously **swishing tail**, **ear twitches**, and a **"hair
+    on end" bristle** that spikes on excitement / a rare startle and eases off.
+  - **char_base.py** — shared kit: colour helpers, breath `aura`, big **cute glossy
+    eyes** (blink / gaze / pupil dilation / happy squint / catchlight), `blush`,
+    `head_box` framing, and the `Character` base + `Head` anchor (so a costume fits
+    any character).
+  - **char_cat.py / char_penguin.py / char_dog.py** — the characters (the cat is the
+    default; tail swish, ear twitch, body breathing, bristle, blush).
+  - **char_costume.py** — costume overlays positioned from the `Head` anchor (None,
+    Wizard Hat, Party Hat, Beanie, Headphones, Sunglasses, Scarf), with a faint
+    cyber glow.
+  - **characters.py** — the registry (`names`/`get`, costume names + `draw_costume`).
+  `FaceWidget` advances one `AnimState` per frame and draws `character + costume`;
+  `window.set_character`/`set_costume` (persisted `character`/`costume`) pick them.
 - **face_gpu.py** — **moderngl GPU renderer for the ICT head** (~11 ms/frame vs
   ~65 ms software). Reuses ICT's mesh + pose pipeline (`apply_blendshapes`, incl.
   the persona identity weights) + per-material palette (`_material_palette`),
@@ -248,7 +262,7 @@ woodblock/bodhran) struck on a tempo (effects slot); and **`synth_wind`** — su
 Train Whistle / Fog Horn / Ship Horn periodic blasts); and **`synth_fx`** — composite
 **Environmental FX** (`GROUP_FX`: Train Steam/Diesel, Ship/Harbour, Thunderstorm, Ocean Buoy
 Bell). Together these four `synth_*` modules add 31 synthesised instrument/effect voices. The
-2D fallback face lives in `vesper/cat.py`.
+2D fallback face is the **character cast** (`vesper/characters.py` + `char_*`).
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

@@ -272,6 +272,21 @@ def _view(win, m):
     catf.setEnabled(win.face.faceview_available())   # otherwise it's always the cat
     catf.triggered.connect(lambda checked: win.set_face_cat(checked))
     win._act_cat = catf
+    from . import characters                            # 2D cartoon cast + costumes
+    chm = m.addMenu("Character")
+    chg = QActionGroup(chm); chg.setExclusive(True)
+    curch = getattr(win, "_character", "Cat")
+    for nm in characters.names():
+        a = chm.addAction(nm); a.setCheckable(True); a.setChecked(nm == curch)
+        chg.addAction(a)
+        a.triggered.connect(lambda _c=False, x=nm: win.set_character(x))
+    csm = m.addMenu("Costume")
+    cog = QActionGroup(csm); cog.setExclusive(True)
+    curco = getattr(win, "_costume", "None")
+    for nm in characters.costume_names():
+        a = csm.addAction(nm); a.setCheckable(True); a.setChecked(nm == curco)
+        cog.addAction(a)
+        a.triggered.connect(lambda _c=False, x=nm: win.set_costume(x))
     m.addSeparator()
     hg = m.addAction("Hourglass timer")
     hg.setCheckable(True)

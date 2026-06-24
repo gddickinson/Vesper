@@ -31,7 +31,7 @@ try:                                              # the 3D head is optional
 except Exception:                                 # no faceView -> 2D cartoon-cat fallback
     _HAVE_FACEVIEW = False
 
-from . import cat, face_bg, face_gpu, hourglass, theme
+from . import char_anim, characters, face_bg, face_gpu, hourglass, theme
 
 # faceView's Claude avatar: the ICT head, xray (glowing cyan) style, "young"
 # identity — exactly what the characters file names as default Claude.
@@ -66,7 +66,11 @@ class FaceWidget(QWidget):
         self._req = ((copy.copy(self._params), (480, 520)) if self._faceview_ok
                      else (None, (480, 520)))
         self._frame = None                       # (rgba ndarray, w, h)
-        self._cat = cat.CatFace()                # the 2D fallback face
+        self._char_name = "Cat"                  # chosen 2D character (cat/penguin/dog)
+        self._costume = "None"                   # optional costume overlay
+        self._anim = char_anim.AnimState()       # shared character animation engine
+        self._anim_cur = None                    # latest Anim snapshot
+        self._anim_last_t = None
         self._cat_state = dict(vol=0.5, t=0.0, mouth=0.0, eye_open=1.0,
                                smile=0.12, hue=theme.ACCENT)
         self._bg = face_bg.make("Stars")         # animated background behind head
@@ -100,6 +104,22 @@ class FaceWidget(QWidget):
 
     def uses_cat(self):
         return self._show_cat
+
+    def set_character(self, name):
+        """Pick the 2D character (Cat / Penguin / Dog / ...). Unknown -> Cat."""
+        self._char_name = name if name in characters.CHARACTERS else "Cat"
+        self.update()
+
+    def character(self):
+        return self._char_name
+
+    def set_costume(self, name):
+        """Pick a costume overlay (None / Wizard Hat / Beanie / ...)."""
+        self._costume = name if name in characters.costume_names() else "None"
+        self.update()
+
+    def costume(self):
+        return self._costume
 
     def set_style(self, name):
         """Choose the cyberpunk render style (eye pattern / skin / mode). Unknown
@@ -186,6 +206,9 @@ class FaceWidget(QWidget):
         self._cat_state = dict(vol=vol, t=t, mouth=mo, eye_open=eye_open,
                                smile=smile_eff, hue=self._hue,
                                gaze=(gaze_x, gaze_y), tilt=self._tilt)
+        dt = (t - self._anim_last_t) if self._anim_last_t is not None else 0.0
+        self._anim_last_t = t
+        self._anim_cur = self._anim.step(dt, self._cat_state)   # advance characters
         if self._faceview_ok:                                # keep 3D params fresh
             p = self._params
             p._t = t                                         # GPU starfield time
@@ -262,9 +285,13 @@ class FaceWidget(QWidget):
             scale = 0.97 + 0.06 * self._breath               # breathing zoom
             sw, sh = int(fw * scale), int(fh * scale)
             painter.drawPixmap((w - sw) // 2, (h - sh) // 2, sw, sh, pm)
-        elif self._show_cat:                                 # 2D cartoon cat
+        elif self._show_cat:                                 # 2D character + costume
             try:
-                self._cat.draw(painter, w, h, self._cat_state)
+                anim = self._anim_cur or self._anim.step(0.0, self._cat_state)
+                char = characters.get(self._char_name)
+                head = char.draw(painter, w, h, anim)
+                characters.draw_costume(painter, head, self._costume, anim,
+                                        self._cat_state.get("hue", self._hue))
             except Exception:
                 pass
         face_bg.warm_overlay(painter, w, h, self._warm)      # Sleep wind-down warmth

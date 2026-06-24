@@ -66,6 +66,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self._face_bg = "Stars"            # animated background behind the face
         self._face_style = "Default"       # cyberpunk face render style (see face_styles)
         self._face_reactive = False        # reactive face: style follows mode/chant/breath
+        self._character = "Cat"            # chosen 2D character (cat/penguin/dog)
+        self._costume = "None"             # costume overlay for the 2D character
         self.tuner = None                   # lazy mic pitch monitor (Sing/Chant)
         self._pitch_spec = None
         self._bell_interval = 0.0           # mindfulness bell interval (minutes)
@@ -197,6 +199,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self.set_face_cat(bool(s.get("face_cat", False)))
         self.set_face_style(s.get("face_style", "Default"))    # cyberpunk render style
         self.set_face_reactive(bool(s.get("face_reactive", False)))   # reactive face
+        self.set_character(s.get("character", "Cat"))         # 2D character + costume
+        self.set_costume(s.get("costume", "None"))
         self._clock_light = bool(s.get("clock_light", True))   # time-of-day warmth
         self._mood_on = bool(s.get("mood_checkins", False))    # opt-in mood check-ins
         self._onboarded = bool(s.get("onboarded", False))      # first-run welcome shown?
@@ -242,6 +246,16 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         chant to animate the face's mood. The Default keeps the classic look."""
         self._face_style = name
         self.face.set_style(name)
+
+    def set_character(self, name):
+        """Pick the 2D cartoon character (Cat / Penguin / Dog / ...). Persisted."""
+        self._character = name
+        self.face.set_character(name)
+
+    def set_costume(self, name):
+        """Pick a costume overlay for the 2D character (persisted)."""
+        self._costume = name
+        self.face.set_costume(name)
 
     def set_face_cat(self, on):
         """Use the cartoon cat instead of the 3D head (View menu / persisted)."""
@@ -439,6 +453,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
                                  "view": self._view, "face_bg": self._face_bg,
                                  "face_style": getattr(self, "_face_style", "Default"),
                                  "face_reactive": getattr(self, "_face_reactive", False),
+                                 "character": getattr(self, "_character", "Cat"),
+                                 "costume": getattr(self, "_costume", "None"),
                                  "hourglass": self._hg_show,
                                  "face_cat": self.face.uses_cat(),
                                  "clock_light": self._clock_light,

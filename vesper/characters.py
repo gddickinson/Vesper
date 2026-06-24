@@ -1,0 +1,30 @@
+"""Registry of the 2D characters + costumes (the cartoon face options). The face
+widget picks a character by name and an optional costume; both are user choices
+(persisted) and could be driven by the storyteller. Pure data + thin re-exports.
+"""
+from __future__ import annotations
+
+from . import char_costume
+from .char_cat import Cat
+from .char_dog import Dog
+from .char_penguin import Penguin
+
+_CHARS = [Cat(), Penguin(), Dog()]
+CHARACTERS = {c.name: c for c in _CHARS}
+DEFAULT = "Cat"
+
+
+def names():
+    return list(CHARACTERS)
+
+
+def get(name):
+    return CHARACTERS.get(name) or CHARACTERS[DEFAULT]
+
+
+def costume_names():
+    return char_costume.names()
+
+
+def draw_costume(p, head, name, anim, hue):
+    char_costume.draw(p, head, name, anim, hue)
