@@ -109,7 +109,11 @@ def load_settings():
 
 
 def save_settings(d):
-    _write("settings.json", d)
+    """Merge *d* into the saved settings (read-modify-write), so a partial patch
+    (e.g. just ``{"last_scene": ...}``) never clobbers the other keys."""
+    cur = load_settings()
+    cur.update(d or {})
+    _write("settings.json", cur)
 
 
 # --- practice history (gentle progress + breath-hold log) ------------------

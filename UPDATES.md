@@ -471,6 +471,20 @@ Guardrails (every round):
       returns to normal). Honest: it just configures sleep features. Done: selftest passes; offscreen
       both faces — leaves the app in Sleep + Calming 4-6 + wind-down armed + a sleep-timer set +
       running with no blocking dialog, and switching modes clears the wind-down, thread-stable.
+- [x] **"Resume where you left off" launch hint** (`vesper/resumehint.py` + window + store): on launch
+      a calm status-bar line names your last session — "Last time: Sleep with \"The Alhambra\"" or
+      "Welcome back to Meditate" — so picking up is one glance away. Pure `resume_hint(settings)` reads
+      the saved `mode` (and, for Sleep, the persisted `last_scene`) and returns the phrase, or None when
+      there's nothing meaningful (no mode / blank / non-dict). `store.save_settings` is now a
+      read-modify-write **merge** (a partial patch like `{"last_scene": ...}` never clobbers other
+      keys); the window persists `last_scene` on close and when a story starts. The hint folds into the
+      existing launch-suggestion line (`window.__init__`), shown via the idle status bar until the first
+      Start and never as a dialog; an in-progress course still wins the line. Honest: just a reminder of
+      your last session, no claims/nagging. Done: selftest passes; `resume_hint` unit-tested
+      (None/blank/non-dict; mode-only -> "Welcome back to <mode>"; Sleep+scene names it; empty/Off/None
+      scene + non-Sleep mode handled; whitespace trimmed) and `save_settings` merge round-trip tested
+      (partial patch keeps prior keys); offscreen both faces — a seeded prior settings file shows the
+      hint idle, it's retired after Start, and close persists every key incl `last_scene`, thread-stable.
 - [x] **Stats "best time of day" nudge** (`breathsim/besttime.py` + insights): the Stats dialog now
       gently names when you tend to practise, e.g. "You most often practise around 9-10 pm". Pure
       `best_time_phrase(hours, min_total=5)` reads the practice-history hour histogram, finds the modal

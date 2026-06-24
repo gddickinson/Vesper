@@ -159,11 +159,17 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         from . import onboarding              # gentle first-launch welcome (once)
         onboarding.maybe_show(self)
 
-        from . import clocktheme, suggest             # a gentle, non-modal launch hint
+        from . import clocktheme, resumehint, suggest  # a gentle, non-modal launch hint
         self._started_once = False
         try:
-            self._launch_suggestion = suggest.suggest(
-                clocktheme.now_hour(), store.history(), store.course_state()).text
+            sug = suggest.suggest(
+                clocktheme.now_hour(), store.history(), store.course_state())
+            self._launch_suggestion = sug.text
+            # Prefer a "pick up where you left off" reminder, unless an in-progress
+            # course (the kindest resume) already takes the line.
+            rh = resumehint.resume_hint(store.load_settings())
+            if rh and sug.kind != "course":
+                self._launch_suggestion = rh
         except Exception:
             self._launch_suggestion = None
 
@@ -556,6 +562,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                     start_section=start)
         self.narrator.start(units, self._story_level, self._story_timing,
                             self._on_story_unit)
+        store.save_settings({"last_scene": self._story_scene})   # remember for next launch
 
     # --- text-matched soundscape + emotion ---------------------------------
     def _set_base_ambience(self, amb):
@@ -852,7 +859,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                  "ambience_rotate": getattr(self, "_amb_rotate", False),
                                  "quiet_hours": getattr(self, "_quiet_hours", True),
                                  "breath_coach": getattr(self, "_coach", False),
-                                 "intro_lead_in": getattr(self, "_intro_on", True)})
+                                 "intro_lead_in": getattr(self, "_intro_on", True),
+                                 "last_scene": self._story_scene or ""})
         except Exception:
             pass
         try:

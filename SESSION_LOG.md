@@ -594,6 +594,27 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — "resume where you left off" launch hint
+On launch, a calm, non-modal status-bar line now names your last session so picking up is one glance
+away: "Last time: Sleep with \"The Alhambra\"" or "Welcome back to Meditate". New pure
+`vesper/resumehint.py`: `resume_hint(settings)` reads the saved `mode` and, for Sleep, the persisted
+`last_scene`, returning a friendly one-liner or None when there's nothing meaningful to resume
+(missing/blank mode, non-dict input). To persist the last scene safely, `store.save_settings` became a
+read-modify-write **merge** -- a partial patch like `{"last_scene": ...}` no longer clobbers the other
+keys -- and the window saves `last_scene` both on close and when a story starts (`_start_story`). The
+hint folds into the existing launch-suggestion line in `window.__init__`: it reads the saved settings
+and replaces the time-of-day suggestion unless an in-progress multi-night course (the kindest resume)
+already claims the line; it shows through the idle status bar (`_update_status`, guarded by
+`_started_once`) and is retired after the first Start, never as a dialog. Honest framing: it's only a
+reminder of your last session -- no advice, no claims, no nagging. Verified: `selftest.py` passes;
+`resume_hint` unit-tested (None/blank/non-dict -> None; mode-only -> "Welcome back to <mode>";
+Sleep+scene names the scene; empty/"Off"/None scene and a non-Sleep mode with a stray scene handled;
+whitespace trimmed); `save_settings` merge round-trip tested (a partial patch keeps prior keys, an
+update changes only its key). Offscreen both faces: a seeded prior settings file ({Sleep, The
+Alhambra}) makes the launch hint read "Last time: Sleep with \"The Alhambra\"", it shows in the idle
+status bar, is retired after the first Start (paused shows the ordinary prompt), and closing persists
+every settings key including `last_scene`; thread-stable.
+
 ## Stories round — new branch Famous Gardens (Versailles, Ryoan-ji, Kew Gardens, The Alhambra)
 Added a 30th lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
 fact-free section 1, accurate history/design, ASCII, every section sleep-closing):
