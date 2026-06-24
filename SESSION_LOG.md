@@ -2253,6 +2253,23 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Self-help round — themed sleep-hypnosis sessions (user-requested)
+Added **6 themed self-help hypnosis sessions** (`breathsim/hypnosis_topics.py`), surfaced as
+Sleep storyteller options: **Letting Go of Stress · Quiet Confidence · Calm Focus · Letting
+Go of Worry · Deep Self-Acceptance · Peaceful Gratitude**. To stay DRY, refactored
+`hypnosis.py` to expose reusable `induction(rng, guidance)` and `drift_tail(rng)` generators;
+each themed session = the same evidence-grounded arc (induction -> 10->1 deepening countdown
+-> permissive suggestions -> drift into sleep) with only the **suggestion block** swapped for
+the theme. Because this is a *sleep* app, even "confidence"/"focus" are framed as something
+that quietly takes root overnight and is simply there for you tomorrow -- never alerting or
+energising; all lines permissive ("you may notice...", "you can let..."). Honest framing kept
+(guided relaxation + gentle suggestion, a self-help aid not therapy). Wired into
+`stories.extra_names`/`ambience_for`/`story_units`, so they appear in the Sleep story picker
+(`sections.py` builds it from `extra_names()`) and crossfade their own masking bed (Soft
+Rainstorm / Wind in Pines / Brown Noise / Gentle Rain / Ocean Waves / Singing Bowl). Verified:
+each session dispatches via `stories.story_units`, ambiences resolve, all sleep-close; selftest
+passes; both-faces drive 0 issues. All files < 500 lines.
+
 ## Stories round — new branch "The Moons of the Giants" (4 lectures)
 Added a 36th lecture branch, **The Moons of the Giants**: *Io, the Volcano Moon* (the most
 volcanic world in the solar system, warmed by tidal heating; Galileo 1610; Loki Patera;

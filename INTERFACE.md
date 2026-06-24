@@ -297,7 +297,11 @@ The whole audio/logic/story core lives here, gui-free (the Tk GUI is not vendore
 `stories` + the **lecture library** (`lectures` + `lectures_*.py`, 50+ across
 13 branches incl. Voyages & Journeys + The Quiet Crafts + Small Wonders + The Elements + Gems &
 Stones; Cosmos incl. Comets · Nebulae · Saturn's Rings) + **`shuffle`** (the **Cognitive Shuffle** sleep-onset aid) + **`hypnosis`** (a **Sleep
-Hypnosis** guided session: induction -> deepening countdown -> suggestions -> drift) +
+Hypnosis** guided session: induction -> deepening countdown -> suggestions -> drift; exposes
+reusable `induction`/`drift_tail`) + **`hypnosis_topics`** (6 **themed self-help** hypnosis
+sessions reusing that arc with a different permissive suggestion block -- Letting Go of Stress
+/ Quiet Confidence / Calm Focus / Letting Go of Worry / Deep Self-Acceptance / Peaceful
+Gratitude, all winding down to sleep) +
 **`poetry`** (8 original soothing nocturnes recited slowly) - all Sleep storyteller options via
 `stories.extra_names()`; the shuffle is a stream of random neutral nouns),
 **`sound_cues`** (text→ambience), **`story_db`** (SQLite record of every

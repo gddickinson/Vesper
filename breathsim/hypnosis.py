@@ -97,10 +97,10 @@ def _u(text, pause, phase=None, kind="hypnosis"):
     return {"text": text, "pause": pause, "phase": phase, "kind": kind}
 
 
-def units(rng=None, guidance=True):
-    """The full hypnosis arc, then an endless soft drift tail. ``guidance`` keeps
-    the breath-cued induction breaths (dropped if false)."""
-    rng = rng or random.Random()
+def induction(rng=None, guidance=True):
+    """The shared opening arc -- settle, slow breath, head-to-toe relaxation, a
+    10->1 deepening countdown and a soft descent. Reused by the themed self-help
+    hypnosis sessions (see :mod:`breathsim.hypnosis_topics`)."""
     for line in _SETTLE:
         yield _u(line, 3200)
     yield _u("Let your breathing slow, all on its own.", 2600)
@@ -118,9 +118,22 @@ def units(rng=None, guidance=True):
         yield _u(line, 5400)
     for line in _STAIRS:
         yield _u(line, 4400)
-    for line in _SUGGEST:
-        yield _u(line, 4400)
+
+
+def drift_tail(rng=None):
+    """The shared closing drift + an endless, ever-sparser tail into sleep."""
+    rng = rng or random.Random()
     for line in _DRIFT:
         yield _u(line, 5200)
     while True:                                  # endless, ever-sparser drift
         yield _u(rng.choice(_TAIL), rng.randint(9000, 14000))
+
+
+def units(rng=None, guidance=True):
+    """The full hypnosis arc, then an endless soft drift tail. ``guidance`` keeps
+    the breath-cued induction breaths (dropped if false)."""
+    rng = rng or random.Random()
+    yield from induction(rng, guidance)
+    for line in _SUGGEST:
+        yield _u(line, 4400)
+    yield from drift_tail(rng)

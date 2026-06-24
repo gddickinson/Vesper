@@ -221,6 +221,13 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       fight the story-cue duck; leaves the user's base level intact. Verified: integration
       test (off = flat at base; on = base at inhale-top -> base*0.78 at exhale-bottom,
       monotonic + bounded + restorable); selftest; both-faces drive (0 issues).
+- [x] **Themed self-help hypnosis sessions** (user-requested) — 6 new Sleep storyteller
+      options in `breathsim/hypnosis_topics.py`: Letting Go of Stress, Quiet Confidence, Calm
+      Focus, Letting Go of Worry, Deep Self-Acceptance, Peaceful Gratitude. Refactored
+      `hypnosis.py` to expose reusable `induction`/`drift_tail`; each theme = that arc with a
+      swapped permissive suggestion block, always winding down to sleep (no alerting language,
+      honest framing). Wired via `stories.extra_names`/`ambience_for`/`story_units`; appear in
+      the Sleep picker. Verified: dispatch + ambience resolve + sleep-close; selftest + drive.
 - [ ] **Bedtime gratitude / "one good thing"** (Sleep, opt-in): a single, gentle end-of-
       session reflection ("one good thing about today") shown softly + optionally logged to
       Stats — no scoring, fully skippable. Evidence: bedtime gratitude reduces pre-sleep
