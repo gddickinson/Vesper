@@ -594,6 +594,24 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Deserts of the World (Sahara, Gobi, Atacama, Namib)
+Added a 20th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate geography/ecology/history, ASCII, sleep-closing): `lectures_sahara.py` (The Sahara, Fan
+(White Noise) - largest hot desert, more rock/gravel than dune, cold nights, the green "African
+Humid Period" and orbital wobble, dust fertilising the Amazon, salt-and-gold caravans and the
+Tuareg, ancient groundwater oases), `lectures_gobi.py` (The Gobi, Brown Noise - a cold high desert
+across Mongolia/China, the Himalaya rain shadow, the first dinosaur eggs in its red cliffs, the Silk
+Road's edge and Bactrian camels, the rare Gobi bear, felt-tent herders under crowding stars),
+`lectures_atacama.py` (The Atacama, Wind Chimes - the driest non-polar desert, rain-free stations,
+the darkest clearest skies and its great observatories, Mars-rover testing, fog-drinking lichens
+and the rare desert bloom, flamingo salt lagoons), and `lectures_namib.py` (The Namib, Ocean Waves -
+the oldest desert meeting a cold sea, the towering red Sossusvlei dunes, life drinking the coastal
+fog (the fog-basking beetles), the millennia-old welwitschia, Deadvlei's un-rotting trees and buried
+shipwrecks). New branch in `_CATALOG` -> **125 lectures / 20 branches**. Validated all four (7
+sections, 12-13 lines, pure ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB
+rebuilt (10,591 lines / 164,750 words / 5 scenes). The `units()` stream renders each (e.g. The
+Sahara = 110 units).
+
 ## App round — keyboard-shortcut help overlay (? cheatsheet)
 Added a discoverable cheatsheet of the real keyboard shortcuts. `vesper/shortcuts.py` now defines a
 single `SHORTCUTS` list of (key, description) pairs right next to `bind()`, so the on-screen list

@@ -351,6 +351,11 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Deserts of the World** (4): the Sahara · the Gobi · the Atacama · the Namib —
+      added `lectures_{sahara,gobi,atacama,namib}.py` (7x12-13 lines, fact-free section 1, accurate
+      geography/ecology/history, ASCII, sleep-closing; Fan (White Noise) / Brown Noise / Wind Chimes
+      / Ocean Waves), new branch in `_CATALOG` → **125 lectures / 20 branches**; DB rebuilt (10,591
+      lines / 164,750 words); selftest passes. Done: validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Great Forests** (4): the Taiga · the Black Forest · the Daintree · the Cloud
       Forest — added `lectures_{taiga,blackforest,daintree,cloudforest}.py` (7x12-13 lines, fact-free
       section 1, accurate ecology/history/culture (Aboriginal custodianship + Grimm folklore framed

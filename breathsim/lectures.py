@@ -56,6 +56,8 @@ from . import (lectures_everest, lectures_fuji, lectures_kilimanjaro,
 from . import lectures_crane, lectures_owl, lectures_raven, lectures_swan
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
+from . import (lectures_atacama, lectures_gobi, lectures_namib,
+               lectures_sahara)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -125,6 +127,8 @@ _CATALOG = [
                        lectures_owl]),
     ("Great Forests", [lectures_taiga, lectures_blackforest, lectures_daintree,
                        lectures_cloudforest]),
+    ("Deserts of the World", [lectures_sahara, lectures_gobi, lectures_atacama,
+                              lectures_namib]),
 ]
 
 LECTURES = {}
