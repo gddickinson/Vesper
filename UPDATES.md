@@ -531,6 +531,20 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Famous Gardens** (4): Versailles · Ryoan-ji · Kew Gardens · The Alhambra — added
+      `lectures_{versailles,ryoanji,kew,alhambra}.py` (7x[13,12,13,12,12,13,13] lines, fact-free
+      section 1, accurate history/design — Le Notre's geometry + the Grand Canal + the Machine de Marly;
+      the karesansui dry garden, fifteen stones with one always hidden, meaning left open; Kew's 1759
+      founding + the 1844-48 Palm House + the herbarium + the Millennium Seed Bank; the Nasrid
+      paradise-garden, the Acequia Real, the Court of the Myrtles + the Court of the Lions + the
+      Generalife — symbolism framed as the tradition's intent), ASCII, every section sleep-closing;
+      ambiences Mountain Stream / Wind in Pines / Gentle Rain / Mountain Stream. New branch in
+      `_CATALOG` → **165 lectures / 30 branches**; story DB rebuilt (14,105 lines / 224,058 words).
+      Done: selftest (165/30); lint — each lecture 7x[13,12,13,12,12,13,13], section 1 fact-free (no
+      names/dates/numbers), all 7 sections sleep-close, ASCII-only, ambience resolves to a real
+      GROUP_NATURE voice, no NAME/module collisions (distinct from the existing "The History of
+      Gardens"); offscreen both faces — all four dispatch through `stories.story_units` (all 7 sections
+      stream) and a Sleep session narrates one, thread-stable.
 - [x] **New branch — Famous Bridges** (4): Golden Gate · Ponte Vecchio · Tower Bridge · Brooklyn
       Bridge — added `lectures_{goldengate,pontevecchio,towerbridge,brooklynbridge}.py` (7x[13,12,13,
       12,12,13,13] lines, fact-free section 1, accurate history/engineering — the strait named in 1846

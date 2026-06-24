@@ -594,6 +594,31 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Famous Gardens (Versailles, Ryoan-ji, Kew Gardens, The Alhambra)
+Added a 30th lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
+fact-free section 1, accurate history/design, ASCII, every section sleep-closing):
+`lectures_versailles.py` (Versailles, Mountain Stream - the Sun King ordering a marsh into a garden,
+Andre Le Notre and the geometry of the jardin a la francaise, the great west axis and the Grand Canal,
+the fountains and the Machine de Marly pumping from the Seine, fountaineers turning jets on in sequence
+as the king passed), `lectures_ryoanji.py` (Ryoan-ji, Wind in Pines - the Kyoto Zen karesansui dry
+garden, gravel as water and stones as islands, the fifteen stones with at least one always hidden from
+any single viewpoint, the daily raking, the low oil-clay wall and borrowed scenery, the tsukubai basin,
+its meaning left deliberately open), `lectures_kew.py` (Kew Gardens, Gentle Rain - a royal garden grown
+into a place to study the whole green world, the 1759 founding and the 1762 Pagoda, the 1844-48 Palm
+House of iron and glass, the herbarium of millions of pressed specimens under the Hookers, the
+Millennium Seed Bank, a World Heritage site), and `lectures_alhambra.py` (The Alhambra, Mountain Stream
+- the red Nasrid palace-fortress above Granada, the enclosed garden as an image of paradise, water led
+from the Sierra Nevada by the Acequia Real, the Court of the Myrtles' still pool, the Court of the
+Lions' fountain of twelve marble lions, and the Generalife - paradise symbolism framed as the
+tradition's intent). Distinct from the existing "The History of Gardens". New branch in `_CATALOG` ->
+**165 lectures / 30 branches**. Verified: `selftest.py` passes (148 voices; 165 lectures / 30
+branches); a lint confirmed each lecture has 7 x [13,12,13,12,12,13,13] sentences, a fact-free section
+1 (no names/dates/numbers), all 7 sections sleep-closing, ASCII-only, an ambience resolving to a real
+GROUP_NATURE voice, and no NAME/module collisions; offscreen both faces - all four dispatch through
+`stories.story_units` (all 7 sections stream, ~104-108 units each) and a Sleep session narrates one
+with the storyteller, thread-stable across a 24-frame loop; story DB rebuilt (14,105 lines / 224,058
+words / 5 scenes).
+
 ## App round — Stats "best time of day" nudge
 The Stats dialog now gently observes when you usually practise, upgrading the coarse "in the evening"
 line to a precise am/pm window like "You most often practise around 9-10 pm" when there's a clear
