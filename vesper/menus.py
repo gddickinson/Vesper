@@ -224,6 +224,10 @@ def _view(win, m):
         a.setCheckable(True)
         a.setChecked(abs(getattr(win, "_font_scale", 1.0) - sc) < 1e-6)
         a.triggered.connect(lambda _c=False, x=sc: win.set_text_scale(x))
+    cc = m.addAction("Breathing count cue")          # on-screen in/hold/out counting
+    cc.setCheckable(True)
+    cc.setChecked(getattr(win, "_coach", False))
+    cc.toggled.connect(win.set_breath_coach)
     cl = m.addAction("Clock-aware light")            # gentle time-of-day warmth
     cl.setCheckable(True)
     cl.setChecked(getattr(win, "_clock_light", True))

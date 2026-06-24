@@ -626,6 +626,21 @@ branches**. Validated all four (7 sections, 12-13 lines, pure ASCII, no NAME col
 passes (148 voices); DB rebuilt (13,047 lines / 206,664 words / 5 scenes). The `units()` stream
 renders each (e.g. Saffron = 104 units).
 
+## App round — breathing-coach count cue
+Added an optional on-screen count cue to help a beginner follow the breath. `breathsim/coach.py`
+(22 lines, pure + testable): `cue(phase, phase_elapsed, phase_len)` names the phase and counts the
+second you are in -- "Breathe in 3" / "Hold 2" / "Breathe out 2" / "Rest 1" -- 1-based, capped at the
+phase length, and returning "" for a zero-length phase (so a pattern with no hold shows nothing then).
+`window._scene_ctx` feeds the cue into the scene **subtitle** when `_coach` is on and there isn't
+already a Sleep-storyteller line (so it never clashes with the bedtime story or the Meditate guidance
+hint), computing `phase_elapsed` from `state.progress * _phase_len(phase)` off the existing per-frame
+loop -- no new clock. `set_breath_coach` toggles it; **View > Breathing count cue**, default off,
+persisted as `breath_coach`. Honest framing: it just narrates the pattern's timing. Verified:
+`selftest.py` passes (153 lectures / 27 branches); `cue` is unit-tested (inhale 2.4s -> "Breathe in
+3", zero-length hold -> "", counts start at 1 and never exceed the phase length); offscreen both faces
+-- with the cue off the scene subtitle carries no "Breathe..." text, and with it on a count phrase
+("Breathe ...") appears across a 40-frame Breathwork run, thread-stable.
+
 ## App round — blackout sleep view (near-dark minimal screen)
 Added a near-dark "blackout" sleep screen so the room stays dark while the sound plays on.
 `window.toggle_blackout(on=None)` flips a `_blackout` flag: it hides the control panel, menu bar and

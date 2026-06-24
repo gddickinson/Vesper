@@ -455,6 +455,14 @@ Guardrails (every round):
       intro-fade/sleep-dim so they don't conflict). Honest: a visual dim, audio unaffected. Done:
       selftest passes; offscreen both faces — toggle on hides chrome and drops opacity to ~0.05 with
       the session still running, toggle/Esc/tap restore (~0.98), thread-stable.
+- [x] **Breathing-coach count cue** (`breathsim/coach.py`): an optional on-screen cue that names the
+      phase and counts through it — "Breathe in 3", "Hold 2", "Breathe out 2", "Rest" — synced to the
+      live pattern, to help a beginner follow the rhythm. Pure `cue(phase, phase_elapsed, phase_len)`
+      (1-based count, capped at the phase length, "" for zero-length phases). `window` feeds it into
+      the scene subtitle when enabled (and not during the Sleep storyteller). **View > Breathing count
+      cue** toggle, default off, persisted. Honest: it just narrates the pattern timing. Done: selftest
+      passes; `cue` unit-tested (counts/caps/zero-length); offscreen both faces — a cue string appears
+      when on and is absent when off, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

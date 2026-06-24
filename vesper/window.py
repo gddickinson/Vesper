@@ -110,6 +110,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._quiet_hours = True           # gently cap output volume in the small hours
         self._cur_cap = 1.0                # last applied output cap (see _tick)
         self._blackout = False             # near-dark sleep screen (audio keeps playing)
+        self._coach = False                # breathing-coach on-screen count cue (opt-in)
         self._font_scale = 1.0             # accessibility: global UI text size
         self._base_pt = 0.0                # app font point size before any scaling
         self._active_course = None         # (course name, total) while a course day runs
@@ -196,6 +197,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._amb_rotate = bool(s.get("ambience_rotate", False))  # opt-in bed rotation
         self._quiet_hours = bool(s.get("quiet_hours", True))      # late-night soften
         self._apply_quiet_cap()
+        self._coach = bool(s.get("breath_coach", False))         # opt-in count cue
         mode = s.get("mode")                          # no saved mode -> suit the clock
         if mode not in modes.names():
             from . import clocktheme
@@ -259,6 +261,10 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             status = "Press Start" if self.controller.elapsed() == 0 else "Paused"
         sub = (self._story_line[:42] if (self.current_mode == "Sleep"
                                          and self._story_line) else "")
+        if running and self._coach and not sub:    # gentle in/hold/out counting
+            from breathsim import coach
+            plen = self._phase_len(state.phase)
+            sub = coach.cue(state.phase, getattr(state, "progress", 0.0) * plen, plen)
         hint = ""                                  # Meditate: gentle rotating guidance
         if running and self.current_mode == "Meditate" and self._med_style != "Off":
             hint = self._med_phrase(self.controller.elapsed())
@@ -310,6 +316,15 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
 
     def set_meditation_guidance(self, style):
         self._med_style = style if style in self._MED_CUES else "Off"
+
+    def set_breath_coach(self, on):
+        """Toggle the on-screen breathing count cue (opt-in, persisted)."""
+        self._coach = bool(on)
+
+    def _phase_len(self, phase):
+        p = self.controller.pattern
+        return {"inhale": p.inhale, "hold_full": p.hold_full,
+                "exhale": p.exhale, "hold_empty": p.hold_empty}.get(phase, 0.0)
 
     def _med_phrase(self, elapsed):
         cues = self._MED_CUES.get(self._med_style)
@@ -770,7 +785,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                  "spatial": getattr(self, "_spatial", True),
                                  "font_scale": getattr(self, "_font_scale", 1.0),
                                  "ambience_rotate": getattr(self, "_amb_rotate", False),
-                                 "quiet_hours": getattr(self, "_quiet_hours", True)})
+                                 "quiet_hours": getattr(self, "_quiet_hours", True),
+                                 "breath_coach": getattr(self, "_coach", False)})
         except Exception:
             pass
         try:
