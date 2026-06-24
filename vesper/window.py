@@ -65,6 +65,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self._view = "face"                 # central view: "face" or "scene"
         self._face_bg = "Stars"            # animated background behind the face
         self._face_style = "Default"       # cyberpunk face render style (see face_styles)
+        self._face_reactive = False        # reactive face: style follows mode/chant/breath
         self.tuner = None                   # lazy mic pitch monitor (Sing/Chant)
         self._pitch_spec = None
         self._bell_interval = 0.0           # mindfulness bell interval (minutes)
@@ -195,6 +196,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self.toggle_hourglass(bool(s.get("hourglass", False)))
         self.set_face_cat(bool(s.get("face_cat", False)))
         self.set_face_style(s.get("face_style", "Default"))    # cyberpunk render style
+        self.set_face_reactive(bool(s.get("face_reactive", False)))   # reactive face
         self._clock_light = bool(s.get("clock_light", True))   # time-of-day warmth
         self._mood_on = bool(s.get("mood_checkins", False))    # opt-in mood check-ins
         self._onboarded = bool(s.get("onboarded", False))      # first-run welcome shown?
@@ -436,6 +438,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
                                  "speech_speed": self._speech_speed,
                                  "view": self._view, "face_bg": self._face_bg,
                                  "face_style": getattr(self, "_face_style", "Default"),
+                                 "face_reactive": getattr(self, "_face_reactive", False),
                                  "hourglass": self._hg_show,
                                  "face_cat": self.face.uses_cat(),
                                  "clock_light": self._clock_light,

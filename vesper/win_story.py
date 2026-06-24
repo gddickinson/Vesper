@@ -204,6 +204,40 @@ class _StoryMixin:
         self._eyeb += (do - self._eyeb) * 0.06
         self._mood_target = tuple(v * 0.992 for v in self._mood_target)
 
+    # --- reactive face (optional): style follows mode / chant / story mood, and
+    # the eyes/rim breathe with the live breath. Off by default; never changes the
+    # saved static style (restored when the toggle is turned off).
+    def set_face_reactive(self, on):
+        self._face_reactive = bool(on)
+        if not self._face_reactive:
+            self.face.set_style(getattr(self, "_face_style", "Default"))
+            self.face.set_pulse(1.0)
+            self._react_on = False
+
+    def _react_face(self, state, running):
+        if not getattr(self, "_face_reactive", False):
+            return
+        from . import face_react
+        if not running:                              # idle: hold saved style, no pulse
+            if getattr(self, "_react_on", False):
+                self.face.set_style(getattr(self, "_face_style", "Default"))
+                self.face.set_pulse(1.0)
+                self._react_on = False
+            return
+        self._react_on = True
+        self.face.set_pulse(face_react.pulse_for(getattr(state, "volume", 0.5)))
+        target = face_react.style_for(
+            self.current_mode, chanting=self.current_mode == "Chant",
+            singing=self.current_mode == "Sing",
+            story_active=bool(self._story_scene),
+            mood=face_react.mood_key(getattr(self, "_mood_target", (0.0, 0.0, 0.0))))
+        if target == getattr(self, "_react_pending", None):    # dwell, so it never flickers
+            self._react_dwell = getattr(self, "_react_dwell", 0) + 1
+        else:
+            self._react_pending, self._react_dwell = target, 0
+        if self._react_dwell >= 18 and target != self.face.style():
+            self.face.set_style(target)
+
     def _story_level(self):
         dur = self._story_minutes * 60.0
         frac = self.controller.elapsed() / dur if dur > 0 else 1.0

@@ -209,6 +209,7 @@ class _FrameMixin:
             if self._amb_rotate and not self._story_scene:
                 self._apply_ambience_rotate()  # slowly cycle beds (when no storyteller)
         self._ease_mood(running)               # expression eases toward the mood
+        self._react_face(state, running)       # reactive style/glow (when toggled on)
         if self._view == "scene":
             self.viz.update_state(self._scene_ctx(state, running, prog))
         else:

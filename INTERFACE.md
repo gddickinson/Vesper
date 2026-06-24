@@ -91,8 +91,14 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 - **face_shaders.py** — the GLSL strings: a vertex shader (writes `gl_PointSize`
   for the dot-matrix mode) and a fragment shader whose `eye_pattern()` /
   `skin_shade()` switch on `u_eye` / `u_skin` (id 0 = the exact classic starfield /
-  smooth skin), plus a fresnel `u_ghost` alpha for the translucent mode and the
-  unchanged lash line shaders.
+  smooth skin), plus a fresnel `u_ghost` alpha for the translucent mode, a breath
+  `u_pulse` glow, and the unchanged lash line shaders.
+- **face_react.py** — the optional **reactive face** mapping (pure): `style_for`
+  picks a style from the live context (mode + chant/song + storyteller mood),
+  `pulse_for(volume)` turns the breath into a gentle glow pulse, `mood_key` buckets
+  the storyteller's emotion. The window applies it each frame with a short dwell so
+  the look shifts gently; **Sound ▸ Reactive face** toggles it (persisted
+  `face_reactive`, off by default) and it never changes the saved static style.
 - **scenes.py** — Qt `QPainter` visualization scenes (ambient set): `OrbScene`
   (glow + guide ring + cycle dot + progress arc + drifting **motes**, soft **exhale
   rings**, and a mint **coherence halo** near ~6 breaths/min), `NightScene` (stars +

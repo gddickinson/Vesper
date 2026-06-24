@@ -373,6 +373,7 @@ def render(params, size):
             "u_acc": tuple(float(c) for c in style.accent),
             "u_eyeL": eyeL, "u_eyeR": eyeR, "u_eyer": float(rad),
             "u_pt": max(2.5, h / 115.0),
+            "u_pulse": float(getattr(params, "_pulse", 1.0)),
         }
         for _k, _v in uniforms.items():
             try:

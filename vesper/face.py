@@ -61,6 +61,7 @@ class FaceWidget(QWidget):
         self._breath = 0.5
         self._t = 0.0
         self._style = "Default"                  # cyberpunk face style (see face_styles)
+        self._pulse = 1.0                        # breath glow (1.0 = none; reactive only)
         self._hue = theme.ACCENT
         self._req = ((copy.copy(self._params), (480, 520)) if self._faceview_ok
                      else (None, (480, 520)))
@@ -109,6 +110,11 @@ class FaceWidget(QWidget):
 
     def style(self):
         return self._style
+
+    def set_pulse(self, v):
+        """Breath glow multiplier (1.0 = none). Driven by the reactive face so the
+        eyes/rim gently brighten on the in-breath and soften on the out-breath."""
+        self._pulse = max(0.6, min(1.4, float(v)))
 
     def faceview_available(self):
         return self._faceview_ok
@@ -195,6 +201,7 @@ class FaceWidget(QWidget):
                      + self._tilt * 0.1)                     # idle sway + head-cock
             p.eye_open = eye_open
             p._style = self._style                       # cyberpunk render style
+            p._pulse = self._pulse                       # breath glow (reactive)
             self._req = (copy.copy(p),
                          (max(2, self.width()), max(2, self.height())))
         self.update()

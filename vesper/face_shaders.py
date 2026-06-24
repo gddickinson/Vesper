@@ -32,6 +32,7 @@ uniform vec3 u_acc;       // accent colour
 uniform vec2 u_eyeL;      // left/right eyeball centres (NDC) + radius, for
 uniform vec2 u_eyeR;      // eye-local polar patterns
 uniform float u_eyer;
+uniform float u_pulse;    // breath glow (1.0 = none; reactive face only)
 
 float h21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float vn(vec2 p) {
@@ -175,9 +176,10 @@ void main() {
     vec2 cen = (distance(v_pos.xy, u_eyeL) < distance(v_pos.xy, u_eyeR))
                ? u_eyeL : u_eyeR;
     vec2 lp = (v_pos.xy - cen) / max(u_eyer, 1e-3);
-    vec3 eye = eye_pattern(u_eye, v_pos.xy, lp, u_time, u_acc);
+    vec3 eye = eye_pattern(u_eye, v_pos.xy, lp, u_time, u_acc) * u_pulse;
+    skin += u_acc * fres * (u_pulse - 1.0) * 1.5;    // breath rim glow (1.0 = none)
     float e = clamp(v_emit, 0.0, 1.0);
-    vec3 col = mix(skin, eye, e);
+    vec3 col = max(mix(skin, eye, e), 0.0);
     float a = 1.0;
     if (u_ghost == 1) {                              // translucent fresnel hologram
         a = clamp(0.34 + 0.62 * fres, 0.0, 1.0);     // glowing form, edges brightest
