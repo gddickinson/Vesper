@@ -361,6 +361,15 @@ Guardrails (every round):
       random. Done: selftest passes; `pick` unit-tested (deterministic, avoids recent, fallback,
       empty); offscreen both faces — the action switches to Sleep, arms a real lecture, starts, and
       records the pick, with no blocking dialog, thread-stable.
+- [x] **Sleep-onset "lights out" auto-dim** (`vesper/sleepdim.py`): the very end of the Sleep
+      wind-down now eases the screen toward near-dark. Pure `sleep_dim(prog, knee=0.85, floor=0.55)`
+      is exactly the old curve (1 - 0.3*prog) below the knee, then smoothsteps to the floor past it
+      (a continuous join), so the window opacity settles around ~0.55 by session end — gentle, never
+      fully off, fully reversible (reset / fresh start / leaving Sleep recomputes it), and coordinated
+      with the launch intro-fade + warm overlay. Honest: a visual dim, not a power-off. Done: selftest
+      passes; `sleep_dim` unit-tested (knee continuity at 0.745, deeper past it, monotonic, floor
+      0.55); offscreen both faces — opacity is ~0.85 mid-session and ~0.57 deep in the wind-down, and
+      returns to ~0.96 after reset, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

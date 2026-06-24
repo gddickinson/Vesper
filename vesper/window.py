@@ -22,7 +22,7 @@ from breathsim import speech as sp_mod
 from breathsim import store
 from breathsim.patterns import DEFAULT_PATTERN, preset_by_name
 
-from . import introfade, menus, shortcuts, theme
+from . import introfade, menus, shortcuts, sleepdim, theme
 from .app_actions import _ActionsMixin
 from .controls import ControlPanel
 from .face import FaceWidget
@@ -622,7 +622,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             warm = max(sw, cw)                            # Sleep dominates when active
             self.face.set_warm(warm)
             self.viz.set_warm(warm)
-            op = (1.0 - 0.3 * (prog or 0.0)) if sleep else (1.0 - 0.2 * cw)
+            op = (sleepdim.sleep_dim(prog or 0.0) if sleep   # deepen toward 'lights out'
+                  else (1.0 - 0.2 * cw))
         op *= introfade.intro_opacity(self._anim_t)       # gentle one-time launch fade-in
         self._win_op = op                                 # recorded for tests
         self.setWindowOpacity(op)

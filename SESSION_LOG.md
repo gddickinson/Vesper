@@ -594,6 +594,22 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — sleep-onset "lights out" auto-dim
+Deepened the tail of the Sleep wind-down so the screen eases toward near-dark as you fall asleep.
+Added `vesper/sleepdim.py` (pure + testable): `sleep_dim(prog, knee=0.85, floor=0.55)` returns the
+window opacity for a Sleep session at progress *prog* -- it is **exactly the old curve** (1 - 0.3*prog)
+below the knee, then **smoothsteps to the floor** past it, joined continuously at the knee (0.745) so
+there is no jump; it bottoms out around 0.55 by session end and is clamped so it never goes fully
+black/unusable. `window._tick`'s Sleep branch now uses `sleepdim.sleep_dim(prog)` for `op` (the
+non-Sleep clock-dim branch is unchanged); the launch intro-fade still multiplies on top and the warm
+overlay is untouched, so they don't fight. It is fully **reversible** -- the opacity is recomputed
+every frame from prog, so a fresh Start, Reset, or leaving Sleep returns to normal brightness. Honest
+framing: a gentle visual dim, not a real power-off. Verified: `selftest.py` passes (133 lectures / 22
+branches); `sleep_dim` unit-tested (1.0 at 0, 0.85 at 0.5 matching the old curve, continuous 0.745 at
+the knee, deeper than linear past it, monotonic non-increasing, never below the 0.55 floor); offscreen
+both faces -- the recorded opacity is ~0.85 mid-session (prog 0.5) and eases to ~0.57 deep in the
+wind-down (prog 0.97), and returns to ~0.96 after a Reset + Meditate, thread-stable.
+
 ## Stories round — new branch Wonders of the Ancient World (Pyramid, Hanging Gardens, Colossus, Artemis)
 Added a 22nd lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate history with legend framed honestly, ASCII, sleep-closing): `lectures_pyramid.py` (The Great
