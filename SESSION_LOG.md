@@ -594,6 +594,19 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Feature (user request) — Sleep Hypnosis guided session
+Researched sleep hypnosis (the classic induction -> deepening -> suggestion arc; Cordi & Rasch
+2014 found hypnotic suggestion can boost slow-wave sleep up to ~80% in suggestible people;
+delivery is slow + permissive with long silences) and added `breathsim/hypnosis.py`: a narrated
+script that settles the listener, slows the breath (a few breath-paced breaths), relaxes the body
+head-to-toe, deepens with a 10->1 countdown + a gentle descent image, gives permissive sleep
+suggestions, and drifts into sleep (no re-alerting), then thins into an endless sparse drift tail.
+Surfaced as a Sleep storyteller option "Sleep Hypnosis" via `stories.extra_names`/`story_units`/
+`ambience_for` (Soft Rainstorm bed), reusing the whole narration + talking-head + wind-down path;
+a `kind="hypnosis"` guard in `window._on_story_unit` keeps the bed steady. Honest framing in the
+docstring (promising evidence, not a cure). selftest passes; offscreen Sleep session selects it,
+holds the bed, thread-stable (2->3) on both faces.
+
 ## App round — Fireplace scene (warm flickering fire)
 Added `scenes.FireplaceScene` (a 5th ambient scene): a warm pulsing hearth glow that breathes
 with the breath, seven soft swaying flame tongues built from stacked warm radial-gradient blobs

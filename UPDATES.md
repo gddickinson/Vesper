@@ -115,6 +115,12 @@ Guardrails (every round):
       the soundscape). Dispatched via `stories.story_units`/`ambience_for`/`extra_names`;
       picks as "Cognitive Shuffle" in the Sleep story card. Offscreen (both faces)
       thread-stable; selftest passes.
+- [x] **Sleep Hypnosis** (user-requested): `breathsim/hypnosis.py` - a slow, permissive guided
+      hypnosis script (induction: settle + breath + head-to-toe relaxation; deepening: 10->1
+      countdown + descent imagery; permissive sleep suggestions; drift into sleep, no
+      re-alerting), surfaced as a Sleep storyteller option via `stories.extra_names`. Steady bed
+      (cue-suppressed); honest framing (evidence promising, esp. for the suggestible). Tested
+      both faces, thread-stable.
 - [ ] **Body-scan + PMR** guided program: slow timed tense→release cues head-to-toe,
       paced to the breath.
 - [ ] **Physiological-sigh reset**: a 2–3 min "Sigh" mini-session (double inhale, long
@@ -224,6 +230,8 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Sleep Hypnosis (`hypnosis.py`): induction -> deepening countdown -> suggestions -> drift,
+  as a Sleep storyteller option.
 - Fireplace scene: warm flickering flame + embers + breathing hearth glow (View > Scene).
 - Sunrise / Wake mode: gradual dawn simulation (brighten + volume rise + breath quicken +
   dawn chorus), the inverse of the Sleep wind-down; from the Sessions menu.

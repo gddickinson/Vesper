@@ -385,8 +385,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         """Per narrated line: show it, steer the soundscape, set the face's mood."""
         text = unit.get("text", "")
         self._story_line = text
-        if unit.get("kind") == "shuffle":
-            # Random neutral nouns shouldn't steer the bed; hold the steady base.
+        if unit.get("kind") in ("shuffle", "hypnosis"):
+            # Shuffle nouns / hypnosis suggestions shouldn't steer the bed; hold it.
             self._mood_target = (0.0, 0.0, 0.0)
             return
         cue = sound_cues.cue_for_text(text)
