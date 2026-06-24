@@ -70,6 +70,8 @@ from . import (lectures_appianway, lectures_greatwall, lectures_hadrianswall,
                lectures_incaroads)
 from . import (lectures_dragon, lectures_griffin, lectures_mermaid,
                lectures_unicorn)
+from . import (lectures_cinnamon, lectures_pepper, lectures_saffron,
+               lectures_vanilla)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -153,6 +155,8 @@ _CATALOG = [
                                lectures_hadrianswall, lectures_incaroads]),
     ("Legendary Beasts", [lectures_dragon, lectures_unicorn, lectures_mermaid,
                           lectures_griffin]),
+    ("Spices & Herbs", [lectures_cinnamon, lectures_saffron, lectures_pepper,
+                        lectures_vanilla]),
 ]
 
 LECTURES = {}

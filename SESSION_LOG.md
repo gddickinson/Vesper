@@ -610,6 +610,22 @@ quipu, tambo rest-houses). Distinct from the existing Silk/Spice Road lectures. 
 ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (12,348 lines / 194,754
 words / 5 scenes). The `units()` stream renders each (e.g. The Great Wall = 109 units).
 
+## Stories round — new branch Spices & Herbs (Cinnamon, Saffron, Black Pepper, Vanilla)
+Added a 27th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate botany/trade history, ASCII, sleep-closing): `lectures_cinnamon.py` (Cinnamon, Forest Wind -
+dried inner bark curling into quills, true Ceylon vs coarser cassia, ancient Egyptian use, Arab
+traders' secrecy and Herodotus's giant-bird tale framed honestly as a story, cinnamaldehyde),
+`lectures_saffron.py` (Saffron, Wind Chimes - the costliest spice, three crimson stigmas per autumn
+crocus, hand-picked at dawn, thousands of flowers per ounce, Iran/Kashmir), `lectures_pepper.py`
+(Black Pepper, Soft Rainstorm - peppercorns on a monsoon vine of the Malabar coast, green/black/white
+from one vine, "black gold" and Roman trade driving exploration, piperine), and `lectures_vanilla.py`
+(Vanilla, Gentle Rain - the only spice from an orchid, native Mexico and the Totonac, one-day
+flowers, the enslaved boy Edmond Albius's 1841 hand-pollination, Madagascar, curing and vanillin).
+Distinct from the existing "The Spice Road". New branch in `_CATALOG` -> **153 lectures / 27
+branches**. Validated all four (7 sections, 12-13 lines, pure ASCII, no NAME collisions); `selftest.py`
+passes (148 voices); DB rebuilt (13,047 lines / 206,664 words / 5 scenes). The `units()` stream
+renders each (e.g. Saffron = 104 units).
+
 ## App round — blackout sleep view (near-dark minimal screen)
 Added a near-dark "blackout" sleep screen so the room stays dark while the sound plays on.
 `window.toggle_blackout(on=None)` flips a `_blackout` flag: it hides the control panel, menu bar and

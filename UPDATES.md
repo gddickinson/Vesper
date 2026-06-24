@@ -480,6 +480,13 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Spices & Herbs** (4): Cinnamon · Saffron · Black Pepper · Vanilla — added
+      `lectures_{cinnamon,saffron,pepper,vanilla}.py` (7x12-13 lines, fact-free section 1, accurate
+      botany/trade history (Herodotus's bird tale framed as legend; Edmond Albius & hand-pollination;
+      narwhal... no — saffron's hand-picked threads), ASCII, sleep-closing; Forest Wind / Wind Chimes
+      / Soft Rainstorm / Gentle Rain). Distinct from the existing "The Spice Road". New branch in
+      `_CATALOG` → **153 lectures / 27 branches**; DB rebuilt (13,047 lines / 206,664 words); selftest
+      passes. Done: validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Legendary Beasts** (4): the Dragon · the Unicorn · the Mermaid · the Griffin —
       added `lectures_{dragon,unicorn,mermaid,griffin}.py` (7x12-13 lines, fact-free section 1,
       folklore framed honestly AS legend with real roots — narwhal tusks -> unicorn horns, manatees ->
