@@ -224,6 +224,10 @@ class NightScene:
         self.stars = [dict(nx=float(rng.random()), ny=float(rng.random()),
                            ph=float(rng.random()) * 6.28,
                            sp=0.2 + float(rng.random()) * 0.6) for _ in range(64)]
+        # a fainter, slower far layer for depth (parallax + gentler twinkle)
+        self.far = [dict(nx=float(rng.random()), ny=float(rng.random()),
+                         ph=float(rng.random()) * 6.28,
+                         sp=0.1 + float(rng.random()) * 0.3) for _ in range(96)]
         self.clouds = scene_fx.Clouds(n=4, seed=6)
         self.shoot = scene_fx.ShootingStar(seed=11)
 
@@ -235,9 +239,20 @@ class NightScene:
         p.fillRect(0, 0, w, h, QBrush(grad))
         vol = c["volume"] if c["running"] else 0.5
         t = c["t"]
+        # a faint, dim horizon glow low on the sky (deep indigo, never bright)
+        glow = QLinearGradient(0.0, float(h) * 0.7, 0.0, float(h))
+        glow.setColorAt(0.0, _qc(theme.blend(theme.NIGHT_BG, "#1b2746", 0.6), 0.0))
+        glow.setColorAt(1.0, _qc(theme.blend(theme.NIGHT_BG, "#1b2746", 0.6), 0.28))
+        p.fillRect(0, int(h * 0.7), w, h - int(h * 0.7), QBrush(glow))
         self.clouds.draw(p, w, h, t,
                          _qc(theme.blend(theme.NIGHT_BG, theme.MOON, 0.5), 0.05))
         p.setPen(Qt.PenStyle.NoPen)
+        for s in self.far:                          # far layer: smaller, dimmer, slower
+            y = (s["ny"] + t * 0.006 * s["sp"]) % 1.0
+            tw = 0.5 + 0.5 * math.sin(t * 0.5 * s["sp"] + s["ph"])
+            p.setBrush(_qc(theme.blend(theme.NIGHT_BG, theme.STAR, 0.12 + 0.3 * tw)))
+            r = 0.4 + 0.7 * tw
+            p.drawEllipse(QPointF(s["nx"] * w, y * h), r, r)
         for s in self.stars:
             y = (s["ny"] + t * 0.012 * s["sp"]) % 1.0
             tw = 0.5 + 0.5 * math.sin(t * 0.8 * s["sp"] + s["ph"])
@@ -253,6 +268,12 @@ class NightScene:
         p.drawEllipse(QPointF(mx, my), mr * (2.4 + 0.9 * vol), mr * (2.4 + 0.9 * vol))
         p.setBrush(_qc(theme.MOON))
         p.drawEllipse(QPointF(mx, my), mr, mr)
+        # a subtle, very slowly drifting crescent: a sky-coloured disc carves the
+        # terminator, so the moon shows a gentle gibbous/crescent phase
+        off = (0.42 + 0.12 * math.sin(t * 0.01)) * mr
+        sky = _qc(theme.blend(theme.NIGHT_BG, "#000007", 0.28))
+        p.setBrush(sky)
+        p.drawEllipse(QPointF(mx + off, my - off * 0.35), mr * 1.04, mr * 1.04)
         hue = theme.blend(theme.STAR, theme.ACCENT, 0.35)
         _overlay(p, w, w / 2, h * 0.62, h * 0.62 + 40, h * 0.62 + 78, h - 22, c, hue)
 

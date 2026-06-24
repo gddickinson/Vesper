@@ -594,6 +594,20 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — richer Sleep night scene (parallax stars, horizon glow, moon phase)
+Deepened `vesper/scenes.NightScene` with three gentle, low-contrast additions, all driven by the
+existing `anim_t` (no new clock) and kept dark/melatonin-friendly so they respect the Sleep + clock
+warm/dim overlay: (1) a **far parallax star layer** -- 96 extra stars, smaller, dimmer and drifting
+at half the speed of the near layer with a gentler twinkle, giving real depth; (2) a **faint horizon
+glow** -- a very dim deep-indigo linear-gradient band over the lowest third of the sky, fading to
+nothing upward (alpha tops out at ~0.28, never bright); (3) a **subtle moon crescent / phase** --
+after the moon disc and halo, a sky-coloured disc (slightly larger than the moon) is drawn offset to
+carve a soft terminator, and the offset drifts very slowly (`0.42 + 0.12*sin(t*0.01)` of the radius)
+so the phase eases between gibbous and crescent over minutes. `scenes.py` stays at 430 lines (<500),
+so no split was needed. Verified: `selftest.py` passes (117 lectures / 18 branches); offscreen both
+faces -- in Sleep mode with the night scene, the viz renders at 564x557 to non-empty PNGs (~35 KB)
+that **differ frame-to-frame** (drifting stars/clouds + the moving crescent), thread-stable.
+
 ## Stories round — new branch Birds of Myth (Crane, Raven, Swan, Owl)
 Added an 18th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate natural history + folklore framed honestly as symbolism, ASCII, sleep-closing):

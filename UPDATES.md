@@ -294,6 +294,14 @@ Guardrails (every round):
       status-bar report, never crash). **File > Export Session Summary / Save Summary Card (PNG)**.
       Honest: it only summarises logged data. Done: selftest passes; builder unit-tested (new vs
       logged, short-sit guard); offscreen both faces write a non-empty .txt + .png, thread-stable.
+- [x] **Richer Sleep night scene** (`vesper/scenes.NightScene`): deeper, calmer night visuals — a
+      **far parallax star layer** (smaller/dimmer/slower with gentler twinkle), a **faint horizon
+      glow** (very dim deep-indigo band low on the sky, never bright), and a **subtle moon crescent**
+      (a sky-coloured disc carves a slowly-drifting terminator into a gentle phase). All driven by
+      the existing `anim_t` (no new clock), low-contrast/melatonin-friendly, respecting the
+      Sleep/clock warm+dim overlay. Done: selftest passes; `scenes.py` stays 430 lines; offscreen
+      both faces render the night scene (564x557) to non-empty PNGs that change frame-to-frame,
+      thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never
