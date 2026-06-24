@@ -30,22 +30,18 @@ from .face_motion import breath_routing, emotion_for_text, sample_inhale_open
 from .pitch import _PitchMixin
 from .viz import VizWidget
 from .win_hourglass import _HourglassMixin
+from .win_consts import FPS
+from .win_frame import _FrameMixin
+from .win_story import _StoryMixin
 
-FPS = 40
-
-# Talking takes precedence over breathing. A voiced frame means the storyteller
-# is exhaling words; a gap means a breath before the next sentence.
-_AMP_TH = 0.06          # narration amp above this counts as "voicing now"
-_SPEAK_HOLD = 0.35      # s: short word/syllable gaps still count as speaking
-_TALK_WINDOW = 9.0      # s of silence after which we revert to plain breathing
-_BREATH_EASE = 0.08     # per-frame easing of the speech-driven visible breath
 
 # Each window gets a fitting backdrop behind the face (kept to its theme).
 _MODE_BG = {"Meditate": "Gradient", "Breathwork": "Aurora", "Chant": "Nebula",
             "Sing": "Aurora", "Relax": "Underwater", "Sleep": "Stars"}
 
 
-class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
+class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
+                 _StoryMixin, _FrameMixin, QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Vesper")
@@ -256,57 +252,6 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
     def set_clock_light(self, on):
         self._clock_light = bool(on)
 
-    def _clock_warm(self):
-        """A gentle time-of-day warmth (0 by day, warmer at night), or 0 if off."""
-        if not getattr(self, "_clock_light", True):
-            return 0.0
-        from . import clocktheme
-        return clocktheme.clock_warm_for_hour(clocktheme.now_hour())
-
-    def _scene_ctx(self, state, running, prog):
-        m, s = divmod(int(self.controller.elapsed()), 60)
-        if running:
-            status = f"{m:02d}:{s:02d}"
-        else:
-            status = "Press Start" if self.controller.elapsed() == 0 else "Paused"
-        sub = (self._story_line[:42] if (self.current_mode == "Sleep"
-                                         and self._story_line) else "")
-        intro_line = self._intro_text()            # settle-in lead-in takes precedence
-        if intro_line:
-            sub = intro_line
-        if running and self._coach and not sub:    # gentle in/hold/out counting
-            from breathsim import coach
-            plen = self._phase_len(state.phase)
-            sub = coach.cue(state.phase, getattr(state, "progress", 0.0) * plen, plen)
-        hint = ""                                  # Meditate: gentle rotating guidance
-        if running and self.current_mode == "Meditate" and self._med_style != "Off":
-            hint = self._med_phrase(self.controller.elapsed())
-        ctx = {"running": running,
-               "volume": state.volume if running else 0.5,
-               "airflow": state.airflow if running else 0.0,
-               "phase": state.phase, "cycle_frac": getattr(state, "cycle_frac", 0.0),
-               "progress": getattr(state, "progress", 0.0),   # 0..1 through this phase
-               "remaining": state.remaining, "label": state.label,
-               "t": self._anim_t, "prog": prog, "subtitle": sub,
-               "status": status, "hint": hint,
-               "bpm": (60.0 / self.controller.pattern.cycle
-                       if self.controller.pattern.cycle > 0 else 0.0)}
-        if self.viz.scene_name() == "pitch":
-            pc = self.pitch_context(self.controller.elapsed()) or {}
-            sung, clar = (self.tuner.latest() if (self.tuner and self.tuner.available)
-                          else (0.0, 0.0))
-            tgt = pc.get("target")
-            intune = False
-            if running and tgt and sung > 0 and clar > 0.5:
-                intune = abs(1200.0 * math.log2(sung / tgt)) < 30.0
-                self._sing_tot += 1
-                self._sing_in += 1 if intune else 0
-            score = (100.0 * self._sing_in / self._sing_tot) if self._sing_tot else 0.0
-            ctx["pitch"] = {**pc, "sung": sung, "clarity": clar, "tol": 30,
-                            "intune": intune, "score": score,
-                            "samples": self._sing_tot}
-        return ctx
-
     # Meditate guidance — two evidence-based styles, slow rotating cues.
     _MED_CUES = {
         "Focused attention": [
@@ -326,24 +271,6 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             "Rest as the awareness that notices.",
         ],
     }
-
-    def set_meditation_guidance(self, style):
-        self._med_style = style if style in self._MED_CUES else "Off"
-
-    def set_breath_coach(self, on):
-        """Toggle the on-screen breathing count cue (opt-in, persisted)."""
-        self._coach = bool(on)
-
-    def _phase_len(self, phase):
-        p = self.controller.pattern
-        return {"inhale": p.inhale, "hold_full": p.hold_full,
-                "exhale": p.exhale, "hold_empty": p.hold_empty}.get(phase, 0.0)
-
-    def _med_phrase(self, elapsed):
-        cues = self._MED_CUES.get(self._med_style)
-        if not cues:
-            return ""
-        return cues[int(elapsed / 22.0) % len(cues)]   # a new cue ~every 22 s
 
     def save_screenshot(self, path=None, face_only=False):
         """Save a PNG of the window (or just the face). Ctrl+S / Ctrl+Shift+S."""
@@ -412,43 +339,6 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         if self.controller.running and not self._is_muted:
             self.engine.set_master_volume(self.user_volume)
 
-    def set_story(self, scene):
-        self._story_scene = None if scene in (None, "Off") else scene
-        if self._story_scene:
-            self._set_base_ambience(stories.ambience_for(self._story_scene))
-        if self.controller.running:
-            self._start_story()
-
-    def set_story_voice(self, v):
-        self.narrator.set_voice(v)
-        if self._story_scene and self.controller.running:
-            self._start_story()
-
-    def set_speech_speed(self, v):
-        """Base storyteller speed (1.0 = normal); it still slows over the session."""
-        self._speech_speed = max(0.6, min(1.2, float(v)))
-
-    def _apply_speech_pace(self):
-        """Subtly slow the speech + lengthen the between-statement pauses as the
-        session goes on (gentle wind-down over ~10 minutes)."""
-        prog = min(1.0, self.controller.elapsed() / 600.0)
-        self.narrator.speed = self._speech_speed * (1.0 - 0.18 * prog)
-        self.narrator.pause_scale = self._pause_scale * (1.0 + 0.5 * prog)
-
-    # --- mood check-ins ----------------------------------------------------
-    def set_mood_checkins(self, on):
-        self._mood_on = bool(on)
-
-    def _after_mood(self):
-        """Offer the 'after' mood check-in once, if a real non-Sleep sit ended."""
-        if self._mood_after_done or self.current_mode == "Sleep":
-            return
-        if self.controller.elapsed() < 60:
-            return
-        self._mood_after_done = True
-        from . import mood
-        mood.maybe_check_in(self, "after")
-
     # --- transport ---------------------------------------------------------
     def toggle_transport(self):
         if self.controller.running:
@@ -476,43 +366,6 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._note_if_silent()                         # honest visual-only message
         self.panel.reflect_running(self.controller.running)
 
-    def _note_if_silent(self):
-        """If the audio device could not be opened, gently say so once, so a
-        visual-only session doesn't seem broken. The breath/visuals carry on."""
-        if getattr(self, "_silent_noted", False):
-            return
-        if not getattr(self.engine, "available", True):
-            self._silent_noted = True
-            self.status.showMessage("Audio unavailable - visual only", 6000)
-
-    def _arm_intro(self, fresh):
-        """A gentle settle-in lead-in over the first breath, so the first inhale
-        isn't abrupt. Only on a fresh start, and not when a storyteller is about
-        to speak (its narration is its own lead-in). Purely on-screen text."""
-        self._intro_sched = []
-        story_narrating = bool(self._story_scene and self.narrator.available)
-        if fresh and self._intro_on and not story_narrating:
-            from breathsim import intro
-            self._intro_sched = intro.schedule(self.controller.pattern.cycle)
-
-    def set_intro_lead_in(self, on):
-        """Toggle the settle-in lead-in (persisted); clears any active one."""
-        self._intro_on = bool(on)
-        if not self._intro_on:
-            self._intro_sched = []
-
-    def _intro_text(self):
-        """The gentle settle-in line to show now, or '' once the lead-in is over."""
-        sched = getattr(self, "_intro_sched", None)
-        if not sched or not self.controller.running:
-            return ""
-        from breathsim import intro
-        line = intro.line_at(sched, self.controller.elapsed())
-        if line is None:
-            self._intro_sched = []                   # finished -> normal status resumes
-            return ""
-        return line
-
     def reset(self):
         self._log_practice()
         self._after_mood()
@@ -533,87 +386,6 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             self._cur_ambience = self._base_ambience
         self.setWindowOpacity(1.0)
         self.panel.reflect_running(False)
-
-    def _log_practice(self):
-        """Record a completed sit (≥30 s) to the practice history, once."""
-        if not self._logged_session and self.controller.elapsed() >= 30:
-            p = self.controller.pattern                # log the session's pace (bpm)
-            cycle = p.inhale + p.hold_full + p.exhale + p.hold_empty
-            bpm = 60.0 / cycle if cycle > 0 else None
-            store.log_session(self.controller.elapsed() / 60.0, bpm)
-            self._logged_session = True
-            ac = getattr(self, "_active_course", None)
-            if ac:                                  # a course day completed -> advance
-                store.advance_course(ac[0], ac[1])
-                self._active_course = None
-            if self.current_mode != "Sleep":        # a gentle "well done" (not for sleepers)
-                from breathsim import welldone
-                cur, _best = store.streak()
-                self._closing_msg = welldone.message(
-                    self.controller.elapsed() / 60.0, cur)
-
-    # --- bedtime story -----------------------------------------------------
-    def _start_story(self):
-        if not (self._story_scene and self.narrator.available
-                and self.controller.running):
-            return
-        start = 0                                      # resume a long lecture, gently
-        from breathsim import lectures, resume, store
-        total = lectures.section_count(self._story_scene)
-        if total:
-            import datetime as _dt
-            start = resume.start_section(
-                store.get_lecture_progress(self._story_scene), total, _dt.date.today())
-            if start:
-                self.status.showMessage(
-                    f"Resuming \"{self._story_scene}\" partway through", 4000)
-        self._last_logged_section = start - 1          # so the first new section logs
-        units = stories.story_units(self._story_scene, guidance=True,
-                                    start_section=start)
-        self.narrator.start(units, self._story_level, self._story_timing,
-                            self._on_story_unit)
-        store.save_settings({"last_scene": self._story_scene})   # remember for next launch
-
-    # --- text-matched soundscape + emotion ---------------------------------
-    def _set_base_ambience(self, amb):
-        """Set the story's signature ambience bed + reset the sound-cue tracker."""
-        self._base_ambience = amb
-        self._cur_ambience = amb
-        self._sfx_target = amb
-        self._sfx_idle = 0
-        if amb:
-            self.engine.set_voice(amb, "ambience")
-
-    def _on_story_unit(self, unit):
-        """Per narrated line: show it, steer the soundscape, set the face's mood."""
-        text = unit.get("text", "")
-        self._story_line = text
-        sec = unit.get("section")                       # track lecture progress (throttled)
-        if sec is not None and sec != getattr(self, "_last_logged_section", -1):
-            self._last_logged_section = sec
-            from breathsim import lectures, store
-            total = lectures.section_count(self._story_scene)
-            if total and sec >= total - 1:             # finished -> clear so it starts fresh
-                store.clear_lecture_progress(self._story_scene)
-            else:
-                store.set_lecture_progress(self._story_scene, sec)
-        if unit.get("kind") in ("shuffle", "hypnosis", "poem"):
-            # Shuffle nouns / hypnosis / poems shouldn't steer the bed; hold it.
-            self._mood_target = (0.0, 0.0, 0.0)
-            return
-        cue = sound_cues.cue_for_text(text)
-        if cue:
-            self._sfx_target = cue              # imagery → morph the bed toward it
-            self._sfx_idle = 0
-        else:
-            self._sfx_idle += 1
-            if self._sfx_idle >= 4 and self._base_ambience:
-                self._sfx_target = self._base_ambience   # drift home over abstract lines
-        self._mood_target = emotion_for_text(text)
-
-    def set_ambience_rotate(self, on):
-        """Toggle ambience auto-rotate (opt-in, persisted); slowly cycles beds."""
-        self._amb_rotate = bool(on)
 
     def toggle_blackout(self, on=None):
         """Near-dark sleep screen: hide the chrome and dim the window right down
@@ -648,224 +420,6 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             self._cur_cap = cap
             self.engine.set_volume_cap(cap)
 
-    def _apply_ambience_rotate(self):
-        """Crossfade the ambience slot to the curated bed for the current elapsed
-        time (every ~6 min), reusing the engine's gain-ramped crossfade."""
-        from breathsim import ambrotate, voices
-        beds = [b for b in ambrotate.BEDS if voices.get_voice(b)]
-        target = ambrotate.next_ambience(beds, self.controller.elapsed())
-        if target and target != self.engine.slot_voice.get("ambience"):
-            self.engine.set_voice(target, "ambience", fade=3.0)
-
-    def set_soundscape_follow(self, on):
-        """Sound ▸ Soundscape follows story toggle. Off → hold the base ambience."""
-        self._soundscape_follow = bool(on)
-
-    def _apply_soundscape(self):
-        """Crossfade the ambience toward the text-matched target and gently DUCK
-        the bed as it swaps, so a cue blooms in rather than jumps. When the follow
-        toggle is off, ease home to the story's base ambience and hold it."""
-        amb = self.engine.slot_levels.get("ambience", 0.8)   # user's base level
-        target = (self._sfx_target if self._soundscape_follow
-                  else self._base_ambience)
-        if target and target != self._cur_ambience:
-            self.engine.set_voice(target, "ambience", fade=2.5)
-            self._cur_ambience = target
-            self._duck_t0 = self._anim_t                     # start the duck
-            self.engine.set_layer_level("ambience", amb * 0.5)
-        if self._duck_t0 is not None:                        # ease the bed back up
-            u = (self._anim_t - self._duck_t0) / 1.8
-            if u >= 1.0:
-                self.engine.set_layer_level("ambience", amb)
-                self._duck_t0 = None
-            else:
-                e = u * u * (3.0 - 2.0 * u)                  # smoothstep recovery
-                self.engine.set_layer_level("ambience", amb * (0.5 + 0.5 * e))
-
-    def _ease_mood(self, running):
-        """Ease the expression toward the line's emotion (decaying to calm)."""
-        ds, db, do = self._mood_target if running else (0.0, 0.0, 0.0)
-        self._smile += (0.12 + ds - self._smile) * 0.06
-        self._brow += (db - self._brow) * 0.06
-        self._eyeb += (do - self._eyeb) * 0.06
-        self._mood_target = tuple(v * 0.992 for v in self._mood_target)
-
-    def _story_level(self):
-        dur = self._story_minutes * 60.0
-        frac = self.controller.elapsed() / dur if dur > 0 else 1.0
-        if frac < 0.55:
-            return 1.0
-        return 0.0 if frac >= 0.85 else 1.0 - (frac - 0.55) / 0.30
-
-    def _story_timing(self):
-        p = self.controller.pattern
-        return (max(0.5, p.inhale), max(0.5, p.exhale))
-
-    # --- loop --------------------------------------------------------------
-    def _tick(self):
-        """Per-frame slot (~40fps). Guarded so a single bad frame can't spam
-        tracebacks every tick or stall the animation; the first error is logged
-        once and the loop keeps running."""
-        try:
-            self._tick_impl()
-        except Exception:
-            if not getattr(self, "_tick_errored", False):
-                self._tick_errored = True
-                import traceback
-                print("[vesper] tick error (suppressed after first):")
-                traceback.print_exc()
-
-    def _tick_impl(self):
-        self._anim_t += 1.0 / FPS
-        if self.controller.running:
-            self.director.update(self.controller.elapsed())   # morph / program / sleep
-        state = self.controller.current_state()
-        running = self.controller.running
-        if running and self.controller.session_finished():
-            self._log_practice()
-            self.controller.pause()
-            self.engine.set_master_volume(0.0)
-            self.narrator.stop()
-            running = False
-            self.panel.reflect_running(False)
-            QTimer.singleShot(400, self._after_mood)   # offer mood, after the tick
-        if running and self._sleep_timer_min > 0 and not self._sleep_timer_done:
-            from . import sleeptimer                    # gentle fade-out, then pause
-            local = self.controller.elapsed() - self._sleep_timer_t0
-            gain, done = sleeptimer.fade_gain(self._sleep_timer_min, local)
-            if done:
-                self._log_practice()
-                self.controller.pause()
-                self.engine.set_master_volume(0.0)
-                self.narrator.stop()
-                self._sleep_timer_done = True
-                running = False
-                self.panel.reflect_running(False)
-                QTimer.singleShot(400, self._after_mood)
-            elif gain < 1.0:                            # ease the volume down
-                base = 0.0 if self._is_muted else self.user_volume
-                self.engine.set_master_volume(base * gain)
-        if running and state.phase != self._last_phase:
-            if state.phase in ("inhale", "exhale"):
-                self.engine.trigger_chime(
-                    "in" if state.phase == "inhale" else "out")
-            if state.phase == "inhale":
-                self._inhale_open = sample_inhale_open()    # vary the new breath
-            self.speech.cue(state.phase)
-            self._last_phase = state.phase
-        if running and self._bell_interval > 0 and \
-                self.controller.elapsed() >= self._next_bell:
-            self.engine.trigger_chime("in")                 # mindfulness bell
-            self._next_bell += self._bell_interval * 60.0
-        elif not running:
-            self._last_phase = state.phase
-
-        rem = self.controller.session_remaining()
-        total = self.controller.session_seconds
-        prog = None if (total <= 0 or rem == float("inf")) else 1.0 - rem / total
-        if running:
-            self._apply_speech_pace()
-        amp = self.narrator.amp if running else 0.0
-        if running:
-            self._apply_soundscape()           # ambience follows the words
-            if self._amb_rotate and not self._story_scene:
-                self._apply_ambience_rotate()  # slowly cycle beds (when no storyteller)
-        self._ease_mood(running)               # expression eases toward the mood
-        if self._view == "scene":
-            self.viz.update_state(self._scene_ctx(state, running, prog))
-        else:
-            breath, mo = self._face_inputs(state, running, amp)
-            self.face.set_state(breath, self._anim_t, prog or 0.0,
-                                mouth=mo["jaw"], nose=mo["nose"],
-                                pucker=mo["pucker"], stretch=mo["stretch"],
-                                phase=state.phase, smile=self._smile,
-                                brow=self._brow, eye_bias=self._eyeb)
-        # Sleep wind-down dims + warms toward sleep; the Sunrise wake-up does the
-        # inverse, brightening from a warm pre-dawn dimness to a clear, full view.
-        wake = getattr(self.director, "wake", False) and running and total > 0
-        sleep = self.current_mode == "Sleep" and running and total > 0 and not wake
-        if wake:
-            wf = prog or 0.0                              # 0 = pre-dawn, 1 = full day
-            warm = 0.4 * (1.0 - wf)                       # dawn warmth fades to clear
-            self.face.set_warm(warm)
-            self.viz.set_warm(warm)
-            op = 0.55 + 0.45 * wf                         # dim -> bright
-        else:
-            cw = self._clock_warm()                       # gentle time-of-day warmth
-            sw = 0.5 * (prog or 0.0) if sleep else 0.0
-            warm = max(sw, cw)                            # Sleep dominates when active
-            self.face.set_warm(warm)
-            self.viz.set_warm(warm)
-            op = (sleepdim.sleep_dim(prog or 0.0) if sleep   # deepen toward 'lights out'
-                  else (1.0 - 0.2 * cw))
-        op *= introfade.intro_opacity(self._anim_t)       # gentle one-time launch fade-in
-        if self._blackout:                                # near-dark sleep screen (never 0)
-            op = min(op, 0.05)
-        self._win_op = op                                 # recorded for tests
-        self.setWindowOpacity(op)
-        self._apply_quiet_cap()                # gentle late-night output ceiling
-        self._tick_hourglass(running, total, prog)
-        self.panel.tick()
-        self._update_status(state, running)
-
-    def _face_inputs(self, state, running, amp):
-        """Resolve the face's visible breath + mouth, talking taking precedence.
-
-        While the storyteller voices a sentence the mouth lip-syncs and the
-        visible breath eases *down* (an exhale); in the gap before the next
-        sentence the mouth closes and the breath eases *up* (a breath in). With
-        no recent speech, the ordinary phase/voice breathing mouth applies."""
-        now = self._anim_t
-        if amp > _AMP_TH:
-            self._last_speak_t = now
-        silence = now - self._last_speak_t
-        if running and silence < _TALK_WINDOW:               # storyteller active
-            if silence < _SPEAK_HOLD:                        # speaking → exhaling
-                mo = {"jaw": min(0.5, amp * 1.3), "pucker": 0.0,
-                      "stretch": 0.0, "nose": 0.0}
-                target = 0.28
-                self._was_speaking = True
-            else:                                            # between sentences
-                if self._was_speaking:                       # new breath → vary it
-                    self._inhale_open = sample_inhale_open()
-                    self._was_speaking = False
-                mo = {"jaw": 0.14 * self._inhale_open, "pucker": 0.0,
-                      "stretch": 0.0, "nose": 0.12}          # slight, varied parting
-                target = 0.92                                # breathe in
-            self._face_breath += (target - self._face_breath) * _BREATH_EASE
-            return self._face_breath, mo
-        # Not talking: ordinary breath-driven mouth (nose-in / shaped mouth-out).
-        af = state.airflow if running else 0.0
-        r = breath_routing(state.phase, self.engine.voice_a, self.engine.voice_out)
-        self._face_breath = state.volume if running else 0.5
-        jaw = af * r["jaw"]
-        if state.phase == "inhale":
-            jaw *= self._inhale_open                          # vary the in-breath
-        return self._face_breath, {"jaw": jaw, "pucker": af * r["pucker"],
-                                   "stretch": af * r["stretch"], "nose": af * r["nose"]}
-
-    def _update_status(self, state, running):
-        if not running:
-            if getattr(self, "_closing_msg", None):  # a gentle "well done" after a sit
-                self.status.showMessage(self._closing_msg)
-                return
-            sug = getattr(self, "_launch_suggestion", None)
-            if (self.controller.elapsed() == 0 and sug
-                    and not getattr(self, "_started_once", False)):
-                self.status.showMessage(sug)         # gentle launch hint, until first start
-                return
-            self.status.showMessage("Press Start" if self.controller.elapsed()
-                                    == 0 else "Paused — press Start")
-            return
-        intro_line = self._intro_text()              # gentle settle-in over the first breath
-        if intro_line:
-            self.status.showMessage(intro_line)
-            return
-        m, s = divmod(int(self.controller.elapsed()), 60)
-        label = state.label
-        line = (self._story_line[:60] if self._story_line else "")
-        self.status.showMessage(f"{label}    {m:02d}:{s:02d}    {line}")
-
     def closeEvent(self, ev):
         try:
             store.save_settings({"mode": self.current_mode,
@@ -895,7 +449,6 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         except Exception:
             pass
         super().closeEvent(ev)
-
 
 def launch():
     app = QApplication.instance() or QApplication([])

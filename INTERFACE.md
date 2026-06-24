@@ -169,15 +169,33 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   `narrator.amp` and the visible breath eases *down* (exhaling words); in the gap
   before the next sentence the mouth closes and the breath eases *up* (a breath in);
   with no recent speech the `_breath_routing` mouth applies.
-  `MainWindow(_ActionsMixin, QMainWindow)`: builds the core (controller / engine /
-  speech / narrator / **SessionDirector**), the 40 fps loop (also ticks the
-  director + panel + practice logging), `save_screenshot`, `apply_mode` (audio
-  preset + `panel.reflect_mode` → workspace rebuild; resets the director),
-  transport, volume (mute-aware), `set_pattern` / `set_story` / `set_story_voice`,
-  the bedtime story (`_start_story` + `_story_level` fade + `_story_timing`),
-  **storyteller pacing** (`set_speech_speed` + `_apply_speech_pace`), Sleep
-  dimming, **last-settings persistence** (`_restore_settings` on boot +
-  `save_settings` on close, via `store`), status bar. `launch()`.
+  `MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _StoryMixin,
+  _FrameMixin, QMainWindow)` — now **lifecycle-focused** (~460 lines, under the
+  500 rule): builds the core (controller / engine / speech / narrator /
+  **SessionDirector**), `_restore_settings` on boot + `save_settings` on close,
+  `apply_mode` (audio preset + `panel.reflect_mode` → workspace rebuild; resets
+  the director), transport (`toggle_transport`/`reset`), volume (mute-aware),
+  `set_pattern`, blackout + quiet-hours, `save_screenshot`. The per-frame loop
+  and storyteller runtime were split out into the two mixins below.
+- **win_consts.py** — shared frame-loop constants (`FPS`, the talk-detection
+  thresholds), in a neutral module so `window` and `win_frame` both import them
+  with no circular dependency.
+- **win_frame.py** — `_FrameMixin` (inherited by `MainWindow`): the **~40fps
+  frame loop** (`_tick` — now guarded so one bad frame logs once and the loop
+  survives — + `_tick_impl`), the scene context (`_scene_ctx`), the
+  talking-over-breathing face mouth (`_face_inputs`, layering lip-sync to
+  `narrator.amp` over the `breath_routing` mouth), the status line
+  (`_update_status`), Meditate guidance cues (`_med_phrase` over `_MED_CUES`,
+  which stays a `MainWindow` class attr) and `_clock_warm`.
+- **win_story.py** — `_StoryMixin` (inherited by `MainWindow`): the **storyteller
+  + session runtime** — `set_story` / `set_story_voice`, the bedtime story
+  (`_start_story` + per-lecture resume + `_on_story_unit` + `_story_level` fade +
+  `_story_timing`), **storyteller pacing** (`set_speech_speed` /
+  `_apply_speech_pace`), the **settle-in lead-in** (`_arm_intro` /
+  `set_intro_lead_in` / `_intro_text`), the **audio-unavailable note**
+  (`_note_if_silent`), ambience-follow (`_apply_soundscape` / `set_soundscape_follow`
+  / ambience auto-rotate), mood check-ins (`set_mood_checkins` / `_after_mood`),
+  practice logging (`_log_practice`) and `_ease_mood`. `launch()`.
 
 ## Vendored core — `breathsim/` (in this project)
 The whole audio/logic/story core lives here, gui-free (the Tk GUI is not vendored):
