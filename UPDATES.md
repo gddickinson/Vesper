@@ -153,8 +153,10 @@ Guardrails (every round):
       petals, dots and arcs that expand on the inhale and contract on the exhale, with
       neighbouring rings counter-rotating very slowly, a soft central glow and the per-phase
       breath hue. In the View > Scene menu. PNG + thread-stable verified.
-- [ ] **Particle weather**: an optional gentle snow / drifting leaves / rising bubbles
-      layer per scene (a toggle).
+- [x] **Particle weather** (`vesper/scene_particles.py`): an optional `ParticleLayer` drawn over
+      any scene - Snow (drifting), Leaves (tumbling + rotating), Bubbles (rising), Fireflies
+      (twinkling glow). Deterministic anim-time motion; thin and low-contrast. Wired into
+      `VizWidget` + a **View > Weather** submenu (Off default). PNGs + thread-stable verified.
 
 ### Researched batch — audio & synthesis
 - [x] **Generative ambient pad** (user-requested "cosmic music"): new `breathsim/cosmic.py`
@@ -296,6 +298,7 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- Particle weather overlay: optional snow / leaves / bubbles / fireflies over any scene (View menu).
 - Mood check-in: optional 1-tap before/after mood, kind trend in Stats, Sound-menu toggle.
 - New lecture branch The Elements (Fire · Water · Air · Earth) → 93 lectures / 12 branches.
 - Stats: gentle practice streak + 13-week calendar heatmap of minutes (store per-day log).

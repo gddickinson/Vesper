@@ -11,7 +11,7 @@ from __future__ import annotations
 from PySide6.QtGui import QPainter
 from PySide6.QtWidgets import QWidget
 
-from . import face_bg, hourglass, scenes, theme
+from . import face_bg, hourglass, scene_particles, scenes, theme
 
 
 class VizWidget(QWidget):
@@ -19,6 +19,7 @@ class VizWidget(QWidget):
         super().__init__(parent)
         self.setMinimumSize(360, 360)
         self._scene = scenes.make("orb")
+        self._weather = scene_particles.ParticleLayer()   # optional weather overlay
         self._warm = 0.0                          # warm low-blue Sleep dimming
         self._hg = None                           # hourglass timer state (or None)
         self._hg_rect = None
@@ -29,6 +30,10 @@ class VizWidget(QWidget):
 
     def set_warm(self, amount):
         self._warm = max(0.0, min(1.0, float(amount)))
+
+    def set_weather(self, kind):
+        self._weather.set_kind(kind)
+        self.update()
 
     def set_hourglass(self, state):
         """state = dict(frac, t, running, spin) to show the timer, or None to hide."""
@@ -62,6 +67,8 @@ class VizWidget(QWidget):
             self._scene.draw(p, w, h, self._ctx)
         except Exception:
             p.fillRect(0, 0, w, h, theme.BG)
+        self._weather.draw(p, w, h, self._ctx.get("t", 0.0),
+                           self._ctx.get("volume", 0.5))   # optional weather layer
         face_bg.warm_overlay(p, w, h, self._warm)     # Sleep wind-down warmth
         self._hg_rect = hourglass.draw_corner(p, w, h, self._hg)
         p.end()

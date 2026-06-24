@@ -154,6 +154,11 @@ def _view(win, m):
     for name in scenes.names():
         sc.addAction(name.capitalize()).triggered.connect(
             lambda _c=False, x=name: win.set_scene(x))
+    from . import scene_particles
+    wx = m.addMenu("Weather")                        # optional particle overlay
+    for kind in scene_particles.KINDS:
+        wx.addAction(kind.capitalize()).triggered.connect(
+            lambda _c=False, x=kind: win.set_weather(x))
     fb = m.addMenu("Face background")
     for name in face_bg.names():
         fb.addAction(name).triggered.connect(

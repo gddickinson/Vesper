@@ -594,6 +594,17 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — particle weather overlay
+Added `vesper/scene_particles.py`: a `ParticleLayer` (kinds off/snow/leaves/bubbles/fireflies)
+drawn on top of any scene each frame. Snow drifts down and sways; leaves tumble down rotating;
+bubbles rise and wobble; fireflies drift and twinkle with a soft radial glow - all from seeded
+per-particle params + anim-time motion (deterministic, nothing per frame random), thin and
+low-contrast so it never gets busy. Wired into `VizWidget` (a held layer drawn between the scene
+and the warm overlay; `set_weather(kind)`), with `window.set_weather` and a **View > Weather**
+submenu (Off default). selftest passes; offscreen scene session with snow then fireflies is
+thread-stable (3->3); PNGs confirm soft snow over the night scene and glowing fireflies over the
+sea. 105 lines.
+
 ## App round — gentle mood check-in
 Added an optional, pressure-free mood check-in. `breathsim/store.py`: `log_mood(value, when)` +
 pure `mood_entries()`/`mood_summary()` (count, avg before/after, avg shift); added "moods" to the

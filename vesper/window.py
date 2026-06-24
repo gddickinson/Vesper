@@ -186,6 +186,10 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self.viz.set_scene(name)
         self.set_view("scene")
 
+    def set_weather(self, kind):
+        """Optional particle weather overlay (off / snow / leaves / bubbles / fireflies)."""
+        self.viz.set_weather(kind)
+
     def _scene_ctx(self, state, running, prog):
         m, s = divmod(int(self.controller.elapsed()), 60)
         if running:
