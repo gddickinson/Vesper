@@ -35,16 +35,24 @@ and **lip-syncs** the bedtime story. **Always read `INTERFACE.md` first.**
   scanline skew.
 
 ## Dependencies
-- `PySide6`, `numpy`, `sounddevice`, `scipy` (core); `faceview` (face);
-  optional `kokoro-onnx soundfile` for neural narration (`moderngl` for GPU face
-  modes). PySide6 + moderngl are already in the env.
+- `PySide6`, `numpy`, `sounddevice`, `soundfile`, `scipy` (core); `faceview` +
+  `moderngl` (3D face); optional `kokoro-onnx` (neural narration). **XTTS-v2** is an
+  opt-in, non-commercial (CPML), un-bundled engine the user adds themselves via
+  `tools/setup_xtts.py`; it runs in a separate venv via a subprocess worker
+  (`breathsim/xtts_worker.py`) so its heavy torch stack never enters the app env.
 
 ## Running / verifying
-- `python run.py` — launch the app.
+- `python run.py` — launch the app. `python selftest.py` — headless voice/lecture/
+  phrase checks.
 - Headless check: `QT_QPA_PLATFORM=offscreen` + construct `MainWindow`, tick,
-  `widget.grab().save(...)` to a PNG (see `SESSION_LOG.md`).
+  `widget.grab().save(...)` to a PNG. Standard verification each change: **selftest**,
+  the **menu audit** (walk + trigger every menu action), and an **offscreen drive**
+  cycling all modes × face/scene on **both faces** (`VESPER_FACE=cat` and default),
+  asserting `threading.active_count()` stays stable. Calibrate any new voice gains.
 
 ## Status
-Phase 1: face (breathing + lip-sync), mode bar, pattern, transport, volume,
-render-mode picker, Sleep bedtime story (Kokoro). Roadmap to Tk parity in
-`SESSION_LOG.md`.
+At parity with (and well beyond) the legacy Tk app: 6 modes, 148 voices, 22 breath
+patterns, 11 guided programs, 66 chants, **181 sleep-lectures across 34 branches**,
+15 cartoon characters + costumes + per-character voices, optional XTTS voices, a
+master reverb space, and story-following soundscape/backdrop/character. Ongoing work
+is tracked in `UPDATES.md`; per-round notes in `SESSION_LOG.md`.
