@@ -567,6 +567,20 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Lighthouses of the World** (4): The Pharos of Alexandria · Eddystone · The Fresnel
+      Lens · Keepers of the Light — added `lectures_{pharos,eddystone,fresnel,keepers}.py`
+      (7x[13,12,13,12,12,13,13] lines, fact-free section 1, accurate history/engineering/optics — the
+      ancient wonder + its tiers + the "pharos" root, burning-mirror tales framed AS legend; the
+      Eddystone rock through Winstanley/Rudyard/Smeaton's interlocking-granite oak-shaped tower/Douglass;
+      Fresnel's stepped ring-prism lens gathering one flame into a beam; the keepers' nightly watch +
+      the Flannan Isles vanishing framed AS unsolved mystery + automation), ASCII, every section
+      sleep-closing; ambiences Ocean Waves / Distant Thunder / Gentle Rain / Whale Song. Distinct NAMEs
+      from the existing "The Story of the Lighthouse". New branch in `_CATALOG` → **177 lectures / 33
+      branches**; story DB rebuilt (15,161 lines / 240,329 words). Done: selftest (177/33); lint — each
+      lecture 7x[13,12,13,12,12,13,13], section 1 fact-free, all 7 sections sleep-close, ASCII-only,
+      ambience resolves to a real GROUP_NATURE voice, no NAME/module collisions; offscreen both faces —
+      all four dispatch through `stories.story_units` (all 7 sections stream) and a Sleep session
+      narrates one, thread-stable.
 - [x] **New branch — Tea & Coffee of the World** (4): Green Tea · Coffee · Mate · Masala Chai — added
       `lectures_{greentea,coffeebean,mate,chai}.py` (7x[13,12,13,12,12,13,13] lines, fact-free section
       1, accurate botany/history/ritual — one Camellia plant + steaming/pan-firing + matcha + chanoyu;

@@ -594,6 +594,30 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Lighthouses of the World (Pharos, Eddystone, Fresnel Lens, Keepers)
+Added a 33rd lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
+fact-free section 1, accurate history/engineering/optics, ASCII, every section sleep-closing):
+`lectures_pharos.py` (The Pharos of Alexandria, Ocean Waves - the ancient wonder on the island of
+Pharos, the Ptolemies and Sostratus, its tiers and night fire and daytime mirror, its slow ruin by
+earthquakes, and "pharos" becoming the root of phare/faro; the burning-mirror tales framed as legend),
+`lectures_eddystone.py` (Eddystone, Distant Thunder - the deadly reef off Plymouth and four lights:
+Winstanley's ornate tower lost in the 1703 storm, Rudyard's wooden tower burned in 1755, Smeaton's
+1759 interlocking-granite tower modelled on an oak and later rebuilt on Plymouth Hoe, and Douglass's
+1882 tower), `lectures_fresnel.py` (The Fresnel Lens, Gentle Rain - the old limits of mirrors, why a
+thick lens would be too heavy, Fresnel's ~1822 insight of concentric stepped ring-prisms gathering one
+lamp into a near-parallel beam, the orders and the rotating flash, still used today), and
+`lectures_keepers.py` (Keepers of the Light, Whale Song - the one duty never to let the light fail, the
+"wickies" trimming and polishing, the clockwork weight rewound through the night, fog signals, the
+lonely rock stations and logbooks, the 1900 Flannan Isles vanishing framed AS an unsolved mystery, and
+the coming of automation). Distinct NAMEs and modules from the existing "The Story of the Lighthouse".
+New branch in `_CATALOG` -> **177 lectures / 33 branches**. Verified: `selftest.py` passes (148 voices;
+177 lectures / 33 branches); a lint confirmed each lecture has 7 x [13,12,13,12,12,13,13] sentences, a
+fact-free section 1 (no names/dates/numbers), all 7 sections sleep-closing, ASCII-only, an ambience
+resolving to a real GROUP_NATURE voice, and no NAME/module collisions; offscreen both faces - all four
+dispatch through `stories.story_units` (all 7 sections stream, ~107 units each) and a Sleep session
+narrates one with the storyteller, thread-stable across a 24-frame loop; story DB rebuilt (15,161 lines
+/ 240,329 words / 5 scenes).
+
 ## App round — gentle "longest streak" line in Stats
 The Stats dialog now gently celebrates the best run of consecutive practice days -- e.g. "Your longest
 streak: 6 days" -- with a kind "- and you are on it now" nod when the current streak matches the best
