@@ -120,30 +120,61 @@ class ControlPanel(_SectionsMixin, QWidget):
 
     def sync(self):
         """Push current engine/controller state into the visible widgets."""
-        self.vol.blockSignals(True)
-        self.vol.setValue(int(self.win.user_volume * 100))
-        self.vol.blockSignals(False)
-        eng = self.win.engine
-        self._set_combo("pattern", self.win.controller.pattern.name)
+        if not self.vol.isSliderDown():
+            self.vol.blockSignals(True)
+            self.vol.setValue(int(self.win.user_volume * 100))
+            self.vol.blockSignals(False)
         bar = self._w.get("pattern_bar")
         if bar is not None:
             bar.set_pattern(self.win.controller.pattern)
+        self._reflect_state()
+
+    def _reflect_state(self):
+        """Make every selection box mirror live engine/controller/narrator state.
+        Runs each frame (from ``tick``) so the panel always reflects changes made
+        anywhere -- the menus, a guided-program stage, a character swapping its
+        voice -- not just direct panel edits. Guarded so it never fights an open
+        dropdown or a slider being dragged."""
+        eng = self.win.engine
+        self._set_combo("pattern", self.win.controller.pattern.name)
         self._set_combo("voice_a", eng.voice_a)
         self._set_combo("voice_out", eng.voice_out or "Same as inhale")
         self._set_combo("persona", eng.persona.name)
         self._set_combo("cue_style", self.win.speech.style)
         self._set_combo("ambience", eng.slot_voice.get("ambience") or "None")
         self._set_combo("effect", eng.slot_voice.get("effects") or "None")
+        self._set_combo("phrase", eng.phrase.name if eng.phrase else "None")
+        if "story_voice" in self._w:                  # grouped combo -> match by id
+            from breathsim import narration
+            self._set_combo_data(
+                "story_voice",
+                self.win.narrator.voice or narration.best_voice(self.win.speech))
 
     def _set_combo(self, key, value):
         box = self._w.get(key)
-        if box is not None and value is not None:
+        if box is None or value is None or box.view().isVisible():
+            return                                     # skip while the popup is open
+        if box.currentText() != str(value):
             box.blockSignals(True)
             box.setCurrentText(str(value))
             box.blockSignals(False)
 
+    def _set_combo_data(self, key, value):
+        """Select the item whose userData == *value* (for grouped_combo boxes)."""
+        box = self._w.get(key)
+        if box is None or value is None or box.view().isVisible():
+            return
+        for i in range(box.count()):
+            if box.itemData(i) == value:
+                if box.currentIndex() != i:
+                    box.blockSignals(True)
+                    box.setCurrentIndex(i)
+                    box.blockSignals(False)
+                return
+
     def tick(self):
         """Refresh live read-outs each frame (cheap, guarded)."""
+        self._reflect_state()                        # keep all selection boxes in sync
         stage = self._w.get("prog_stage")
         if stage is not None:
             info = self.win.director.stage_info()

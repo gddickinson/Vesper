@@ -2238,6 +2238,21 @@ Completed the dialog UX pass: audited Mixer/Stats/Story Library/Presets/Pattern 
 offscreen (all clean); the one dense form, the Voice Editor, got the panel's
 scrollbar-clearance margin + a touch more width (470→500).
 
+## Fix (user request) — panel selection boxes now mirror live state every frame
+Bug: changing the character swapped the narrator voice but the Sleep "Narration voice"
+box didn't update (and the same staleness affected any state changed outside the panel —
+menu picks, guided-program stages). Root cause: combos were only pushed from state on
+`sync()` (at workspace build), never after programmatic changes. Fix: `controls`
+factored the combo updates into **`_reflect_state()`** and now runs it **every frame**
+from `tick()`, so every selection box (pattern · inhale/exhale voice · body · cue style ·
+ambience · effect · chant phrase · **Narration voice**) always mirrors the live
+engine/controller/narrator — whatever changed it. Added `_set_combo_data` to match the
+**grouped** narration combo by its voice-id userData, and guarded every set so it never
+fights an open dropdown (`view().isVisible()`) or a slider being dragged
+(`isSliderDown()`). Verified: changing character updates the Narration combo
+(Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
+combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
