@@ -594,6 +594,18 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — clock-aware theming
+Added `vesper/clocktheme.py` (pure, testable): `clock_warm_for_hour(h)` (0 by day, ramping up in
+the evening to a capped 0.22 overnight, easing back before dawn) and `suggested_mode_for_hour(h)`
+(night->Sleep, early morning->Meditate, late morning->Breathwork, midday->Meditate,
+afternoon/evening->Relax). `window._tick` now applies a gentle time-of-day warmth via the existing
+warm overlay, combined as `warm = max(sleep_warm, clock_warm)` with a tiny matching opacity dim, so
+it never fights the Sleep wind-down or the Sunrise wake; a **View > Clock-aware light** toggle
+(default on, persisted in settings). On launch, when no mode has been saved, the app opens in a
+time-fitting mode (no popup). Verified: helpers (warm @12=0.0, @23=0.22; modes sensible); selftest
+passes; offscreen the launch mode suits the hour, clock warmth is 0.22 at a patched night hour and
+0 when toggled off, thread-stable (2->2) on both faces; the night PNG shows a subtle warm dim.
+
 ## Stories round — new branch Gems & Stones (Amber, Pearl, Jade, Diamond)
 Added a 13th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate science/history, ASCII, sleep-closing): `lectures_amber.py` (Forest Wind - fossilised

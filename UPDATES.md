@@ -132,8 +132,12 @@ Guardrails (every round):
       the Sleep wash), the volume rises (quiet->full), the breath quickens (Extended 7-11 ->
       Coherent 5.5) and a Forest Wind dawn bed + soft chime fade in. Verified early-dim vs
       late-bright renders (warm 0.40->0.03, cycle 18s->11s), thread-stable, both faces.
-- [ ] **Clock-aware theming**: bias palette/brightness by local time (warm+dim at night,
-      brighter by day) and suggest a fitting mode on launch.
+- [x] **Clock-aware theming** (`vesper/clocktheme.py`): a gentle time-of-day warmth on the view
+      (0 by day, up to ~0.22 warmer + a touch dimmer overnight) via the existing warm overlay
+      (combined as `max(sleep_warm, clock_warm)` so Sleep still dominates), with a **View >
+      Clock-aware light** toggle (persisted); and on launch, when no mode is saved, it opens in a
+      time-fitting mode (night->Sleep, morning->Meditate, etc.). Pure helpers unit-tested; PNG +
+      both faces verified.
 
 ### Researched batch — new visual scenes
 - [x] **Fireplace scene** (`scenes.FireplaceScene`): a warm pulsing hearth glow, soft swaying
@@ -302,6 +306,7 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- Clock-aware theming: gentle time-of-day warmth/dim + a time-fitting launch mode (View toggle).
 - New lecture branch Gems & Stones (Amber · Pearl · Jade · Diamond) → 97 lectures / 13 branches.
 - Particle weather overlay: optional snow / leaves / bubbles / fireflies over any scene (View menu).
 - Mood check-in: optional 1-tap before/after mood, kind trend in Stats, Sound-menu toggle.

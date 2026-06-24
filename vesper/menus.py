@@ -159,6 +159,10 @@ def _view(win, m):
     for kind in scene_particles.KINDS:
         wx.addAction(kind.capitalize()).triggered.connect(
             lambda _c=False, x=kind: win.set_weather(x))
+    cl = m.addAction("Clock-aware light")            # gentle time-of-day warmth
+    cl.setCheckable(True)
+    cl.setChecked(getattr(win, "_clock_light", True))
+    cl.toggled.connect(win.set_clock_light)
     fb = m.addMenu("Face background")
     for name in face_bg.names():
         fb.addAction(name).triggered.connect(

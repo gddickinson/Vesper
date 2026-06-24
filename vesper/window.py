@@ -148,7 +148,11 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._speech_speed = float(s.get("speech_speed", self._speech_speed))
         self.toggle_hourglass(bool(s.get("hourglass", False)))
         self.set_face_cat(bool(s.get("face_cat", False)))
-        mode = s.get("mode", "Sleep")
+        self._clock_light = bool(s.get("clock_light", True))   # time-of-day warmth
+        mode = s.get("mode")                          # no saved mode -> suit the clock
+        if mode not in modes.names():
+            from . import clocktheme
+            mode = clocktheme.suggested_mode_for_hour(clocktheme.now_hour())
         self.apply_mode(mode if mode in modes.names() else "Sleep")
         if "volume" in s:
             self.set_volume(float(s["volume"]))
@@ -189,6 +193,16 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
     def set_weather(self, kind):
         """Optional particle weather overlay (off / snow / leaves / bubbles / fireflies)."""
         self.viz.set_weather(kind)
+
+    def set_clock_light(self, on):
+        self._clock_light = bool(on)
+
+    def _clock_warm(self):
+        """A gentle time-of-day warmth (0 by day, warmer at night), or 0 if off."""
+        if not getattr(self, "_clock_light", True):
+            return 0.0
+        from . import clocktheme
+        return clocktheme.clock_warm_for_hour(clocktheme.now_hour())
 
     def _scene_ctx(self, state, running, prog):
         m, s = divmod(int(self.controller.elapsed()), 60)
@@ -533,13 +547,15 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             self.viz.set_warm(warm)
             self.setWindowOpacity(0.55 + 0.45 * wf)       # dim -> bright
         else:
-            warm = 0.5 * (prog or 0.0) if sleep else 0.0
+            cw = self._clock_warm()                       # gentle time-of-day warmth
+            sw = 0.5 * (prog or 0.0) if sleep else 0.0
+            warm = max(sw, cw)                            # Sleep dominates when active
             self.face.set_warm(warm)
             self.viz.set_warm(warm)
             if sleep:
                 self.setWindowOpacity(1.0 - 0.3 * (prog or 0.0))
-            elif not running:
-                self.setWindowOpacity(1.0)
+            else:
+                self.setWindowOpacity(1.0 - 0.2 * cw)    # a touch dimmer at night
         self._tick_hourglass(running, total, prog)
         self.panel.tick()
         self._update_status(state, running)
@@ -597,7 +613,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                  "speech_speed": self._speech_speed,
                                  "view": self._view, "face_bg": self._face_bg,
                                  "hourglass": self._hg_show,
-                                 "face_cat": self.face.uses_cat()})
+                                 "face_cat": self.face.uses_cat(),
+                                 "clock_light": self._clock_light})
         except Exception:
             pass
         try:
