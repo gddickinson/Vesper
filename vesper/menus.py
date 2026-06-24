@@ -42,6 +42,11 @@ def _file(win, m):
     m.addAction("Presets…").triggered.connect(lambda: presets.open_presets(win))
     m.addAction("Export Audio (WAV)…").triggered.connect(
         lambda: app_io.export_wav(win))
+    from . import session_export                       # a small practice summary
+    m.addAction("Export Session Summary…").triggered.connect(
+        lambda: session_export.export_summary(win))
+    m.addAction("Save Summary Card (PNG)…").triggered.connect(
+        lambda: session_export.save_card(win))
     m.addSeparator()
     q = m.addAction("Quit")
     q.setShortcut("Ctrl+Q")

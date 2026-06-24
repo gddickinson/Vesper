@@ -594,6 +594,22 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — export / share a session summary (text + PNG card)
+Added `breathsim/summary.py` (55 lines, pure + testable) and `vesper/session_export.py` (87 lines).
+`summary.summary_lines(last, hist, today)` / `summary_text` build a few honest, friendly lines from
+an optional last-session dict (`{minutes, mode}`) plus `store` history: a title, the date, "This sit:
+N min of <mode>", "All time: N sessions, M min", the current streak, and a kind closing note -- with
+a graceful new-user empty state and a short-sit guard (<0.5 min is dropped). `session_export`
+provides `write_summary_txt` (plain .txt) and `save_summary_card` (a 600x360 themed PNG card drawn
+with QPainter in the night palette: accent title, muted date/footer, the lines beneath) plus
+`export_summary`/`save_card` menu wrappers that mirror `save_screenshot`/`export_wav` (save dialog,
+status-bar report, never crash). Wired into **File > Export Session Summary... / Save Summary Card
+(PNG)...**. Honest framing: it only summarises logged data, no claims. Verified: `selftest.py` passes
+(113 lectures / 17 branches); the builder is unit-tested (new user empty state, short-sit guard, a
+logged sit with streak, the closing line); offscreen both faces -- a simulated 2-min Meditate sit is
+logged, then `write_summary_txt` writes a 163-byte .txt with the right lines and `save_summary_card`
+writes a ~27 KB .png, thread-stable.
+
 ## App round — accessibility: global UI text-size setting
 Added `vesper/fontscale.py` (41 lines, pure + testable): `OPTIONS` (Small / Normal / Large /
 Extra-large -> 0.85 / 1.0 / 1.25 / 1.5), `scaled_css(css, scale)` (regex-multiplies only

@@ -286,6 +286,14 @@ Guardrails (every round):
       restored on launch. Honest: a readability setting. Done: selftest passes; `scaled_css`/labels
       unit-tested (geometry preserved); offscreen both faces — each size scales the app font (e.g.
       9->11.2 pt at Large) and the stylesheet (13->16px), persists, thread-stable.
+- [x] **Export / share a session summary** (`breathsim/summary.py` + `vesper/session_export.py`): a
+      small friendly summary of a sit + overall practice (date, this-sit duration/mode, all-time
+      sessions/minutes, current streak, a kind note) you can save as **text** or a themed **PNG card**.
+      `summary_lines`/`summary_text` are pure (last-session dict + `store` history/streak), with a
+      graceful new-user empty state; the exporters mirror `save_screenshot`/`export_wav` (save dialog,
+      status-bar report, never crash). **File > Export Session Summary / Save Summary Card (PNG)**.
+      Honest: it only summarises logged data. Done: selftest passes; builder unit-tested (new vs
+      logged, short-sit guard); offscreen both faces write a non-empty .txt + .png, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never
