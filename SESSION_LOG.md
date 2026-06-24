@@ -594,6 +594,24 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Great Mountains (Everest, Fuji, Kilimanjaro, Matterhorn)
+Added a 17th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate geology/history/culture, ASCII, sleep-closing): `lectures_everest.py` (Everest, Brown Noise
+- highest on Earth on the Nepal/Tibet border, the sacred names Sagarmatha / Chomolungma, the
+India-into-Asia collision still lifting the range, sea fossils in the summit limestone, the death
+zone, Tenzing Norgay and Hillary in 1953, the Sherpa), `lectures_fuji.py` (Mount Fuji, Wind Chimes -
+Japan's highest, a near-perfect volcanic cone built layer on layer, long quiet since the early-1700s
+Hoei eruption, revered in Shinto with centuries of pilgrims, Hokusai's Thirty-six Views, the sunrise
+Goraiko), `lectures_kilimanjaro.py` (Kilimanjaro, Night Crickets - Africa's highest, free-standing
+above the Tanzanian plain, three cones with Kibo/Uhuru "freedom", the climate-belt ascent from
+rainforest to equatorial ice, the East African Rift, a walk-up needing only a slow pace), and
+`lectures_matterhorn.py` (The Matterhorn, Mountain Stream - the glacier-carved "horn" on the
+Swiss/Italian border above Zermatt, far-travelled African-side summit rock, Whymper's 1865 first
+ascent and the tragedy on descent, alpenglow). New branch in `_CATALOG` -> **113 lectures / 17
+branches**. Validated all four (7 sections, 12-13 lines, pure ASCII, no NAME collisions);
+`selftest.py` passes (148 voices); DB rebuilt (9,540 lines / 146,876 words / 5 scenes). The
+storyteller `units()` stream renders each (e.g. Everest = 111 units).
+
 ## App round — richer Stats insights (honest summaries from the existing logs)
 Added `breathsim/insights.py` (115 lines, pure + testable): `average_minutes`, `busiest_weekday`
 (by minutes, needs >=2 weekdays to be meaningful), `time_of_day` (morning/afternoon/evening/night

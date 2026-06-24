@@ -304,6 +304,12 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Great Mountains** (4): Everest · Mount Fuji · Kilimanjaro · the Matterhorn —
+      added `lectures_{everest,fuji,kilimanjaro,matterhorn}.py` (7x12-13 lines, fact-free section 1,
+      accurate geology/history/culture (sacred names + beliefs framed respectfully), ASCII,
+      sleep-closing; Brown Noise / Wind Chimes / Night Crickets / Mountain Stream), new branch in
+      `_CATALOG` → **113 lectures / 17 branches**; DB rebuilt (9,540 lines / 146,876 words); selftest
+      passes. Done: validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Great Rivers** (4): The Nile · The Amazon · The Ganges · The Yangtze — added
       `lectures_{nile,amazon,ganges,yangtze}.py` (7x12-13 lines, fact-free section 1, accurate
       geography/history/culture with beliefs framed respectfully as tradition, ASCII, sleep-closing;
