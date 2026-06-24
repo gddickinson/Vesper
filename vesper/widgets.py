@@ -107,8 +107,9 @@ class LabeledSlider(QWidget):
         self._read = QLabel("")
         self._read.setStyleSheet(f"color: {theme.TEXT}; background: transparent;")
         self._read.setAlignment(Qt.AlignmentFlag.AlignRight)
-        head.addWidget(self._name)
-        head.addWidget(self._read)
+        self._read.setMinimumWidth(58)        # never collapse the value read-out
+        head.addWidget(self._name, 1)         # label takes the slack, read stays put
+        head.addWidget(self._read, 0)
         lay.addLayout(head)
         self._s = QSlider(Qt.Orientation.Horizontal)
         self._s.setRange(0, self._steps)

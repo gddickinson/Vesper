@@ -2200,6 +2200,25 @@ window applies `xtts:Daisy Studious` for Cat with XTTS on and `Samantha` with it
 setup `--status`/licence-gate work; selftest passes; both-faces drive clean,
 thread-stable; all files < 500 lines.
 
+## Feature (user request) — UX overhaul: menu reorg + resizable/roomier panel
+Deep UX pass. First built an offscreen **menu audit** (walk the whole menu bar, trigger
+every leaf action, dialogs/file-pickers/message-boxes stubbed non-blocking): all **427
+items fire, 0 failures** — confirmed nothing is broken, before and after. Then
+**reorganised `menus.py` by intent**: new **Face** menu pulls all avatar/character items
+out of the overloaded View (background · style · reactive · character · costume ·
+character voices); **View** slimmed to display + reading aids + window; **Sound**'s five
+instrument submenus consolidated under one **"Ambience & instruments"**, toggles grouped
+with separators; **Sessions** no longer mixes in morph automation (moved to **Voice ▸
+Morph A▸B ▸ Automation**) and groups one-tap starts under **Quick start**; **File**'s
+four exports collapsed into an **Export** submenu. Added `_toggle`/`_sub_list` helpers so
+the file stays declarative; preserved every `win._act_*` ref. **Panel decluttered + wider**:
+was a cramped fixed **330 px**, now a **resizable `QSplitter`** child (min 360 / max 520,
+opens ~400; window default 1200×780); the `LabeledSlider` value read-out gets a min width
+so it never collapses, and the scroll body's right margin clears the scrollbar (fixes the
+clipped "Speech speed 1.00x" and long voice labels). Verified: selftest passes; menu audit
+0 failures; both-faces drive clean + thread-stable; screenshots of Sleep/Relax/Chant
+reviewed (cards roomy, values + grouped voice labels fit). Calm aesthetic unchanged.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

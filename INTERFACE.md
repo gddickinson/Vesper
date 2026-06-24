@@ -183,8 +183,10 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   **`_card_bell`** (Meditate interval bell), **`_card_retention`** (Breathwork
   breath-hold timer). Each registers its live widgets in `self._w`.
 - **controls.py** — `ControlPanel(_SectionsMixin, QWidget)`: a **workspace-driven**
-  view. Pinned title + mode bar + **face/scene toggle** + master volume +
-  transport; a `QScrollArea` body rebuilt per mode by **`build_workspace(name)`**.
+  view. **Resizable** (min 360 / max 520; lives in a `QSplitter` beside the
+  visualization in `window.py`, so the user can drag it wider). Pinned title + mode
+  bar + **face/scene toggle** + master volume + transport; a `QScrollArea` body
+  (right margin clears the scrollbar) rebuilt per mode by **`build_workspace(name)`**.
   **`sync()`** pushes engine/controller state into the widgets; **`tick()`**
   refreshes live read-outs (guided-program stage, breath-hold timer).
   `reflect_mode`/`reflect_running`/`reflect_view`.
@@ -213,12 +215,17 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   `store.presets_list/save_preset/delete_preset`. In File menu.
 - **app_io.py** — **Export Audio (WAV)** (`export_wav(win)` / `render_export`): offline
   render of primary+ambience+effects to a 16-bit WAV (no device needed). In File menu.
-- **menus.py** — `build(win)`: the native **menu bar** (File / Modes / Sessions /
-  Pattern / Voice / Sound / View / Help) — the global escape hatch for every
-  control (all modes, automation + guided programs, every pattern, every voice +
-  body + Morph A▸B, mute + background-sound toggles + chime + naturalness + Mixer,
-  scene/face background, **Hourglass timer** toggle, Zen/Fullscreen, Stats/About).
-  `win.rebuild_menu()` refreshes it.
+- **menus.py** — `build(win)`: the native **menu bar**, the global escape hatch for
+  every control, organised by intent: **File** (screenshots · Export submenu ·
+  presets · quit) / **Modes** / **Sessions** (guided programs · courses · Quick-start
+  submenu) / **Pattern** / **Voice** (favourites · in/out/body · Morph A▸B incl.
+  **Automation**) / **Sound** (mute · background sounds · reverb space · XTTS · the
+  audio toggles · **Ambience & instruments** submenu · sleep timer · mixer) /
+  **Face** (background · style · reactive · character · costume · character voices) /
+  **View** (face↔scene · scene · weather · text size · reading aids · hourglass ·
+  Zen/Blackout/Fullscreen) / **Help**. Helpers `_toggle`/`_sub_list`/`_list_menu`
+  keep it declarative. `win.rebuild_menu()` refreshes it; an offscreen audit triggers
+  all ~427 items to guarantee every action fires.
 - **shortcuts.py** — `bind(win)` global keys (Space play/pause · R reset ·
   F fullscreen · Z Zen · Esc exit) + `toggle_zen`/`toggle_fullscreen` (Zen hides
   the mode bar + panel + menus, leaving only the breathing face).

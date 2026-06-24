@@ -26,7 +26,8 @@ class ControlPanel(_SectionsMixin, QWidget):
         self.win = win
         self._w: dict = {}            # live widget refs for the current workspace
         self.setObjectName("panel")
-        self.setFixedWidth(330)
+        self.setMinimumWidth(360)          # roomy enough for sliders + long labels
+        self.setMaximumWidth(520)          # (resizable via the splitter in window.py)
         v = QVBoxLayout(self)
         v.setContentsMargins(14, 14, 14, 12)
         v.setSpacing(8)
@@ -64,7 +65,7 @@ class ControlPanel(_SectionsMixin, QWidget):
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         holder = QWidget()
         self._body = QVBoxLayout(holder)
-        self._body.setContentsMargins(0, 4, 6, 4)
+        self._body.setContentsMargins(0, 4, 18, 4)   # right gap clears the scrollbar
         self._body.setSpacing(10)
         self._body.addStretch(1)
         self.scroll.setWidget(holder)

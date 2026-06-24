@@ -9,9 +9,9 @@ from __future__ import annotations
 
 import math
 
-from PySide6.QtCore import QTimer
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QMainWindow,
-                               QStackedWidget, QWidget)
+from PySide6.QtCore import Qt, QTimer
+from PySide6.QtWidgets import (QApplication, QMainWindow, QSplitter,
+                               QStackedWidget)
 
 from breathsim import choir, modes, narration, personas, sound_cues, stories
 from breathsim import story_db
@@ -45,7 +45,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Vesper")
-        self.resize(1060, 720)
+        self.resize(1200, 780)
         self.setStyleSheet(theme.STYLESHEET)
 
         store.register_all()                       # merge saved patterns/voices
@@ -132,9 +132,6 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
                          if vid.split(" (")[0] in uk_fem), accents[0][1])
             self.speech.set_voice(pick)
 
-        central = QWidget()
-        lay = QHBoxLayout(central)
-        lay.setContentsMargins(0, 0, 0, 0)
         self.face = FaceWidget()
         self.viz = VizWidget()
         self.face._hg_click_cb = self._flip_hourglass    # tap the timer to flip it
@@ -143,9 +140,16 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self.stack.addWidget(self.face)            # index 0
         self.stack.addWidget(self.viz)             # index 1
         self.panel = ControlPanel(self)
-        lay.addWidget(self.stack, 1)
-        lay.addWidget(self.panel, 0)
-        self.setCentralWidget(central)
+        split = QSplitter(Qt.Orientation.Horizontal)   # user-resizable panel width
+        split.addWidget(self.stack)
+        split.addWidget(self.panel)
+        split.setStretchFactor(0, 1)               # the visualization takes the slack
+        split.setStretchFactor(1, 0)
+        split.setCollapsible(0, False)
+        split.setCollapsible(1, False)
+        split.setChildrenCollapsible(False)
+        split.setSizes([800, 400])
+        self.setCentralWidget(split)
         self.status = self.statusBar()
         menus.build(self)
         shortcuts.bind(self)

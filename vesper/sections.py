@@ -282,7 +282,7 @@ class _SectionsMixin:
                            label_fn=lambda v: narration.voice_label(v, self.win.speech),
                            on_change=self.win.set_story_voice)
         self._w["story_voice"] = vc
-        body.addWidget(muted("Narration voice  (★ = most realistic, grouped by accent)"))
+        body.addWidget(muted("Narration voice  (★ = most realistic)"))
         body.addWidget(vc)
         s = LabeledSlider("Speech speed", 0.6, 1.2, self.win._speech_speed,
                           decimals=2, suffix="x",
