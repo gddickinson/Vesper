@@ -22,7 +22,7 @@ from breathsim import speech as sp_mod
 from breathsim import store
 from breathsim.patterns import DEFAULT_PATTERN, preset_by_name
 
-from . import menus, shortcuts, theme
+from . import introfade, menus, shortcuts, theme
 from .app_actions import _ActionsMixin
 from .controls import ControlPanel
 from .face import FaceWidget
@@ -103,6 +103,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._hg_spin_to = 0.0
         self._hg_spin_t0 = None
         self.current_mode = None
+        self._win_op = 1.0                 # last applied window opacity (intro fade + dim)
         self._font_scale = 1.0             # accessibility: global UI text size
         self._base_pt = 0.0                # app font point size before any scaling
         self._active_course = None         # (course name, total) while a course day runs
@@ -607,17 +608,17 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             warm = 0.4 * (1.0 - wf)                       # dawn warmth fades to clear
             self.face.set_warm(warm)
             self.viz.set_warm(warm)
-            self.setWindowOpacity(0.55 + 0.45 * wf)       # dim -> bright
+            op = 0.55 + 0.45 * wf                         # dim -> bright
         else:
             cw = self._clock_warm()                       # gentle time-of-day warmth
             sw = 0.5 * (prog or 0.0) if sleep else 0.0
             warm = max(sw, cw)                            # Sleep dominates when active
             self.face.set_warm(warm)
             self.viz.set_warm(warm)
-            if sleep:
-                self.setWindowOpacity(1.0 - 0.3 * (prog or 0.0))
-            else:
-                self.setWindowOpacity(1.0 - 0.2 * cw)    # a touch dimmer at night
+            op = (1.0 - 0.3 * (prog or 0.0)) if sleep else (1.0 - 0.2 * cw)
+        op *= introfade.intro_opacity(self._anim_t)       # gentle one-time launch fade-in
+        self._win_op = op                                 # recorded for tests
+        self.setWindowOpacity(op)
         self._tick_hourglass(running, total, prog)
         self.panel.tick()
         self._update_status(state, running)

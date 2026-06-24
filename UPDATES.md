@@ -326,6 +326,14 @@ Guardrails (every round):
       never a blocking exec, so it's offscreen-safe). Honest: it just lists the bindings. Done:
       selftest passes; `SHORTCUTS` unit-tested (non-empty, well-formed); offscreen both faces build
       the dialog without a blocking exec, every key + description is listed, thread-stable.
+- [x] **Calmer first-frame fade-in** (`vesper/introfade.py`): the window arrives softly — its opacity
+      eases from 0 up to full over ~1.1 s (smoothstep) on launch, then yields to the normal opacity
+      logic. `intro_opacity(elapsed)` is pure; `window._tick` computes the normal opacity (`op`) then
+      multiplies by the intro factor and records `self._win_op`. Coordinates with — doesn't fight —
+      the Sleep dim, clock warmth and Sunrise brightening (they set the base, the intro just scales it
+      for the first second). Done: selftest passes; `intro_opacity` unit-tested (floor at 0, 1.0 past
+      duration, monotonic); offscreen both faces — opacity starts <1 and reaches the normal value,
+      Sleep dimming still applies afterward, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

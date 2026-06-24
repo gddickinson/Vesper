@@ -594,6 +594,22 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — calmer first-frame fade-in on launch
+Added `vesper/introfade.py` (pure + testable): `intro_opacity(elapsed, duration=1.1, floor=0.0)`
+eases a window-opacity multiplier from 0 up to 1.0 over the first ~1.1 s with a smoothstep, then
+returns 1.0 forever after. `window._tick` was refactored so the three opacity branches (Sunrise
+wake, Sleep dim, clock-warm day) now compute a single normal `op` value instead of each calling
+`setWindowOpacity` directly; `op` is then multiplied by the intro factor (keyed off `self._anim_t`),
+recorded as `self._win_op`, and applied once. So the app arrives softly on launch and the intro then
+**yields to** the normal opacity logic rather than fighting it (the Sleep wind-down dim, the
+clock-aware night dim and the Sunrise brighten all still set the base; the intro only scales it for
+the first second). Offscreen, `setWindowOpacity` remains a harmless no-op. Honest framing: a visual
+nicety. Verified: `selftest.py` passes (125 lectures / 20 branches); `intro_opacity` unit-tested
+(floor 0 at t=0, 1.0 past the duration, mid 0.5, monotonic non-decreasing 0->1); offscreen both faces
+-- the recorded opacity starts well below 1 during the intro (~0.01 at the first frames) and reaches
+the normal value (~0.96 daytime) after it completes, and a deep Sleep session still dims it (~0.73),
+thread-stable.
+
 ## Stories round — new branch Deserts of the World (Sahara, Gobi, Atacama, Namib)
 Added a 20th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate geography/ecology/history, ASCII, sleep-closing): `lectures_sahara.py` (The Sahara, Fan
