@@ -75,6 +75,10 @@ class VocalTrack:
         self._cons = None
         self._cons_bank = None
         self._cons_total = 0.0
+        self._coda_spec = None          # closing consonant of the syllable
+        self._coda_bank = None
+        self._coda_total = 0.0
+        self._slot_dur = 0.0            # seconds this syllable has to sound
         self._prev_phase = None
         self.pitch = cfg.pitch * persona.pitch_mul * transpose
         self.voicing = min(1.0, max(0.0, cfg.voicing * persona.voicing_mul))
@@ -123,6 +127,14 @@ class VocalTrack:
             self._cons_total = articulation.total_dur(onset)
         else:
             self._cons_bank, self._cons_total = None, 0.0
+        coda = getattr(seg, "coda", "")
+        self._coda_spec = articulation.spec(coda) if coda else None
+        if self._coda_spec:
+            key = self._coda_spec.get("formant") or seg.vowel
+            self._coda_bank = build_formants(self.sr, key, self._fscale)
+            self._coda_total = articulation.total_dur(coda)
+        else:
+            self._coda_bank, self._coda_total = None, 0.0
 
     def _phrase_segment(self, cycle_index, p):
         groups = self.groups or [(0, len(self.sequence))]
@@ -137,13 +149,19 @@ class VocalTrack:
         if st.phase != PHASE_EXHALE:
             self._prev_phase = st.phase
             return False, 0.0
+        exhale = st.remaining / max(1e-3, 1.0 - st.progress)   # full exhale (s)
         if self.style == "per_phrase":
+            groups = self.groups or [(0, len(self.sequence))]
+            lo, hi = groups[st.cycle_index % len(groups)]
+            slot = exhale / max(1, hi - lo)
             seg, sp = self._phrase_segment(st.cycle_index, st.progress)
         else:
             seg = self.sequence[st.cycle_index % len(self.sequence)]
             sp = st.progress
+            slot = exhale
         if seg is not self._active_seg or self._prev_phase != PHASE_EXHALE:
             self._set_syllable(seg)
+            self._slot_dur = slot
         self._prev_phase = st.phase
         return True, sp
 
@@ -163,6 +181,27 @@ class VocalTrack:
             e = np.clip(local_t / 0.02, 0.0, 1.0)
         e = e * np.clip((self._cons_total - local_t) / 0.02, 0.0, 1.0)
         return out * e * spec.get("level", 0.5)
+
+    def _coda(self, local_t, noise, buzz):
+        """Closing consonant at the end of the syllable's time, plus the gate that
+        ducks the vowel out as it arrives. Returns (coda_signal, vowel_gate)."""
+        spec = self._coda_spec
+        if not spec or self._slot_dur <= 0.0:
+            return 0.0, 1.0
+        start = max(self._cons_total + 0.06, self._slot_dur - self._coda_total)
+        ct = local_t - start                            # time into the coda
+        src = buzz if spec["kind"] == "voiced" else noise
+        out = self._apply_bank(self._coda_bank, src) if self._coda_bank else src
+        dur, shape = spec["dur"], spec["shape"]
+        if shape == "burst":
+            e = np.exp(-np.maximum(ct, 0.0) / (dur * 0.5))
+        elif shape == "fric":
+            e = np.clip(ct / (dur * 0.5), 0.0, 1.0)
+        else:                                           # murmur / glide
+            e = np.clip(ct / 0.02, 0.0, 1.0)
+        e = e * (ct >= -1e-4) * np.clip((self._slot_dur - local_t) / 0.03, 0.0, 1.0)
+        duck = np.clip(1.0 - (local_t - start) / 0.05, 0.0, 1.0)   # vowel -> coda
+        return out * e * spec.get("level", 0.5), duck
 
     def _render_sequence(self, frames, s0, s1):
         sounding, sp = self._seq_position(s0)
@@ -185,12 +224,16 @@ class VocalTrack:
             vowel = vowel * (1.0 - sp) + self._apply_bank(self.formants_to, src) * sp
         if self.buzz is not None and self.voicing > 0.0:
             vowel += self.voicing * 0.4 * self.body_lp.process(src, 1100.0, self.sr)
+        # Breathiness is warm (low cutoff) noise that sits *within* the vowel's
+        # body, so it reads as a soft breathy voice rather than the bright hiss
+        # (formerly low-passed at 6.5 kHz) that used to sit on top of the word.
         if self.air > 0.0:
-            vowel += self.air * self.air_lp.process(noise, 6500.0 * tone, self.sr)
+            vowel += self.air * self.air_lp.process(noise, 2400.0 * tone, self.sr)
         vgate = np.clip((local_t - self._cons_total) / 0.025, 0.0, 1.0)
         cons = self._consonant(local_t, noise, buzz)
-        rel = 1.0 if sp < 0.85 else _raised_cos((1.0 - sp) / 0.15)
-        mono = (cons + vowel * vgate) * rel * self.cfg.gain
+        coda, duck = self._coda(local_t, noise, buzz)
+        rel = 1.0 if sp < 0.88 else _raised_cos((1.0 - sp) / 0.12)
+        mono = (cons + vowel * vgate * duck * rel + coda) * self.cfg.gain
         self._syll_t += frames
         return np.column_stack([mono, mono])
 

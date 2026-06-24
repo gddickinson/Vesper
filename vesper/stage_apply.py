@@ -24,8 +24,9 @@ def apply_stage(app, stage):
     if "persona" in d:
         eng.set_persona(personas.get(d["persona"]))
     if "phrase" in d:
-        eng.set_phrase(phrases.get(d["phrase"]))
-        eng.set_chant_style(d.get("chant_style", "per_breath"))
+        eng.set_phrase(phrases.get(d["phrase"]))   # adopts the phrase's own style
+        if "chant_style" in d:                     # a stage may still override it
+            eng.set_chant_style(d["chant_style"])
     elif "voice" in d:
         eng.set_voice_a(d["voice"])
         eng.set_voice_out(d.get("voice_out"))

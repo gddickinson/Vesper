@@ -16,8 +16,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import numpy as np  # noqa: E402
 
-from breathsim import lectures, stories, tracks, voices  # noqa: E402
-from breathsim.patterns import BreathPattern, state_at  # noqa: E402
+from breathsim import lectures, phrases, stories, tracks, voices  # noqa: E402
+from breathsim.patterns import BreathPattern, preset_by_name, state_at  # noqa: E402
+from breathsim.vocal import VocalTrack  # noqa: E402
 
 
 def main() -> int:
@@ -43,6 +44,30 @@ def main() -> int:
         if cfg.env == "airflow" and holds and max(holds) > 0.02:
             problems.append(f"{cfg.name}: not silent on hold ({max(holds):.3f})")
     print(f"Checked {len(cfgs)} voices, {len(voices.names())} voice names.")
+
+    # Chant/song/word phrases: render a few breaths (in each phrase's own style,
+    # plus a reciting-tone pass) and check the sequence voice is finite and safe.
+    for ph in phrases.PHRASES:
+        pat = preset_by_name(ph.pattern) or BreathPattern("t", 2, 1, 3, 1)
+        # the reciting tone only ever applies to Mantra / Chant Sounds (engine).
+        recite_opts = (False, True) if ph.category in ("Mantra", "Chant Sounds") \
+            else (False,)
+        for monotone in recite_opts:
+            tr = VocalTrack(phrases.config(ph), sr)
+            tr.set_sequence(ph.segments, ph.base_pitch, ph.style, ph.groups,
+                            monotone=monotone)
+            peak = 0.0
+            steps = int(pat.cycle * 2 * sr / block)
+            for b in range(steps):
+                t0, t1 = b * block / sr, (b + 1) * block / sr
+                out = tr.render(block, state_at(pat, t0), state_at(pat, t1))
+                if not np.all(np.isfinite(out)):
+                    problems.append(f"phrase {ph.name}: non-finite output")
+                    break
+                peak = max(peak, float(np.abs(out).max()))
+            if peak > 1.0:
+                problems.append(f"phrase {ph.name}: peak {peak:.2f} > 1.0")
+    print(f"Checked {len(phrases.PHRASES)} chant/song/word phrases.")
 
     names = lectures.names()
     if len(set(names)) != len(names):

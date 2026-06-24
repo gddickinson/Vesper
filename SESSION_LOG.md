@@ -2069,6 +2069,27 @@ of the 3D head is untouched. Verified: selftest passes; char_voice unit test (Ca
 real worker, applied per-character hue/rate/greeting, toggle on/off, persistence; drive
 clean on both faces (0 issues, thread-stable); all files < 500 lines.
 
+## Feature (user request) — realistic chanting (intelligible words + bigger library)
+Chanted words "didn't sound like words" - diagnosed (render + spectrogram) three causes:
+(1) the Qt UI never used `per_phrase`, so every multi-syllable mantra/word/song played
+ONE syllable per breath - you never heard the word; (2) a syllable was a flat sustained
+vowel with only a tiny onset and **no closing consonant**; (3) the aspiration `air` was a
+bright ~6.5 kHz hiss painted on TOP of the vowel (the "breathing noise dominating").
+Fixes: **vocal.py** `_render_sequence` now renders a **coda consonant** placed at the end
+of each syllable's time (computed from the live exhale length), and the breathiness is
+warm vowel-body noise (low-passed ~2.4 kHz, not 6.5 kHz) -> hiss/formant energy dropped
+3-6x. **phrases.py**: `Segment.coda` + `Phrase.style` (+ auto onset/coda derivation,
+silent-e handled by explicit codas), voicing up / air down per category, and the engine
+now adopts each phrase's own `style` (`engine.set_phrase`, `stage_apply`). Added **~16
+chants**: mantras (Aum A-U-M, Om Tare Tuttare, Om Ah Hum, Ra Ma Da Sa, Om Gam Ganapataye,
+Nam Myoho Renge Kyo, Lokah Samastah, Om Shanti x3, So Ham), Latin chant (Ave Maria, Ubi
+Caritas, Veni Sancte Spiritus) and affirmations (Trust, At Ease, All Is Well); long
+mantras split across breaths via `groups`. Verified: spectrograms show 6 articulated
+syllables/breath for Om Mani Padme Hum (was one flat vowel); coda HF measured at 70-92% in
+the word tail vs ~0.5% in the vowel; selftest now renders all **66 phrases** (each style +
+a reciting-tone pass) finite & peak <= 1.0; offscreen Chant drive plays 8 phrases on both
+faces, 0 issues, thread-stable, each phrase adopting its own style + recite working.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

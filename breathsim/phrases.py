@@ -27,6 +27,7 @@ class Segment:
     vowel_to: str = ""
     semitone: float = 0.0
     onset: str = ""                 # leading consonant (synthesised articulation)
+    coda: str = ""                  # closing consonant (synthesised at syllable end)
 
 
 @dataclass
@@ -39,11 +40,12 @@ class Phrase:
     description: str = ""
     groups: list = None             # breath-groups for the "phrase/breath" style
     source: str = "mix"
-    voicing: float = 0.9
-    air: float = 0.05
+    voicing: float = 0.95           # mostly voiced -> a clear sung tone, little hiss
+    air: float = 0.04               # a touch of warm breathiness
     vibrato_rate: float = 5.0
     vibrato_depth: float = 0.006
     gain: float = 1.2
+    style: str = "per_phrase"       # the whole phrase sings across one exhale
 
 
 PHRASES: list[Phrase] = []
@@ -76,11 +78,15 @@ def config(p: Phrase) -> VoiceConfig:
 
 _DIGRAPHS = ("sh", "th", "ng")
 _MAP = {"c": "k", "j": "d", "q": "k", "x": "k", "z": "s"}
+# Consonants that synthesise cleanly as a *closing* (coda) sound. Others (b/g/v/
+# h/w/y/...) are dropped from the coda, as a soft unreleased close.
+_CODA_OK = {"s", "t", "d", "k", "p", "f", "l", "r", "sh", "th", "ng", "m", "n"}
+_NASAL = {"m": "mm", "n": "mm", "ng": "mm"}      # voiced via the vowel_to glide
 
 
 def _lead(syll):
     """Leading consonant of a syllable label, mapped to a synthesisable onset."""
-    s = syll.lower()
+    s = "".join(ch for ch in syll.lower() if ch.isalpha())
     for d in _DIGRAPHS:
         if s.startswith(d):
             return d
@@ -89,27 +95,45 @@ def _lead(syll):
     return ""
 
 
-def _S(syll, vowel, vowel_to="", semi=0.0, onset=None):
-    return Segment(syll, vowel, vowel_to, semi,
-                   _lead(syll) if onset is None else onset)
+def _trail(syll):
+    """Trailing consonant of a label, mapped to a synthesisable coda. Returns ''
+    for labels ending in a vowel letter (incl. silent-e) -- those need an explicit
+    ``coda`` if a closing sound is wanted (English spelling is unreliable)."""
+    s = "".join(ch for ch in syll.lower() if ch.isalpha())
+    if not s or s[-1] in "aeiou":
+        return ""
+    for d in _DIGRAPHS:
+        if s.endswith(d):
+            return d if d in _CODA_OK else ""
+    c = _MAP.get(s[-1], s[-1])
+    return c if c in _CODA_OK else ""
 
 
-def _mantra(name, segs, base=120.0, desc=""):
+def _S(syll, vowel, vowel_to="", semi=0.0, onset=None, coda=None):
+    lead = _lead(syll) if onset is None else onset
+    tail = _trail(syll) if coda is None else coda
+    if tail in _NASAL:                  # a final m/n is sung as the vowel_to hum
+        vowel_to = vowel_to or _NASAL[tail]
+        tail = ""
+    return Segment(syll, vowel, vowel_to, semi, lead, tail)
+
+
+def _mantra(name, segs, base=120.0, desc="", groups=None):
     _add(Phrase(name, "Mantra", segs, base_pitch=base, pattern="OM Chant 3-9",
-                description=desc))
+                description=desc, groups=groups))
 
 
-def _greg(name, segs, base=130.0, desc=""):
+def _greg(name, segs, base=130.0, desc="", groups=None):
     _add(Phrase(name, "Gregorian", segs, base_pitch=base, pattern="OM Chant 3-9",
-                description=desc, voicing=0.85, air=0.12, vibrato_rate=3.0,
-                vibrato_depth=0.003, gain=0.77))
+                description=desc, groups=groups, voicing=0.9, air=0.07,
+                vibrato_rate=3.0, vibrato_depth=0.003, gain=0.9))
 
 
 def _song(name, vowel, notes, base=150.0, desc="", groups=None):
     segs = [Segment(lyr, vowel, "", semi, _lead(lyr)) for lyr, semi in notes]
     _add(Phrase(name, "Song", segs, base_pitch=base, pattern="Sigh Release 2-7",
                 description=desc, groups=groups, source="buzz", voicing=1.0,
-                air=0.03, vibrato_rate=5.0, vibrato_depth=0.007, gain=1.7))
+                air=0.03, vibrato_rate=5.0, vibrato_depth=0.007, gain=1.55))
 
 
 # --- Mantras ---------------------------------------------------------------
@@ -134,12 +158,55 @@ _mantra("Om Shanti",
 _mantra("Hare Krishna",
         [_S("Ha", "ah"), _S("re", "eh"), _S("Krish", "ee"), _S("na", "ah"),
          _S("Ha", "ah"), _S("re", "eh"), _S("Krish", "ee"), _S("na", "ah")],
-        desc="Part of the maha-mantra.")
+        desc="Part of the maha-mantra.", groups=[(0, 4), (4, 8)])
 _mantra("Gate Gate (Heart Sutra)",
         [_S("Ga", "ah"), _S("te", "eh"), _S("Ga", "ah"), _S("te", "eh"),
          _S("Pa", "ah"), _S("ra", "ah"), _S("ga", "ah"), _S("te", "eh"),
          _S("Bo", "oh"), _S("dhi", "ee"), _S("Sva", "ah"), _S("ha", "ah")],
-        desc="The Heart Sutra's mantra of going beyond.")
+        desc="The Heart Sutra's mantra of going beyond.",
+        groups=[(0, 4), (4, 8), (8, 12)])
+
+# More mantras (Tibetan / Vedic / Buddhist / Sikh) -------------------------
+_mantra("Aum (A-U-M)",
+        [_S("A", "ah", "oo"), _S("U", "oo", "mm")], base=104.0,
+        desc="The three-part Om: 'ah' opening to 'oo', closing to a hum.",
+        groups=[(0, 2)])
+_mantra("Om Tare Tuttare",
+        [_S("Om", "oh", "mm"), _S("Ta", "ah"), _S("re", "eh"), _S("Tut", "oo"),
+         _S("ta", "ah"), _S("re", "eh"), _S("Tu", "oo"), _S("re", "eh"),
+         _S("So", "oh"), _S("ha", "ah")],
+        desc="Green Tara's mantra of swift protection and ease.",
+        groups=[(0, 3), (3, 6), (6, 10)])
+_mantra("Om Ah Hum",
+        [_S("Om", "oh", "mm"), _S("Ah", "ah"), _S("Hum", "uh", "mm")],
+        desc="Body, speech and mind - a Vajrayana purification.")
+_mantra("Ra Ma Da Sa",
+        [_S("Ra", "ah"), _S("Ma", "ah"), _S("Da", "ah"), _S("Sa", "ah"),
+         _S("Sa", "ah"), _S("Say", "eh"), _S("So", "oh"), _S("Hung", "uh", "mm")],
+        desc="A Kundalini healing mantra (sun, moon, earth, infinity).",
+        groups=[(0, 4), (4, 8)])
+_mantra("Om Gam Ganapataye",
+        [_S("Om", "oh", "mm"), _S("Gam", "ah", "mm"), _S("Ga", "ah"),
+         _S("na", "ah"), _S("pa", "ah"), _S("ta", "ah"), _S("ye", "eh")],
+        desc="Invoking Ganesha, remover of obstacles.",
+        groups=[(0, 2), (2, 7)])
+_mantra("Nam Myoho Renge Kyo",
+        [_S("Nam", "ah", "mm"), _S("Myo", "oh"), _S("ho", "oh"), _S("Ren", "eh", "mm"),
+         _S("ge", "eh"), _S("Kyo", "oh")], base=128.0,
+        desc="The Nichiren Buddhist daimoku.", groups=[(0, 3), (3, 6)])
+_mantra("Lokah Samastah",
+        [_S("Lo", "oh"), _S("kah", "ah"), _S("Sa", "ah"), _S("mas", "ah", coda="s"),
+         _S("tah", "ah"), _S("Su", "oo"), _S("khi", "ee"), _S("no", "oh")],
+        desc="'May all beings be happy and free' (loka samasta).",
+        groups=[(0, 5), (5, 8)])
+_mantra("Om Shanti Shanti Shanti",
+        [_S("Om", "oh", "mm"), _S("Shan", "ah", "mm"), _S("ti", "ee"),
+         _S("Shan", "ah", "mm"), _S("ti", "ee"), _S("Shan", "ah", "mm"),
+         _S("ti", "ee")], desc="A threefold invocation of peace.",
+        groups=[(0, 3), (3, 5), (5, 7)])
+_mantra("So Ham",
+        [_S("So", "oh"), _S("Ham", "ah", "mm")],
+        desc="'I am that' - ride the breath: 'So' in, 'Ham' out.")
 
 
 # --- Gregorian / monastic --------------------------------------------------
@@ -168,6 +235,24 @@ _greg("Dies Irae",
        _S("rae", "ah", "", 4), _S("di", "ee", "", 0), _S("es", "eh", "", 2),
        _S("il", "ee", "", 0), _S("la", "ah", "", -1)],
       desc="The famous medieval 'day of wrath' chant motif.")
+_greg("Ave Maria",
+      [_S("A", "ah", "", 0), _S("ve", "eh", "", 2), _S("Ma", "ah", "", 4),
+       _S("ri", "ee", "", 2), _S("a", "ah", "", 0)],
+      desc="'Hail Mary' - a gentle plainchant opening.",
+      groups=None)
+_greg("Ubi Caritas",
+      [_S("U", "oo", "", 0), _S("bi", "ee", "", 2), _S("ca", "ah", "", 4),
+       _S("ri", "ee", "", 2), _S("tas", "ah", "", 0, coda="s"),
+       _S("et", "eh", "", 2, coda="t"), _S("a", "ah", "", 4),
+       _S("mor", "oh", "", 2, coda="r")],
+      desc="'Where charity is' - a Holy Thursday chant.",
+      groups=[(0, 5), (5, 8)])
+_greg("Veni Sancte Spiritus",
+      [_S("Ve", "eh", "", 0), _S("ni", "ee", "", 2), _S("San", "ah", "mm", 4),
+       _S("cte", "eh", "", 2), _S("Spi", "ee", "", 4), _S("ri", "ee", "", 2),
+       _S("tus", "oo", "", 0, coda="s")],
+      desc="'Come, Holy Spirit' - a luminous sequence.",
+      groups=[(0, 4), (4, 7)])
 
 
 # --- Simple songs (one note per breath) ------------------------------------
@@ -212,7 +297,7 @@ _song("Brahms Lullaby", "oo",
 def _chant(name, segs, base=120.0, desc=""):
     _add(Phrase(name, "Chant Sounds", segs, base_pitch=base,
                 pattern="OM Chant 3-9", description=desc, source="mix",
-                voicing=0.92, air=0.05, gain=1.19))
+                voicing=0.95, air=0.04, gain=1.1))
 
 
 # Consonant + open 'ah' seed syllables (the onset is synthesised from the label).
@@ -241,23 +326,32 @@ _chant("Pa Ta Ka",
 
 # --- Short words: affirmations & counting (one word per breath) ------------
 
-def _word(name, segs, desc="", base=130.0, pattern="Calming 4-6 (Long Exhale)"):
+def _word(name, segs, desc="", base=130.0, pattern="Calming 4-6 (Long Exhale)",
+          style="per_phrase"):
     _add(Phrase(name, "Words", segs, base_pitch=base, pattern=pattern,
-                description=desc, source="mix", voicing=0.85, air=0.08, gain=0.77))
+                description=desc, source="mix", voicing=0.93, air=0.05, gain=1.0,
+                style=style))
 
 
-_word("Peace", [_S("Peace", "ee")], desc="Sing 'peace' on each out-breath.")
+_word("Peace", [_S("Peace", "ee", coda="s")], desc="Sing 'peace' on each out-breath.")
 _word("Calm", [_S("Calm", "ah", "mm")], desc="A long, soft 'calm'.")
-_word("Let Go", [_S("Let", "eh"), _S("Go", "oh")], desc="'Let' in, 'go' out.")
-_word("Be Still", [_S("Be", "ee"), _S("Still", "ee")], desc="'Be still'.")
+_word("Let Go", [_S("Let", "eh", coda="t"), _S("Go", "oh")], desc="'Let go'.")
+_word("Be Still", [_S("Be", "ee"), _S("Still", "ee", coda="l")], desc="'Be still'.")
 _word("I Am", [_S("I", "ah"), _S("Am", "ah", "mm")], desc="'I am' - presence.")
-_word("Release", [_S("Re", "eh"), _S("lease", "ee")], desc="'Release' tension.")
+_word("Release", [_S("Re", "eh"), _S("lease", "ee", coda="s")],
+      desc="'Release' tension.")
 _word("Home", [_S("Home", "oh", "mm")], desc="Return 'home' to the breath.")
-_word("Soft Belly", [_S("Soft", "oh"), _S("Bel", "eh"), _S("ly", "ee")],
-      desc="'Soft belly' - relax the core.")
+_word("Soft Belly", [_S("Soft", "oh", coda="f"), _S("Bel", "eh", coda="l"),
+                     _S("ly", "ee")], desc="'Soft belly' - relax the core.")
+_word("Trust", [_S("Trust", "uh", coda="s")], desc="Let the body 'trust' the breath.")
+_word("At Ease", [_S("At", "ah", coda="t"), _S("Ease", "ee", coda="s")],
+      desc="Settle 'at ease'.")
+_word("All Is Well", [_S("All", "oh", coda="l"), _S("Is", "ee", coda="s"),
+                      _S("Well", "eh", coda="l")], desc="A reassuring phrase.")
 _word("Count to Ten",
       [_S("One", "uh", "mm", 0, onset="w"), _S("Two", "oo"), _S("Three", "ee"),
-       _S("Four", "oh"), _S("Five", "ah"), _S("Six", "ee"), _S("Sev", "eh"),
-       _S("Eight", "eh"), _S("Nine", "ah", "mm"), _S("Ten", "eh", "mm")],
+       _S("Four", "oh", coda="r"), _S("Five", "ah", coda="f"),
+       _S("Six", "ee", coda="s"), _S("Sev", "eh", coda="v"),
+       _S("Eight", "eh", coda="t"), _S("Nine", "ah", "mm"), _S("Ten", "eh", "mm")],
       desc="Count each breath from one to ten, then begin again.",
-      pattern="Coherent 5.5 (Resonance)")
+      pattern="Coherent 5.5 (Resonance)", style="per_breath")

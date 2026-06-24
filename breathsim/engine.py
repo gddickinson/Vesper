@@ -298,10 +298,13 @@ class AudioEngine:
         self._rebuild_primary(fade)
 
     def set_phrase(self, phrase, fade: float = 0.35):
-        """Play a chant/song phrase as the primary voice (None to revert)."""
+        """Play a chant/song phrase as the primary voice (None to revert). Adopts
+        the phrase's own preferred grouping (``per_phrase`` sings the whole phrase
+        across one exhale; ``per_breath`` is one syllable per breath)."""
         self.phrase = phrase
         if phrase is not None:
             self.voice_out = None
+            self.chant_style = getattr(phrase, "style", None) or self.chant_style
             self._rebuild_exhale(fade)
         self._rebuild_primary(fade)
 
