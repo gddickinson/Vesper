@@ -75,6 +75,11 @@ class FaceWidget(QWidget):
         self._cat_state = dict(vol=0.5, t=0.0, mouth=0.0, eye_open=1.0,
                                smile=0.12, hue=theme.ACCENT)
         self._bg = face_bg.make("Stars")         # animated background behind head
+        self._bg_name = "Stars"
+        self._bg_next = None                      # crossfade target (story-following)
+        self._bg_next_name = None
+        self._bg_blend = 1.0
+        self._bg_fade = 3.0
         self._active = True                      # throttle render thread when hidden
         self._gaze_ph = (random.random() * 6.283, random.random() * 6.283)
         self._head_ph = random.random() * 6.283
@@ -158,9 +163,26 @@ class FaceWidget(QWidget):
             return
         super().mousePressEvent(ev)
 
-    def set_background(self, name):
-        self._bg = face_bg.make(name)
+    def set_background(self, name, fade=0.0):
+        """Switch the backdrop. With ``fade`` > 0, gently crossfade to it over that
+        many seconds (used by the story-following backgrounds so the picture never
+        jumps); ``fade`` = 0 switches at once (mode changes)."""
+        if name == self._bg_name and self._bg_next is None:
+            return
+        if fade <= 0.0:
+            self._bg = face_bg.make(name)
+            self._bg_name = name
+            self._bg_next = self._bg_next_name = None
+            self._bg_blend = 1.0
+        elif name != self._bg_next_name:
+            self._bg_next = face_bg.make(name)
+            self._bg_next_name = name
+            self._bg_blend = 0.0
+            self._bg_fade = max(0.3, float(fade))
         self.update()
+
+    def background(self):
+        return self._bg_next_name or self._bg_name
 
     def set_active(self, on):
         """When the scene view is showing, throttle the head render thread."""
@@ -213,6 +235,12 @@ class FaceWidget(QWidget):
         dt = (t - self._anim_last_t) if self._anim_last_t is not None else 0.0
         self._anim_last_t = t
         self._anim_cur = self._anim.step(dt, self._cat_state)   # advance characters
+        if self._bg_next is not None:                            # crossfade the backdrop
+            self._bg_blend += (dt / self._bg_fade) if self._bg_fade else 1.0
+            if self._bg_blend >= 1.0:
+                self._bg, self._bg_name = self._bg_next, self._bg_next_name
+                self._bg_next = self._bg_next_name = None
+                self._bg_blend = 1.0
         if self._faceview_ok:                                # keep 3D params fresh
             p = self._params
             p._t = t                                         # GPU starfield time
@@ -279,8 +307,12 @@ class FaceWidget(QWidget):
         painter.fillRect(0, 0, w, h, QColor(theme.BG))
         try:                                                 # animated backdrop
             self._bg.draw(painter, w, h, self._t, self._breath, self._hue)
+            if self._bg_next is not None:                    # gentle story crossfade
+                painter.setOpacity(self._bg_blend)
+                self._bg_next.draw(painter, w, h, self._t, self._breath, self._hue)
+                painter.setOpacity(1.0)
         except Exception:
-            pass
+            painter.setOpacity(1.0)
         fr = None if self._show_cat else self._frame
         if fr is not None:                                   # 3D avatar frame
             rgba, fw, fh = fr

@@ -211,6 +211,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self.engine.set_spatial(self._spatial)
         self._space = s.get("space", "Off")                    # master reverb space
         self.engine.set_space(self._space)
+        self._story_bg_follow = bool(s.get("story_bg", True))   # backdrop follows tale
         self.set_text_scale(float(s.get("font_scale", 1.0)))   # accessibility text size
         self._amb_rotate = bool(s.get("ambience_rotate", False))  # opt-in bed rotation
         self._quiet_hours = bool(s.get("quiet_hours", True))      # late-night soften

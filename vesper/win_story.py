@@ -14,6 +14,10 @@ class _StoryMixin:
         self._story_scene = None if scene in (None, "Off") else scene
         if self._story_scene:
             self._set_base_ambience(stories.ambience_for(self._story_scene))
+            from . import story_bg
+            self._story_bg_base = story_bg.base_for_scene(self._story_scene)
+            self._story_bg_target = self._story_bg_base    # picture follows the tale
+            self._bg_idle = 0
         if self.controller.running:
             self._start_story()
 
@@ -157,6 +161,15 @@ class _StoryMixin:
             self._sfx_idle += 1
             if self._sfx_idle >= 4 and self._base_ambience:
                 self._sfx_target = self._base_ambience   # drift home over abstract lines
+        from . import story_bg                  # the backdrop follows the words too
+        bg = story_bg.bg_for_text(text)
+        if bg:
+            self._story_bg_target = bg
+            self._bg_idle = 0
+        else:
+            self._bg_idle = getattr(self, "_bg_idle", 0) + 1
+            if self._bg_idle >= 4:             # ease home to the scene base
+                self._story_bg_target = getattr(self, "_story_bg_base", "Stars")
         self._mood_target = emotion_for_text(text)
 
     def set_ambience_rotate(self, on):
@@ -171,6 +184,24 @@ class _StoryMixin:
         target = ambrotate.next_ambience(beds, self.controller.elapsed())
         if target and target != self.engine.slot_voice.get("ambience"):
             self.engine.set_voice(target, "ambience", fade=3.0)
+
+    def set_story_bg_follow(self, on):
+        """Sound ▸ Backdrop follows the story toggle (persisted, default on). When
+        off, the current backdrop is simply left as-is (the mode's own)."""
+        self._story_bg_follow = bool(on)
+        from breathsim import store
+        store.save_settings({"story_bg": self._story_bg_follow})
+
+    def _apply_story_bg(self):
+        """Gently crossfade the face backdrop toward the story's current theme (a
+        slow ~4 s fade so it never startles); eases home to the scene's base over
+        abstract passages. Off, or outside a story, leaves the backdrop alone."""
+        if not getattr(self, "_story_bg_follow", True) or not self._story_scene:
+            return
+        target = getattr(self, "_story_bg_target", None)
+        if target and target != getattr(self, "_cur_story_bg", None):
+            self.face.set_background(target, fade=4.0)
+            self._cur_story_bg = target
 
     def set_soundscape_follow(self, on):
         """Sound ▸ Soundscape follows story toggle. Off → hold the base ambience."""

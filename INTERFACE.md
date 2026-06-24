@@ -56,8 +56,16 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   RGBA8888; speaking-vs-breathing precedence is decided in `window._face_inputs`.
 - **face_bg.py** — animated backgrounds painted **behind** the face (the head now
   renders on a transparent background): `None`, `Stars` (starfield, matches the
-  eyes), `Aurora` (drifting colour veils), `Nebula`, `Gradient` — all tinted by the
-  breath-phase hue. `make(name)`/`names()`.
+  eyes), `Aurora` (drifting colour veils), `Nebula`, `Gradient`, `Underwater`,
+  `Embers`, and the story themes **`Rain`** (soft streaks), **`Forest`** (green hush +
+  motes) and **`City`** (twinkling windows) — all tinted by the breath-phase hue.
+  `make(name)`/`names()`. The FaceWidget **crossfades** between backdrops
+  (`set_background(name, fade)`) so story-driven changes never jump.
+- **story_bg.py** — maps a narrated line to a fitting `face_bg` backdrop
+  (`bg_for_text`) + a calm base per story scene (`base_for_scene`), mirroring
+  `breathsim.sound_cues` so the picture and soundscape follow the words together. The
+  storyteller drives it via `win_story._apply_story_bg` (Sound ▸ "Backdrop follows the
+  story", persisted). Pure + testable.
 - **2D character cast** — the QPainter face shown when faceView is missing or the
   user picks **Sound ▸ Cartoon cat face** (then **Character** / **Costume** submenus,
   persisted). A small framework, all driven by the same per-frame state as the 3D

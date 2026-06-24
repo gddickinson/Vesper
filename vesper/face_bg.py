@@ -198,8 +198,98 @@ class Embers:
             p.drawEllipse(QPointF(x, y), s["sz"], s["sz"])
 
 
+class Rain:
+    """Soft rainfall: faint slow streaks drifting down a dim blue-grey sky. Calm."""
+    name = "Rain"
+
+    def __init__(self):
+        rng = np.random.default_rng(53)
+        self.dr = [dict(x=float(rng.random()), ph=float(rng.random()),
+                        sp=0.10 + float(rng.random()) * 0.14,
+                        ln=2.0 + float(rng.random()) * 3.0,
+                        a=0.04 + float(rng.random()) * 0.07) for _ in range(70)]
+
+    def draw(self, p, w, h, t, breath, hue):
+        g = QLinearGradient(0, 0, 0, h)
+        g.setColorAt(0.0, _qc("#121922"))
+        g.setColorAt(1.0, _qc("#0a0e13"))
+        p.fillRect(0, 0, w, h, g)
+        p.setPen(Qt.PenStyle.NoPen)
+        for d in self.dr:                                  # gentle falling streaks
+            prog = (t * d["sp"] + d["ph"]) % 1.0
+            x = (d["x"] + 0.02 * math.sin(t * 0.3 + d["ph"])) * w
+            y = prog * (h + 40) - 20
+            p.setBrush(_qc(theme.blend("#9fc0e6", hue, 0.3), d["a"]))
+            p.drawEllipse(QPointF(x, y), 0.8, d["ln"])
+
+
+class Forest:
+    """A dim green woodland hush — soft motes of pollen/light drifting up. Restful."""
+    name = "Forest"
+
+    def __init__(self):
+        rng = np.random.default_rng(61)
+        self.m = [dict(x=float(rng.random()), ph=float(rng.random()) * 6.28,
+                       sp=0.02 + float(rng.random()) * 0.05,
+                       sz=1.0 + float(rng.random()) * 2.0,
+                       drift=float(rng.random()) - 0.5) for _ in range(40)]
+
+    def draw(self, p, w, h, t, breath, hue):
+        g = QLinearGradient(0, 0, 0, h)
+        g.setColorAt(0.0, _qc("#0d1a10"))
+        g.setColorAt(1.0, _qc("#060d08"))
+        p.fillRect(0, 0, w, h, g)
+        p.setPen(Qt.PenStyle.NoPen)
+        glow = QRadialGradient(w * 0.5, -h * 0.1, h * 0.9)   # faint canopy light
+        glow.setColorAt(0.0, _qc("#3f7a40", 0.12 + 0.04 * breath))
+        glow.setColorAt(1.0, _qc("#3f7a40", 0.0))
+        p.setBrush(glow)
+        p.drawRect(0, 0, w, h)
+        for s in self.m:                                   # slow rising motes
+            prog = (t * s["sp"] + s["ph"]) % 1.0
+            y = h * (1.0 - prog)
+            x = (s["x"] + 0.05 * s["drift"] * prog
+                 + 0.012 * math.sin(t * 0.8 + s["ph"])) * w
+            tw = 0.5 + 0.5 * math.sin(t * 1.5 + s["ph"])
+            p.setBrush(_qc(theme.blend("#bfe6a0", "#86c060", tw),
+                           0.30 * (1.0 - prog)))
+            p.drawEllipse(QPointF(x, y), s["sz"], s["sz"])
+
+
+class City:
+    """A quiet night city — distant warm window lights softly twinkling. Cozy-urban."""
+    name = "City"
+
+    def __init__(self):
+        rng = np.random.default_rng(83)
+        self.win = [dict(x=float(rng.random()),
+                         y=0.55 + float(rng.random()) * 0.4,
+                         ph=float(rng.random()) * 6.28,
+                         sz=0.8 + float(rng.random()) * 1.4,
+                         warm=float(rng.random())) for _ in range(80)]
+
+    def draw(self, p, w, h, t, breath, hue):
+        g = QLinearGradient(0, 0, 0, h)
+        g.setColorAt(0.0, _qc("#0b1018"))
+        g.setColorAt(0.7, _qc("#0c1118"))
+        g.setColorAt(1.0, _qc("#100b0a"))
+        p.fillRect(0, 0, w, h, g)
+        p.setPen(Qt.PenStyle.NoPen)
+        glow = QRadialGradient(w * 0.5, h * 1.05, h * 0.7)   # warm horizon haze
+        glow.setColorAt(0.0, _qc("#caa46a", 0.12 + 0.03 * breath))
+        glow.setColorAt(1.0, _qc("#caa46a", 0.0))
+        p.setBrush(glow)
+        p.drawRect(0, 0, w, h)
+        for d in self.win:                                 # twinkling windows
+            tw = 0.4 + 0.6 * (0.5 + 0.5 * math.sin(t * 0.9 + d["ph"]))
+            col = theme.blend("#ffd9a0", "#9fc0e6", d["warm"])
+            p.setBrush(_qc(col, 0.16 + 0.20 * tw))
+            p.drawEllipse(QPointF(d["x"] * w, d["y"] * h), d["sz"], d["sz"])
+
+
 _CLASSES = {"None": _None, "Stars": Stars, "Aurora": Aurora, "Nebula": Nebula,
-            "Gradient": Gradient, "Underwater": Underwater, "Embers": Embers}
+            "Gradient": Gradient, "Underwater": Underwater, "Embers": Embers,
+            "Rain": Rain, "Forest": Forest, "City": City}
 
 
 def make(name):

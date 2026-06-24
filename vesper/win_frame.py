@@ -206,6 +206,7 @@ class _FrameMixin:
         amp = self.narrator.amp if running else 0.0
         if running:
             self._apply_soundscape()           # ambience follows the words
+            self._apply_story_bg()             # backdrop follows the words too
             if self._amb_rotate and not self._story_scene:
                 self._apply_ambience_rotate()  # slowly cycle beds (when no storyteller)
         self._ease_mood(running)               # expression eases toward the mood

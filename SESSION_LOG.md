@@ -2135,6 +2135,26 @@ notice. A quick, well-studied way to settle, framed modestly (no clinical claims
 Auto-listed in Sessions / the Breathwork programs card. Verified: settings resolve,
 applies + starts on both faces, thread-stable, 3.0 min.
 
+## Round 5 (roadmap) — story-following dynamic themed backgrounds
+The storyteller's backdrop now quietly follows the words. New **`story_bg.py`** maps
+narrated imagery to a backdrop (fire/hearth->Embers, night sky->Stars, rain/snow->Rain,
+sea/river->Underwater, forest/meadow->Forest, city/cafe->City, aurora/nebula too),
+mirroring `sound_cues` so picture + soundscape move together. Three new soothing,
+low-contrast **`face_bg`** backdrops added: **Rain** (faint slow streaks), **Forest**
+(green hush + drifting motes + canopy glow) and **City** (warm twinkling windows over a
+night gradient). The face now **crossfades** between backdrops (`set_background(name,
+fade)`: keeps a `_bg_next` and blends `_bg_blend` over ~4 s in `set_state`, drawing both
+with painter opacity) so it never jumps. `win_story._on_story_unit` sets a per-line bg
+target (narrator thread, attribute only) and eases home to the scene's base over abstract
+passages; `_apply_story_bg` (GUI, each frame from `win_frame`) does the crossfade, gated
+by **Sound ▸ "Backdrop follows the story"** (persisted `story_bg`, default on). Honours
+Sleep dimming (warm_overlay composites on top). Verified: bg contact sheet reviewed (all
+three calm + on-aesthetic); mapping unit-tested; offscreen story integration on both
+faces switches fire->Embers / stars->Stars / rain->Rain / sea->Underwater, eases home to
+the base, respects the off-toggle, the crossfade settles, persists; selftest passes;
+full drive clean, thread-stable; all files < 500 lines. *Remaining:* 5a per-scene
+character/costume pick (2D-face only, lower priority).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
