@@ -2253,6 +2253,21 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Stories round — new branch "The Deep Ocean" (4 lectures)
+Added a 35th lecture branch, **The Deep Ocean**: *The Twilight Zone* (the mesopelagic
+dusk + the daily vertical migration, the largest movement of life on Earth), *Creatures
+of Light* (bioluminescence — cold light from luciferin + luciferase, blue-green because
+it travels furthest, counter-illumination), *A Whale Fall* (a whale's slow descent
+becoming an oasis: the mobile-scavenger, enrichment and chemosynthetic stages, the
+bone-eating Osedax worms — told tenderly, not grim) and *The Abyssal Plain* (the
+largest, calmest habitat on Earth, the even near-freezing dark, the ooze of tiny shells,
+marine snow, sea pigs + glass sponges). Each = the standard 7 sections × 12 second-person
+present-tense sentences, accurate science kept gentle (no teeth, no crushing-pressure
+threats), every section easing toward sleep; ambiences "Ocean Waves"/"Whale Song".
+Drafted via four parallel subagents, assembled + registered in `lectures._CATALOG`.
+Verified: selftest passes (**185 lectures across 35 branches**); story DB rebuilt (251k
+words); both-faces drive clean; all files < 500 lines.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
