@@ -288,6 +288,12 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Great Rivers** (4): The Nile · The Amazon · The Ganges · The Yangtze — added
+      `lectures_{nile,amazon,ganges,yangtze}.py` (7x12-13 lines, fact-free section 1, accurate
+      geography/history/culture with beliefs framed respectfully as tradition, ASCII, sleep-closing;
+      Night Crickets / Soft Rainstorm / Singing Bowl / Mountain Stream), new branch in `_CATALOG`
+      → **109 lectures / 16 branches**; DB rebuilt (9,195 lines / 140,997 words); selftest passes.
+      Done: validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Mythic Places** (4): Atlantis · Shangri-La · El Dorado · Avalon — added
       `lectures_{atlantis,shangrila,eldorado,avalon}.py` (7x12-13 lines, fact-free section 1, each
       legend framed honestly AS a legend + the real history of the belief/search, ASCII, sleep-

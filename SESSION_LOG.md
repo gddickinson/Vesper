@@ -594,6 +594,24 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Great Rivers (Nile, Amazon, Ganges, Yangtze)
+Added a 16th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate geography/history/culture, ASCII, sleep-closing): `lectures_nile.py` (The Nile, Night
+Crickets - flows south-to-north to the Mediterranean, White + Blue Nile meeting at Khartoum, the
+19th-c quest for the source, the yearly silt flood and Kemet "the black land", papyrus, the Aswan
+High Dam), `lectures_amazon.py` (The Amazon, Soft Rainstorm - the greatest river by far by volume,
+Andes snowmelt crossing a continent to the Atlantic, 1000+ tributaries and the largest rainforest,
+wet-season flooding with fish among the trunks, pink dolphins, the mouth staining the sea brown),
+`lectures_ganges.py` (The Ganges, Singing Bowl - the Gangotri glacier source, the fertile peopled
+plains, Varanasi's ghats and the evening aarti of floating lamps, the Brahmaputra delta - religious
+belief framed respectfully as Hindu tradition, not asserted as fact), and `lectures_yangtze.py` (The
+Yangtze, Mountain Stream - longest in Asia, the Tibetan Plateau source, Chang Jiang "the long
+river", the misty Three Gorges, cliff trackers, the finless porpoise and the lost baiji, the Three
+Gorges Dam, old river poems). New branch in `_CATALOG` -> **109 lectures / 16 branches**. Validated
+all four (7 sections, 12-13 lines, pure ASCII, no NAME collisions; distinct from the existing
+lectures_water "A River to the Sea"); `selftest.py` passes (148 voices); DB rebuilt (9,195 lines /
+140,997 words / 5 scenes). The storyteller `units()` stream renders each (e.g. The Nile = 108 units).
+
 ## App round — launch suggestion (a gentle, non-modal "what suits you now")
 Added `vesper/suggest.py` (86 lines, pure + testable): `suggest(hour, history, courses_state, today)`
 returns a `Suggestion(text, action, kind)`. Priority: an **in-progress multi-night course** is the
