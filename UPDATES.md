@@ -334,6 +334,15 @@ Guardrails (every round):
       for the first second). Done: selftest passes; `intro_opacity` unit-tested (floor at 0, 1.0 past
       duration, monotonic); offscreen both faces — opacity starts <1 and reaches the normal value,
       Sleep dimming still applies afterward, thread-stable.
+- [x] **Session-end "well done" moment** (`breathsim/welldone.py`): a brief, kind closing line when a
+      real sit completes. Pure `message(minutes, streak)` -> e.g. "Session complete - 12 minutes. 3
+      days in a row. Be well." (singular/plural, streak only when >=2). `window._log_practice` sets
+      `self._closing_msg` once (the >=30 s sit gate; **not** during Sleep, so a sleeper isn't
+      jarred); `_update_status` shows it in the idle status bar until the next fresh Start clears it
+      — non-modal, no dialog, no sound. Honest: it just acknowledges a finished sit. Done: selftest
+      passes; `message` unit-tested (short None, singular/plural, with/without streak); offscreen both
+      faces — a finished sit shows the line once with no blocking dialog, a fresh start clears it,
+      Sleep stays silent, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

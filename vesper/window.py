@@ -104,6 +104,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._hg_spin_t0 = None
         self.current_mode = None
         self._win_op = 1.0                 # last applied window opacity (intro fade + dim)
+        self._closing_msg = None           # gentle "well done" line after a finished sit
         self._font_scale = 1.0             # accessibility: global UI text size
         self._base_pt = 0.0                # app font point size before any scaling
         self._active_course = None         # (course name, total) while a course day runs
@@ -416,6 +417,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         if fresh:
             self._sleep_timer_t0 = 0.0                # restart the sleep-timer countdown
             self._sleep_timer_done = False
+            self._closing_msg = None                  # retire the previous "well done" line
             self._mood_after_done = False
             from . import mood
             mood.maybe_check_in(self, "before")      # only on a fresh start
@@ -453,6 +455,11 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             if ac:                                  # a course day completed -> advance
                 store.advance_course(ac[0], ac[1])
                 self._active_course = None
+            if self.current_mode != "Sleep":        # a gentle "well done" (not for sleepers)
+                from breathsim import welldone
+                cur, _best = store.streak()
+                self._closing_msg = welldone.message(
+                    self.controller.elapsed() / 60.0, cur)
 
     # --- bedtime story -----------------------------------------------------
     def _start_story(self):
@@ -661,6 +668,9 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
 
     def _update_status(self, state, running):
         if not running:
+            if getattr(self, "_closing_msg", None):  # a gentle "well done" after a sit
+                self.status.showMessage(self._closing_msg)
+                return
             sug = getattr(self, "_launch_suggestion", None)
             if (self.controller.elapsed() == 0 and sug
                     and not getattr(self, "_started_once", False)):

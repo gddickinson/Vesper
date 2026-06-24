@@ -594,6 +594,21 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — session-end "well done" moment (kind closing line)
+Added `breathsim/welldone.py` (pure + testable): `message(minutes, streak)` turns a finished sit's
+length + current streak into one short, warm, non-clinical line -- "Session complete - 12 minutes. 3
+days in a row. Be well." -- with singular/plural handling, the streak clause only when >=2, and
+`None` for a too-short sit. `window._log_practice` (the single >=30 s "a real sit happened" hook,
+already called on pause / reset / auto-finish / sleep-timer) now sets `self._closing_msg` once via
+`welldone.message(elapsed, store.streak())` -- but **only when `current_mode != "Sleep"`**, so a
+sleeper is never jarred. `_update_status` shows the line in the **idle status bar** (taking priority
+over the launch hint) until the next fresh Start clears it; it is fully non-modal -- no dialog, no
+sound. Honest framing: it just acknowledges a finished sit. Verified: `selftest.py` passes (125
+lectures / 20 branches); `message` unit-tested (short -> None, 1 minute singular, 12 minutes,
+with-streak, streak<2 omitted); offscreen both faces -- finishing a real Meditate session (driven
+past its length) sets and shows the line once with no blocking dialog, a fresh Start clears it, and a
+finished **Sleep** session leaves it silent (None), thread-stable.
+
 ## App round — calmer first-frame fade-in on launch
 Added `vesper/introfade.py` (pure + testable): `intro_opacity(elapsed, duration=1.1, floor=0.0)`
 eases a window-opacity multiplier from 0 up to 1.0 over the first ~1.1 s with a smoothstep, then
