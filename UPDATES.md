@@ -485,6 +485,19 @@ Guardrails (every round):
       scene + non-Sleep mode handled; whitespace trimmed) and `save_settings` merge round-trip tested
       (partial patch keeps prior keys); offscreen both faces — a seeded prior settings file shows the
       hint idle, it's retired after Start, and close persists every key incl `last_scene`, thread-stable.
+- [x] **Lecture-branch "surprise me within this branch" picker** (`breathsim/branchpick.py` + window +
+      menu): you can now pick a random bedtime lecture from ONE theme, gently avoiding repeats. Pure
+      `pick_in_branch(category, recent, rng)` composes `lectures.names(category)` with the existing
+      `tonight.pick` (prefers a name not in `recent`, falls back when all are recent, deterministic with
+      a seeded rng, None for an empty/unknown branch). `window.surprise_in_branch(category)` mirrors
+      `tonights_pick`: it picks, records via `store.push_recent_pick`, switches to Sleep, arms the story
+      scene, and begins. A **Sessions > Surprise me in branch > <branch>** submenu lists every category.
+      Honest: just a random pick within a theme, no claims. Done: selftest passes; `branchpick`
+      unit-tested (unknown/empty -> None; real branch returns a member; all-but-one recent -> the
+      non-recent one; all recent -> still valid; seeded rng deterministic; single-name via tonight.pick);
+      offscreen both faces — `surprise_in_branch("Famous Bridges")` arms a valid in-branch scene + records
+      it + enters Sleep, recent-avoidance holds, the menu rebuilds with the branch submenu, an unknown
+      branch is a safe no-op, thread-stable.
 - [x] **Gentle "longest streak" line in Stats** (`breathsim/insights.py`): the Stats dialog now gently
       celebrates your best run of consecutive practice days, e.g. "Your longest streak: 6 days", with a
       kind "- and you are on it now" nod when the current streak equals the best (and > 1). Pure

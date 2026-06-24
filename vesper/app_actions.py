@@ -162,6 +162,23 @@ class _ActionsMixin:
         self.status.showMessage(f"Tonight's pick: {name}", 5000)
         self.panel.sync()
 
+    def surprise_in_branch(self, category):
+        """One-tap: pick a random lecture from one *category* (avoiding recent
+        ones), arm it as the Sleep story and begin. Like tonights_pick, but
+        themed. Returns the chosen name (or None if the branch is empty)."""
+        from breathsim import branchpick, store
+        name = branchpick.pick_in_branch(category, store.recent_picks())
+        if not name:
+            return None
+        store.push_recent_pick(name)
+        if self.current_mode != "Sleep":
+            self.apply_mode("Sleep")
+        self.set_story(name)
+        self._ensure_running()
+        self.status.showMessage(f"From {category}: {name}", 5000)
+        self.panel.sync()
+        return name
+
     def toggle_favourite_voice(self):
         """Star/unstar the current inhale voice for quick access (persisted)."""
         name = self.engine.voice_a

@@ -594,6 +594,26 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — lecture-branch "surprise me within this branch" picker
+You can now ask for a random bedtime lecture from one theme, not just the whole library. New pure
+`breathsim/branchpick.py`: `names_in_branch(category)` looks up a branch's lecture names (empty list
+for an unknown branch) and `pick_in_branch(category, recent, rng)` defers to the existing
+`tonight.pick` to choose one, preferring a name not in `recent`, falling back to the full list when all
+are recent, returning None for an empty branch, and staying deterministic under a seeded rng -- so the
+avoid-repeats logic is shared with "tonight's pick" rather than duplicated. `window.surprise_in_branch
+(category)` mirrors `tonights_pick`: it picks, records the choice via `store.push_recent_pick`, switches
+to Sleep if needed, arms the chosen lecture as the story scene, starts the session, and shows a quiet
+"From <branch>: <name>" status line. A **Sessions > Surprise me in branch** submenu lists every
+category (built from `lectures.categories()`), each firing `surprise_in_branch`. Honest framing: it is
+only a random pick within a theme -- no claims. Verified: `selftest.py` passes; `branchpick`
+unit-tested (unknown/empty/None -> None; a real branch returns one of its names; all-but-one recent ->
+the remaining one; all recent -> still a valid member; a seeded `random.Random` is deterministic; the
+single-name path via `tonight.pick`). Offscreen both faces: `surprise_in_branch("Famous Bridges")`
+returns an in-branch name, arms it as `_story_scene`, enters Sleep, and records it in
+`store.recent_picks`; recent-avoidance holds as a pure property; the menu rebuilds with the per-branch
+submenu; an unknown branch is a safe no-op that leaves the scene unchanged; a 24-frame tick loop is
+thread-stable.
+
 ## Stories round — new branch Lighthouses of the World (Pharos, Eddystone, Fresnel Lens, Keepers)
 Added a 33rd lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
 fact-free section 1, accurate history/engineering/optics, ASCII, every section sleep-closing):

@@ -83,6 +83,11 @@ def _sessions(win, m):
         lambda: win.start_sunrise())
     m.addAction("Tonight's pick (random story)").triggered.connect(
         lambda: win.tonights_pick())
+    from breathsim import lectures                     # "surprise me" within one branch
+    surprise = m.addMenu("Surprise me in branch")
+    for cat in lectures.categories():
+        surprise.addAction(cat).triggered.connect(
+            lambda _c=False, x=cat: win.surprise_in_branch(x))
     m.addAction("Fall asleep (one tap)").triggered.connect(
         lambda: win.start_fall_asleep())
 
