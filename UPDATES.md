@@ -471,6 +471,18 @@ Guardrails (every round):
       returns to normal). Honest: it just configures sleep features. Done: selftest passes; offscreen
       both faces — leaves the app in Sleep + Calming 4-6 + wind-down armed + a sleep-timer set +
       running with no blocking dialog, and switching modes clears the wind-down, thread-stable.
+- [x] **Stats "best time of day" nudge** (`breathsim/besttime.py` + insights): the Stats dialog now
+      gently names when you tend to practise, e.g. "You most often practise around 9-10 pm". Pure
+      `best_time_phrase(hours, min_total=5)` reads the practice-history hour histogram, finds the modal
+      hour, grows it to an adjacent window when a neighbour is also well-used, and formats it in 12-hour
+      am/pm wording (with noon/midnight + meridian-crossing handled); returns None when too sparse
+      (total < min_total or no clear mode), so a new user sees nothing. `insights.lines()` shows it in
+      place of the coarse "in the evening" line when a clear mode exists, so it renders in the Stats
+      dialog's insights area. Honest: it's only an observation of when you practise, no advice/claims.
+      Done: selftest passes; `besttime` unit-tested (sparse->None, single modal hour, adjacent grouping
+      left/right, noon/midnight + 11pm-12am crossing, junk-tolerant, min_total override, and the
+      insights upgrade/suppression); offscreen both faces — with a seeded clear mode the line appears in
+      the Stats insights widget and is absent when history is sparse, thread-stable.
 - [x] **Breathe-with-me intro countdown** (`breathsim/intro.py` + window): on a fresh start, a brief
       "settle in" lead-in plays over the first breath so the very first inhale isn't abrupt. Pure
       `intro.schedule(cycle_seconds)` lays a few calm lines ("Settle in." -> "We'll begin together.")

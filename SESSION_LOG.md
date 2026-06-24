@@ -594,6 +594,25 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — Stats "best time of day" nudge
+The Stats dialog now gently observes when you usually practise, upgrading the coarse "in the evening"
+line to a precise am/pm window like "You most often practise around 9-10 pm" when there's a clear
+pattern. New pure `breathsim/besttime.py`: `best_window(hours, min_total=5)` reads the practice
+history's hour histogram (the `{hour: count}` dict from `store.log_session`), finds the modal hour,
+and grows it to an adjacent two-hour window when a neighbour is also well-used (neighbour count >=
+max(2, peak/2)); `best_time_phrase(...)` formats that in 12-hour wording via `_h12`/`_window_words`,
+handling noon, midnight, and meridian-crossing windows ("11 pm-12 am"). It returns None when there's
+too little to say honestly (total below `min_total`, or no hour repeated at least twice), so a new
+user sees nothing. `insights.lines()` shows the phrase in place of the existing coarse time-of-day
+line when a clear mode exists, so it renders in the Stats dialog's insights area (via
+`stats_heatmap.build`). Honest framing: purely an observation of when you tend to practise -- no
+advice, no claims. Verified: `selftest.py` passes; `besttime` unit-tested (sparse and
+no-clear-mode -> None; a single modal hour -> "around 9 pm"; adjacent grouping both left and right;
+midnight -> "12 am", noon -> "12 pm", and the 23->0 / 11->12 meridian crossings; junk-key tolerant;
+`min_total` override; plus the insights upgrade replacing/suppressing the coarse line). Offscreen both
+faces: with several seeded sits in one hour the "most often practise around ..." line appears in the
+Stats insights widget, and it is absent when history is sparse; a 24-frame tick loop is thread-stable.
+
 ## Stories round — new branch Famous Bridges (Golden Gate, Ponte Vecchio, Tower Bridge, Brooklyn Bridge)
 Added a 29th lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
 fact-free section 1, accurate history/engineering, ASCII, every section sleep-closing):

@@ -118,9 +118,14 @@ def lines(hist=None, today=None):
     avg = average_minutes(hist)
     if avg is not None:
         out.append(f"Your sits average about {avg:.0f} min.")
-    tod = time_of_day(hist)
-    if tod:
-        out.append(f"You tend to practise in the {tod}.")
+    from . import besttime               # a precise am/pm window when there's a clear mode
+    bt = besttime.best_time_phrase(hist.get("hours", {}))
+    if bt:
+        out.append(bt)
+    else:
+        tod = time_of_day(hist)
+        if tod:
+            out.append(f"You tend to practise in the {tod}.")
     wd = busiest_weekday(hist)
     if wd:
         out.append(f"{wd} is your most regular day.")
