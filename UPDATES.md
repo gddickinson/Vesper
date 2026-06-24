@@ -149,8 +149,10 @@ Guardrails (every round):
       green/teal/violet vertical drapes that undulate, shimmer and drift on layered near-coprime
       sines over a faint star field and a dark horizon; the glow swells with the breath. In the
       View > Scene menu. PNG + thread-stable verified.
-- [ ] **Breathing mandala**: a symmetric sacred-geometry pattern that unfolds/rotates
-      with the breath (Meditate/Chant).
+- [x] **Breathing mandala** (`scene_mandala.MandalaScene`): concentric 6/12/24-fold rings of
+      petals, dots and arcs that expand on the inhale and contract on the exhale, with
+      neighbouring rings counter-rotating very slowly, a soft central glow and the per-phase
+      breath hue. In the View > Scene menu. PNG + thread-stable verified.
 - [ ] **Particle weather**: an optional gentle snow / drifting leaves / rising bubbles
       layer per scene (a toggle).
 
@@ -265,6 +267,7 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- Breathing mandala scene: radially-symmetric rings that breathe + counter-rotate (View > Scene).
 - Poetry (`poetry.py`): 8 original soothing nocturnes recited slowly as a Sleep "Poetry"
   storyteller option (more poems can be added over future rounds).
 - The Cosmos +3 (The Sun · Galaxies · Meteor Showers) → 89 lectures / 11 branches.

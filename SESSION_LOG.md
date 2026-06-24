@@ -594,6 +594,17 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — Breathing mandala scene
+Added `vesper/scene_mandala.py` (a `MandalaScene`, registered at the bottom of scenes.py via
+`_CLASSES["mandala"]` + `AMBIENT.append`): a calm, centred mandala of 5 concentric rings (6/12/24-
+fold radial symmetry) of petals, dots and small arcs, drawn by rotating a motif N times around the
+centre. It **expands on the inhale and contracts on the exhale** (radius follows `volume`),
+neighbouring rings **counter-rotate** very slowly over anim time, and a soft `QRadialGradient`
+centre pulses with the breath; colour is the per-phase `theme.phase_hue`. Slow, low-contrast,
+deterministic (no per-frame RNG / threads). In the View > Scene menu (Meditate/Chant). selftest
+passes; offscreen scene session thread-stable (2->2); PNG confirms a clean symmetric mandala.
+98 lines.
+
 ## Feature (user request) — Poetry storyteller (soothing nocturnes)
 Added `breathsim/poetry.py`: an original collection of 8 calming sleep/night poems (The Last
 Light, Tide, Rain at Night, The Night Train, Stars, Snowfall, Lullaby for the Restless Mind, The
