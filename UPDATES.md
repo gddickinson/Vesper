@@ -140,7 +140,11 @@ Guardrails (every round):
       flame tongues (slow flicker, no strobing), crossed logs and embers rising + fading; the
       fire breathes with you. In the View > Scene menu; pairs with Campfire. Verified PNG +
       thread-stable offscreen.
-- [ ] **Rain-on-window scene**: droplets sliding down glass over a soft blurred glow.
+- [x] **Rain-on-window scene** (`scene_rain.RainScene`): a dark cosy night window - a warm lamp
+      glow blurred beyond the pane (breathes with the breath), a fogged-glass haze with still
+      condensation beads, and many drops + slow rivulets sliding down the glass (heads + trails,
+      gently elongating). In the View > Scene menu; pairs with the Rain ambiences. PNG +
+      thread-stable verified.
 - [ ] **Aurora scene**: slow northern-lights ribbons for Sleep/Relax.
 - [ ] **Breathing mandala**: a symmetric sacred-geometry pattern that unfolds/rotates
       with the breath (Meditate/Chant).
@@ -230,6 +234,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Rain-on-window scene: drops + rivulets on glass over a warm blurred lamp glow (View > Scene).
 - Natural-sound breath voices (`voices_breath_nature.py`): Tide & Pebbles, Deep Surf, Spring
   Rain, Pine Wind, Ember Glow, Cosmic Wind, Snowfall Hush - airflow-driven, distinct in/out;
   usable as the inhale voice AND the exhale voice for any combination. 112 voices.

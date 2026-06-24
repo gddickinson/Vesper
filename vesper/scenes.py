@@ -386,6 +386,11 @@ class FireplaceScene:
 _CLASSES = {"orb": OrbScene, "night": NightScene, "ripple": RippleScene,
             "wave": WaveScene, "fireplace": FireplaceScene}
 
+# Larger scenes live in their own modules (keeps this file small); register here.
+from .scene_rain import RainScene  # noqa: E402
+_CLASSES["rain"] = RainScene
+AMBIENT.append("rain")
+
 
 def make(name):
     if name == "pitch":

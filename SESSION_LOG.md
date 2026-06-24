@@ -594,6 +594,16 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — Rain-on-window scene
+Added `vesper/scene_rain.py` (a `RainScene`, kept out of the now-large scenes.py and registered
+at the bottom of scenes.py via `_CLASSES["rain"]` + `AMBIENT.append`): a dark cosy night window
+with a warm streetlamp glow blurred beyond the pane (breathing gently with the breath), a faint
+fogged-glass haze and still condensation beads, and 34 sliding drops + 6 slow rivulets running
+down the glass (each a soft trail with a brighter rounded head; trail length slowly elongates to
+suggest merging). Deterministic (seeded per-drop params + anim-time motion, no per-frame RNG).
+Slow, low-contrast; pairs with the Rain ambiences. selftest passes; offscreen scene session
+thread-stable (2->2); PNG confirms rain on a glowing window.
+
 ## Feature (user request) — natural-sound breath voices (in/out combinations)
 Added `breathsim/voices_breath_nature.py`: 7 airflow-driven breath voices (GROUP_BREATH) where
 the breath becomes a soothing natural sound, with the in-breath and out-breath taking on distinct
