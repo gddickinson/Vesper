@@ -519,6 +519,19 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Famous Bridges** (4): Golden Gate · Ponte Vecchio · Tower Bridge · Brooklyn
+      Bridge — added `lectures_{goldengate,pontevecchio,towerbridge,brooklynbridge}.py` (7x[13,12,13,
+      12,12,13,13] lines, fact-free section 1, accurate history/engineering — the strait named in 1846
+      + International Orange + the Halfway to Hell net; the Arno arch rebuilt 1345 + Medici goldsmiths
+      1593 + the Vasari Corridor; the 1894 bascules + hydraulic accumulators + Horace Jones / John
+      Wolfe Barry; the Roeblings + caisson disease + Emily Warren Roebling + the 1883 opening, legends
+      framed AS legend), ASCII, every section sleep-closing; ambiences Ocean Waves / Mountain Stream /
+      Gentle Rain / Forest Wind. New branch in `_CATALOG` → **161 lectures / 29 branches**; selftest
+      passes. Done: selftest (161/29); lint — each lecture 7x[13,12,13,12,12,13,13], section 1
+      fact-free (no names/dates/numbers), all 7 sections sleep-close, ASCII-only, ambience resolves to
+      a real GROUP_NATURE voice, no NAME/module collisions; offscreen both faces — all four dispatch
+      through `stories.story_units` (all 7 sections stream) and a Sleep session narrates one,
+      thread-stable.
 - [x] **New branch — Musical Instruments** (4): the Piano · the Harp · the Flute · the Drum — added
       `lectures_{piano,harp,flute,drum}.py` (7x12-13 lines, fact-free section 1, accurate
       acoustics/history (Cristofori's pianoforte, 40,000-year bone flutes, Boehm, talking drums),

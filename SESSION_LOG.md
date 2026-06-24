@@ -594,6 +594,30 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Famous Bridges (Golden Gate, Ponte Vecchio, Tower Bridge, Brooklyn Bridge)
+Added a 29th lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
+fact-free section 1, accurate history/engineering, ASCII, every section sleep-closing):
+`lectures_goldengate.py` (Golden Gate, Ocean Waves - the strait named Golden Gate in 1846 before the
+gold rush, Strauss with Charles Ellis's mathematics and Leon Moisseff's deflection theory, the Art
+Deco towers, "International Orange" chosen to show through the fog, and the safety net's "Halfway to
+Hell Club"), `lectures_pontevecchio.py` (Ponte Vecchio, Mountain Stream - the Arno's narrowest
+crossing, the three low segmental arches rebuilt around 1345, butchers replaced by goldsmiths under
+Ferdinando I de Medici in 1593, the Vasari Corridor of 1565, the retrobottega back rooms over the
+water, and its survival in 1944), `lectures_towerbridge.py` (Tower Bridge, Gentle Rain - the 1894
+bascules that lift like a see-saw, Horace Jones and John Wolfe Barry, a stone Gothic skin over a steel
+frame, the steam-hydraulic engines and accumulators now driven by oil and electricity, the high
+walkways, and the fond mix-up with London Bridge), and `lectures_brooklynbridge.py` (Brooklyn Bridge,
+Forest Wind - the first steel-wire suspension bridge across the East River, John Roebling's death,
+Washington Roebling's caisson disease, Emily Warren Roebling effectively managing the work, the 1883
+opening, with the panic and Barnum's elephants framed AS legend). Distinct from the existing Voyages &
+Journeys / Ancient Roads branches. New branch in `_CATALOG` -> **161 lectures / 29 branches**.
+Verified: `selftest.py` passes (148 voices; 161 lectures / 29 branches); a lint confirmed each lecture
+has 7 x [13,12,13,12,12,13,13] sentences, a fact-free section 1 (no names/dates/numbers), all 7
+sections sleep-closing, ASCII-only, an ambience resolving to a real GROUP_NATURE voice, and no
+NAME/module collisions; offscreen both faces - all four dispatch through `stories.story_units` (all 7
+sections stream, ~104-108 units each) and a Sleep session narrates one with the storyteller, thread-
+stable across a 24-frame loop.
+
 ## Stories round — new branch Ancient Roads & Walls (Great Wall, Appian Way, Hadrian's Wall, Inca Roads)
 Added a 25th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate history, ASCII, sleep-closing): `lectures_greatwall.py` (The Great Wall, Wind in Pines -

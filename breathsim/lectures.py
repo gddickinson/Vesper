@@ -73,6 +73,8 @@ from . import (lectures_dragon, lectures_griffin, lectures_mermaid,
 from . import (lectures_cinnamon, lectures_pepper, lectures_saffron,
                lectures_vanilla)
 from . import lectures_drum, lectures_flute, lectures_harp, lectures_piano
+from . import (lectures_brooklynbridge, lectures_goldengate,
+               lectures_pontevecchio, lectures_towerbridge)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -160,6 +162,8 @@ _CATALOG = [
                         lectures_vanilla]),
     ("Musical Instruments", [lectures_piano, lectures_harp, lectures_flute,
                              lectures_drum]),
+    ("Famous Bridges", [lectures_goldengate, lectures_pontevecchio,
+                        lectures_towerbridge, lectures_brooklynbridge]),
 ]
 
 LECTURES = {}
