@@ -128,6 +128,9 @@ def _sound(win, m):
     drums = voices.names(voices.GROUP_DRUMS)         # rhythmic drum layers (effects slot)
     if drums:
         _list_menu(m.addMenu("Drums"), drums, win.set_effect)
+    wind = voices.names(voices.GROUP_WIND)           # organs / reed drones / horns
+    if wind:
+        _list_menu(m.addMenu("Winds & Organs"), wind, win.set_ambience)
     m.addSeparator()
     m.addAction("Mixer…").triggered.connect(lambda: dialogs.open_mixer(win))
 

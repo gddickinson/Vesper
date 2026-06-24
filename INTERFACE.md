@@ -203,7 +203,9 @@ feedback-comb `reverb.Reverb`; and **`synth_bell`** — a struck-resonator engin
 **Bells & Gongs** library (`GROUP_BELLS`: bells / bowls / gong / triangle / tingsha / tubular +
 a sung bowl) tolling slowly as a meditation/ambience bed; and **`synth_drum`** — a
 membrane/percussion synth + **Drums** library (`GROUP_DRUMS`: frame/taiko/tabla/djembe/log/
-woodblock/bodhran) struck on a tempo (effects slot). The 2D fallback face lives in
+woodblock/bodhran) struck on a tempo (effects slot); and **`synth_wind`** — sustained additive
+**Winds & Organs** (`GROUP_WIND`: Pipe Organ, Harmonium/Shruti, Reed Organ, Wooden Flute +
+Train Whistle / Fog Horn / Ship Horn periodic blasts). The 2D fallback face lives in
 `vesper/cat.py`.
 
 ## Other project files

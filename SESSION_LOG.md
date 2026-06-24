@@ -594,6 +594,19 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Feature (user request) — Whistles / Organs / Horns synthesis module
+Added `breathsim/synth_wind.py` (instrument suite, part 3): sustained additive tonal sources in
+two shapes. `_Organ` is a continuous drone (a harmonic stack + a tremulant + slight detune beating
++ optional breath chiff) - Pipe Organ (full/churchy), Harmonium/Shruti (buzzy reed, ideal under
+chants), Reed Organ (soft), Wooden Flute (breathy, near-pure). `_Horn` schedules periodic blasts
+(`_Blast` = a chord with a slow raised-cosine swell-in, hold, slow release) - Train Whistle (a
+wistful 4-pitch chord), Fog Horn (deep octave), Ship Horn (low two-tone). 7 voices in a new
+**Winds & Organs** group (GROUP_WIND), plugged in via `textures.register_generator`, in the
+ambience picker + a **Sound > Winds & Organs** menu. Gains calibrated over a 120 s render
+(~0.72 peak); FFT confirms the spectra (Pipe Organ 131/262, Harmonium 147/294/440, Flute 330/659,
+Train Whistle 440/524/660/783, Fog Horn 140). selftest passes (137 voices); offscreen Chant
+session selects + crossfades them, thread-stable (2->2) on both faces. 174 lines.
+
 ## Feature (user request) — Drums synthesis module
 Added `breathsim/synth_drum.py` (instrument suite, part 2): a membrane/percussion synth. Each hit
 (`_Hit`) is one-or-two membrane modes - decaying sines with a gentle **downward pitch glide** (a
