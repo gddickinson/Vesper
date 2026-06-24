@@ -163,6 +163,20 @@ class _SectionsMixin:
         self._w["phrase"] = ph
         body.addWidget(muted("Phrase"))
         body.addWidget(ph)
+        whole = QCheckBox("Sing the whole phrase per breath")
+        whole.setChecked(self.win.engine.chant_style == "per_phrase")
+        whole.toggled.connect(
+            lambda on: self.win.set_chant_style("per_phrase" if on else "per_breath"))
+        self._w["chant_whole"] = whole
+        body.addWidget(whole)
+        rec = QCheckBox("Reciting tone (one steady note)")
+        rec.setChecked(bool(getattr(self.win.engine, "chant_recite", False)))
+        rec.toggled.connect(self.win.set_chant_recite)
+        self._w["chant_recite"] = rec
+        body.addWidget(rec)
+        lbl = muted("")                                  # live sing-along syllable
+        self._w["chant_syllable"] = lbl
+        body.addWidget(lbl)
         return frame
 
     def _on_phrase_cat(self, cat):

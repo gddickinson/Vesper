@@ -119,6 +119,14 @@ class _ActionsMixin:
     def set_phrase(self, name):
         self.engine.set_phrase(phrases.get(name) if _norm(name) else None)
 
+    def set_chant_style(self, style):
+        """'per_phrase' (whole phrase per breath) or 'per_breath' (one syllable)."""
+        self.engine.set_chant_style(style)
+
+    def set_chant_recite(self, on):
+        """Reciting tone: chant on a steady tonic (vs. the melodic pitches)."""
+        self.engine.set_chant_recite(bool(on))
+
     # --- cues -------------------------------------------------------------
     def set_cue_style(self, style):
         self.speech.set_style(style)

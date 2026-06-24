@@ -2104,6 +2104,17 @@ tail energy rises Room→Hall→Cathedral; selftest passes; offscreen Chant driv
 faces runs the real audio callback through every preset finite & non-clipping, menu
 builds, space persists ("Hall"), thread-stable. Demo: scratchpad/SPACE_DEMO.wav.
 
+## Round 2 (roadmap) — chant workspace controls + sing-along read-out
+Surfaced the chant controls that existed on the engine but had no Qt UI. The phrase
+card (`sections._card_phrase`) now has **"Sing the whole phrase per breath"**
+(per_phrase <-> per_breath, `win.set_chant_style`) and **"Reciting tone"** (steady
+tonic, `win.set_chant_recite`) check-boxes, plus a live **♪ syllable** read-out so you
+can chant along: `engine.current_syllable()` returns the phrase track's active syllable
+(engine stashes `_phrase_track` when building a phrase voice), refreshed each frame in
+`controls.tick`. Verified: toggles drive `engine.chant_style`/`chant_recite`; rendering
+"Om Mani Padme Hum" across an exhale surfaces all six syllables live (label shows
+"♪ Hum"); selftest passes; both-faces drive clean, thread-stable.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

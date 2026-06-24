@@ -112,6 +112,7 @@ class AudioEngine:
         self._word_exhale = 0.0            # exhale length the buffer was prepared for
         self._word_token = 0               # guards stale background stretches
         self.phrase = None                 # active chant/song phrase (overrides)
+        self._phrase_track = None          # the live phrase VocalTrack (sing-along)
         self.chant_style = "per_breath"    # per_breath | per_phrase
         self.chant_recite = True           # mantras on a steady reciting tone
         # per-slot mix gain (default 1.0); effects sit a touch under unity
@@ -151,7 +152,9 @@ class AudioEngine:
             track.set_sequence(self.phrase.segments, self.phrase.base_pitch,
                                self.chant_style, self.phrase.groups,
                                monotone=recite)
+            self._phrase_track = track       # for the live sing-along read-out
             return track
+        self._phrase_track = None
         a_cfg = voices.get_voice(self.voice_a) if self.voice_a else None
         if a_cfg is None:
             return None
@@ -308,6 +311,13 @@ class AudioEngine:
             self.chant_style = getattr(phrase, "style", None) or self.chant_style
             self._rebuild_exhale(fade)
         self._rebuild_primary(fade)
+
+    def current_syllable(self) -> str:
+        """The syllable the chant voice is sounding right now ('' if none) -- for
+        the on-screen sing-along read-out."""
+        tr = self._phrase_track
+        seg = getattr(tr, "_active_seg", None) if tr is not None else None
+        return getattr(seg, "syllable", "") if seg is not None else ""
 
     def set_chant_style(self, style: str):
         """'per_breath' (one syllable/breath) or 'per_phrase' (whole phrase)."""

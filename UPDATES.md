@@ -58,9 +58,9 @@ Guardrails (every round):
 Set with the user after the realistic-chanting round. Tick as completed.
 1. [x] **Reverb / sacred-space send** — `reverb.SpaceReverb` master room
    (Off/Room/Hall/Cathedral), Sound ▸ Space menu, persisted. Done.
-2. [ ] **Chant workspace controls + sing-along** — surface engine controls missing from
-   the Qt UI: per-breath <-> per-phrase toggle (style is auto now, no manual override) +
-   the reciting-tone toggle; on-screen **syllable highlight** to chant along.
+2. [x] **Chant workspace controls + sing-along** — phrase card now has "Sing the whole
+   phrase per breath" + "Reciting tone" toggles and a live ♪ syllable read-out
+   (`engine.current_syllable`). Done.
 3. [ ] **Body-scan + PMR guided program** — timed tense->release head-to-toe cues.
 4. [ ] **Physiological-sigh reset** — a 2-3 min one-tap "Sigh" mini-session.
 5. [ ] **Characters -> story binding + story-following dynamic backgrounds**

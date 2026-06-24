@@ -156,6 +156,10 @@ class ControlPanel(_SectionsMixin, QWidget):
         bar = self._w.get("pattern_bar")
         if bar is not None:
             bar.refresh(self.win.controller)         # live phase highlight + segments
+        syl = self._w.get("chant_syllable")          # sing-along: current syllable
+        if syl is not None:
+            cur = self.win.engine.current_syllable()
+            syl.setText(f"♪  {cur}" if cur else "")
 
     # --- reflection from the window ---------------------------------------
     def reflect_mode(self, name):
