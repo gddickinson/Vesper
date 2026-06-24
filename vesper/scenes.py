@@ -74,6 +74,23 @@ class OrbScene:
         radius = r_min + (r_max - r_min) * vol
         hue = theme.phase_hue(c["phase"]) if running else theme.ACCENT_DIM
 
+        # a faint ambient vignette tints the dark field with the phase hue and
+        # breathes with the orb (kept very low-contrast)
+        amb = QRadialGradient(cx, cy, min(w, h) * 0.78)
+        amb.setColorAt(0.0, _qc(theme.blend(theme.BG, hue, 0.13),
+                                0.25 + 0.25 * vol))
+        amb.setColorAt(1.0, _qc(theme.BG, 0.0))
+        p.setPen(Qt.PenStyle.NoPen)
+        p.setBrush(QBrush(amb))
+        p.drawEllipse(QPointF(cx, cy), min(w, h) * 0.78, min(w, h) * 0.78)
+        # a soft flattened reflection bloom below, as if the orb rests on stillness
+        ry = cy + radius * 1.55
+        refl = QRadialGradient(cx, ry, radius * 1.3)
+        refl.setColorAt(0.0, _qc(theme.glow(hue, 0.3), 0.10 + 0.08 * vol))
+        refl.setColorAt(1.0, _qc(hue, 0.0))
+        p.setBrush(QBrush(refl))
+        p.drawEllipse(QPointF(cx, ry), radius * 1.3, radius * 0.5)
+
         # soft exhale rings: a gentle ring expands outward at each exhale onset
         if running and c["phase"] != self._last_phase:
             if c["phase"] == "exhale":

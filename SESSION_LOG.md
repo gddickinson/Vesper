@@ -594,6 +594,20 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — gentle Meditate orb enrichment (ambient vignette + floor reflection)
+Deepened `vesper/scenes.OrbScene` (the Meditate breath orb) with two subtle, low-contrast touches
+behind the orb, both driven by the existing `anim_t` / volume / phase (no new state, no API change):
+(1) a faint **phase-hue ambient vignette** -- a large radial gradient centred on the orb from a
+lightly hue-tinted BG out to transparent, its alpha breathing with the breath volume, so the dark
+field gently glows with the inhale/hold/exhale colour; (2) a soft **floor-reflection bloom** -- a
+flattened radial glow drawn just below the orb, as if it rests on still water. Both sit behind the
+existing exhale rings, glow, motes, coherence halo, travelling guide dot and the phase/session
+progress arcs, which are all untouched, so the scene stays clean and uncluttered. `scenes.py` stays
+466 lines (<500), so no split was needed. Verified: `selftest.py` passes (141 lectures / 24
+branches); offscreen both faces -- in Meditate with the orb scene the viz renders at 564x557 to
+non-empty PNGs (~70 KB) that **differ frame-to-frame** (the breathing orb, drifting motes and the
+travelling guide dot), thread-stable.
+
 ## App round — soundscape preset save/recall (light sound-only mixes)
 Let the user save a named mix of just the sound layers and recall it in one tap -- distinct from the
 full Presets system (which also captures pattern/voice/persona/scene). `breathsim/store` gains

@@ -412,6 +412,13 @@ Guardrails (every round):
       stores names + levels. Done: selftest passes; store round-trip unit-tested (save/list/get/
       delete); offscreen both faces — save a mix, change it, recall restores ambience/level/rotate,
       unknown voice tolerated, thread-stable.
+- [x] **Gentle Meditate orb enrichment** (`vesper/scenes.OrbScene`): two subtle, serene touches
+      behind the breath orb — a faint **phase-hue ambient vignette** that tints the dark field and
+      breathes with the orb's volume, and a soft, flattened **floor-reflection bloom** beneath it (as
+      if it rests on stillness). Low-contrast, driven by the existing `anim_t` / volume / phase; the
+      guide dot, exhale rings, coherence halo and progress arcs are untouched. Done: selftest passes;
+      `scenes.py` stays 466 lines; offscreen both faces render the orb scene (564x557) to non-empty
+      PNGs that change frame-to-frame, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never
