@@ -104,6 +104,27 @@ def pace_line(hist):
     return txt
 
 
+def this_month(hist, today=None):
+    """A kind tally of the current calendar month's practice, or None if none.
+    Pure: sums sits + minutes over the per-day log entries whose date falls in
+    *today*'s month. Just a tally -- no goals or claims."""
+    today = today or _dt.date.today()
+    sits = 0
+    mins = 0.0
+    for iso, v in hist.get("days", {}).items():
+        try:
+            d = _dt.date.fromisoformat(iso)
+        except (ValueError, TypeError):
+            continue                          # ignore malformed date keys
+        if d.year == today.year and d.month == today.month:
+            sits += int(v.get("sits", 0))
+            mins += float(v.get("min", 0.0))
+    if sits <= 0 and mins <= 0:
+        return None                           # nothing this month yet
+    s = "sit" if sits == 1 else "sits"
+    return f"This month: {sits} {s}, {mins:.0f} min."
+
+
 def lines(hist=None, today=None):
     """A short list of friendly insight strings (possibly empty for a new user)."""
     hist = hist if hist is not None else store.history()
@@ -115,6 +136,9 @@ def lines(hist=None, today=None):
     mins = float(hist.get("minutes", 0.0))
     s = "session" if sits == 1 else "sessions"
     out.append(f"{sits} {s}, {mins:.0f} min in all.")
+    tm = this_month(hist, today)
+    if tm:
+        out.append(tm)
     avg = average_minutes(hist)
     if avg is not None:
         out.append(f"Your sits average about {avg:.0f} min.")

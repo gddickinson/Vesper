@@ -485,6 +485,17 @@ Guardrails (every round):
       scene + non-Sleep mode handled; whitespace trimmed) and `save_settings` merge round-trip tested
       (partial patch keeps prior keys); offscreen both faces — a seeded prior settings file shows the
       hint idle, it's retired after Start, and close persists every key incl `last_scene`, thread-stable.
+- [x] **Gentle Stats "this month" total** (`breathsim/insights.py`): the Stats dialog now shows a calm
+      tally of the current calendar month, e.g. "This month: 7 sits, 84 min", right after the all-time
+      total. Pure `this_month(hist, today)` sums sits + minutes over the per-day log entries falling in
+      `today`'s month (ignoring prior/next months and malformed date keys), pluralises sit/sits, rounds
+      minutes, and returns None for an empty month so a new user sees nothing. Surfaced via
+      `insights.lines()` so it renders in the Stats insights area. Honest: just a tally of this month,
+      no goals/claims. Done: selftest passes; `this_month` unit-tested (empty/prior-only -> None;
+      this-month summed with out-of-month + malformed keys excluded; "1 sit" singular; minute rounding;
+      minutes-only; lines() placement right after the total; new user -> no lines); offscreen both
+      faces — the line appears in the Stats insights widget after a few seeded sits and is absent for a
+      new user, thread-stable.
 - [x] **Stats "best time of day" nudge** (`breathsim/besttime.py` + insights): the Stats dialog now
       gently names when you tend to practise, e.g. "You most often practise around 9-10 pm". Pure
       `best_time_phrase(hours, min_total=5)` reads the practice-history hour histogram, finds the modal

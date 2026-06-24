@@ -594,6 +594,22 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — gentle Stats "this month" total
+The Stats dialog now shows a calm tally of the current calendar month -- e.g. "This month: 7 sits, 84
+min" -- placed right after the all-time total. New pure `insights.this_month(hist, today)` sums sits
+and minutes over the per-day practice-log entries (`history()["days"]`, a {YYYY-MM-DD: {min, sits}}
+dict) whose date falls in `today`'s calendar month, ignoring prior/next months and silently skipping
+malformed date keys; it pluralises sit/sits, rounds minutes, and returns None for an empty month so a
+new user sees nothing. `insights.lines()` inserts the phrase just below the all-time "N sessions, M min
+in all" line, so it renders in the Stats insights area (via `stats_heatmap.build`). Honest framing:
+it's only a tally of the month -- no goals, no nagging, no claims. Verified: `selftest.py` passes;
+`this_month` unit-tested (empty and prior-months-only -> None; this-month days summed with out-of-month
+and malformed keys excluded; singular "1 sit" vs plural; minute rounding; a minutes-only day; the
+lines() placement immediately after the all-time total; a new user with no sits yields no lines at
+all). Offscreen both faces: after seeding a few sits via `store.log_session` the "This month: ..." line
+appears in the Stats insights widget, and it is absent for a fresh history; a 24-frame tick loop is
+thread-stable.
+
 ## Stories round — new branch The Night Sky Across Cultures (Pleiades, Milky Way Myths, Southern Cross, Lunar Calendars)
 Added a 31st lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
 fact-free section 1, accurate astronomy + cross-cultural sky lore with every culture's myth framed AS
