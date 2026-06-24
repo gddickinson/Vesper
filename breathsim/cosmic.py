@@ -277,6 +277,23 @@ _PLANETS = dict(         # scale derived from real planetary orbital periods
     partials=[(1.0, 1.0), (2.0, 0.4), (3.0, 0.15), (4.0, 0.06)],
     vib=(0.16, 0.6), drone=0.16, reverb=0.62, damp=2700.0, breath=0.45)
 
+_AURORA = dict(          # ethereal, slowly shifting curtains of light
+    base=196.0, scale=_PENTA, roots=_ROOTS, octaves=[1.0, 1.0, 2.0],
+    root_period=40.0, root_period_range=(30.0, 58.0), interval=(3.0, 6.0),
+    attack=(5.0, 9.0), hold=(3.0, 8.0), release=(7.0, 12.0), amp=(0.18, 0.36),
+    pan=1.0, partials=[(1.0, 1.0), (2.0, 0.45), (3.0, 0.2), (5.0, 0.08)],
+    vib=(0.14, 0.7), shimmer=(6200.0, 0.07), drone=0.08, reverb=0.72,
+    damp=3600.0, breath=0.55)
+
+_RINGS = dict(           # icy, glittering - the shimmer of Saturn's rings
+    base=261.63, scale=_PENTA, roots=[1 / 1, 3 / 2, 5 / 4, 9 / 8],
+    octaves=[1.0, 2.0, 2.0], root_period=32.0, root_period_range=(24.0, 46.0),
+    interval=(2.2, 4.5), attack=(3.0, 6.0), hold=(2.0, 6.0), release=(5.0, 9.0),
+    amp=(0.14, 0.30), pan=1.0,
+    partials=[(1.0, 1.0), (2.0, 0.55), (3.0, 0.35), (4.0, 0.22), (6.0, 0.1)],
+    vib=(0.18, 0.6), shimmer=(7800.0, 0.09), drone=0.06, reverb=0.7,
+    damp=5200.0, breath=0.4)
+
 # (key, display name, palette, seed, calibrated gain, description). Gains are set
 # so the worst peak over a long deterministic render sits near 0.75 (see
 # tools-style calibration in SESSION_LOG); reverb buildup is included.
@@ -305,6 +322,11 @@ _PRESETS = [
     ("planets", "The Planets", _PLANETS, 78, 0.497,
      "Chords tuned to the real orbital periods of the planets - Kepler's harmony "
      "of the spheres, made audible."),
+    ("aurora", "Aurora Tones", _AURORA, 79, 0.563,
+     "Ethereal, slowly shifting curtains of light - soft, cold, glowing tones "
+     "drifting across the sky."),
+    ("rings", "Saturn Ring Shimmer", _RINGS, 80, 0.757,
+     "Icy, glittering high tones - the slow shimmer of light on Saturn's rings."),
 ]
 
 

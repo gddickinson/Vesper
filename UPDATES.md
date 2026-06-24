@@ -153,7 +153,9 @@ Guardrails (every round):
 - [x] **More presets / themes** (+4): Solar Wind (airy shimmer), Nebula Bloom (lush
       formant chords), Pulsar Pulse (a 0.7 Hz beat), Gravity Well (a click-free descending
       black-hole "ringdown" glide via frequency->phase integration in `_Pad`). Calibrated
-      ~0.74 peak; 7 Cosmic Music voices now. (Aurora Tones / Saturn Ring shimmer still open.)
+      ~0.74 peak; 7 Cosmic Music voices now.
+- [x] **Aurora Tones + Saturn Ring Shimmer** presets: ethereal shifting curtains of light +
+      icy glittering high tones -> **10 Cosmic Music voices**; calibrated, tonal + non-repeating.
 - [x] **Breath-synced harmony**: the Cosmic Music now breathes WITH you — `TextureTrack` feeds
       the breath state to generators that opt in (`wants_state`); `_Cosmic` reads lung volume to
       gently raise pad density, brightness and a click-free level swell on the inhale and settle
@@ -214,6 +216,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Cosmic music +2 (Aurora Tones · Saturn Ring Shimmer) -> 10 Cosmic Music voices.
 - Sound > Cosmic Music menu: all 8 generative music voices one click away.
 - Cosmic music data sonification: "The Planets" (real orbital-ratio scale) + real pulsar beat.
 - New lecture branch Voyages & Journeys (Compass · Caravan · Railway · Balloon) → 78 / 9.

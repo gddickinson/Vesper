@@ -594,6 +594,16 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Music round — Aurora Tones + Saturn Ring Shimmer presets
+Added two more Cosmic Music presets to `cosmic.py`: **Aurora Tones** (ethereal, slowly shifting
+mid/high pentatonic pads, wide stereo, gentle high shimmer, large reverb, breath-synced - cold
+glowing curtains) and **Saturn Ring Shimmer** (a brighter/higher palette with more high partials
+and a fine 7.8 kHz shimmer, wide stereo, big reverb - icy and glittering). Calibrated over a
+200 s breath render (Aurora gain 0.563, Saturn 0.757; peaks ~0.59/0.73); FFT confirms tonal,
+consonant content and near-zero window correlation (non-repeating). **10 Cosmic Music voices**
+now; selftest passes; offscreen Relax session selects + crossfades both, thread-stable (2->2)
+on both faces. cosmic.py 340 lines.
+
 ## Music round — Sound > Cosmic Music menu (one-click generative music)
 Surfaced the generative music as first-class: added a **Cosmic Music** submenu under the Sound
 menu (`vesper/menus.py`) listing all 8 `GROUP_MUSIC` voices, each calling `win.set_ambience`
