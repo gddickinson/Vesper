@@ -272,6 +272,12 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Mythic Places** (4): Atlantis · Shangri-La · El Dorado · Avalon — added
+      `lectures_{atlantis,shangrila,eldorado,avalon}.py` (7x12-13 lines, fact-free section 1, each
+      legend framed honestly AS a legend + the real history of the belief/search, ASCII, sleep-
+      closing; Ocean Waves / Mountain Stream / Forest Wind / Gentle Rain), new branch in `_CATALOG`
+      → **105 lectures / 15 branches**; DB rebuilt (8,846 lines / 135,019 words); selftest passes.
+      Done: validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Trees of the World** (4): The Oak · Bamboo · The Baobab · Cherry Blossom —
       added `lectures_{oak,bamboo,baobab,cherryblossom}.py` (7x12-13 lines, fact-free section 1,
       accurate botany/history, ASCII, sleep-closing; Forest Wind / Soft Rainstorm / Night Crickets /

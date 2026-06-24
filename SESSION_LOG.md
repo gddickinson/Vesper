@@ -594,6 +594,24 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Mythic Places (Atlantis, Shangri-La, El Dorado, Avalon)
+Added a 15th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+ASCII, sleep-closing), each legend framed **honestly as a legend** -- the wonder is the tale and the
+real history of believing in / searching for it, never a claim the place was real: `lectures_atlantis.py`
+(Atlantis, Ocean Waves - Plato's Timaeus/Critias as a moral parable about pride, most scholars hold
+he invented it, the 19th-c hunt after Donnelly, the Thera/Minoan possible echo, no continent has
+sunk), `lectures_shangrila.py` (Shangri-La, Mountain Stream - fiction from James Hilton's 1933 Lost
+Horizon, rooted in the Tibetan Shambhala legend, a between-the-wars longing for refuge, the US
+retreat later renamed Camp David, Yunnan's renamed county), `lectures_eldorado.py` (El Dorado,
+Forest Wind - "the gilded one" began as the real Muisca gold-dust raft rite at Lake Guatavita near
+Bogota, swelling through retelling into a golden city never found, Raleigh's voyages, the lake
+drained but no city, the surviving golden raft), and `lectures_avalon.py` (Avalon, Gentle Rain - the
+Arthurian Isle of Apples first written by Geoffrey of Monmouth, the wounded king carried across the
+water to heal, the once-and-future-king, Glastonbury's likely pilgrim-drawing grave claim). New
+branch in `_CATALOG` -> **105 lectures / 15 branches**. Validated all four (7 sections, 12-13 lines,
+pure ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (8,846 lines /
+135,019 words / 5 scenes). The storyteller `units()` stream renders each (e.g. Avalon = 111 units).
+
 ## App round — spatial polish (gentle, peak-safe ambience width + slow auto-pan)
 Added `breathsim/spatial.py` (`Spatializer` + `SpatialTrack`, 80 lines): two subtle, peak-safe,
 click-free stereo effects on the ambience bed. (1) **Pseudo-stereo widening** -- each output channel
