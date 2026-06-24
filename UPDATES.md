@@ -206,9 +206,12 @@ Guardrails (every round):
       beating + chiff) and `_Horn` periodic blasts (Train Whistle as a 4-pitch chord, Fog Horn,
       Ship Horn - slow swell). 7 voices in a new GROUP_WIND, in the ambience picker + a Sound menu.
       Calibrated; FFT confirms the spectra; selftest passes.
-- [ ] **Rhythmic / environmental FX**: train (wheel clacks on a tempo + engine chuff + rumble),
-      ship (water lapping hull + creak + horn), thunder & lightning (a crack + a long rolling
-      rumble), ocean buoy bell. New module `synth_fx.py`.
+- [x] **Rhythmic / environmental FX** (`synth_fx.py`): composite filtered-noise + event
+      generators - Train (Steam/Diesel: clickety-clack + rumble + chuff), Ship / Harbour (hull
+      wash + creaks + far horn), Thunderstorm (rumble bed + soft thunder rolls), Ocean Buoy Bell
+      (irregular tolling over a sea wash). 5 voices in a new GROUP_FX, in the ambience picker + a
+      Sound menu. Calibrated (300 s peak <= 0.75); selftest passes. **Instrument suite complete:
+      Bells & Gongs + Drums + Winds & Organs + Environmental FX = 31 synthesised voices.**
 - [ ] **Spatial polish**: subtle auto-pan / width on ambiences for headphone immersion.
 
 ### Researched batch — engagement & structure
@@ -258,6 +261,8 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- Environmental FX synth (`synth_fx.py`): Train (Steam/Diesel), Ship/Harbour, Thunderstorm,
+  Ocean Buoy Bell - completes the instrument suite (31 synthesised voices across 4 modules).
 - Winds & Organs synth (`synth_wind.py`): 7 sustained voices - Pipe Organ, Harmonium/Shruti,
   Reed Organ, Wooden Flute + Train Whistle / Fog Horn / Ship Horn; ambience picker + Sound menu.
 - Drums synth (`synth_drum.py`): 7 membrane drums (frame/taiko/tabla/djembe/log/woodblock/

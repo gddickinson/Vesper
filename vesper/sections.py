@@ -168,7 +168,8 @@ class _SectionsMixin:
         ambs = (["None"] + voices.names(voices.GROUP_NATURE)
                 + voices.names(voices.GROUP_MUSIC)
                 + voices.names(voices.GROUP_BELLS)
-                + voices.names(voices.GROUP_WIND))
+                + voices.names(voices.GROUP_WIND)
+                + voices.names(voices.GROUP_FX))
         a = combo(ambs, self.win.engine.slot_voice.get("ambience") or "None",
                   self.win.set_ambience)
         self._w["ambience"] = a

@@ -131,6 +131,9 @@ def _sound(win, m):
     wind = voices.names(voices.GROUP_WIND)           # organs / reed drones / horns
     if wind:
         _list_menu(m.addMenu("Winds & Organs"), wind, win.set_ambience)
+    fx = voices.names(voices.GROUP_FX)               # trains / ship / storm / buoy
+    if fx:
+        _list_menu(m.addMenu("Environmental FX"), fx, win.set_ambience)
     m.addSeparator()
     m.addAction("Mixer…").triggered.connect(lambda: dialogs.open_mixer(win))
 

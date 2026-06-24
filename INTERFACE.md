@@ -205,8 +205,10 @@ a sung bowl) tolling slowly as a meditation/ambience bed; and **`synth_drum`** �
 membrane/percussion synth + **Drums** library (`GROUP_DRUMS`: frame/taiko/tabla/djembe/log/
 woodblock/bodhran) struck on a tempo (effects slot); and **`synth_wind`** — sustained additive
 **Winds & Organs** (`GROUP_WIND`: Pipe Organ, Harmonium/Shruti, Reed Organ, Wooden Flute +
-Train Whistle / Fog Horn / Ship Horn periodic blasts). The 2D fallback face lives in
-`vesper/cat.py`.
+Train Whistle / Fog Horn / Ship Horn periodic blasts); and **`synth_fx`** — composite
+**Environmental FX** (`GROUP_FX`: Train Steam/Diesel, Ship/Harbour, Thunderstorm, Ocean Buoy
+Bell). Together these four `synth_*` modules add 31 synthesised instrument/effect voices. The
+2D fallback face lives in `vesper/cat.py`.
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

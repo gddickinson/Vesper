@@ -594,6 +594,25 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Feature (user request) — Rhythmic / environmental FX (instrument suite complete)
+Added `breathsim/synth_fx.py` (instrument suite, part 4, final): composite filtered-noise + event
+generators. `_Train` (Steam + Diesel) = paired wheel "clickety-clack" clacks on a tempo + a
+lowpassed brown rumble + a band-passed engine chuff per beat. `_Ship` = a band-passed water wash
+that swells (lapping hull) + occasional low wooden creaks + a rare slow horn blast. `_Storm` = a
+distant lowpassed rumble bed + randomly-spaced thunder events (a brief high-passed crack then a
+multi-second rolling lowpassed rumble), gentle/far-off. `_Buoy` = a struck two-mode bell tolling
+irregularly (rocked by the swell) over a faint sea wash. 5 voices in a new **Environmental FX**
+group (GROUP_FX), plugged in via `textures.register_generator`, in the ambience picker + a
+**Sound > Environmental FX** menu. Gains calibrated; worst peak over 300 s <= 0.75 (these stack
+noise + random events). selftest passes (142 voices); offscreen Relax session selects + crossfades
+them, thread-stable (2->2) on both faces. 218 lines.
+
+This COMPLETES the user's synthesised-sound suite: **synth_bell** (12) + **synth_drum** (7) +
+**synth_wind** (7) + **synth_fx** (5) = **31 new synthesised instruments/effects** across Bells &
+Gongs, Drums, Winds & Organs and Environmental FX - all `kind="texture"` generators sharing the
+struck-resonator / additive-drone / scheduled-event / filtered-noise primitives, calibrated, in
+the soundscape pickers + Sound submenus.
+
 ## Feature (user request) — Whistles / Organs / Horns synthesis module
 Added `breathsim/synth_wind.py` (instrument suite, part 3): sustained additive tonal sources in
 two shapes. `_Organ` is a continuous drone (a harmonic stack + a tremulant + slight detune beating

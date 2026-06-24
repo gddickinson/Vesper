@@ -32,6 +32,7 @@ GROUP_MUSIC = "Cosmic Music"
 GROUP_BELLS = "Bells & Gongs"
 GROUP_DRUMS = "Drums"
 GROUP_WIND = "Winds & Organs"
+GROUP_FX = "Environmental FX"
 
 # Voice families whose primary slot supports the human<->synthetic morph and
 # per-voice morphing (everything voice/breath based).
@@ -267,3 +268,4 @@ from . import cosmic  # noqa: E402,F401  (generative Cosmic Music; needs texture
 from . import synth_bell  # noqa: E402,F401  (Bells & Gongs; needs textures)
 from . import synth_drum  # noqa: E402,F401  (Drums; needs textures)
 from . import synth_wind  # noqa: E402,F401  (Winds & Organs; needs textures)
+from . import synth_fx  # noqa: E402,F401  (Environmental FX; needs textures)
