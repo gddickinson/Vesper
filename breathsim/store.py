@@ -323,6 +323,34 @@ def delete_soundscape(name):
     return d
 
 
+# --- per-lecture resume (roughly where a long lecture left off) -------------
+
+def lecture_progress():
+    d = _read("lecture_progress.json", {})
+    return d if isinstance(d, dict) else {}
+
+
+def get_lecture_progress(name):
+    e = lecture_progress().get(name, {})
+    return e if isinstance(e, dict) else {}
+
+
+def set_lecture_progress(name, section):
+    if not name:
+        return lecture_progress()
+    d = lecture_progress()
+    d[name] = {"section": int(section),
+               "t": _dt.date.today().isoformat()}
+    _write("lecture_progress.json", d)
+    return d
+
+
+def clear_lecture_progress(name):
+    d = lecture_progress()
+    d.pop(name, None)
+    _write("lecture_progress.json", d)
+
+
 # --- per-mode remembered voice / ambience ----------------------------------
 
 def mode_prefs():

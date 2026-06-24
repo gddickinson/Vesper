@@ -111,6 +111,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._cur_cap = 1.0                # last applied output cap (see _tick)
         self._blackout = False             # near-dark sleep screen (audio keeps playing)
         self._coach = False                # breathing-coach on-screen count cue (opt-in)
+        self._last_logged_section = -1     # per-lecture resume: last recorded section
         self._font_scale = 1.0             # accessibility: global UI text size
         self._base_pt = 0.0                # app font point size before any scaling
         self._active_course = None         # (course name, total) while a course day runs
@@ -503,7 +504,19 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         if not (self._story_scene and self.narrator.available
                 and self.controller.running):
             return
-        units = stories.story_units(self._story_scene, guidance=True)
+        start = 0                                      # resume a long lecture, gently
+        from breathsim import lectures, resume, store
+        total = lectures.section_count(self._story_scene)
+        if total:
+            import datetime as _dt
+            start = resume.start_section(
+                store.get_lecture_progress(self._story_scene), total, _dt.date.today())
+            if start:
+                self.status.showMessage(
+                    f"Resuming \"{self._story_scene}\" partway through", 4000)
+        self._last_logged_section = start - 1          # so the first new section logs
+        units = stories.story_units(self._story_scene, guidance=True,
+                                    start_section=start)
         self.narrator.start(units, self._story_level, self._story_timing,
                             self._on_story_unit)
 
@@ -521,6 +534,15 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         """Per narrated line: show it, steer the soundscape, set the face's mood."""
         text = unit.get("text", "")
         self._story_line = text
+        sec = unit.get("section")                       # track lecture progress (throttled)
+        if sec is not None and sec != getattr(self, "_last_logged_section", -1):
+            self._last_logged_section = sec
+            from breathsim import lectures, store
+            total = lectures.section_count(self._story_scene)
+            if total and sec >= total - 1:             # finished -> clear so it starts fresh
+                store.clear_lecture_progress(self._story_scene)
+            else:
+                store.set_lecture_progress(self._story_scene, sec)
         if unit.get("kind") in ("shuffle", "hypnosis", "poem"):
             # Shuffle nouns / hypnosis / poems shouldn't steer the bed; hold it.
             self._mood_target = (0.0, 0.0, 0.0)

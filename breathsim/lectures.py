@@ -186,6 +186,11 @@ def get(name):
     return LECTURES.get(name)
 
 
+def section_count(name):
+    l = LECTURES.get(name)
+    return len(l.sections) if l else 0
+
+
 def category_of(name):
     l = LECTURES.get(name)
     return l.category if l else None
@@ -196,10 +201,14 @@ def ambience(name):
     return l.ambience if l else None
 
 
-def units(name, rng=None, guidance=True):
+def units(name, rng=None, guidance=True, start_section=0):
     """Yield the lecture's lines in order (a finite stream), weaving a breath /
     body-scan / relaxation interlude after every other section so it stays a
-    sleep aid. Imports the shared interludes lazily to avoid an import cycle."""
+    sleep aid. Imports the shared interludes lazily to avoid an import cycle.
+
+    *start_section* (0-based, clamped) lets a session resume partway through; the
+    default 0 yields the whole lecture exactly as before. Each lecture unit is
+    stamped with its ``section`` index so a caller can track progress."""
     import random
     rng = rng or random.Random()
     lec = LECTURES.get(name)
@@ -208,10 +217,15 @@ def units(name, rng=None, guidance=True):
     from .stories import _bodyscan, _breath, _relax, _u
     interludes = [_breath, _bodyscan, _relax]
     n = len(lec.sections)
+    start = max(0, min(int(start_section), n - 1))    # clamp into range
     for i, section in enumerate(lec.sections):
+        if i < start:
+            continue
         for j, line in enumerate(section):
             last = j == len(section) - 1
-            yield _u(line, pause=_SECTION_PAUSE if last else _LINE_PAUSE,
-                     kind="lecture")
+            u = _u(line, pause=_SECTION_PAUSE if last else _LINE_PAUSE,
+                   kind="lecture")
+            u["section"] = i                          # for progress / resume
+            yield u
         if guidance and i % 2 == 1 and i < n - 1:
             yield from interludes[(i // 2) % len(interludes)](rng)

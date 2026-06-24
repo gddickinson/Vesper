@@ -203,7 +203,7 @@ def _relax(rng):
 _INTERLUDES = [_breath, _bodyscan, _relax]
 
 
-def story_units(scene_name, rng=None, guidance=True, run=11):
+def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
     """Narration units for *scene_name*.
 
     A soothing **lecture** (finite, authored) if the name is one; otherwise an
@@ -223,7 +223,7 @@ def story_units(scene_name, rng=None, guidance=True, run=11):
         return
     from . import lectures
     if scene_name in lectures.names():
-        yield from lectures.units(scene_name, rng, guidance)
+        yield from lectures.units(scene_name, rng, guidance, start_section)
         return
     scene = SCENES.get(scene_name) or rng.choice(list(SCENES.values()))
     last = [None]

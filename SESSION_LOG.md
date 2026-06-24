@@ -642,6 +642,26 @@ Violin". New branch in `_CATALOG` -> **157 lectures / 28 branches**. Validated a
 12-13 lines, pure ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (13,401
 lines / 212,552 words / 5 scenes). The `units()` stream renders each (e.g. The Piano = 105 units).
 
+## App round — per-lecture resume (pick up a long lecture where you left off)
+A long bedtime lecture you drifted off during now gently resumes near where you stopped instead of
+always restarting at section 1. `lectures.units(name, rng, guidance, start_section=0)` gained an
+optional, clamped `start_section` (default 0 yields the whole lecture exactly as before -- selftest's
+unit-count checks are unchanged) and now stamps every lecture unit with its 0-based `section`;
+`stories.story_units` passes the arg through. `breathsim/resume.py` (pure, 29 lines):
+`start_section(entry, total, today, max_age_days=14, min_section=2)` returns where to resume -- only
+when the saved section is past the early part and not basically the end and recent, else 0 (fresh).
+`store` gains `lecture_progress` / `get_lecture_progress` / `set_lecture_progress` /
+`clear_lecture_progress` (`lecture_progress.json` {name:{section,t}}). In the window,
+`_on_story_unit` records the narrated section (throttled via `_last_logged_section`, clearing the
+entry once the final section is reached so it next starts fresh), and `_start_story` computes the
+resume point and passes `start_section` to `story_units`, showing a quiet "Resuming ... partway
+through" note. Honest framing: it just remembers a rough spot, opt-in by virtue of only acting when a
+recent mid-lecture spot exists. Verified: `selftest.py` passes (157 lectures / 28 branches);
+unit-tested -- `units(..., start_section=3)` skips to section 3, out-of-range clamps to the last,
+section stamps cover 0..6, and `resume.start_section` returns 0 for empty/too-early/finished/stale and
+the saved section otherwise; store round-trips; offscreen both faces record progress (-> section 3),
+clear it on reaching the last section, and resume a stubbed narration at section 3, thread-stable.
+
 ## App round — "fall asleep" one-tap preset
 Added `app.start_fall_asleep(minutes=40)`: a single action that composes the existing sleep features
 into the honest best set-up for drifting off -- it applies **Sleep mode** (`apply_mode("Sleep")`,

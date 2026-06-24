@@ -471,6 +471,16 @@ Guardrails (every round):
       returns to normal). Honest: it just configures sleep features. Done: selftest passes; offscreen
       both faces — leaves the app in Sleep + Calming 4-6 + wind-down armed + a sleep-timer set +
       running with no blocking dialog, and switching modes clears the wind-down, thread-stable.
+- [x] **Per-lecture resume** (`lectures.units` start_section + `breathsim/resume.py` + store): a long
+      lecture you didn't finish gently resumes near where you left off. `lectures.units(name, ...,
+      start_section=0)` (default unchanged) skips earlier sections and stamps each unit with its
+      `section`; `window._on_story_unit` records the narrated section to `store.lecture_progress`
+      (throttled, cleared on finish), and `_start_story` uses pure `resume.start_section(entry, total,
+      today)` to resume only when you got a fair way in (past ~section 2), not basically finished, and
+      recently (<=14 days) — else it starts fresh. Honest: it just remembers a rough spot. Done:
+      selftest passes (units default + story lengths unchanged); start_section/resume/store unit-tested
+      (skip, clamp, too-early/finished/stale -> fresh); offscreen both faces record progress, clear on
+      finish, and resume at the saved section, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never
