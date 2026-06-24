@@ -17,7 +17,7 @@ import subprocess
 import threading
 import time
 
-from . import kokoro_tts
+from . import kokoro_tts, xtts_tts
 
 # macOS ``say`` fallback voices, in preference order. A British female leads (to
 # match the app's British-female default), then other soft, clear voices.
@@ -66,11 +66,15 @@ def _say_best(speech):
 
 
 def available_voices(speech):
-    """Voices for the active engine (Kokoro if installed, else macOS say)."""
-    return kokoro_tts.voice_names() if kokoro_tts.ready() else _say_voices(speech)
+    """Voices the user can pick. XTTS voices (opt-in, highest quality) lead when
+    configured, then the default engine's voices (Kokoro if installed, else say)."""
+    out = list(xtts_tts.voice_names()) if xtts_tts.ready() else []
+    out += kokoro_tts.voice_names() if kokoro_tts.ready() else _say_voices(speech)
+    return out
 
 
 def best_voice(speech):
+    """The default voice -- NOT XTTS (that stays opt-in). Kokoro if installed."""
     return kokoro_tts.best_voice() if kokoro_tts.ready() else _say_best(speech)
 
 
@@ -82,10 +86,10 @@ _GENDER = {"f": "female", "m": "male"}
 
 
 def recommended(speech=None):
-    """The set of 'best' voice ids/names for the active engine (shown starred)."""
-    if kokoro_tts.ready():
-        return set(kokoro_tts.RECOMMENDED)
-    return set(_UK_FEMALE)
+    """The set of 'best' voice ids/names across engines (shown starred)."""
+    rec = set(xtts_tts.RECOMMENDED) if xtts_tts.ready() else set()
+    rec |= set(kokoro_tts.RECOMMENDED) if kokoro_tts.ready() else set(_UK_FEMALE)
+    return rec
 
 
 def is_recommended(voice, speech=None):
@@ -103,6 +107,8 @@ def voice_label(voice, speech=None):
         return "(no voice)"
     v = str(voice)
     star = "★ " if is_recommended(v, speech) else ""
+    if v.startswith(xtts_tts.PREFIX):                  # high-quality XTTS studio voice
+        return f"{star}{v[len(xtts_tts.PREFIX):]} - XTTS (high quality)"
     if len(v) >= 4 and v[2] == "_" and v[0] in _LANG and v[1] in _GENDER:
         name = v[3:].replace("_", " ").title()
         return f"{star}{name} - {_LANG[v[0]]} {_GENDER[v[1]]}"
@@ -113,11 +119,11 @@ def voice_label(voice, speech=None):
 
 
 def engine_label(speech):
-    if kokoro_tts.ready():
-        return "Kokoro (neural)"
-    if speech and speech.available:
-        return "macOS say"
-    return None
+    base = ("Kokoro (neural)" if kokoro_tts.ready()
+            else "macOS say" if speech and speech.available else None)
+    if base and xtts_tts.ready():
+        return base + " · XTTS available"
+    return base
 
 
 def _envelope(samples, sr, win_ms=40.0):
@@ -165,6 +171,15 @@ class Narrator:
             return "kokoro"
         return "say" if self.binary else None
 
+    def _engine_for(self, voice):
+        """Pick the engine from the chosen voice -- an ``xtts:`` voice routes to the
+        opt-in XTTS engine, otherwise the default (Kokoro if installed, else say)."""
+        if voice and str(voice).startswith(xtts_tts.PREFIX) and xtts_tts.ready():
+            return "xtts"
+        if kokoro_tts.ready():
+            return "kokoro"
+        return "say" if self.binary else None
+
     @property
     def available(self):
         return self.engine is not None
@@ -174,17 +189,18 @@ class Narrator:
 
     # --- lifecycle ---------------------------------------------------------
     def start(self, units, level_fn, timing_fn=None, text_cb=None):
-        if self.engine is None:
+        voice = self.voice or best_voice(self.speech)
+        engine = self._engine_for(voice)
+        if engine is None:
             self.stop()
             return
-        voice = self.voice or best_voice(self.speech)
         self._token += 1
         tok = self._token
         self._stop = False
         self._kill_proc()
         threading.Thread(
             target=self._loop,
-            args=(tok, units, level_fn, timing_fn, text_cb, voice, self.engine),
+            args=(tok, units, level_fn, timing_fn, text_cb, voice, engine),
             daemon=True).start()
 
     def stop(self):
@@ -212,7 +228,9 @@ class Narrator:
                 except Exception:
                     pass
             if engine == "kokoro":
-                self._speak_kokoro(tok, unit, lvl, timing_fn, voice)
+                self._speak_neural(tok, unit, lvl, timing_fn, voice, kokoro_tts.synth)
+            elif engine == "xtts":
+                self._speak_neural(tok, unit, lvl, timing_fn, voice, xtts_tts.synth)
             else:
                 self._speak_say(tok, unit, lvl, timing_fn, voice)
         self.amp = 0.0
@@ -278,10 +296,12 @@ class Narrator:
             time.sleep(0.1)
         self.amp = 0.0
 
-    def _speak_kokoro(self, tok, unit, lvl, timing_fn, voice):
+    def _speak_neural(self, tok, unit, lvl, timing_fn, voice, synth):
+        """Shared playback for the neural engines (Kokoro / XTTS): synth -> short
+        edge fades -> afplay, driving the lip-sync ``amp`` from the envelope."""
         import numpy as np
         speed = self._speed(lvl)
-        r = kokoro_tts.synth(str(unit.get("text", "")), voice, speed)
+        r = synth(str(unit.get("text", "")), voice, speed)
         if not self._active(tok) or r is None:
             return self._wait(tok, self._pause_ms(unit, timing_fn))
         samples, sr = r

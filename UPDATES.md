@@ -600,9 +600,10 @@ Set with the user after the realistic-chanting round. Tick as completed.
       TTS Arena, true British voices; **Fish Speech** (12-16 GB GPU) and **XTTS/Coqui** (2-8 GB
       VRAM, ~1.8 GB, sub-real-time on CPU) are higher-ceiling for cloning/emotion but break the
       offline/laptop/graceful-degrade guarantees - documented as an optional future engine below.
-- [ ] **Optional high-fidelity neural engine**: behind the same optional-dependency pattern as
-      `kokoro_tts` (degrade gracefully), allow an opt-in heavier engine (XTTS-v2 / Fish Speech) for
-      users with a GPU - voice cloning + emotion. NOT bundled (size/GPU); a documented add-on.
+- [x] **Optional high-fidelity neural engine** — XTTS-v2 wired as an opt-in engine
+      (`xtts_tts.py` + `xtts_worker.py`, persistent subprocess in a separate venv;
+      `narration` lists its voices, routes per-voice, degrades to Kokoro/`say`).
+      Faster-than-real-time on MPS; non-commercial CPML; see `docs/XTTS.md`. Done.
 - [ ] **Optional spoken name**: greet/settle the listener by name (off by default).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 

@@ -2155,6 +2155,27 @@ the base, respects the off-toggle, the crossfade settles, persists; selftest pas
 full drive clean, thread-stable; all files < 500 lines. *Remaining:* 5a per-scene
 character/costume pick (2D-face only, lower priority).
 
+## Feature (user request) — optional XTTS-v2 narration engine (testable in-app)
+Benchmarked then wired XTTS-v2 as an **opt-in** third narration engine. On this M1 Max
+it's faster-than-real-time on **MPS** (RTF 0.83; CPU 1.33), genuinely high quality
+(voice-clone + 58 studio speakers), offline after a 1.8 GB download. Kept it OUT of the
+app's `flika` env: synthesis runs in a **persistent worker subprocess**
+(`breathsim/xtts_worker.py`) launched with a separate interpreter, model loaded once
+(~25-40 s cold, ~3 s/line warm). `breathsim/xtts_tts.py` mirrors `kokoro_tts`
+(`ready`/`voice_names`/`best_voice`/`synth`), reading `~/.vesper-xtts/config.json`
+(python + tts_home + device + speakers) or env vars; import-safe (no torch at import).
+`narration.py` now lists XTTS voices (ids prefixed `xtts:`, starred, "… - XTTS (high
+quality)") **above** the default engine's, routes per-voice (`_engine_for`), and shares
+one neural playback path (`_speak_neural`); XTTS stays opt-in (default `best_voice` is
+still Kokoro), degrading to Kokoro/`say` when unconfigured. Discovered + documented the
+dependency reality in `docs/XTTS.md`: `coqui-tts` pulls neither torch nor torchaudio nor
+torchcodec, and the current release **breaks on transformers 5.x** (pin `>=4.57,<5`);
+torchcodec needs system FFmpeg (present). Set up a persistent venv+model at
+`~/.vesper-xtts/`. Verified: synth from `flika` returns audio via the venv worker on MPS;
+narration lists 58 XTTS voices with labels; engine routing (xtts/kokoro/say) + graceful
+degrade unit-tested; selftest passes; both-faces drive clean, thread-stable; all files
+< 500 lines. Demo: scratchpad/AB_kokoro_then_xtts.wav + xtts_engine_test.wav.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

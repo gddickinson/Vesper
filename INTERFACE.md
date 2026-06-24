@@ -61,6 +61,14 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   motes) and **`City`** (twinkling windows) — all tinted by the breath-phase hue.
   `make(name)`/`names()`. The FaceWidget **crossfades** between backdrops
   (`set_background(name, fade)`) so story-driven changes never jump.
+- **xtts_tts.py** + **xtts_worker.py** — optional **XTTS-v2** narration engine (the
+  highest-fidelity offline voice; opt-in, non-commercial CPML, never bundled). The
+  heavy torch+model stack runs in a *separate* interpreter via a persistent worker
+  subprocess (`xtts_worker.py`), so it stays out of the app env; `xtts_tts` mirrors
+  the `kokoro_tts` interface (`ready`/`voice_names`/`best_voice`/`synth`) and reads
+  `~/.vesper-xtts/config.json`. `narration` lists its 58 studio voices (ids prefixed
+  `xtts:`) in the Sleep picker and routes per chosen voice; absent → Kokoro/`say`.
+  Setup: see `docs/XTTS.md`.
 - **story_bg.py** — maps a narrated line to a fitting `face_bg` backdrop
   (`bg_for_text`) + a calm base per story scene (`base_for_scene`), mirroring
   `breathsim.sound_cues` so the picture and soundscape follow the words together. The
