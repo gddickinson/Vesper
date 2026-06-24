@@ -18,8 +18,40 @@ class _StoryMixin:
             self._story_bg_base = story_bg.base_for_scene(self._story_scene)
             self._story_bg_target = self._story_bg_base    # picture follows the tale
             self._bg_idle = 0
+        else:
+            self._restore_user_character()                 # story cleared
         if self.controller.running:
             self._start_story()
+
+    def set_story_char_follow(self, on):
+        """Sound/Face toggle: the cartoon character matches the story scene
+        (persisted, default off). Restores the user's own character when off."""
+        self._story_char_follow = bool(on)
+        from breathsim import store
+        store.save_settings({"story_char": self._story_char_follow})
+        if not self._story_char_follow:
+            self._restore_user_character()
+        elif self._story_scene and self.controller.running:
+            self._apply_story_character()
+
+    def _apply_story_character(self):
+        """When enabled and the cartoon face is shown, set the character to fit the
+        scene (without overwriting the user's saved pick)."""
+        if not getattr(self, "_story_char_follow", False) or not self._story_scene:
+            return
+        if not self.face.uses_cat():                       # only the 2D face shows it
+            return
+        from . import story_char
+        target = story_char.char_for_scene(self._story_scene)
+        if target and target != self.face.character():
+            self.set_character(target, persist=False)
+            self._story_char_active = True
+
+    def _restore_user_character(self):
+        """Put the user's chosen character back after a story-driven swap."""
+        if getattr(self, "_story_char_active", False):
+            self.set_character(getattr(self, "_character", "Cat"), persist=False)
+            self._story_char_active = False
 
     def set_story_voice(self, v):
         self.narrator.set_voice(v)
@@ -125,6 +157,7 @@ class _StoryMixin:
                                     start_section=start)
         self.narrator.start(units, self._story_level, self._story_timing,
                             self._on_story_unit)
+        self._apply_story_character()                   # the teller looks the part
         store.save_settings({"last_scene": self._story_scene})   # remember for next launch
 
     def _set_base_ambience(self, amb):

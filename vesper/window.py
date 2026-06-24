@@ -216,6 +216,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self._space = s.get("space", "Off")                    # master reverb space
         self.engine.set_space(self._space)
         self._story_bg_follow = bool(s.get("story_bg", True))   # backdrop follows tale
+        self._story_char_follow = bool(s.get("story_char", False))  # character per scene
         self.set_text_scale(float(s.get("font_scale", 1.0)))   # accessibility text size
         self._amb_rotate = bool(s.get("ambience_rotate", False))  # opt-in bed rotation
         self._quiet_hours = bool(s.get("quiet_hours", True))      # late-night soften
@@ -257,17 +258,20 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self._face_style = name
         self.face.set_style(name)
 
-    def set_character(self, name):
-        """Pick the 2D cartoon character (Cat / Penguin / Dog / ...). Persisted.
-        Adopts the character's signature look, and (when Character voices is on)
-        its narrator voice + speaking rate, with a brief greeting in the status bar."""
-        self._character = name
+    def set_character(self, name, persist=True):
+        """Pick the 2D cartoon character (Cat / Penguin / Dog / ...). Adopts the
+        character's signature look, and (when Character voices is on) its narrator
+        voice + speaking rate, with a brief greeting. ``persist=False`` is used when
+        the storyteller temporarily matches a character to the scene -- it changes
+        the displayed character without overwriting the user's saved choice."""
         self.face.set_character(name)
         from . import char_voice
         cv = char_voice.get(name)
+        if persist:
+            self._character = name
         if getattr(self, "_char_voices", True):
             self._apply_character_voice(name)
-        if cv.greeting:
+        if persist and cv.greeting:
             self.status.showMessage(f"{name}: “{cv.greeting}”", 5000)
 
     def _apply_character_voice(self, name):

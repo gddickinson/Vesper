@@ -2219,6 +2219,25 @@ clipped "Speech speed 1.00x" and long voice labels). Verified: selftest passes; 
 0 failures; both-faces drive clean + thread-stable; screenshots of Sleep/Relax/Chant
 reviewed (cards roomy, values + grouped voice labels fit). Calm aesthetic unchanged.
 
+## Round 5a (roadmap) — storyteller picks a fitting character per scene
+Closes the last Round-5 item. New **`story_char.py`** maps a story scene / lecture to a
+fitting cartoon character (sea→Penguin, night/library→Owl, forest/mountain→Bear,
+garden/meadow→Fox, cottage/cafe→Cat, …; default Owl). Opt-in **Face ▸ "Character follows
+the story"** (persisted, default off): when on *and the cartoon face is shown*, the
+storyteller swaps to the matching character (and, with Character voices on, its voice)
+via a new `set_character(persist=False)` that changes the displayed character **without
+overwriting the user's saved pick**; `_apply_story_character` fires at story start and
+`_restore_user_character` puts the user's choice back when the story clears or the toggle
+is turned off. Fixed a substring false-positive ("Famous Gar**den**s" → Bear) by dropping
+the "den" keyword. Verified: mapping spot-checks; apply swaps Penguin→Bear for a
+hibernation tale while `_character` stays Penguin, and restores on clear/toggle-off;
+menu audit 428 items / 0 failures; selftest passes; both-faces drive clean, thread-stable.
+
+## Also — Voice Editor scrollbar/width polish
+Completed the dialog UX pass: audited Mixer/Stats/Story Library/Presets/Pattern Editor
+offscreen (all clean); the one dense form, the Voice Editor, got the panel's
+scrollbar-clearance margin + a touch more width (470→500).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

@@ -248,6 +248,8 @@ def _face(win, m):
         a.triggered.connect(lambda _c=False, x=nm: win.set_costume(x))
     _toggle(m, "Character voices", getattr(win, "_char_voices", True),
             win.set_character_voices)
+    _toggle(m, "Character follows the story", getattr(win, "_story_char_follow", False),
+            win.set_story_char_follow)
 
 
 def _view(win, m):

@@ -73,6 +73,12 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   Characters carry an `xtts` voice (`char_voice`) used when installed, falling back to
   their Kokoro/say hints. Users add the engine themselves via `tools/setup_xtts.py`
   (Sound ▸ "High-quality voices (XTTS)…"). Setup + licence: `docs/XTTS.md`.
+- **story_char.py** — maps a story scene / lecture to a fitting cartoon character
+  (`char_for_scene`: sea→Penguin, night→Owl, forest→Bear, …, default Owl). Opt-in
+  **Face ▸ "Character follows the story"** (persisted): when on and the cartoon face is
+  shown, the storyteller swaps to the matching character via `set_character(persist=
+  False)` and restores the user's saved pick afterwards (`win_story._apply_story_character`
+  / `_restore_user_character`). Pure + testable.
 - **story_bg.py** — maps a narrated line to a fitting `face_bg` backdrop
   (`bg_for_text`) + a calm base per story scene (`base_for_scene`), mirroring
   `breathsim.sound_cues` so the picture and soundscape follow the words together. The

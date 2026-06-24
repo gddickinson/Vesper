@@ -66,10 +66,9 @@ Set with the user after the realistic-chanting round. Tick as completed.
 4. [x] **Physiological-sigh reset** — "Physiological Sigh Reset (3 min)" program
    (double inhale -> long sigh), auto-listed in Sessions / Breathwork. Done.
 5. [~] **Characters -> story binding + story-following dynamic backgrounds**
-   - a) [ ] the storyteller picks a fitting character + costume per scene; characters react
-     to story mood (ties the 15-character cast into the Sleep experience). (Mood reaction
-     already flows via `_ease_mood` -> smile; per-scene character pick still TODO; 2D-face
-     only, so lower priority.)
+   - a) [x] the storyteller picks a fitting character per scene (`story_char.py` +
+     Face ▸ "Character follows the story", restores the user's pick). Mood reaction
+     already flows via `_ease_mood` -> smile. Done.
    - b) [x] **story-following themed backgrounds** — `story_bg.bg_for_text` maps narrated
      imagery -> backdrop; `face.set_background(fade)` crossfades slowly; new Rain/Forest/
      City backdrops; Sound ▸ "Backdrop follows the story" toggle (persisted). Done.
