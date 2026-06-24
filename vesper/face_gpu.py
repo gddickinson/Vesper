@@ -192,20 +192,17 @@ def _pose(params):
     return out
 
 
-# Eyeball materials are a separate mesh; the lambert shader can't reproduce the
-# xray eye glow, so override to natural colours (pale sclera, blue iris) that suit
-# the blue avatar. They also fade with eye_open so a closed lid shows no eye.
+# Eyeball cluster (enlarged a little in _pose so the eyes read bigger).
 _EYEBALL = {"M_ScleraLeft", "M_ScleraRight", "M_IrisLeft", "M_IrisRight",
             "M_LacrimalFluid"}
-_EYE_COLOR = {
-    "M_ScleraLeft": (0.0, 0.0, 0.0), "M_ScleraRight": (0.0, 0.0, 0.0),
-    "M_IrisLeft": (0.0, 0.0, 0.0), "M_IrisRight": (0.0, 0.0, 0.0),
-    "M_LacrimalFluid": (0.0, 0.0, 0.0),       # entirely black eyeballs
-}
-# Socket lining + lashes. The occlusion ring used to read as a dark shadow around
-# the eye — colour it to the eyelid skin so it disappears; keep lashes a faint hint.
 _OCCLUSION = "M_EyeOcclusion"
 _LASHES = "M_EyeLashes"
+# The full eye *opening* rendered as the starry sky: the eyeball plus the socket
+# lining (M_EyeOcclusion, which is frontmost over the aperture rim and used to read
+# as skin where it dips over the inner corner) and the inner-corner caruncle
+# (M_LacrimalFluid). Treating them all as one self-lit starfield carries the sky
+# seamlessly into the inner canthus instead of leaving a skin-blue smudge there.
+_STARRY = _EYEBALL | {_OCCLUSION}
 # Enlarge the eyeball a little (in the facing plane) so the eyes read bigger.
 EYE_SCALE = np.array([1.22, 1.22, 1.0], dtype="f4")
 
@@ -224,13 +221,14 @@ def _color_emit(params):
     skin = pal.get("M_Face", default)
     cols, emit = [], []
     for m in model.materials:
-        if m in _EYEBALL:
-            n = _EYE_COLOR[m]
-            cols.append(tuple(lid[i] + (n[i] - lid[i]) * fade for i in range(3)))
-            emit.append((0.35 if m == "M_LacrimalFluid" else 1.0) * fade)
-        elif m == _OCCLUSION:                       # no shadow ring: match the lid
-            cols.append(tuple(lid[i] * 1.08 for i in range(3)))
-            emit.append(0.0)
+        if m in _STARRY:
+            # The whole eye opening is one self-lit starfield when open, fading to
+            # the eyelid skin as the lid closes (so a shut lid shows neither a black
+            # nor a bright eyeball). Full emissive on every aperture material -- the
+            # caruncle and the socket lining included -- keeps the sky reaching into
+            # the inner corner, with no skin-blue smudge where it used to dim out.
+            cols.append(tuple(lid[i] * (1.0 - fade) for i in range(3)))  # -> black
+            emit.append(fade)
         elif m == _LASHES:                          # a faint lash hint, not a hole
             cols.append(tuple(skin[i] * 0.9 for i in range(3)))
             emit.append(0.0)
