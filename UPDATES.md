@@ -545,6 +545,20 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — The Night Sky Across Cultures** (4): The Pleiades · Milky Way Myths · The Southern
+      Cross · Lunar Calendars — added `lectures_{pleiades,milkywaymyths,southerncross,lunarcalendars}.py`
+      (7x[13,12,13,12,12,13,13] lines, fact-free section 1, accurate astronomy + cross-cultural lore
+      with each culture's myth framed AS its story — the seven sisters / Subaru / Matariki; the galaxy
+      seen edge-on, Galileo, the Silver River + Weaver Girl, the Emu in dark dust; Crux + finding south
+      with no south star + Polynesian wayfinding + the Coalsack; the ~29.5-day month, lunar vs lunisolar
+      calendars + the Metonic cycle), ASCII, every section sleep-closing; ambiences Wind in Pines /
+      Night Crickets / Ocean Waves / Campfire. Distinct NAMEs from the existing "The Milky Way" / "The
+      Constellations". New branch in `_CATALOG` → **169 lectures / 31 branches**; story DB rebuilt
+      (14,457 lines / 229,433 words). Done: selftest (169/31); lint — each lecture
+      7x[13,12,13,12,12,13,13], section 1 fact-free (no names/dates/numbers), all 7 sections
+      sleep-close, ASCII-only, ambience resolves to a real GROUP_NATURE voice, no NAME/module
+      collisions; offscreen both faces — all four dispatch through `stories.story_units` (all 7
+      sections stream) and a Sleep session narrates one, thread-stable.
 - [x] **New branch — Famous Gardens** (4): Versailles · Ryoan-ji · Kew Gardens · The Alhambra — added
       `lectures_{versailles,ryoanji,kew,alhambra}.py` (7x[13,12,13,12,12,13,13] lines, fact-free
       section 1, accurate history/design — Le Notre's geometry + the Grand Canal + the Machine de Marly;

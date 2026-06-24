@@ -594,6 +594,31 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch The Night Sky Across Cultures (Pleiades, Milky Way Myths, Southern Cross, Lunar Calendars)
+Added a 31st lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
+fact-free section 1, accurate astronomy + cross-cultural sky lore with every culture's myth framed AS
+its own story, ASCII, every section sleep-closing): `lectures_pleiades.py` (The Pleiades, Wind in Pines
+- the open cluster of hot young blue-white stars ~440 light-years off, the six-versus-seven the eye
+catches, the Greek seven sisters, the Japanese Subaru, the Maori Matariki opening the new year, its
+worldwide use to time planting and harvest), `lectures_milkywaymyths.py` (Milky Way Myths, Night
+Crickets - our galaxy seen edge-on, Galileo resolving it into stars, the dark dust Great Rift, the
+Greek milky circle that gives us "galaxy", the Chinese Silver River and the Weaver Girl and Cowherd,
+roads and paths of souls, and the Aboriginal Australian Emu traced in the dark clouds),
+`lectures_southerncross.py` (The Southern Cross, Ocean Waves - the smallest constellation, Acrux /
+Mimosa / Gacrux, finding south with no bright south star, Polynesian wayfinding, the Coalsack and the
+emu, the cross on southern flags and the Andean chakana), and `lectures_lunarcalendars.py` (Lunar
+Calendars, Campfire - the ~29.5-day synodic month, "month" from "moon", purely lunar Hijri drifting
+through the seasons, lunisolar leap months in the Hebrew / Chinese / Hindu / Babylonian calendars, the
+Metonic cycle, moon-set festivals, with the disputed oldest-tally claim framed as uncertain). Distinct
+NAMEs from the existing "The Milky Way" / "The Constellations" / "The Wandering Moon". New branch in
+`_CATALOG` -> **169 lectures / 31 branches**. Verified: `selftest.py` passes (148 voices; 169 lectures
+/ 31 branches); a lint confirmed each lecture has 7 x [13,12,13,12,12,13,13] sentences, a fact-free
+section 1 (no names/dates/numbers), all 7 sections sleep-closing, ASCII-only, an ambience resolving to
+a real GROUP_NATURE voice, and no NAME/module collisions; offscreen both faces - all four dispatch
+through `stories.story_units` (all 7 sections stream, ~107-111 units each) and a Sleep session narrates
+one with the storyteller, thread-stable across a 24-frame loop; story DB rebuilt (14,457 lines /
+229,433 words / 5 scenes).
+
 ## App round — "resume where you left off" launch hint
 On launch, a calm, non-modal status-bar line now names your last session so picking up is one glance
 away: "Last time: Sleep with \"The Alhambra\"" or "Welcome back to Meditate". New pure
