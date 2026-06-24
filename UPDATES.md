@@ -368,6 +368,12 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Great Lakes & Inland Seas** (4): Lake Baikal · the Caspian Sea · the Dead Sea ·
+      Lake Titicaca — added `lectures_{baikal,caspian,deadsea,titicaca}.py` (7x12-13 lines, fact-free
+      section 1, accurate geography/ecology/history (Inca tradition framed respectfully), ASCII,
+      sleep-closing; Mountain Stream / Ocean Waves / Brown Noise / Wind Chimes), new branch in
+      `_CATALOG` → **129 lectures / 21 branches**; DB rebuilt (10,943 lines / 170,641 words); selftest
+      passes. Done: validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Deserts of the World** (4): the Sahara · the Gobi · the Atacama · the Namib —
       added `lectures_{sahara,gobi,atacama,namib}.py` (7x12-13 lines, fact-free section 1, accurate
       geography/ecology/history, ASCII, sleep-closing; Fan (White Noise) / Brown Noise / Wind Chimes

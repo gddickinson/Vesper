@@ -594,6 +594,23 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Great Lakes & Inland Seas (Baikal, Caspian, Dead Sea, Titicaca)
+Added a 21st lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate geography/ecology/history, ASCII, sleep-closing): `lectures_baikal.py` (Lake Baikal,
+Mountain Stream - the deepest and oldest lake, ~a fifth of the world's unfrozen fresh water, ~25
+million years old, glass-clear singing winter ice, the endemic nerpa freshwater seal, a slowly
+widening rift), `lectures_caspian.py` (The Caspian Sea, Ocean Waves - the largest enclosed water /
+really a lake, slightly salty, five countries, a remnant ancient sea, the Volga in but nothing out,
+below ocean level, sturgeon and the Caspian seal, Silk Road shores), `lectures_deadsea.py` (The Dead
+Sea, Brown Noise - the lowest land on Earth, so salty you float and almost nothing lives, the Jordan
+in but only evaporation out, the rift valley, the Dead Sea Scrolls and ancient Jericho), and
+`lectures_titicaca.py` (Lake Titicaca, Wind Chimes - the highest large navigable lake in the Andes,
+the Uros people's floating totora-reed islands, the Inca origin tradition framed honestly as belief,
+underwater offerings). New branch in `_CATALOG` -> **129 lectures / 21 branches**. Validated all four
+(7 sections, 12-13 lines, pure ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB
+rebuilt (10,943 lines / 170,641 words / 5 scenes). The `units()` stream renders each (e.g. Lake
+Baikal = 106 units).
+
 ## App round — session-end "well done" moment (kind closing line)
 Added `breathsim/welldone.py` (pure + testable): `message(minutes, streak)` turns a finished sit's
 length + current streak into one short, warm, non-clinical line -- "Session complete - 12 minutes. 3
