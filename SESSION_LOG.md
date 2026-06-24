@@ -594,6 +594,18 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Gems & Stones (Amber, Pearl, Jade, Diamond)
+Added a 13th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate science/history, ASCII, sleep-closing): `lectures_amber.py` (Forest Wind - fossilised
+resin, trapped insects, elektron/electricity, Baltic shores), `lectures_pearl.py` (Ocean Waves -
+nacre layered around an irritant, the only gem made by a creature, divers), `lectures_jade.py`
+(Singing Bowl - toughest gem, nephrite/jadeite, ground with sand, prized in China + Mesoamerica)
+and `lectures_diamond.py` (Brown Noise - carbon under deep heat/pressure over billions of years,
+volcanic pipes, the honest note on "forever"). Verified no file/name collisions first. Registered
+the new `("Gems & Stones", [...])` branch in `_CATALOG` -> **97 lectures / 13 branches**. Validated
+structure + ASCII + sleep-close + no duplicate names; DB rebuilt (8,141 lines / 123,451 words);
+selftest passes.
+
 ## App round — particle weather overlay
 Added `vesper/scene_particles.py`: a `ParticleLayer` (kinds off/snow/leaves/bubbles/fireflies)
 drawn on top of any scene each frame. Snow drifts down and sways; leaves tumble down rotating;

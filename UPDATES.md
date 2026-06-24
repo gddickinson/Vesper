@@ -253,6 +253,10 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Gems & Stones** (4): Amber · Pearl · Jade · Diamond — added
+      `lectures_{amber,pearl,jade,diamond}.py` (7x12-13 lines, accurate science/history, ASCII,
+      sleep-closing; Forest Wind / Ocean Waves / Singing Bowl / Brown Noise), new branch in
+      `_CATALOG` → **97 lectures / 13 branches**; DB rebuilt (8,141 lines); selftest passes.
 - [x] **New branch — The Elements** (4): Fire · Water · Air · Earth — added
       `lectures_{fire,waterelement,air,earth}.py` (7x12-13 lines, accurate science, ASCII,
       sleep-closing; Campfire / Mountain Stream / Forest Wind / Brown Noise). The "Water" module is
@@ -298,6 +302,7 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- New lecture branch Gems & Stones (Amber · Pearl · Jade · Diamond) → 97 lectures / 13 branches.
 - Particle weather overlay: optional snow / leaves / bubbles / fireflies over any scene (View menu).
 - Mood check-in: optional 1-tap before/after mood, kind trend in Stats, Sound-menu toggle.
 - New lecture branch The Elements (Fire · Water · Air · Earth) → 93 lectures / 12 branches.
