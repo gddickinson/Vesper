@@ -428,6 +428,16 @@ Guardrails (every round):
       A fresh user behaves exactly as before. Done: selftest passes; store round-trip + behaviour
       unit-tested; offscreen both faces — a customised Meditate voice survives a switch away and back,
       an untouched mode keeps its preset, applying a mode records nothing, thread-stable.
+- [x] **Quiet-hours auto-volume cap** (`clocktheme.quiet_cap` + engine `vol_cap`): late at night the
+      output volume is gently capped so a 2am session isn't jarring. Pure `quiet_cap(hour)` (1.0 by
+      day, easing to a ~0.6 floor in the small hours, never >1.0, never mutes); the engine grows a
+      `vol_cap` **upper bound** applied in `set_master_volume` (`set_volume_cap` re-clamps live), so
+      the user's chosen volume is preserved while the *output* ceiling drops -- and it composes with
+      (never fights) the Sleep wind-down / sleep-timer fades, which only ever lower further. `window`
+      updates the cap each tick from the clock; **Sound > Quiet hours (auto-soften late)** toggle,
+      default on, persisted. Done: selftest passes; the curve is unit-tested; offscreen both faces —
+      at 2am the engine target is capped to 0.6 with `user_volume` still 0.8, off/by-day it equals
+      0.8, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

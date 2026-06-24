@@ -118,6 +118,8 @@ class AudioEngine:
         self.slot_levels: dict[str, float] = {"effects": 0.85}
         self.master = 0.0
         self.master_target = 0.0
+        self._req_vol = 0.0           # last requested master volume (pre-cap)
+        self.vol_cap = 1.0            # upper bound on output (e.g. quiet-hours softening)
         self.chime_enabled = False
         self.spatial = True               # gentle stereo width + auto-pan on ambience
         self._chime_q: queue.Queue = queue.Queue()
@@ -383,7 +385,14 @@ class AudioEngine:
             self.set_voice(amb, "ambience")
 
     def set_master_volume(self, vol: float):
-        self.master_target = float(min(max(vol, 0.0), 1.0))
+        self._req_vol = float(min(max(vol, 0.0), 1.0))
+        self.master_target = min(self._req_vol, self.vol_cap)   # cap = upper bound only
+
+    def set_volume_cap(self, cap: float):
+        """An upper bound on the output (1.0 = no cap); re-clamps the live target.
+        Used by quiet-hours softening -- it only ever lowers, never raises."""
+        self.vol_cap = float(min(max(cap, 0.0), 1.0))
+        self.master_target = min(self._req_vol, self.vol_cap)
 
     def set_chime(self, enabled: bool):
         self.chime_enabled = bool(enabled)

@@ -610,6 +610,24 @@ quipu, tambo rest-houses). Distinct from the existing Silk/Spice Road lectures. 
 ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (12,348 lines / 194,754
 words / 5 scenes). The `units()` stream renders each (e.g. The Great Wall = 109 units).
 
+## App round — quiet-hours auto-volume cap
+Late at night the output volume is now gently capped so a session begun in the small hours is never
+jarring, without changing the user's chosen setting. `clocktheme.quiet_cap(hour)` (pure) returns an
+upper-bound fraction: 1.0 from 7am through the evening, easing 0.9 / 0.8 at 22-23h down to a 0.6
+floor from midnight to 4am, then 0.7 / 0.85 toward dawn -- never above 1.0, never a full mute. The
+engine grows a generic `vol_cap` **output ceiling**: `set_master_volume` now stores the requested
+level and sets `master_target = min(requested, vol_cap)`, and `set_volume_cap` re-clamps the live
+target -- a single chokepoint, so the cap automatically governs every volume path (app, the
+session-director Sleep/Sunrise fades, the sleep-timer) and only ever lowers, never fighting those
+fades. `window` keeps a `_quiet_hours` flag (default on, persisted as `quiet_hours`, restored on
+launch), recomputes the cap each `_tick` from the clock (change-guarded), and exposes
+`set_quiet_hours`; a **Sound > Quiet hours (auto-soften late)** menu toggle drives it. Honest framing:
+it just lowers the ceiling at night. Verified: `selftest.py` passes (145 lectures / 25 branches); the
+`quiet_cap` curve is unit-tested (full by day, 0.6 floor in the small hours, all within 0.6-1.0);
+offscreen both faces -- at a patched 2am with quiet-hours on the engine target is capped to 0.6 while
+`user_volume` stays 0.8, toggling it off restores the target to 0.8, and by day the cap is 1.0,
+thread-stable.
+
 ## App round — per-mode voice/ambience memory
 Each mode now remembers the inhale voice (and ambience) the user last chose in it and restores it on
 return, rather than always resetting to the mode preset. `breathsim/store` gains `mode_prefs()` /

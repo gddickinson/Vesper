@@ -29,6 +29,15 @@ def clock_warm_for_hour(h: int) -> float:
     return round(_MAX * (6 - h) / 2.0, 3)            # 4 -> 0.22, 5 -> 0.11
 
 
+def quiet_cap(h: int) -> float:
+    """An upper bound on output volume by the clock: 1.0 by day/evening, easing
+    down to a gentle ~0.6 in the small hours so a late session is never jarring.
+    Never above 1.0, never fully mutes. Pure (pass the hour to test)."""
+    h = h % 24
+    return {22: 0.9, 23: 0.8, 0: 0.6, 1: 0.6, 2: 0.6, 3: 0.6, 4: 0.6,
+            5: 0.7, 6: 0.85}.get(h, 1.0)
+
+
 def suggested_mode_for_hour(h: int) -> str:
     """A fitting mode to open in, by the clock (only used when none is saved)."""
     h = h % 24

@@ -107,6 +107,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._win_op = 1.0                 # last applied window opacity (intro fade + dim)
         self._closing_msg = None           # gentle "well done" line after a finished sit
         self._amb_rotate = False           # ambience auto-rotate (opt-in; off by default)
+        self._quiet_hours = True           # gently cap output volume in the small hours
+        self._cur_cap = 1.0                # last applied output cap (see _tick)
         self._font_scale = 1.0             # accessibility: global UI text size
         self._base_pt = 0.0                # app font point size before any scaling
         self._active_course = None         # (course name, total) while a course day runs
@@ -191,6 +193,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self.engine.set_spatial(self._spatial)
         self.set_text_scale(float(s.get("font_scale", 1.0)))   # accessibility text size
         self._amb_rotate = bool(s.get("ambience_rotate", False))  # opt-in bed rotation
+        self._quiet_hours = bool(s.get("quiet_hours", True))      # late-night soften
+        self._apply_quiet_cap()
         mode = s.get("mode")                          # no saved mode -> suit the clock
         if mode not in modes.names():
             from . import clocktheme
@@ -519,6 +523,20 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         """Toggle ambience auto-rotate (opt-in, persisted); slowly cycles beds."""
         self._amb_rotate = bool(on)
 
+    def set_quiet_hours(self, on):
+        """Toggle the late-night output-volume cap (persisted); applies at once."""
+        self._quiet_hours = bool(on)
+        self._cur_cap = -1.0                          # force a recompute
+        self._apply_quiet_cap()
+
+    def _apply_quiet_cap(self):
+        """Set the engine's output ceiling from the clock (1.0 when off/by day)."""
+        from . import clocktheme
+        cap = clocktheme.quiet_cap(clocktheme.now_hour()) if self._quiet_hours else 1.0
+        if abs(cap - self._cur_cap) > 1e-3:
+            self._cur_cap = cap
+            self.engine.set_volume_cap(cap)
+
     def _apply_ambience_rotate(self):
         """Crossfade the ambience slot to the curated bed for the current elapsed
         time (every ~6 min), reusing the engine's gain-ramped crossfade."""
@@ -659,6 +677,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         op *= introfade.intro_opacity(self._anim_t)       # gentle one-time launch fade-in
         self._win_op = op                                 # recorded for tests
         self.setWindowOpacity(op)
+        self._apply_quiet_cap()                # gentle late-night output ceiling
         self._tick_hourglass(running, total, prog)
         self.panel.tick()
         self._update_status(state, running)
@@ -730,7 +749,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                  "onboarded": getattr(self, "_onboarded", False),
                                  "spatial": getattr(self, "_spatial", True),
                                  "font_scale": getattr(self, "_font_scale", 1.0),
-                                 "ambience_rotate": getattr(self, "_amb_rotate", False)})
+                                 "ambience_rotate": getattr(self, "_amb_rotate", False),
+                                 "quiet_hours": getattr(self, "_quiet_hours", True)})
         except Exception:
             pass
         try:
