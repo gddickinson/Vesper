@@ -419,6 +419,15 @@ Guardrails (every round):
       guide dot, exhale rings, coherence halo and progress arcs are untouched. Done: selftest passes;
       `scenes.py` stays 466 lines; offscreen both faces render the orb scene (564x557) to non-empty
       PNGs that change frame-to-frame, thread-stable.
+- [x] **Per-mode voice/ambience memory** (`store` mode_prefs + `apply_mode`): each mode now remembers
+      the inhale voice (and ambience) you last chose in it and restores it on return, instead of
+      always snapping back to the preset. Explicit user changes via `app.set_voice_a`/`set_ambience`
+      are recorded per `current_mode` (a `_applying_mode` guard ignores the preset's own calls);
+      `apply_mode` overrides the preset with the remembered, registry-checked value (ambience skipped
+      during the Sleep storyteller). `store.mode_prefs/get_mode_pref/set_mode_pref` (mode_prefs.json).
+      A fresh user behaves exactly as before. Done: selftest passes; store round-trip + behaviour
+      unit-tested; offscreen both faces — a customised Meditate voice survives a switch away and back,
+      an untouched mode keeps its preset, applying a mode records nothing, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

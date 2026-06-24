@@ -103,6 +103,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._hg_spin_to = 0.0
         self._hg_spin_t0 = None
         self.current_mode = None
+        self._applying_mode = False        # guard: don't record prefs while applying a mode
         self._win_op = 1.0                 # last applied window opacity (intro fade + dim)
         self._closing_msg = None           # gentle "well done" line after a finished sit
         self._amb_rotate = False           # ambience auto-rotate (opt-in; off by default)
@@ -328,6 +329,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         m = modes.get(name)
         if not m:
             return
+        self._applying_mode = True
         self.controller.change_pattern(preset_by_name(m.pattern) or DEFAULT_PATTERN)
         self.engine.set_persona(personas.get(m.persona))
         self.engine.set_voice_b(None)
@@ -353,7 +355,17 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             self._set_base_ambience(stories.ambience_for(self._story_scene))
             self._story_minutes = (m.session or 1200) / 60.0
         self.set_face_background(_MODE_BG.get(name, "Stars"))   # themed backdrop
+        # restore the voice / ambience the user last chose in this mode (if any)
+        from breathsim import store, voices
+        pref = store.get_mode_pref(name)
+        pv = pref.get("voice")
+        if pv and voices.get_voice(pv):
+            self.engine.set_voice_a(pv)
+        pa = pref.get("ambience")
+        if pa and not self._story_scene and voices.get_voice(pa):
+            self._set_base_ambience(pa)               # not during the Sleep storyteller
         self.current_mode = name
+        self._applying_mode = False
         self.panel.reflect_mode(name)
         self.status.showMessage(m.description, 4000)
 

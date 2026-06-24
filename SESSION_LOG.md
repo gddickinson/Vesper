@@ -610,6 +610,23 @@ quipu, tambo rest-houses). Distinct from the existing Silk/Spice Road lectures. 
 ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (12,348 lines / 194,754
 words / 5 scenes). The `units()` stream renders each (e.g. The Great Wall = 109 units).
 
+## App round — per-mode voice/ambience memory
+Each mode now remembers the inhale voice (and ambience) the user last chose in it and restores it on
+return, rather than always resetting to the mode preset. `breathsim/store` gains `mode_prefs()` /
+`get_mode_pref(mode)` / `set_mode_pref(mode, key, value)` (a `mode_prefs.json` dict {mode:{voice,
+ambience}}, mirroring favourites/courses). The app's `set_voice_a` and `set_ambience` -- which only
+the panel/menu call (apply_mode and guided programs set the engine directly, bypassing them) -- now
+record the choice for `current_mode` via `_remember_mode_pref`, guarded by `self._applying_mode` so
+the preset's own setup during a mode switch is never recorded. `apply_mode(name)` sets the
+`_applying_mode` guard, applies the preset as before, then -- just before committing `current_mode`
+-- overrides the inhale voice (and, when **not** in the Sleep storyteller, the ambience) with the
+remembered value **only if it still exists in the registry** (so a removed/renamed voice degrades to
+the preset). A brand-new user with no saved prefs behaves exactly as today. Verified: `selftest.py`
+passes (145 lectures / 25 branches); the store layer is round-trip unit-tested; offscreen both faces
+-- in Meditate a user-set voice (Ocean Breath (Ujjayi)) is recorded, survives a switch to Breathwork
+and back, an untouched Chant keeps its preset (Chant: Om) with no stored pref, and merely applying a
+mode records nothing (the guard holds), thread-stable.
+
 ## App round — gentle Meditate orb enrichment (ambient vignette + floor reflection)
 Deepened `vesper/scenes.OrbScene` (the Meditate breath orb) with two subtle, low-contrast touches
 behind the orb, both driven by the existing `anim_t` / volume / phase (no new state, no API change):

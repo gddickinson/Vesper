@@ -323,6 +323,30 @@ def delete_soundscape(name):
     return d
 
 
+# --- per-mode remembered voice / ambience ----------------------------------
+
+def mode_prefs():
+    d = _read("mode_prefs.json", {})
+    return d if isinstance(d, dict) else {}
+
+
+def get_mode_pref(mode):
+    p = mode_prefs().get(mode, {})
+    return p if isinstance(p, dict) else {}
+
+
+def set_mode_pref(mode, key, value):
+    """Remember *key* (e.g. 'voice'/'ambience') for *mode*; returns all prefs."""
+    if not mode:
+        return mode_prefs()
+    d = mode_prefs()
+    e = dict(d.get(mode, {}) if isinstance(d.get(mode), dict) else {})
+    e[key] = value
+    d[mode] = e
+    _write("mode_prefs.json", d)
+    return d
+
+
 def register_all():
     """Merge saved custom patterns and voices into the live registries."""
     for d in patterns_list():

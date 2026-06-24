@@ -23,8 +23,16 @@ def _norm(name):
 
 class _ActionsMixin:
     # --- voice / body -----------------------------------------------------
+    def _remember_mode_pref(self, key, name):
+        """Record an explicit user voice/ambience choice for the current mode."""
+        mode = getattr(self, "current_mode", None)
+        if mode and not getattr(self, "_applying_mode", False):
+            from breathsim import store
+            store.set_mode_pref(mode, key, name)
+
     def set_voice_a(self, name):
         self.engine.set_voice_a(_norm(name))
+        self._remember_mode_pref("voice", name)
 
     def set_voice_b(self, name):
         self.engine.set_voice_b(_norm(name))
@@ -39,6 +47,7 @@ class _ActionsMixin:
     # --- ambience / effects / mix ----------------------------------------
     def set_ambience(self, name):
         self.engine.set_voice(_norm(name), "ambience")
+        self._remember_mode_pref("ambience", name)
 
     def set_effect(self, name):
         self.engine.set_layer("effects", _norm(name),
