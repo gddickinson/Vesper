@@ -335,6 +335,12 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Great Forests** (4): the Taiga · the Black Forest · the Daintree · the Cloud
+      Forest — added `lectures_{taiga,blackforest,daintree,cloudforest}.py` (7x12-13 lines, fact-free
+      section 1, accurate ecology/history/culture (Aboriginal custodianship + Grimm folklore framed
+      respectfully), ASCII, sleep-closing; Forest Wind / Gentle Rain / Soft Rainstorm / Mountain
+      Stream), new branch in `_CATALOG` → **121 lectures / 19 branches**; DB rebuilt (10,239 lines /
+      158,738 words); selftest passes. Done: validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Birds of Myth** (4): the Crane · the Raven · the Swan · the Owl — added
       `lectures_{crane,raven,swan,owl}.py` (7x12-13 lines, fact-free section 1, accurate natural
       history + folklore framed honestly as symbolism, ASCII, sleep-closing; Mountain Stream /

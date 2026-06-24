@@ -594,6 +594,24 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Great Forests (Taiga, Black Forest, Daintree, Cloud Forest)
+Added a 19th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate ecology/history/culture, ASCII, sleep-closing): `lectures_taiga.py` (The Taiga, Forest Wind
+- the largest land forest, the boreal belt across Canada/Scandinavia/Siberia, snow-shedding conifers,
+the deciduous larch, cold-adapted wildlife, carbon locked in cold peat), `lectures_blackforest.py`
+(The Black Forest, Gentle Rain - dark fir hills of south-west Germany, the source of the Danube,
+cuckoo clocks and winter woodcraft, the brothers Grimm's tales framed honestly as folklore, spa
+towns and the famous cake), `lectures_daintree.py` (The Daintree, Soft Rainstorm - one of the oldest
+rainforests, a living remnant of Gondwana older than the Amazon, rainforest meeting the reef, the
+cassowary as seed-spreader, Kuku Yalanji custodianship for thousands of years, ancient flowering
+plants), and `lectures_cloudforest.py` (The Cloud Forest, Mountain Stream - mountain forest living
+inside the clouds, drinking water from the air, epiphytes/moss/orchids, Monteverde and the Andes,
+the quetzal and bromeliad pools, watering the lands below). New branch in `_CATALOG` -> **121
+lectures / 19 branches**. Validated all four (7 sections, 12-13 lines, pure ASCII, no NAME
+collisions; distinct from the existing Redwoods/Plants/Amazon/Bamboo); `selftest.py` passes (148
+voices); DB rebuilt (10,239 lines / 158,738 words / 5 scenes). The `units()` stream renders each
+(e.g. The Taiga = 109 units).
+
 ## App round — breathing-pattern visual guide (phase bar in the pattern card)
 Added `vesper/pattern_bar.py` (88 lines): a compact diagram of the current pattern's phases. Pure
 `segments(pattern)` turns a `BreathPattern`'s four durations (inhale / hold_full / exhale /
