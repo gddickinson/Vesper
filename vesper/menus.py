@@ -186,6 +186,13 @@ def _view(win, m):
     for kind in scene_particles.KINDS:
         wx.addAction(kind.capitalize()).triggered.connect(
             lambda _c=False, x=kind: win.set_weather(x))
+    from . import fontscale                           # accessibility: UI text size
+    ts = m.addMenu("Text size")
+    for lbl, sc in fontscale.OPTIONS:
+        a = ts.addAction(lbl)
+        a.setCheckable(True)
+        a.setChecked(abs(getattr(win, "_font_scale", 1.0) - sc) < 1e-6)
+        a.triggered.connect(lambda _c=False, x=sc: win.set_text_scale(x))
     cl = m.addAction("Clock-aware light")            # gentle time-of-day warmth
     cl.setCheckable(True)
     cl.setChecked(getattr(win, "_clock_light", True))

@@ -594,6 +594,21 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — accessibility: global UI text-size setting
+Added `vesper/fontscale.py` (41 lines, pure + testable): `OPTIONS` (Small / Normal / Large /
+Extra-large -> 0.85 / 1.0 / 1.25 / 1.5), `scaled_css(css, scale)` (regex-multiplies only
+`font-size: Npx` values, leaving paddings/borders/widths untouched so geometry stays stable), and
+`label_for`/`scale_for`. `window.set_text_scale(scale)` applies it two ways so everything follows:
+it scales the **Qt application font** (capturing the unscaled base point size once, in `_base_pt`,
+so repeated changes don't drift) and re-applies the **theme stylesheet** scaled -- dialogs and the
+menu bar inherit it via `win.styleSheet()`. Persisted as `font_scale` (saved in `closeEvent`,
+restored in `_restore_settings`), surfaced via a **View > Text size** submenu (checkable, reflects
+the current scale). Honest framing: a readability setting, nothing more. Verified: `selftest.py`
+passes (113 lectures / 17 branches); `scaled_css` unit-tested (1.0 unchanged, 1.25 -> 13->16/15->19px
+with padding/border preserved, 0.85 -> 11px) plus the label helpers; offscreen both faces -- each of
+the four sizes scales the app font (base 9 pt -> 7.6 / 9 / 11.2 / 13.5) and the stylesheet body
+(11 / 13 / 16 / 20 px), the choice persists (font_scale 1.25 round-trips), thread-stable.
+
 ## Stories round — new branch Great Mountains (Everest, Fuji, Kilimanjaro, Matterhorn)
 Added a 17th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate geology/history/culture, ASCII, sleep-closing): `lectures_everest.py` (Everest, Brown Noise

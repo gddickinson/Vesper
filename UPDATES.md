@@ -279,6 +279,13 @@ Guardrails (every round):
       time-of-day line, no overclaiming). Shown as a few calm lines in the Practice Stats dialog.
       Done: selftest passes; helpers unit-tested (empty/new, a week of data, mood, week-over-week);
       offscreen both faces build the Stats widget without a blocking exec, thread-stable.
+- [x] **Accessibility — text size** (`vesper/fontscale.py`): a global UI text-size scale (Small /
+      Normal / Large / Extra-large -> 0.85 / 1.0 / 1.25 / 1.5) via **View > Text size**. Scales the
+      Qt application font *and* the theme stylesheet's `font-size` values (only font sizes, so layout
+      stays stable; dialogs and menus inherit `win.styleSheet()`). Persisted as `font_scale`,
+      restored on launch. Honest: a readability setting. Done: selftest passes; `scaled_css`/labels
+      unit-tested (geometry preserved); offscreen both faces — each size scales the app font (e.g.
+      9->11.2 pt at Large) and the stylesheet (13->16px), persists, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

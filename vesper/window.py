@@ -103,6 +103,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._hg_spin_to = 0.0
         self._hg_spin_t0 = None
         self.current_mode = None
+        self._font_scale = 1.0             # accessibility: global UI text size
+        self._base_pt = 0.0                # app font point size before any scaling
         self._active_course = None         # (course name, total) while a course day runs
         self._sleep_timer_min = 0.0        # sleep auto-stop: 0 = off (default each launch)
         self._sleep_timer_t0 = 0.0         # elapsed when the timer was armed
@@ -157,6 +159,21 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
     def rebuild_menu(self):
         menus.build(self)
 
+    def set_text_scale(self, scale):
+        """Accessibility: scale all UI text (app font + the stylesheet font sizes,
+        which dialogs and menus inherit). Persisted; a readability setting only."""
+        from . import fontscale
+        scale = float(scale)
+        self._font_scale = scale
+        app = QApplication.instance()
+        if app is not None:
+            f = app.font()
+            if self._base_pt <= 0:                       # capture the unscaled size once
+                self._base_pt = f.pointSizeF() if f.pointSizeF() > 0 else 13.0
+            f.setPointSizeF(max(6.0, self._base_pt * scale))
+            app.setFont(f)
+        self.setStyleSheet(fontscale.scaled_css(theme.STYLESHEET, scale))
+
     def _restore_settings(self):
         """Reopen in the last-used mode, volume, speed and view (store)."""
         s = store.load_settings()
@@ -168,6 +185,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._onboarded = bool(s.get("onboarded", False))      # first-run welcome shown?
         self._spatial = bool(s.get("spatial", True))           # ambience stereo width
         self.engine.set_spatial(self._spatial)
+        self.set_text_scale(float(s.get("font_scale", 1.0)))   # accessibility text size
         mode = s.get("mode")                          # no saved mode -> suit the clock
         if mode not in modes.names():
             from . import clocktheme
@@ -666,7 +684,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                  "clock_light": self._clock_light,
                                  "mood_checkins": self._mood_on,
                                  "onboarded": getattr(self, "_onboarded", False),
-                                 "spatial": getattr(self, "_spatial", True)})
+                                 "spatial": getattr(self, "_spatial", True),
+                                 "font_scale": getattr(self, "_font_scale", 1.0)})
         except Exception:
             pass
         try:
