@@ -594,6 +594,20 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — richer Relax wave scene (horizon glow + moonlight glint)
+Deepened `vesper/scenes.WaveScene` with two gentle, low-contrast touches layered onto the existing
+swells / stars / moon / shimmer / foam, both driven by the existing `anim_t` (no new clock) and
+respecting the theme palette + warm/dim overlay: (1) a **horizon glow** -- a soft 26 px
+linear-gradient band just above the waterline (`base`) in a water+moon tint, fading to nothing
+upward (alpha tops at ~0.16), so sky and sea meet in a calm light; (2) a **moonlight glint column**
+-- a vertical MOON gradient drawn down the sea directly below the moon, fading out toward the bottom,
+its width **breathing subtly with the breath volume** (`mr*2.2*(0.85 + 0.4*vol)`), with the existing
+shimmer ellipses riding on top so the moon now lays a coherent path of light on the water. `scenes.py`
+stays 440 lines (<500), so no split was needed. Verified: `selftest.py` passes (129 lectures / 21
+branches); offscreen both faces -- in Relax with the wave scene the viz renders at 564x557 to
+non-empty PNGs (~25 KB) that **differ frame-to-frame** (moving swells, shimmer and the breathing
+glint), thread-stable.
+
 ## Stories round — new branch Great Lakes & Inland Seas (Baikal, Caspian, Dead Sea, Titicaca)
 Added a 21st lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate geography/ecology/history, ASCII, sleep-closing): `lectures_baikal.py` (Lake Baikal,

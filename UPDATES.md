@@ -343,6 +343,14 @@ Guardrails (every round):
       passes; `message` unit-tested (short None, singular/plural, with/without streak); offscreen both
       faces — a finished sit shows the line once with no blocking dialog, a fresh start clears it,
       Sleep stays silent, thread-stable.
+- [x] **Richer Relax wave scene** (`vesper/scenes.WaveScene`): deeper, calmer sea visuals on top of
+      the existing swells/stars/moon — a **faint horizon glow** band at the waterline (a soft
+      water+moon tint, alpha <=0.16) and a **moonlight glint column** down the sea below the moon (a
+      vertical MOON gradient that fades out, its width **breathing a touch with the breath volume**),
+      under the existing shimmer + foam. Driven by `anim_t` (no new clock), low-contrast, respecting
+      the theme palette + warm/dim overlay. Done: selftest passes; `scenes.py` stays 440 lines;
+      offscreen both faces render the wave scene (564x557) to non-empty PNGs that change
+      frame-to-frame, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

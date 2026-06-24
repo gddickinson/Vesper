@@ -185,6 +185,11 @@ class WaveScene:
         p.drawEllipse(QPointF(mx, my), mr * 2.6, mr * 2.6)
         p.setBrush(_qc(theme.MOON, 0.85))
         p.drawEllipse(QPointF(mx, my), mr, mr)
+        hglow = QLinearGradient(0.0, base - 26, 0.0, base)   # soft glow at the horizon
+        hgcol = theme.blend(theme.WATER[2], theme.MOON, 0.35)
+        hglow.setColorAt(0.0, _qc(hgcol, 0.0))
+        hglow.setColorAt(1.0, _qc(hgcol, 0.16))
+        p.fillRect(0, int(base - 26), w, 26, QBrush(hglow))
         for i, col in enumerate(theme.WATER):         # smoother layered swells
             amp, speed = 8 + 6 * i, 0.6 + 0.3 * i
             k = 2 * math.pi / (w * (0.55 + 0.3 * i))
@@ -198,6 +203,11 @@ class WaveScene:
             poly.append(QPointF(0, h))
             p.setBrush(_qc(col, 0.92))
             p.drawPolygon(poly)
+        glint = QLinearGradient(0.0, base, 0.0, float(h))  # moonlight path on the sea
+        glint.setColorAt(0.0, _qc(theme.MOON, 0.13))
+        glint.setColorAt(1.0, _qc(theme.MOON, 0.0))
+        gw = mr * 2.2 * (0.85 + 0.4 * vol)            # breathes a touch with the breath
+        p.fillRect(int(mx - gw / 2), int(base), int(gw), int(h - base), QBrush(glint))
         for j in range(10):                           # moon-reflection shimmer
             yy = base + j * (h - base) / 10.0
             sway = math.sin(t * 1.2 + j * 0.7) * (4 + j)
