@@ -61,7 +61,8 @@ Set with the user after the realistic-chanting round. Tick as completed.
 2. [x] **Chant workspace controls + sing-along** — phrase card now has "Sing the whole
    phrase per breath" + "Reciting tone" toggles and a live ♪ syllable read-out
    (`engine.current_syllable`). Done.
-3. [ ] **Body-scan + PMR guided program** — timed tense->release head-to-toe cues.
+3. [x] **Body-scan + PMR guided program** — "Body Scan & PMR (15 min)" in
+   `programs.py`: tense->release feet-to-head on a (4,3,9,0) breath, then melt. Done.
 4. [ ] **Physiological-sigh reset** — a 2-3 min one-tap "Sigh" mini-session.
 5. [ ] **Characters -> story binding + story-following dynamic backgrounds**
    - a) the storyteller picks a fitting character + costume per scene; characters react

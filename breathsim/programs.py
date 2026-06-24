@@ -198,3 +198,44 @@ _add("NSDR / Yoga Nidra (12 min)",
           effect="Heartbeat (slow)", volume=0.5),
       _st("Rest", 1.5, "", pattern=(8, 0, 12, 0), voice="Sleepy Warm",
           cue_style="Off", volume=0.45)])
+
+# Body Scan + Progressive Muscle Relaxation (Jacobson): a classic relaxation
+# practice -- on the in-breath, gently tense one muscle group; on the long
+# out-breath, let it release completely, noticing the contrast. Feet to head,
+# then melt. The (4,3,9,0) breath paces the tense (inhale + hold) and the slow
+# release (long exhale); the orb's phase ring shows when to squeeze and let go.
+_TENSE = (4, 3, 9, 0)
+_add("Body Scan & PMR (15 min)",
+     "Tense and release each muscle group, feet to head, then melt and rest.",
+     [_st("Settle & learn the rhythm", 1.5, "Lie down, and let yourself be still. "
+          "We will gently tense each part of the body on the in-breath, then let "
+          "it go soft on the long out-breath. Never strain - just a gentle squeeze.",
+          pattern="Calming 4-6 (Long Exhale)", voice="Deep Calm", scene="orb",
+          cue_style="Guided", volume=0.62),
+      _st("Feet & calves", 1.5, "Breathe in, and curl your toes and tighten your "
+          "calves. Hold it gently... and now, on a long out-breath, let them go "
+          "completely soft. Feel the difference.", pattern=_TENSE,
+          voice="Soft Whisper"),
+      _st("Thighs & hips", 1.5, "Breathe in, and tighten your thighs and hips. "
+          "Hold... and release, letting them sink and grow heavy.", pattern=_TENSE,
+          voice="Soft Whisper"),
+      _st("Belly & lower back", 1.5, "Breathe in, and gently firm your belly. "
+          "Hold... and soften, letting the breath move freely again.",
+          pattern=_TENSE, voice="Soft Whisper"),
+      _st("Hands & arms", 1.5, "Breathe in, and make soft fists, drawing them up "
+          "your arms. Hold... and let your hands fall open, arms heavy.",
+          pattern=_TENSE, voice="Soft Whisper"),
+      _st("Shoulders & neck", 1.5, "Breathe in, and lift your shoulders toward "
+          "your ears. Hold... and drop them down, releasing the neck.",
+          pattern=_TENSE, voice="Soft Whisper"),
+      _st("Face", 1.5, "Breathe in, and scrunch your face - brow, eyes, jaw. "
+          "Hold... and smooth it all away, the jaw loose, the brow at ease.",
+          pattern=_TENSE, voice="Soft Whisper"),
+      _st("Whole body", 1.5, "One more time, breathe in and gently tense the whole "
+          "body at once. Hold... and on a long sigh, let absolutely everything go.",
+          pattern=_TENSE, voice="Sleepy Warm", scene="night",
+          effect="Heartbeat (slow)"),
+      _st("Melt & rest", 2.5, "Nothing left to tense. Let the body be completely "
+          "soft and heavy, and simply rest in the calm you have made.",
+          pattern="Extended 7-11", voice="Sleepy Warm", cue_style="Off",
+          volume=0.5)])

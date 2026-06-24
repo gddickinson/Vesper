@@ -2115,6 +2115,18 @@ can chant along: `engine.current_syllable()` returns the phrase track's active s
 "Om Mani Padme Hum" across an exhale surfaces all six syllables live (label shows
 "♪ Hum"); selftest passes; both-faces drive clean, thread-stable.
 
+## Round 3 (roadmap) — Body Scan & PMR guided program
+Added **"Body Scan & PMR (15 min)"** to `programs.PROGRAMS` (Jacobson progressive
+muscle relaxation as a classic relaxation practice, framed without clinical claims): a
+9-stage feet-to-head sweep that gently tenses each muscle group on the in-breath and
+releases it on a long out-breath, then melts and rests. A shared `(4,3,9,0)` breath
+paces tense (inhale+hold) -> slow release (long exhale); the orb phase ring shows when
+to squeeze and let go; final stages move to the night scene + slow heartbeat and
+Extended 7-11 to rest. Auto-listed in Sessions + the Breathwork programs card via
+`programs.names()`. Verified: all stage voices/patterns/effects resolve; every stage
+applies cleanly and the program starts as a guided session on both faces; selftest
+passes; thread-stable.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
