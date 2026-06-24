@@ -594,6 +594,24 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Volcanoes & Islands (Iceland, Hawaii, Krakatoa, Galapagos)
+Added a 24th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate geology/ecology/history, ASCII, sleep-closing): `lectures_iceland.py` (Iceland, Mountain
+Stream - the land of fire and ice on the mid-Atlantic ridge slowly splitting, geothermal heat and
+the word "geyser" from Geysir, glaciers and the aurora, the thousand-year Althing),
+`lectures_hawaii.py` (The Hawaiian Islands, Ocean Waves - a hotspot building the chain as the Pacific
+plate drifts, Mauna Kea taller than Everest from the sea floor, Polynesian voyagers navigating by
+stars/swells/birds, life arriving and blooming into endemic forms), `lectures_krakatoa.py` (Krakatoa,
+Distant Thunder - the 1883 eruption told **gently and with quiet awe**, the sound heard thousands of
+miles off, the world's reddened sunsets, then the patient return of life and the new island Anak
+Krakatau, leaning into renewal), and `lectures_galapagos.py` (The Galapagos, Night Crickets - young
+volcanic islands on the equator, fearless animals with no large predators, century-old giant
+tortoises and marine iguanas, Darwin's 1835 visit and the finches). Distinct from the existing
+"Volcanoes and the Deep Earth". New branch in `_CATALOG` -> **141 lectures / 24 branches**. Validated
+all four (7 sections, 12-13 lines, pure ASCII, no NAME collisions); `selftest.py` passes (148
+voices); DB rebuilt (11,999 lines / 188,664 words / 5 scenes). The `units()` stream renders each
+(e.g. Iceland = 109 units).
+
 ## App round — richer Chant ripple scene (water sheen + interference ripples)
 Deepened `vesper/scenes.RippleScene` (used in Chant & Sing) with two gentle, low-contrast touches
 layered onto the existing breath-spawned expanding rings and breath-pulsing central glow, both

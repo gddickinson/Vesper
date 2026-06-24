@@ -428,6 +428,13 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Volcanoes & Islands** (4): Iceland · the Hawaiian Islands · Krakatoa · the
+      Galapagos — added `lectures_{iceland,hawaii,krakatoa,galapagos}.py` (7x12-13 lines, fact-free
+      section 1, accurate geology/ecology/history — Krakatoa's 1883 eruption told gently, leaning into
+      renewal; Polynesian voyaging + Darwin noted respectfully — ASCII, sleep-closing; Mountain Stream
+      / Ocean Waves / Distant Thunder / Night Crickets). Distinct from the existing "Volcanoes and the
+      Deep Earth". New branch in `_CATALOG` → **141 lectures / 24 branches**; DB rebuilt (11,999 lines
+      / 188,664 words); selftest passes. Done: validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Great Train Journeys** (4): the Trans-Siberian · the Orient Express · the
       Darjeeling Railway · the Ghan — added
       `lectures_{transsiberian,orientexpress,darjeeling,ghan}.py` (7x12-13 lines, fact-free section 1,
