@@ -594,6 +594,23 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Great Train Journeys (Trans-Siberian, Orient Express, Darjeeling, Ghan)
+Added a 23rd lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate geography/history, ASCII, sleep-closing), leaning into the soothing rhythm of the rails:
+`lectures_transsiberian.py` (The Trans-Siberian, Wind in Pines - the world's longest railway,
+Moscow to Vladivostok, ~9,000 km / a week / eight time zones, days through the taiga, around Lake
+Baikal, samovar tea and the clicking rails as a lullaby), `lectures_orientexpress.py` (The Orient
+Express, Gentle Rain - the 1880s Paris-to-Constantinople luxury sleeper, wood-panelled cars and
+white-linen dining, Agatha Christie's novel framed honestly as fiction, rain on the dark window),
+`lectures_darjeeling.py` (The Darjeeling Railway, Mountain Stream - the narrow-gauge "toy train"
+climbing by loops and zig-zags to Ghum, a century-old World Heritage line, tea gardens and distant
+Kanchenjunga), and `lectures_ghan.py` (The Ghan, Night Crickets - Adelaide to Darwin across the red
+centre, named for the Afghan cameleers, Alice Springs, Aboriginal land noted respectfully, star-thick
+desert nights). Distinct from the existing general "The Railway". New branch in `_CATALOG` -> **137
+lectures / 23 branches**. Validated all four (7 sections, 12-13 lines, pure ASCII, no NAME
+collisions); `selftest.py` passes (148 voices); DB rebuilt (11,648 lines / 182,733 words / 5 scenes).
+The `units()` stream renders each (e.g. The Trans-Siberian = 110 units).
+
 ## App round — breath-rate (pace) insight in Stats
 Surfaced the breathing pace a user tends to practise at, computed honestly from what is logged.
 `store.log_session(minutes, bpm=None)` now records the session's breaths-per-minute into a capped

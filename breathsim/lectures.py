@@ -62,6 +62,8 @@ from . import (lectures_baikal, lectures_caspian, lectures_deadsea,
                lectures_titicaca)
 from . import (lectures_artemis, lectures_babylon, lectures_colossus,
                lectures_pyramid)
+from . import (lectures_darjeeling, lectures_ghan, lectures_orientexpress,
+               lectures_transsiberian)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -137,6 +139,8 @@ _CATALOG = [
                                    lectures_deadsea, lectures_titicaca]),
     ("Wonders of the Ancient World", [lectures_pyramid, lectures_babylon,
                                       lectures_colossus, lectures_artemis]),
+    ("Great Train Journeys", [lectures_transsiberian, lectures_orientexpress,
+                              lectures_darjeeling, lectures_ghan]),
 ]
 
 LECTURES = {}

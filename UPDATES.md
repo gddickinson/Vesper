@@ -403,6 +403,14 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Great Train Journeys** (4): the Trans-Siberian · the Orient Express · the
+      Darjeeling Railway · the Ghan — added
+      `lectures_{transsiberian,orientexpress,darjeeling,ghan}.py` (7x12-13 lines, fact-free section 1,
+      accurate geography/history (rhythm-of-the-rails theme; Afghan cameleers + Aboriginal land noted
+      respectfully), ASCII, sleep-closing; Wind in Pines / Gentle Rain / Mountain Stream / Night
+      Crickets). Distinct from the existing general "The Railway". New branch in `_CATALOG` → **137
+      lectures / 23 branches**; DB rebuilt (11,648 lines / 182,733 words); selftest passes. Done:
+      validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Wonders of the Ancient World** (4): the Great Pyramid · the Hanging Gardens ·
       the Colossus of Rhodes · the Temple of Artemis — added
       `lectures_{pyramid,babylon,colossus,artemis}.py` (7x12-13 lines, fact-free section 1, accurate
