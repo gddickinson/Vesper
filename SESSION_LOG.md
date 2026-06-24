@@ -594,6 +594,22 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — gentle "longest streak" line in Stats
+The Stats dialog now gently celebrates the best run of consecutive practice days -- e.g. "Your longest
+streak: 6 days" -- with a kind "- and you are on it now" nod when the current streak matches the best
+(and is more than one). New pure `insights.streak_line(hist, today)` reads `store.streak(hist, today)`
+(which returns current and best run lengths and takes an injected `today` so it stays deterministic),
+returns None when the best run is under two days (a single isolated day is not a streak worth naming),
+pluralises day/days, and is surfaced through `insights.lines()` just before the week-over-week line. It
+is specifically about the *longest/best* run, so it does not duplicate the current-streak number the
+Stats heatmap already shows. Honest framing: it is only a record of consecutive days -- no pressure, no
+nagging, no claims. Verified: `selftest.py` passes; `streak_line` unit-tested (empty and lone-day ->
+None; a past two-day run -> "Your longest streak: 2 days."; current == best > 1 -> the "and you are on
+it now" nod; a longer past run with current 1 -> no nod; singular/plural; `lines()` includes the line
+exactly once and never for a new user). Offscreen both faces: a seeded three-day consecutive run shows
+the streak line in the Stats insights widget, while a lone day shows nothing; a 24-frame tick loop is
+thread-stable.
+
 ## Stories round — new branch Tea & Coffee of the World (Green Tea, Coffee, Mate, Masala Chai)
 Added a 32nd lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
 fact-free section 1, accurate botany/history/ritual, ASCII, every section sleep-closing, and no

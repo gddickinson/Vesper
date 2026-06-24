@@ -125,6 +125,20 @@ def this_month(hist, today=None):
     return f"This month: {sits} {s}, {mins:.0f} min."
 
 
+def streak_line(hist, today=None):
+    """A kind note of the best run of consecutive practice days, or None if there
+    is none worth naming (best < 2). Adds a gentle nod when you are on it now.
+    Pure -- reads `store.streak`, which takes an injected *today* for testing."""
+    cur, best = store.streak(hist, today)
+    if best < 2:                              # a lone day isn't a streak yet
+        return None
+    d = "day" if best == 1 else "days"
+    line = f"Your longest streak: {best} {d}"
+    if cur == best and best > 1:              # currently matching your record
+        line += " - and you are on it now"
+    return line + "."
+
+
 def lines(hist=None, today=None):
     """A short list of friendly insight strings (possibly empty for a new user)."""
     hist = hist if hist is not None else store.history()
@@ -153,6 +167,9 @@ def lines(hist=None, today=None):
     wd = busiest_weekday(hist)
     if wd:
         out.append(f"{wd} is your most regular day.")
+    sl = streak_line(hist, today)
+    if sl:
+        out.append(sl)
     wow = week_over_week(hist, today)
     if wow is not None:
         this_w, last_w = wow

@@ -485,6 +485,17 @@ Guardrails (every round):
       scene + non-Sleep mode handled; whitespace trimmed) and `save_settings` merge round-trip tested
       (partial patch keeps prior keys); offscreen both faces — a seeded prior settings file shows the
       hint idle, it's retired after Start, and close persists every key incl `last_scene`, thread-stable.
+- [x] **Gentle "longest streak" line in Stats** (`breathsim/insights.py`): the Stats dialog now gently
+      celebrates your best run of consecutive practice days, e.g. "Your longest streak: 6 days", with a
+      kind "- and you are on it now" nod when the current streak equals the best (and > 1). Pure
+      `streak_line(hist, today)` reads `store.streak` (current, best), returns None when best < 2 (a
+      lone day isn't a streak), pluralises day/days, and is surfaced via `insights.lines()` near the
+      week-over-week line. Specifically about the *best* run, so it doesn't duplicate the heatmap's
+      current-streak number. Honest: just a record of consecutive days, no pressure/claims. Done:
+      selftest passes; `streak_line` unit-tested (empty/lone-day -> None; past 2-day run -> the line;
+      current==best>1 -> the "on it now" nod; best>current -> no nod; pluralisation; lines() includes it
+      exactly once; new user -> no lines); offscreen both faces — a seeded 3-day run shows the line in
+      the Stats insights widget and a lone day shows nothing, thread-stable.
 - [x] **Gentle Stats "this month" total** (`breathsim/insights.py`): the Stats dialog now shows a calm
       tally of the current calendar month, e.g. "This month: 7 sits, 84 min", right after the all-time
       total. Pure `this_month(hist, today)` sums sits + minutes over the per-day log entries falling in
