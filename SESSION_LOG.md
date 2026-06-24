@@ -594,6 +594,23 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — launch suggestion (a gentle, non-modal "what suits you now")
+Added `vesper/suggest.py` (86 lines, pure + testable): `suggest(hour, history, courses_state, today)`
+returns a `Suggestion(text, action, kind)`. Priority: an **in-progress multi-night course** is the
+kindest hint and wins ("Pick up \"7 Nights to Sleep\" - Night 3 of 7"); otherwise a friendly
+time-of-day mode (reusing `clocktheme.suggested_mode_for_hour`) coloured by the practice state -- a
+fresh user ("New here? ... is a gentle place to start"), an active streak ("You are on a 3-day
+streak"), or having already practised today. It reads nothing global (the hour/history/course-state
+and `today` are all injectable), so it unit-tests cleanly. It lives in the GUI layer because the
+mode mapping comes from `clocktheme` (a vesper module). Surfaced **gently**: `window` computes it
+once at launch (guarded; never raises) into `self._launch_suggestion`, and `_update_status` shows it
+in the **idle status bar** only while elapsed==0 and before the first Start; `toggle_transport` sets
+`_started_once` so the hint retires on Start and never returns -- no popup, no nag. Honest framing: a
+hint, not advice. Verified: `selftest.py` passes (105 lectures / 15 branches); the helper is
+unit-tested across morning/night, fresh vs 3-day-streak vs practised-today vs in-progress vs
+completed course; offscreen both faces -- the suggestion is produced on launch with **no** blocking
+dialog, shown in the idle status bar, then replaced by the running display after Start, thread-stable.
+
 ## App round — multi-night courses (guided sequences over days)
 Added `breathsim/courses.py` (`Course`/`Day`, 121 lines): an optional, gentle sequence of sessions
 across days, each day **reusing an existing building block** -- a `programs` program or a mode -- plus

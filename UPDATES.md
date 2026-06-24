@@ -254,7 +254,15 @@ Guardrails (every round):
       Honest framing (gentle structured practice, not clinical). Done: selftest passes; course model
       + persistence round-trip unit-tested; offscreen both faces — mode & program days apply, advance
       only on a real sit, short sits don't advance, thread-stable.
-- [ ] **Launch suggestion**: recommend a mode/lecture by time of day + recent history.
+- [x] **Launch suggestion** (`vesper/suggest.py`): a gentle, non-modal hint on launch. Pure +
+      testable `suggest(hour, history, courses_state, today)` -> a `Suggestion(text, action, kind)`:
+      an in-progress multi-night course wins ("Pick up 7 Nights to Sleep - Night 3 of 7"), else a
+      friendly time-of-day mode (via `clocktheme.suggested_mode_for_hour`) coloured by streak /
+      fresh-user / practised-today. Shown as a one-line message in the **idle status bar** until the
+      first Start, then it retires (no nag, no popup). Honest: a hint, not advice. Done: selftest
+      passes; helper unit-tested (morning/night, fresh vs 3-day streak vs mid-course vs completed);
+      offscreen both faces — suggestion produced on launch with no blocking dialog, shown while idle,
+      retired after Start, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

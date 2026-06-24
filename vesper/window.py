@@ -143,6 +143,14 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         from . import onboarding              # gentle first-launch welcome (once)
         onboarding.maybe_show(self)
 
+        from . import clocktheme, suggest             # a gentle, non-modal launch hint
+        self._started_once = False
+        try:
+            self._launch_suggestion = suggest.suggest(
+                clocktheme.now_hour(), store.history(), store.course_state()).text
+        except Exception:
+            self._launch_suggestion = None
+
     def rebuild_menu(self):
         menus.build(self)
 
@@ -382,6 +390,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             self._after_mood()                       # offer it after we've paused
             return
         fresh = self.controller.elapsed() < 1.0
+        self._started_once = True                     # retire the launch hint
         if fresh:
             self._mood_after_done = False
             from . import mood
@@ -610,6 +619,11 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
 
     def _update_status(self, state, running):
         if not running:
+            sug = getattr(self, "_launch_suggestion", None)
+            if (self.controller.elapsed() == 0 and sug
+                    and not getattr(self, "_started_once", False)):
+                self.status.showMessage(sug)         # gentle launch hint, until first start
+                return
             self.status.showMessage("Press Start" if self.controller.elapsed()
                                     == 0 else "Paused — press Start")
             return
