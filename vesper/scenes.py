@@ -390,6 +390,9 @@ _CLASSES = {"orb": OrbScene, "night": NightScene, "ripple": RippleScene,
 from .scene_rain import RainScene  # noqa: E402
 _CLASSES["rain"] = RainScene
 AMBIENT.append("rain")
+from .scene_aurora import AuroraScene  # noqa: E402
+_CLASSES["aurora"] = AuroraScene
+AMBIENT.append("aurora")
 
 
 def make(name):

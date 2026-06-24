@@ -145,7 +145,10 @@ Guardrails (every round):
       condensation beads, and many drops + slow rivulets sliding down the glass (heads + trails,
       gently elongating). In the View > Scene menu; pairs with the Rain ambiences. PNG +
       thread-stable verified.
-- [ ] **Aurora scene**: slow northern-lights ribbons for Sleep/Relax.
+- [x] **Aurora scene** (`scene_aurora.AuroraScene`): slow northern-lights curtains - soft
+      green/teal/violet vertical drapes that undulate, shimmer and drift on layered near-coprime
+      sines over a faint star field and a dark horizon; the glow swells with the breath. In the
+      View > Scene menu. PNG + thread-stable verified.
 - [ ] **Breathing mandala**: a symmetric sacred-geometry pattern that unfolds/rotates
       with the breath (Meditate/Chant).
 - [ ] **Particle weather**: an optional gentle snow / drifting leaves / rising bubbles
@@ -237,6 +240,7 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- Aurora scene: slow shimmering northern-lights curtains over a starry sky (View > Scene).
 - New lecture branch Small Wonders (Dew · Dust in Sunlight · Seeds · Snowflakes) -> 86 / 11.
 - Rain-on-window scene: drops + rivulets on glass over a warm blurred lamp glow (View > Scene).
 - Natural-sound breath voices (`voices_breath_nature.py`): Tide & Pebbles, Deep Surf, Spring

@@ -594,6 +594,16 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — Aurora scene (northern lights)
+Added `vesper/scene_aurora.py` (an `AuroraScene`, registered at the bottom of scenes.py via
+`_CLASSES["aurora"]` + `AMBIENT.append`): a dark starry night with four slow northern-lights
+curtains - soft green/teal/violet vertical drapes drawn as overlapping vertical-gradient columns
+whose top edge undulates and whose brightness drifts in slow patches, each curtain also drifting
+sideways on layered near-coprime sines (so it never repeats), the glow swelling with the breath -
+over a faint twinkling star field (`scene_fx.starfield`, upper sky only) and a dark horizon
+silhouette. Deterministic (seeded + anim-time, nothing per-frame). selftest passes; offscreen
+scene session thread-stable; PNG confirms soft shimmering aurora. scene_aurora.py ~110 lines.
+
 ## Stories round — new branch Small Wonders (Dew, Dust in Sunlight, Seeds, Snowflakes)
 Added an 11th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section
 1, accurate science, ASCII, sleep-closing): `lectures_dew.py` (Forest Wind - condensation at the
