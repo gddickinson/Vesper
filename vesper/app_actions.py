@@ -47,6 +47,11 @@ class _ActionsMixin:
     def set_slot_level(self, slot, level):
         self.engine.set_slot_level(slot, float(level))
 
+    def set_spatial(self, on):
+        """Toggle the gentle ambience stereo width / auto-pan (persisted)."""
+        self._spatial = bool(on)
+        self.engine.set_spatial(self._spatial)
+
     def toggle_layer(self, slot, on):
         self.engine.set_slot_muted(slot, not on)
 

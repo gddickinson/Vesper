@@ -119,6 +119,7 @@ class AudioEngine:
         self.master = 0.0
         self.master_target = 0.0
         self.chime_enabled = False
+        self.spatial = True               # gentle stereo width + auto-pan on ambience
         self._chime_q: queue.Queue = queue.Queue()
         self._chimes: list[Chime] = []
         self.stream = None
@@ -277,7 +278,17 @@ class AudioEngine:
         self.slot_voice[slot] = name
         cfg = voices.get_voice(name) if name else None
         track = tracks.build_track(cfg, self.sr, self.persona) if cfg else None
+        if track is not None and slot == "ambience" and self.spatial:
+            from .spatial import SpatialTrack, Spatializer    # widen the bed gently
+            track = SpatialTrack(track, Spatializer(self.sr))
         self._swap_layer(slot, track, fade)
+
+    def set_spatial(self, on: bool):
+        """Toggle the gentle ambience stereo width/auto-pan; re-wrap live."""
+        self.spatial = bool(on)
+        amb = self.slot_voice.get("ambience")
+        if amb:
+            self.set_voice(amb, "ambience")
 
     def set_voice_a(self, name: str | None, fade: float = 0.35):
         self.voice_a = name

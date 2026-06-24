@@ -154,6 +154,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._clock_light = bool(s.get("clock_light", True))   # time-of-day warmth
         self._mood_on = bool(s.get("mood_checkins", False))    # opt-in mood check-ins
         self._onboarded = bool(s.get("onboarded", False))      # first-run welcome shown?
+        self._spatial = bool(s.get("spatial", True))           # ambience stereo width
+        self.engine.set_spatial(self._spatial)
         mode = s.get("mode")                          # no saved mode -> suit the clock
         if mode not in modes.names():
             from . import clocktheme
@@ -621,7 +623,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                  "face_cat": self.face.uses_cat(),
                                  "clock_light": self._clock_light,
                                  "mood_checkins": self._mood_on,
-                                 "onboarded": getattr(self, "_onboarded", False)})
+                                 "onboarded": getattr(self, "_onboarded", False),
+                                 "spatial": getattr(self, "_spatial", True)})
         except Exception:
             pass
         try:

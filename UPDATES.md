@@ -223,7 +223,15 @@ Guardrails (every round):
       (irregular tolling over a sea wash). 5 voices in a new GROUP_FX, in the ambience picker + a
       Sound menu. Calibrated (300 s peak <= 0.75); selftest passes. **Instrument suite complete:
       Bells & Gongs + Drums + Winds & Organs + Environmental FX = 31 synthesised voices.**
-- [ ] **Spatial polish**: subtle auto-pan / width on ambiences for headphone immersion.
+- [x] **Spatial polish** (`breathsim/spatial.py`): gentle, peak-safe stereo width + a very slow
+      (~0.02 Hz) auto-pan on the ambience bed. Widening is a complementary-comb pseudo-stereo
+      (each channel a *convex* blend of itself + a short, differently-delayed copy of the other),
+      so it decorrelates L/R — even mono beds gain width — while a convex combination can never
+      exceed the input peak; the auto-pan only ever attenuates one side, so calibrated peaks are
+      untouched. Wraps the `ambience` layer in `engine.set_voice`; **Sound > Spatial width** toggle
+      (default on, persisted). Done: selftest passes; 300 s spatialized peak <= dry peak and <= 0.95
+      on Rain/Slow-Wave/Ocean/Forest with L/R correlation dropping to ~0; offscreen both faces,
+      ambience layer wraps/unwraps on toggle, thread-stable.
 
 ### Researched batch — engagement & structure
 - [x] **Streaks + calendar heatmap** in Stats: `store` now keeps a per-day practice log

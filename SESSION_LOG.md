@@ -594,6 +594,23 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — spatial polish (gentle, peak-safe ambience width + slow auto-pan)
+Added `breathsim/spatial.py` (`Spatializer` + `SpatialTrack`, 80 lines): two subtle, peak-safe,
+click-free stereo effects on the ambience bed. (1) **Pseudo-stereo widening** -- each output channel
+is a *convex* blend of its own channel and a short, differently-delayed copy of the other (dl 17 ms,
+dr 23 ms, weight 0.35); being a convex combination its magnitude is bounded by the input peak, yet
+the two distinct delays decorrelate L and R so even a mono bed gains width (Schroeder/complementary-
+comb pseudo-stereo). (2) **Very slow auto-pan** -- a ~0.02 Hz balance drift that only ever
+*attenuates* one side (gains <= 1), so the bed sways without ever raising the peak. Both carry state
+across blocks (a maxd-sample dry tail + a free-running LFO sample counter) so they stay click-free.
+The `ambience` layer is wrapped in `engine.set_voice` when `engine.spatial` is on; `set_spatial(on)`
+re-wraps live; **Sound > Spatial width (ambience)** toggles it (default on), persisted as `spatial`
+and restored in `window._restore_settings` before `apply_mode`. Honest framing: a width/pan effect,
+not 3D/binaural. Verified: `selftest.py` passes (101 lectures / 14 branches); a 300 s spatialized
+render of Gentle Rain / Slow-Wave Pulse / Ocean Waves / Forest Wind keeps wet peak <= dry peak and
+<= 0.95 with no NaNs and L/R correlation falling from ~1.0 to ~0 (real widening); offscreen the
+ambience layer wraps when on and unwraps after toggling off, thread-stable (1->2), both faces.
+
 ## App round — first-run onboarding (gentle welcome, re-openable from Help)
 Added `vesper/onboarding.py`: a calm, skippable 4-step welcome (what Vesper is -> the mode bar ->
 press play -> everything is in the menus). It is **modeless** (uses `show()`, never a blocking
