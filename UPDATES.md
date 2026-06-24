@@ -147,10 +147,12 @@ Set with the user after the realistic-chanting round. Tick as completed.
       re-alerting), surfaced as a Sleep storyteller option via `stories.extra_names`. Steady bed
       (cue-suppressed); honest framing (evidence promising, esp. for the suggestible). Tested
       both faces, thread-stable.
-- [ ] **Body-scan + PMR** guided program: slow timed tense→release cues head-to-toe,
-      paced to the breath.
-- [ ] **Physiological-sigh reset**: a 2–3 min "Sigh" mini-session (double inhale, long
-      exhale) + a matching visual, for a quick down-regulation.
+- [x] **Body-scan + PMR** guided program: slow timed tense→release cues head-to-toe,
+      paced to the breath. (Delivered as roadmap item 3 — "Body Scan & PMR (15 min)" in
+      `programs.py`.)
+- [x] **Physiological-sigh reset**: a 2–3 min "Sigh" mini-session (double inhale, long
+      exhale) + a matching visual, for a quick down-regulation. (Delivered as roadmap
+      item 4 — "Physiological Sigh Reset (3 min)".)
 
 ### Researched batch — light & circadian
 - [x] **Sunrise / Wake mode**: `director.start_wake` + `app.start_sunrise` + a Sessions menu
@@ -187,6 +189,40 @@ Set with the user after the realistic-chanting round. Tick as completed.
       any scene - Snow (drifting), Leaves (tumbling + rotating), Bubbles (rising), Fireflies
       (twinkling glow). Deterministic anim-time motion; thin and low-contrast. Wired into
       `VizWidget` + a **View > Weather** submenu (Off default). PNGs + thread-stable verified.
+- [x] **Candle / trataka scene** (`vesper/scene_candle.py`, `CandleScene`): a single warm
+      candle flame in the dark to rest the gaze on (*trataka* focused-attention practice -
+      suits Meditate). A pale wax body, the warm pool of light it casts, an ambient glow that
+      **breathes with the breath**, faint rising glints, and a layered teardrop flame (outer->
+      core radial gradients + the cool **blue base** of a real flame) that sways + flickers
+      gently (low amplitude, no strobing) and grows on the inhale. Deterministic; self-registers
+      in the **View > Scene** menu; default per-mode scenes unchanged. Also added a reusable
+      `tools/drive_check.py` (cycle every scene + mode, assert threads stay flat). Verified:
+      selftest passes; both-faces drive 9 scenes / threads 2->2 / 0 issues; inhale vs exhale
+      PNGs read calm + warm.
+
+### Researched batch — next (added 2026-06-24; focus list had emptied)
+Grounded in the research notes above; calming, honest, self-contained. Do one per round
+(top-down), Stories every ~3rd. Tick `[x]` only when tests pass.
+- [ ] **Ease-to-resonance pacing** (Meditate/Breathwork): an opt-in "Settle in" that eases
+      the breath period from a comfortable start down to the pattern's target over the first
+      ~2-3 min, then holds — a gentler entry to ~6 breaths/min than starting there cold.
+      Drive it on the breath clock (extend the wind-down/ramp machinery in `session.py`/
+      `controller.py`); a small toggle + a faint "easing to your pace" read-out. Evidence:
+      slow-breathing training is better tolerated when ramped, not jumped into.
+- [ ] **Breath-paced auditory swell**: an optional toggle so a nature bed (ocean/rain/wind)
+      gently rises on the inhale and falls on the exhale — an external auditory pacer that
+      entrains slow breathing without a spoken count. Modulate the ambience slot level from
+      `BreathState.airflow` (live `set_layer_level`, leaving the user's level intact); keep
+      the depth shallow; off by default. Evidence: external slow auditory pacing aids slow
+      breathing. Verify by correlating slot level with airflow over a session.
+- [ ] **Bedtime gratitude / "one good thing"** (Sleep, opt-in): a single, gentle end-of-
+      session reflection ("one good thing about today") shown softly + optionally logged to
+      Stats — no scoring, fully skippable. Evidence: bedtime gratitude reduces pre-sleep
+      worry and improves sleep quality. Reuse the mood-check-in plumbing.
+- [ ] **Stories (next branch)** — pick a fresh theme with accurate, wonder-led content and
+      sleep-closing sections, e.g. **The Polar Worlds** (the aurora's physics, the long polar
+      night, glaciers, Antarctica's silence) or **The Moons** (Luna, Europa, Titan, Enceladus).
+      4 lectures, standard 7x12 format, distinct NAMEs/modules, register in `_CATALOG`.
 
 ### Researched batch — audio & synthesis
 - [x] **Generative ambient pad** (user-requested "cosmic music"): new `breathsim/cosmic.py`
@@ -218,8 +254,11 @@ Set with the user after the realistic-chanting round. Tick as completed.
       one click to play it as the ambience bed (`win.set_ambience`); they're also in the
       Relax/Sleep soundscape pickers. (A full first-class "Music" *mode* with key/scale/space
       sliders is still open as a stretch.)
-- [ ] **Add reverb as a shared send**: offer the new `Reverb` as an optional space on other
-      ambiences (bowls, chimes) and the drone.
+- [x] **Add reverb as a shared send** — superseded by the **master** design: `SpaceReverb`
+      is applied to the whole mix buffer (`engine._callback`: `buf = self.space.process(buf)`),
+      so when a space (Room/Hall/Cathedral) is selected the bowls, chimes, drone and every
+      ambience already sit in it. A separate per-slot send would duplicate this for no real
+      gain, so the master send stands.
 - [x] **More ambiences** (+5): Rain on a Tent · Wind in Pines · Fan (White Noise) [NoiseTrack]
       and Womb Heartbeat · Whale Song [new `textures.py` generators], all GROUP_NATURE in the
       soundscape picker. Calibrated (300 s peak <= 0.78). **147 voices.**

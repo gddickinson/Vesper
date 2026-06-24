@@ -155,7 +155,14 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   moon, a deeper gradient, drifting **clouds**, a rare **shooting star**),
   `RippleScene` (resonance rings with **tone-reactive** colour/spacing + a pulsing
   central glow), `WaveScene` (moonlit sea: stars, moon + **reflection shimmer**, foam
-  crests, layered swells), a shared text overlay, and `make(name)`/`names()`.
+  crests, layered swells) and `FireplaceScene` (hearth glow + swaying flame tongues +
+  rising embers), a shared text overlay, and `make(name)`/`names()`. Larger scenes
+  live in their own modules and self-register at the foot of this file:
+  `scene_rain` (rain-on-window), `scene_aurora`, `scene_mandala` and `scene_candle`.
+- **scene_candle.py** — `CandleScene`: a single warm candle flame in the dark to rest
+  the gaze on (*trataka* focused-attention practice) — a pale wax body, the pool of
+  light it casts, an ambient glow that **breathes with you**, and a layered teardrop
+  flame (cool blue base) that sways + flickers gently and grows on the inhale.
 - **scene_fx.py** — small, deliberately slow/dim **visual-effect helpers** shared by
   the scenes: `Motes`, `Clouds`, `ShootingStar` (stateful, seeded RNG) and a
   `starfield` drawer. Keeps the enrichment calming and `scenes.py` lean.

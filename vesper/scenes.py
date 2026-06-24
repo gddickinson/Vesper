@@ -453,6 +453,9 @@ AMBIENT.append("aurora")
 from .scene_mandala import MandalaScene  # noqa: E402
 _CLASSES["mandala"] = MandalaScene
 AMBIENT.append("mandala")
+from .scene_candle import CandleScene  # noqa: E402
+_CLASSES["candle"] = CandleScene
+AMBIENT.append("candle")
 
 
 def make(name):

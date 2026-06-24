@@ -2253,6 +2253,23 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Scene round — Candle (trataka) gazing scene
+Added `vesper/scene_candle.py` (`CandleScene`): a single warm candle flame in the
+dark to rest the gaze on. Gazing softly at a candle (*trataka*) is a traditional
+focused-attention practice — one steady point of light gathers a wandering mind, so
+it suits Meditate. The scene draws a pale wax body, the warm pool of light it casts,
+an ambient room glow that **breathes with the breath**, faint rising glints, and a
+layered teardrop flame (outer→core radial gradients + the cool **blue base** of a
+real flame) that sways and flickers very gently (low amplitude, no strobing) and
+grows a touch on the inhale. Deterministic (all motion from the anim clock). Self-
+registers at the foot of `scenes.py`; appears as **View ▸ Scene ▸ Candle** (the menu
+auto-lists `scenes.names()`). The default per-mode scenes are unchanged.
+Also added a reusable headless harness `tools/drive_check.py` (cycle every scene +
+mode, assert `threading.active_count()` stays flat) for the standard per-round check.
+Verified: selftest passes (148 voices / 66 phrases / 185 lectures); drive_check on
+**both faces** — 9 scenes, threads 2→2, 0 issues; PNG renders (inhale bright/tall,
+exhale dim/short) look calm and warm. All files < 500 lines.
+
 ## Stories round — new branch "The Deep Ocean" (4 lectures)
 Added a 35th lecture branch, **The Deep Ocean**: *The Twilight Zone* (the mesopelagic
 dusk + the daily vertical migration, the largest movement of life on Earth), *Creatures
