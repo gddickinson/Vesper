@@ -116,6 +116,10 @@ def _sound(win, m):
     ss.setChecked(getattr(win, "_soundscape_follow", True))
     ss.toggled.connect(win.set_soundscape_follow)
     m.addSeparator()
+    music = voices.names(voices.GROUP_MUSIC)        # generative cosmic music beds
+    if music:
+        _list_menu(m.addMenu("Cosmic Music"), music, win.set_ambience)
+    m.addSeparator()
     m.addAction("Mixer…").triggered.connect(lambda: dialogs.open_mixer(win))
 
 

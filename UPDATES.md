@@ -159,8 +159,10 @@ Guardrails (every round):
       gently raise pad density, brightness and a click-free level swell on the inhale and settle
       them on the exhale (per-palette `breath` amount). Verified it tracks the breath
       (Solar Wind vol/RMS corr +0.65, slow presets +0.15..0.22), recalibrated, selftest passes.
-- [ ] **Dedicated Music workspace / menu**: a first-class "Music" mode or a Sound-menu
-      section (key/scale/space sliders), not just an ambience entry.
+- [x] **Music menu**: a **Sound ▸ Cosmic Music** submenu lists all 8 generative voices, each
+      one click to play it as the ambience bed (`win.set_ambience`); they're also in the
+      Relax/Sleep soundscape pickers. (A full first-class "Music" *mode* with key/scale/space
+      sliders is still open as a stretch.)
 - [ ] **Add reverb as a shared send**: offer the new `Reverb` as an optional space on other
       ambiences (bowls, chimes) and the drone.
 - [ ] **More ambiences**: Whale Song · Distant Train · Rain on a Tent · Wind in Pines ·
@@ -212,6 +214,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Sound > Cosmic Music menu: all 8 generative music voices one click away.
 - Cosmic music data sonification: "The Planets" (real orbital-ratio scale) + real pulsar beat.
 - New lecture branch Voyages & Journeys (Compass · Caravan · Railway · Balloon) → 78 / 9.
 - Breath-synced cosmic music: pads gently swell/brighten on the inhale, settle on the exhale.

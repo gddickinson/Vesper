@@ -594,6 +594,14 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Music round — Sound > Cosmic Music menu (one-click generative music)
+Surfaced the generative music as first-class: added a **Cosmic Music** submenu under the Sound
+menu (`vesper/menus.py`) listing all 8 `GROUP_MUSIC` voices, each calling `win.set_ambience`
+to play it as the ambience bed in one click (they were previously only in the Relax/Sleep
+soundscape combo, which still lists them). selftest passes; offscreen Relax session rebuilds the
+menu without error, all 8 set_ambience callbacks work, thread-stable (2->2); window PNG renders
+cleanly with no layout change, both faces.
+
 ## Music round — true data sonification (Kepler planets + real pulsar)
 Grounded the cosmic music in real astronomy. Added `cosmic._planet_scale()`: takes the real
 planetary orbital periods (Mercury..Neptune), turns each into an orbital-frequency ratio vs the
