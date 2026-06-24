@@ -9,8 +9,8 @@ from __future__ import annotations
 
 from breathsim import patterns, personas, programs, session, voices
 
-from . import (app_io, dialogs, face_bg, pattern_editor, presets, scenes,
-               shortcuts, voice_editor)
+from . import (app_io, dialogs, face_bg, onboarding, pattern_editor, presets,
+               scenes, shortcuts, voice_editor)
 
 _VOICE_GROUPS = (voices.GROUP_BREATH, voices.GROUP_CAT, voices.GROUP_VOCAL,
                  voices.GROUP_TECHNIQUE, voices.GROUP_SING, voices.GROUP_EXERCISE,
@@ -198,6 +198,9 @@ def reflect_view(win):
 
 
 def _help(win, m):
+    m.addAction("Welcome / Getting Started…").triggered.connect(
+        lambda: onboarding.open_onboarding(win))
+    m.addSeparator()
     m.addAction("Story Library…").triggered.connect(
         lambda: dialogs.open_story_library(win))
     m.addAction("Practice Stats…").triggered.connect(

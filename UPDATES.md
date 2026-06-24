@@ -239,7 +239,12 @@ Guardrails (every round):
       Practice Stats ("you usually feel a little calmer afterwards"). Unit-tested; selftest passes.
 - [ ] **Multi-night courses**: sequenced programs — "7 Nights to Sleep", "21 Days of Calm".
 - [ ] **Launch suggestion**: recommend a mode/lecture by time of day + recent history.
-- [ ] **First-run onboarding**: a gentle goal pick (sleep / focus / calm) that presets it.
+- [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
+      once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
+      Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never
+      auto-pops in an offscreen/headless run, so tests and offline renders stay quiet. Done:
+      orients to what Vesper is + the mode bar + play + the menus; selftest passes; offscreen both
+      faces — no auto-pop on build, re-open + flag-persist verified, thread-stable (1->2).
 
 ### Researched batch — storyteller
 - [x] **Best voices + British-female default** (user-requested): the default narration voice is

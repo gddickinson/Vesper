@@ -594,6 +594,21 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — first-run onboarding (gentle welcome, re-openable from Help)
+Added `vesper/onboarding.py`: a calm, skippable 4-step welcome (what Vesper is -> the mode bar ->
+press play -> everything is in the menus). It is **modeless** (uses `show()`, never a blocking
+`exec()`) with `WindowModal` modality, so it can't trap the user or hang a headless session;
+`open_onboarding(win)` builds/pages it (Skip / Back / Next / Begin, dotted progress) and
+`maybe_show(win)` shows it once on first launch only -- gated on a persisted `onboarded` flag and
+**skipped entirely when `QApplication.platformName() == "offscreen"`** so tests/offline renders stay
+quiet. The flag is read in `window._restore_settings`, set on finish/close/Esc via a read-modify-
+write merge (since `store.save_settings` overwrites the whole file) and also re-saved in
+`closeEvent`. Re-openable from a new **Help > Welcome / Getting Started** menu entry (`menus._help`).
+Honest framing (no wellness claims beyond "a quiet place to breathe"); matches the night theme.
+Verified: `selftest.py` passes (101 lectures / 14 branches); offscreen, building the window auto-pops
+**0** dialogs, `open_onboarding` then paging to "Begin" sets + persists `onboarded`, a 24-frame loop
+is thread-stable (1->2), on both the 3D and cat faces; settings isolated via `BREATHSIM_HOME`.
+
 ## Stories round — new branch Trees of the World (Oak, Bamboo, Baobab, Cherry Blossom)
 Added a 14th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate botany/history, ASCII, sleep-closing): `lectures_oak.py` (The Oak, Forest Wind - Quercus,
