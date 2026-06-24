@@ -132,7 +132,14 @@ vec3 eye_pattern(int id, vec2 gp, vec2 lp, float t, vec3 acc) {
     return vec3(0.01, 0.03, 0.05) + acc * pulse * 1.3;
 }
 
-vec3 skin_shade(int id, vec3 base, float facing, float fres, float d,
+// Surface graticule: longitude/latitude from the face normal, so a grid drawn in
+// these coords wraps the head's curvature and turns WITH the head (not a flat
+// screen overlay). Lines crowd where the surface curves away -> reads as 3D.
+vec2 surf_uv(vec3 N) {
+    return vec2(atan(N.x, N.z), asin(clamp(N.y, -1.0, 1.0)));
+}
+
+vec3 skin_shade(int id, vec3 base, vec3 N, float facing, float fres, float d,
                 vec2 gp, float t, vec3 acc) {
     if (id == 0) return base * (0.55 + 0.55 * d) + base * fres * 1.3;   // SMOOTH
     if (id == 1) {                                   // CHROME
@@ -142,8 +149,8 @@ vec3 skin_shade(int id, vec3 base, float facing, float fres, float d,
     }
     if (id == 2)                                     // NEON RIM
         return base * 0.32 + acc * pow(fres, 1.4) * 2.3 + base * d * 0.3;
-    if (id == 3) {                                   // CIRCUIT traces
-        vec2 q = gp * 26.0;
+    if (id == 3) {                                   // CIRCUIT traces (on the surface)
+        vec2 q = surf_uv(N) * 7.0;
         float l = min(abs(fract(q.x) - 0.5), abs(fract(q.y) - 0.5));
         float trace = smoothstep(0.06, 0.0, l) * step(0.45, h21(floor(q)));
         float node = step(0.93, h21(floor(q) + 5.0)) * smoothstep(0.18, 0.0, l);
@@ -159,8 +166,8 @@ vec3 skin_shade(int id, vec3 base, float facing, float fres, float d,
         return base * 0.28 + mix(acc, a, 0.6) * (0.4 + 0.8 * fres) + d * base * 0.2;
     }
     if (id == 6) return base * 0.45 * d + acc * 0.05;        // MATTE dark
-    // id 7: GRID / Tron
-    vec2 q = gp * 15.0;
+    // id 7: GRID / Tron (graticule that wraps the head)
+    vec2 q = surf_uv(N) * 5.0;
     float ln = min(abs(fract(q.x) - 0.5), abs(fract(q.y) - 0.5));
     float g = smoothstep(0.045, 0.0, ln);
     return base * 0.22 * d + acc * g * 1.0 + acc * fres * 0.5;
@@ -171,7 +178,7 @@ void main() {
     float facing = abs(N.z);
     float d = max(0.0, dot(N, normalize(vec3(0.25, 0.4, 1.0))));
     float fres = pow(1.0 - facing, 2.2);
-    vec3 skin = skin_shade(u_skin, v_col, facing, fres, d, v_pos.xy, u_time, u_acc);
+    vec3 skin = skin_shade(u_skin, v_col, N, facing, fres, d, v_pos.xy, u_time, u_acc);
     // eye-local polar coords (centred on the nearer eyeball)
     vec2 cen = (distance(v_pos.xy, u_eyeL) < distance(v_pos.xy, u_eyeR))
                ? u_eyeL : u_eyeR;

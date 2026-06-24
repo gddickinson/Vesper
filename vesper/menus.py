@@ -7,6 +7,8 @@ and refreshed by ``app.rebuild_menu()``.
 """
 from __future__ import annotations
 
+from PySide6.QtGui import QActionGroup
+
 from breathsim import patterns, personas, programs, session, voices
 
 from . import (app_io, dialogs, face_bg, onboarding, pattern_editor, presets,
@@ -250,10 +252,13 @@ def _view(win, m):
     from . import face_styles                          # cyberpunk render styles
     fs = m.addMenu("Face style")
     cur = getattr(win, "_face_style", "Default")
+    fsg = QActionGroup(fs)                              # exclusive: the tick moves
+    fsg.setExclusive(True)
     for st in face_styles._STYLES:
         a = fs.addAction(st.name if not st.desc else f"{st.name}  -  {st.desc}")
         a.setCheckable(True)
         a.setChecked(st.name == cur)
+        fsg.addAction(a)
         a.triggered.connect(lambda _c=False, x=st.name: win.set_face_style(x))
     fs.setEnabled(win.face.faceview_available())       # 3D head only (cat ignores it)
     rx = m.addAction("Reactive face (story / breath / chant)")
