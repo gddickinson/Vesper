@@ -231,9 +231,13 @@ Guardrails (every round):
       Stained Glass — added `lectures_{bookbinding,blacksmith,basketry,stainedglass}.py`
       (7x12-13 lines, accurate craft history, ASCII, sleep-closing), new branch in `_CATALOG`
       → **82 lectures / 10 branches**; DB rebuilt (6,871 lines); selftest passes.
-- [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
+- [x] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes — added
+      `lectures_{dew,dust,seeds,snowflakes}.py` (7x12-13 lines, accurate, ASCII, sleep-closing),
+      new branch in `_CATALOG` → **86 lectures / 11 branches**; DB rebuilt (7,207 lines);
+      selftest passes.
 
 ## Done
+- New lecture branch Small Wonders (Dew · Dust in Sunlight · Seeds · Snowflakes) -> 86 / 11.
 - Rain-on-window scene: drops + rivulets on glass over a warm blurred lamp glow (View > Scene).
 - Natural-sound breath voices (`voices_breath_nature.py`): Tide & Pebbles, Deep Surf, Spring
   Rain, Pine Wind, Ember Glow, Cosmic Wind, Snowfall Hush - airflow-driven, distinct in/out;

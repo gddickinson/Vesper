@@ -594,6 +594,17 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Small Wonders (Dew, Dust in Sunlight, Seeds, Snowflakes)
+Added an 11th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section
+1, accurate science, ASCII, sleep-closing): `lectures_dew.py` (Forest Wind - condensation at the
+dew point on still clear nights, frost), `lectures_dust.py` (Soft Rainstorm - motes lit by a
+sunbeam via light scattering, house dust + cosmic dust, Brownian motion), `lectures_seeds.py`
+(Mountain Stream - embryo + endosperm in a coat, dormancy, dispersal, germination) and
+`lectures_snowflakes.py` (Wind Chimes - vapour freezing on a speck, six-fold symmetry from water's
+lattice, no two alike). Registered the new `("Small Wonders", [...])` branch in `_CATALOG` ->
+**86 lectures / 11 branches**. Validated structure + ASCII + sleep-close; DB rebuilt (7,207 lines
+/ 107,062 words); selftest passes.
+
 ## App round — Rain-on-window scene
 Added `vesper/scene_rain.py` (a `RainScene`, kept out of the now-large scenes.py and registered
 at the bottom of scenes.py via `_CLASSES["rain"]` + `AMBIENT.append`): a dark cosy night window

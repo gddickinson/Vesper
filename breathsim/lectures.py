@@ -40,6 +40,7 @@ from . import (lectures_balloon, lectures_caravan, lectures_compass,
                lectures_railway)
 from . import (lectures_basketry, lectures_blacksmith, lectures_bookbinding,
                lectures_stainedglass)
+from . import (lectures_dew, lectures_dust, lectures_seeds, lectures_snowflakes)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -88,6 +89,8 @@ _CATALOG = [
                             lectures_balloon]),
     ("The Quiet Crafts", [lectures_bookbinding, lectures_blacksmith,
                           lectures_basketry, lectures_stainedglass]),
+    ("Small Wonders", [lectures_dew, lectures_dust, lectures_seeds,
+                       lectures_snowflakes]),
     ("Myth & Legend", [lectures_starmyths, lectures_creation, lectures_phoenix,
                        lectures_selkie]),
 ]
