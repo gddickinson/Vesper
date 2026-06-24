@@ -16,7 +16,8 @@ SHORTCUTS = [
     ("V", "Switch face / scene view"),
     ("F", "Fullscreen"),
     ("Z", "Focus (Zen) mode"),
-    ("Esc", "Exit fullscreen / Focus"),
+    ("B", "Blackout (near-dark sleep screen)"),
+    ("Esc", "Exit fullscreen / Focus / Blackout"),
     ("?", "Show this shortcuts list"),
     ("Ctrl+S", "Save a screenshot"),
     ("Ctrl+Q", "Quit"),
@@ -34,6 +35,7 @@ def bind(win):
     sc("V", win.toggle_view)
     sc("F", lambda: toggle_fullscreen(win))
     sc("Z", lambda: toggle_zen(win))
+    sc("B", lambda: win.toggle_blackout())
     sc("Escape", lambda: exit_overlays(win))
     from . import dialogs                              # "?" -> the shortcuts cheatsheet
     sc("?", lambda: dialogs.open_shortcuts(win))
@@ -54,7 +56,9 @@ def toggle_zen(win):
 
 
 def exit_overlays(win):
-    if win.isFullScreen():
+    if getattr(win, "_blackout", False):
+        win.toggle_blackout(False)
+    elif win.isFullScreen():
         win.showNormal()
     elif getattr(win, "_zen", False):
         toggle_zen(win)

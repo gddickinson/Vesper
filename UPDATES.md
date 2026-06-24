@@ -447,6 +447,14 @@ Guardrails (every round):
       data. Done: selftest passes; the builder is unit-tested (empty -> header + zero summary / note,
       populated -> correct daily rows + summary + bpm); offscreen both faces — two logged sits write a
       non-empty .csv (header + total_sessions,2) and .txt, thread-stable.
+- [x] **Blackout sleep view** (`window.toggle_blackout` + shortcut/menu): a near-dark sleep screen —
+      hides the panel/menu/status and dims the window right down (opacity ~0.05, **never 0**) while
+      the sound + controller keep running, so the room stays dark. Reversible by **B**, **Esc**, a
+      **tap** (mousePressEvent), or the toggle; **View > Blackout (sleep)** + the "?" cheatsheet.
+      Reuses the Zen-style chrome hiding and the existing `_win_op` opacity path (clamped after the
+      intro-fade/sleep-dim so they don't conflict). Honest: a visual dim, audio unaffected. Done:
+      selftest passes; offscreen both faces — toggle on hides chrome and drops opacity to ~0.05 with
+      the session still running, toggle/Esc/tap restore (~0.98), thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

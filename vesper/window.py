@@ -109,6 +109,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._amb_rotate = False           # ambience auto-rotate (opt-in; off by default)
         self._quiet_hours = True           # gently cap output volume in the small hours
         self._cur_cap = 1.0                # last applied output cap (see _tick)
+        self._blackout = False             # near-dark sleep screen (audio keeps playing)
         self._font_scale = 1.0             # accessibility: global UI text size
         self._base_pt = 0.0                # app font point size before any scaling
         self._active_course = None         # (course name, total) while a course day runs
@@ -523,6 +524,23 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         """Toggle ambience auto-rotate (opt-in, persisted); slowly cycles beds."""
         self._amb_rotate = bool(on)
 
+    def toggle_blackout(self, on=None):
+        """Near-dark sleep screen: hide the chrome and dim the window right down
+        while the sound keeps playing. Reversible by B, Esc, a click, or toggle."""
+        self._blackout = (not self._blackout) if on is None else bool(on)
+        if self._blackout:
+            self.status.showMessage("Blackout - press B or Esc, or tap, to wake", 2500)
+        hide = self._blackout or getattr(self, "_zen", False)
+        self.panel.setVisible(not hide)
+        self.menuBar().setVisible(not hide)
+        self.statusBar().setVisible(not hide)
+
+    def mousePressEvent(self, ev):
+        if self._blackout:                            # tap to wake from blackout
+            self.toggle_blackout(False)
+            return
+        super().mousePressEvent(ev)
+
     def set_quiet_hours(self, on):
         """Toggle the late-night output-volume cap (persisted); applies at once."""
         self._quiet_hours = bool(on)
@@ -675,6 +693,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             op = (sleepdim.sleep_dim(prog or 0.0) if sleep   # deepen toward 'lights out'
                   else (1.0 - 0.2 * cw))
         op *= introfade.intro_opacity(self._anim_t)       # gentle one-time launch fade-in
+        if self._blackout:                                # near-dark sleep screen (never 0)
+            op = min(op, 0.05)
         self._win_op = op                                 # recorded for tests
         self.setWindowOpacity(op)
         self._apply_quiet_cap()                # gentle late-night output ceiling

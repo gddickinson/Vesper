@@ -610,6 +610,20 @@ quipu, tambo rest-houses). Distinct from the existing Silk/Spice Road lectures. 
 ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (12,348 lines / 194,754
 words / 5 scenes). The `units()` stream renders each (e.g. The Great Wall = 109 units).
 
+## App round — blackout sleep view (near-dark minimal screen)
+Added a near-dark "blackout" sleep screen so the room stays dark while the sound plays on.
+`window.toggle_blackout(on=None)` flips a `_blackout` flag: it hides the control panel, menu bar and
+status bar (Zen-style) and, in `_tick`, clamps the window opacity down to ~0.05 (**never 0**, so a
+faint exit affordance remains) -- applied after the intro-fade and Sleep dim so they never conflict --
+while the controller and audio keep running untouched. It is clearly reversible and never traps the
+user: **B** toggles it, **Esc** exits via `shortcuts.exit_overlays` (which now checks blackout first),
+a **tap** wakes it through a `MainWindow.mousePressEvent` override, and **View > Blackout (sleep)**
+(shortcut B) drives it too; "B" is listed in the keyboard cheatsheet. Honest framing: it is a visual
+dim only -- the sound is unaffected. Verified: `selftest.py` passes (149 lectures / 26 branches);
+offscreen both faces -- entering blackout hides the chrome (panel `isHidden`) and drops the recorded
+opacity to ~0.05 with `controller.running` still true, and toggling off, pressing Esc, or tapping all
+restore the normal ~0.98 opacity and the panel, thread-stable.
+
 ## App round — session-history export (CSV / text of the practice log)
 Added `breathsim/history_export.py` (59 lines, pure + testable): `history_csv(hist)` turns
 `store.history()` into a tidy CSV -- a daily table (`date,minutes,sits` sorted by date) then a blank
