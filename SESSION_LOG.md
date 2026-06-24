@@ -594,6 +594,22 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Ancient Roads & Walls (Great Wall, Appian Way, Hadrian's Wall, Inca Roads)
+Added a 25th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate history, ASCII, sleep-closing): `lectures_greatwall.py` (The Great Wall, Wind in Pines -
+many walls over 2,000+ years, beacon-fire relays, the recent Ming brick stretches vs older rammed
+earth, and the honest "no, it cannot be seen from the Moon"), `lectures_appianway.py` (The Appian
+Way, Night Crickets - Rome's "queen of roads" begun by Appius Claudius, its layered surviving
+paving, roadside tombs and umbrella pines), `lectures_hadrianswall.py` (Hadrian's Wall, Forest Wind -
+the coast-to-coast Roman frontier in northern Britain, forts and milecastles, and the Vindolanda
+wooden tablets with their small human voices - a birthday invitation, a request for warm socks), and
+`lectures_incaroads.py` (The Inca Roads, Mountain Stream - the Qhapaq Nan across the Andes built
+without wheel/horse/iron, grass suspension bridges still rebuilt by hand, chasqui relay runners, the
+quipu, tambo rest-houses). Distinct from the existing Silk/Spice Road lectures. New branch in
+`_CATALOG` -> **145 lectures / 25 branches**. Validated all four (7 sections, 12-13 lines, pure
+ASCII, no NAME collisions); `selftest.py` passes (148 voices); DB rebuilt (12,348 lines / 194,754
+words / 5 scenes). The `units()` stream renders each (e.g. The Great Wall = 109 units).
+
 ## App round — gentle Meditate orb enrichment (ambient vignette + floor reflection)
 Deepened `vesper/scenes.OrbScene` (the Meditate breath orb) with two subtle, low-contrast touches
 behind the orb, both driven by the existing `anim_t` / volume / phase (no new state, no API change):

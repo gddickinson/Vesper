@@ -444,6 +444,13 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Ancient Roads & Walls** (4): the Great Wall · the Appian Way · Hadrian's Wall ·
+      the Inca Roads — added `lectures_{greatwall,appianway,hadrianswall,incaroads}.py` (7x12-13
+      lines, fact-free section 1, accurate history (myths corrected — the wall isn't visible from the
+      Moon; Inca culture + Vindolanda tablets noted respectfully), ASCII, sleep-closing; Wind in
+      Pines / Night Crickets / Forest Wind / Mountain Stream). Distinct from the existing Silk/Spice
+      Road lectures. New branch in `_CATALOG` → **145 lectures / 25 branches**; DB rebuilt (12,348
+      lines / 194,754 words); selftest passes. Done: validated 7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Volcanoes & Islands** (4): Iceland · the Hawaiian Islands · Krakatoa · the
       Galapagos — added `lectures_{iceland,hawaii,krakatoa,galapagos}.py` (7x12-13 lines, fact-free
       section 1, accurate geology/ecology/history — Krakatoa's 1883 eruption told gently, leaning into

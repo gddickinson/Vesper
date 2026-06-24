@@ -66,6 +66,8 @@ from . import (lectures_darjeeling, lectures_ghan, lectures_orientexpress,
                lectures_transsiberian)
 from . import (lectures_galapagos, lectures_hawaii, lectures_iceland,
                lectures_krakatoa)
+from . import (lectures_appianway, lectures_greatwall, lectures_hadrianswall,
+               lectures_incaroads)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -145,6 +147,8 @@ _CATALOG = [
                               lectures_darjeeling, lectures_ghan]),
     ("Volcanoes & Islands", [lectures_iceland, lectures_hawaii,
                              lectures_krakatoa, lectures_galapagos]),
+    ("Ancient Roads & Walls", [lectures_greatwall, lectures_appianway,
+                               lectures_hadrianswall, lectures_incaroads]),
 ]
 
 LECTURES = {}
