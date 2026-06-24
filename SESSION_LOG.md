@@ -594,6 +594,24 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Birds of Myth (Crane, Raven, Swan, Owl)
+Added an 18th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
+accurate natural history + folklore framed honestly as symbolism, ASCII, sleep-closing):
+`lectures_crane.py` (The Crane, Mountain Stream - tall wetland birds, the courtship dance, faithful
+pairs, high-mountain migration in bugling V-lines, the red-crowned/sandhill/whooping cranes, Japan's
+thousand-year long-life symbol and the senbazuru paper cranes), `lectures_raven.py` (The Raven,
+Forest Wind - the largest songbird, remarkable intelligence/play/mimicry, lifelong playful pairs,
+the northern range, Norse Huginn and Muninn "Thought and Memory", Pacific-northwest Raven as
+light-bringer, the Tower of London tradition), `lectures_swan.py` (The Swan, Gentle Rain - grace over
+hidden paddling, heart-curve courtship and lasting pairs, cygnets riding the back, whooper/Bewick's
+migration, the swan-song legend named as legend, the Ugly Duckling and Swan Lake), and
+`lectures_owl.py` (The Owl, Night Crickets - night vision and far head-turning, silent fringed-feather
+flight, offset-ear hearing and the facial disc, barn/tawny/great-horned/elf owls, Athena's owl as a
+symbol of wisdom). New branch in `_CATALOG` -> **117 lectures / 18 branches**. Validated all four
+(7 sections, 12-13 lines, pure ASCII, no NAME collisions; distinct from the existing "The Migrating
+Birds"); `selftest.py` passes (148 voices); DB rebuilt (9,891 lines / 152,836 words / 5 scenes).
+The storyteller `units()` stream renders each (e.g. The Owl = 109 units).
+
 ## App round — export / share a session summary (text + PNG card)
 Added `breathsim/summary.py` (55 lines, pure + testable) and `vesper/session_export.py` (87 lines).
 `summary.summary_lines(last, hist, today)` / `summary_text` build a few honest, friendly lines from

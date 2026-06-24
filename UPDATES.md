@@ -319,6 +319,12 @@ Guardrails (every round):
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Birds of Myth** (4): the Crane · the Raven · the Swan · the Owl — added
+      `lectures_{crane,raven,swan,owl}.py` (7x12-13 lines, fact-free section 1, accurate natural
+      history + folklore framed honestly as symbolism, ASCII, sleep-closing; Mountain Stream /
+      Forest Wind / Gentle Rain / Night Crickets), new branch in `_CATALOG` → **117 lectures / 18
+      branches**; DB rebuilt (9,891 lines / 152,836 words); selftest passes. Done: validated
+      7x12-13 + ASCII + no NAME collisions.
 - [x] **New branch — Great Mountains** (4): Everest · Mount Fuji · Kilimanjaro · the Matterhorn —
       added `lectures_{everest,fuji,kilimanjaro,matterhorn}.py` (7x12-13 lines, fact-free section 1,
       accurate geology/history/culture (sacred names + beliefs framed respectfully), ASCII,
