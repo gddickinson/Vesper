@@ -36,6 +36,32 @@ _MINOR = [1 / 1, 9 / 8, 6 / 5, 3 / 2, 9 / 5, 2 / 1, 12 / 5, 3 / 1]
 # Consonant roots to drift slowly between (I, V, IV, vi, III flavours).
 _ROOTS = [1 / 1, 3 / 2, 4 / 3, 5 / 4, 5 / 3, 6 / 5]
 
+# --- data sonification: the real solar system ------------------------------
+# Kepler's "harmony of the spheres" heard literally. Real planetary orbital
+# periods (years, Mercury..Neptune); a planet's orbital *frequency* is ~ 1/period.
+# We take each planet's frequency as a ratio to the slowest (Neptune), fold it
+# into one octave, and snap it to the nearest just-intonation degree so the chord
+# is consonant and restful -- a scale that genuinely encodes the solar system.
+_ORBITAL_YEARS = [0.2408, 0.6152, 1.0, 1.881, 11.862, 29.457, 84.02, 164.8]
+_JI = [1 / 1, 9 / 8, 6 / 5, 5 / 4, 4 / 3, 3 / 2, 5 / 3, 9 / 5, 15 / 8, 2 / 1]
+
+
+def _planet_scale():
+    slow = 1.0 / max(_ORBITAL_YEARS)            # Neptune: slowest = lowest tone
+    degrees = set()
+    for yr in _ORBITAL_YEARS:
+        r = (1.0 / yr) / slow
+        while r >= 2.0:
+            r /= 2.0
+        while r < 1.0:
+            r *= 2.0
+        degrees.add(round(min(_JI, key=lambda j: abs(math.log2(j / r))), 6))
+    base = sorted(degrees)
+    return sorted(set(base + [d * 2.0 for d in base if d < 2.0]))   # +1 octave
+
+
+_PLANET_SCALE = _planet_scale()                 # [1, 5/4, 4/3, 9/5, 2, ...]
+
 
 class _Pad:
     """A slow, soft sustained note: a small additive partial stack under a
@@ -229,7 +255,10 @@ _PULSAR = dict(          # a slow, steady cosmic beat from a spinning star
     octaves=[1.0, 2.0, 2.0, 4.0], root_period=40.0, root_period_range=(30.0, 56.0),
     interval=(4.0, 8.0), attack=(3.0, 6.0), hold=(2.0, 6.0), release=(5.0, 9.0),
     amp=(0.20, 0.40), pan=0.85, partials=[(1.0, 1.0), (2.0, 0.35), (3.0, 0.12)],
-    vib=(0.20, 0.6), pulse=(0.7, 0.7), drone=0.22, reverb=0.6, damp=3000.0, breath=0.4)
+    # 0.748 Hz is the real spin rate of PSR B1919+21, the first pulsar ever
+    # found (period 1.3373 s) - a calm, true cosmic beat.
+    vib=(0.20, 0.6), pulse=(0.748, 0.7), drone=0.22, reverb=0.6, damp=3000.0,
+    breath=0.4)
 
 _GRAVITY = dict(         # deep tones sliding down - a black-hole ringdown
     base=49.0, scale=_MINOR, roots=[1 / 1, 6 / 5, 4 / 3, 3 / 2],
@@ -239,6 +268,14 @@ _GRAVITY = dict(         # deep tones sliding down - a black-hole ringdown
     partials=[(0.5, 0.5), (1.0, 1.0), (2.0, 0.22), (3.0, 0.07)],
     vib=(0.10, 0.3), glide=(0.5, 0.78), shimmer=(3000.0, 0.05),
     drone=0.20, reverb=0.78, damp=1700.0, breath=0.3)
+
+_PLANETS = dict(         # scale derived from real planetary orbital periods
+    base=65.41, scale=_PLANET_SCALE, roots=[1 / 1, 4 / 3, 3 / 2, 5 / 4],
+    octaves=[1.0, 2.0, 2.0, 4.0], root_period=50.0, root_period_range=(38.0, 70.0),
+    interval=(3.5, 7.0), attack=(5.0, 9.0), hold=(4.0, 10.0), release=(7.0, 12.0),
+    amp=(0.22, 0.45), pan=0.8,
+    partials=[(1.0, 1.0), (2.0, 0.4), (3.0, 0.15), (4.0, 0.06)],
+    vib=(0.16, 0.6), drone=0.16, reverb=0.62, damp=2700.0, breath=0.45)
 
 # (key, display name, palette, seed, calibrated gain, description). Gains are set
 # so the worst peak over a long deterministic render sits near 0.75 (see
@@ -265,6 +302,9 @@ _PRESETS = [
     ("gravity", "Gravity Well", _GRAVITY, 77, 0.457,
      "Deep tones sliding slowly downward into the dark - the long ringdown of a "
      "black hole."),
+    ("planets", "The Planets", _PLANETS, 78, 0.497,
+     "Chords tuned to the real orbital periods of the planets - Kepler's harmony "
+     "of the spheres, made audible."),
 ]
 
 

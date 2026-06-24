@@ -594,6 +594,18 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Music round — true data sonification (Kepler planets + real pulsar)
+Grounded the cosmic music in real astronomy. Added `cosmic._planet_scale()`: takes the real
+planetary orbital periods (Mercury..Neptune), turns each into an orbital-frequency ratio vs the
+slowest (Neptune), folds it into an octave and snaps it to the nearest just-intonation degree -
+yielding a consonant scale [1, 5/4, 4/3, 9/5, 2, ...] that literally encodes the solar system.
+New **"The Planets"** preset plays it over a low C2 drone (Kepler's harmony of the spheres made
+audible). Also retuned the **Pulsar Pulse** beat to the real **PSR B1919+21** spin period
+(1.3373 s -> 0.748 Hz, the first pulsar ever found). Calibrated The Planets over a 200 s render
+(gain 0.497, peak 0.66); FFT confirms tonal content at base x scale and a measured pulsar beat
+of ~0.74 Hz; non-repeating (corr ~-0.1). 8 Cosmic Music voices; selftest passes; offscreen
+Relax session selects The Planets, thread-stable (2->2) on both faces.
+
 ## Stories round — new branch Voyages & Journeys (Compass, Caravan, Railway, Balloon)
 Added a 9th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free
 section 1, accurate history, ASCII, sleep-closing): `lectures_compass.py` (Mountain Stream -

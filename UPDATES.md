@@ -145,9 +145,11 @@ Guardrails (every round):
       + offscreen (both faces) pass.
 
 ### Researched batch — cosmic / generative music (expand the engine)
-- [ ] **True data sonification**: map real astronomy to pitch (NASA scales the Perseus black
-      hole's pressure-wave note up ~57 octaves into hearing; planet/pulsar Chandra
-      sonifications) — e.g. a pulsar pulse rhythm, planetary orbital-ratio chords (Kepler).
+- [x] **True data sonification**: a `_planet_scale()` helper derives a consonant scale from
+      the **real planetary orbital periods** (freq ~ 1/period, folded to an octave, snapped to
+      just intonation) → a new **"The Planets"** preset (Kepler's harmony of the spheres made
+      audible); and the **Pulsar Pulse** beat is now the real **PSR B1919+21** spin (0.748 Hz,
+      the first pulsar found). 8 Cosmic Music voices; calibrated, tonal + non-repeating.
 - [x] **More presets / themes** (+4): Solar Wind (airy shimmer), Nebula Bloom (lush
       formant chords), Pulsar Pulse (a 0.7 Hz beat), Gravity Well (a click-free descending
       black-hole "ringdown" glide via frequency->phase integration in `_Pad`). Calibrated
@@ -210,6 +212,7 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Cosmic music data sonification: "The Planets" (real orbital-ratio scale) + real pulsar beat.
 - New lecture branch Voyages & Journeys (Compass · Caravan · Railway · Balloon) → 78 / 9.
 - Breath-synced cosmic music: pads gently swell/brighten on the inhale, settle on the exhale.
 - Cosmic music +4 (Solar Wind · Nebula Bloom · Pulsar Pulse · Gravity Well) + ringdown
