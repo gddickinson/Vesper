@@ -185,9 +185,9 @@ The whole audio/logic/story core lives here, gui-free (the Tk GUI is not vendore
 `stories` + the **lecture library** (`lectures` + `lectures_*.py`, 50+ across
 11 branches incl. Voyages & Journeys + The Quiet Crafts + Small Wonders; Cosmos incl. Comets ·
 Nebulae · Saturn's Rings) + **`shuffle`** (the **Cognitive Shuffle** sleep-onset aid) + **`hypnosis`** (a **Sleep
-Hypnosis** guided session: induction -> deepening countdown -> suggestions -> drift, a Sleep
-storyteller option) (the shuffle is a stream of
-random neutral nouns, surfaced as a Sleep storyteller via `stories.extra_names()`),
+Hypnosis** guided session: induction -> deepening countdown -> suggestions -> drift) +
+**`poetry`** (8 original soothing nocturnes recited slowly) - all Sleep storyteller options via
+`stories.extra_names()`; the shuffle is a stream of random neutral nouns),
 **`sound_cues`** (text→ambience), **`story_db`** (SQLite record of every
 story; `build`/`connect`/`search`/`lectures_in`/`lines_of`/`stats`; CLI
 `python -m breathsim.story_db`), `kokoro_tts`, `voices`, `patterns`, `modes`,

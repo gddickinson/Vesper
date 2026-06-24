@@ -594,6 +594,19 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Feature (user request) — Poetry storyteller (soothing nocturnes)
+Added `breathsim/poetry.py`: an original collection of 8 calming sleep/night poems (The Last
+Light, Tide, Rain at Night, The Night Train, Stars, Snowfall, Lullaby for the Restless Mind, The
+River) - written for Vesper, so no copyright concerns. The storyteller speaks a title then one
+line at a time with breath-length pauses (2 s), a longer rest at each stanza break (3.2 s) and a
+long silence between poems (5.2 s), cycling endlessly in a shuffled order. Surfaced as a Sleep
+storyteller option "Poetry" via `stories.extra_names`/`story_units`/`ambience_for` (Soft Rainstorm
+bed), reusing the whole narration + talking-head + wind-down path; lines carry `kind="poem"` so the
+`window._on_story_unit` guard holds the bed steady (no cue flicker on the shifting imagery).
+selftest passes; offscreen Sleep session recites poems, bed steady, thread-stable (2->3) on both
+faces. More poems can be added in future rounds. The autonomous loop continues building the FOCUS
+backlog (mandala next).
+
 ## Stories round — The Cosmos +3 (The Sun, Galaxies, Meteor Showers)
 Expanded the Cosmos branch via 3 parallel subagents (7 sections, 12 lines, fact-free section 1,
 accurate astronomy, ASCII, sleep-closing): `lectures_sun.py` (Brown Noise - a nearby yellow-dwarf

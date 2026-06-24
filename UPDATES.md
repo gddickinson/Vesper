@@ -265,6 +265,8 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- Poetry (`poetry.py`): 8 original soothing nocturnes recited slowly as a Sleep "Poetry"
+  storyteller option (more poems can be added over future rounds).
 - The Cosmos +3 (The Sun · Galaxies · Meteor Showers) → 89 lectures / 11 branches.
 - Environmental FX synth (`synth_fx.py`): Train (Steam/Diesel), Ship/Harbour, Thunderstorm,
   Ocean Buoy Bell - completes the instrument suite (31 synthesised voices across 4 modules).
