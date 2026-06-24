@@ -114,7 +114,7 @@ def save_settings(d):
 
 # --- practice history (gentle progress + breath-hold log) ------------------
 
-_HIST_DEFAULT = {"sits": 0, "minutes": 0.0, "holds": [], "days": {}}
+_HIST_DEFAULT = {"sits": 0, "minutes": 0.0, "holds": [], "days": {}, "moods": []}
 
 
 def history():
@@ -172,6 +172,33 @@ def week_minutes(hist=None, today=None):
     start = today - _dt.timedelta(days=6)
     return round(sum(m for d, m in dm.items()
                      if start <= _dt.date.fromisoformat(d) <= today), 1)
+
+
+# --- mood check-ins (optional, gentle) -------------------------------------
+
+def log_mood(value, when="after"):
+    """Record a 1..5 mood, ``when`` = 'before' | 'after'. Keeps the most recent 200."""
+    h = history()
+    e = {"t": _dt.datetime.now().isoformat(timespec="seconds"),
+         "v": max(1, min(5, int(value))), "when": when}
+    h["moods"] = (h.get("moods", []) + [e])[-200:]
+    _write("history.json", h)
+
+
+def mood_entries(hist=None):
+    h = hist if hist is not None else history()
+    return list(h.get("moods", []))
+
+
+def mood_summary(hist=None):
+    """(count, avg_before, avg_after, avg_shift) over logged moods (pure)."""
+    es = mood_entries(hist)
+    bef = [e["v"] for e in es if e.get("when") == "before"]
+    aft = [e["v"] for e in es if e.get("when") == "after"]
+    avg = lambda xs: round(sum(xs) / len(xs), 2) if xs else None
+    ab, aa = avg(bef), avg(aft)
+    shift = round(aa - ab, 2) if (ab is not None and aa is not None) else None
+    return (len(es), ab, aa, shift)
 
 
 def log_hold(seconds: float, label: str = ""):

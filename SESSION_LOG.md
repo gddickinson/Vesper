@@ -594,6 +594,20 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — gentle mood check-in
+Added an optional, pressure-free mood check-in. `breathsim/store.py`: `log_mood(value, when)` +
+pure `mood_entries()`/`mood_summary()` (count, avg before/after, avg shift); added "moods" to the
+history default. `vesper/mood.py`: `ask_mood(win, when)` - a small modal with five calm choices
+(Tense..Serene -> 1..5) + Skip, returning the value or None; `maybe_check_in` (no-op in Sleep mode
+or when disabled) and `summary_text()` for Stats. `window`: a `_mood_on` flag + `set_mood_checkins`,
+a **before** check-in offered only on a *fresh* non-Sleep Start (before the controller starts) and an
+**after** check-in offered when a non-Sleep sit (>=60 s) ends - on pause/reset directly, and on
+natural completion via `QTimer.singleShot` so it never re-enters the tick. A **Sound > Mood
+check-ins** menu toggle (default on). `stats_heatmap.build` shows a kind one-liner when there are
+entries. Verified: `mood_summary` on 4 synthetic entries gives (4, 2.5, 4.0, +1.5); selftest passes;
+offscreen the picker + Stats dialog construct (the Stats PNG shows the mood trend line), Sleep mode
+skips the prompt, thread-stable (2->2) on both faces.
+
 ## Stories round — new branch The Elements (Fire, Water, Air, Earth)
 Added a 12th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate science, ASCII, sleep-closing): `lectures_fire.py` (Campfire - combustion as released

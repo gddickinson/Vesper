@@ -224,7 +224,11 @@ Guardrails (every round):
       a kind streak line ("3 days in a row - lovely"), this-week minutes, and a GitHub-style
       13-week day grid shaded by minutes (theme colours), with a friendly empty state - shown in
       the Practice Stats dialog. Pure helpers unit-tested; heatmap PNG verified; selftest passes.
-- [ ] **Mood check-in**: a 1-tap before/after mood, tracked over time.
+- [x] **Mood check-in** (`vesper/mood.py` + `store` mood log): a gentle, optional, skippable
+      1-tap picker (Tense..Serene -> 1..5) offered at the start of a fresh non-Sleep sit and when
+      it ends (never during Sleep, so it can't wake a sleeper); a **Sound > Mood check-ins** toggle.
+      `store.log_mood/mood_entries/mood_summary` (avg before/after/shift); a kind trend line in
+      Practice Stats ("you usually feel a little calmer afterwards"). Unit-tested; selftest passes.
 - [ ] **Multi-night courses**: sequenced programs — "7 Nights to Sleep", "21 Days of Calm".
 - [ ] **Launch suggestion**: recommend a mode/lecture by time of day + recent history.
 - [ ] **First-run onboarding**: a gentle goal pick (sleep / focus / calm) that presets it.
@@ -292,6 +296,7 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- Mood check-in: optional 1-tap before/after mood, kind trend in Stats, Sound-menu toggle.
 - New lecture branch The Elements (Fire · Water · Air · Earth) → 93 lectures / 12 branches.
 - Stats: gentle practice streak + 13-week calendar heatmap of minutes (store per-day log).
 - Best voices: British-female default (Kokoro bf_emma); UK-female say fallback; ★-marked best

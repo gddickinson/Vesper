@@ -118,6 +118,10 @@ def _sound(win, m):
     ss.setCheckable(True)
     ss.setChecked(getattr(win, "_soundscape_follow", True))
     ss.toggled.connect(win.set_soundscape_follow)
+    mood = m.addAction("Mood check-ins")
+    mood.setCheckable(True)
+    mood.setChecked(getattr(win, "_mood_on", True))
+    mood.toggled.connect(win.set_mood_checkins)
     m.addSeparator()
     music = voices.names(voices.GROUP_MUSIC)        # generative cosmic music beds
     if music:

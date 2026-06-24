@@ -99,4 +99,11 @@ def build(win=None):
         empty.setWordWrap(True)
         empty.setStyleSheet(f"color:{theme.MUTED};")
         v.addWidget(empty)
+    from . import mood                               # a kind mood-trend line
+    mt = mood.summary_text()
+    if mt:
+        ml = QLabel(mt)
+        ml.setWordWrap(True)
+        ml.setStyleSheet(f"color:{theme.MUTED};")
+        v.addWidget(ml)
     return w

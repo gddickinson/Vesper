@@ -103,6 +103,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._hg_spin_to = 0.0
         self._hg_spin_t0 = None
         self.current_mode = None
+        self._mood_on = True               # optional mood check-ins (before/after)
+        self._mood_after_done = False
 
         accents = self.speech.accent_voices()
         if accents:                                  # default cues to a UK female
@@ -329,6 +331,20 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self.narrator.speed = self._speech_speed * (1.0 - 0.18 * prog)
         self.narrator.pause_scale = self._pause_scale * (1.0 + 0.5 * prog)
 
+    # --- mood check-ins ----------------------------------------------------
+    def set_mood_checkins(self, on):
+        self._mood_on = bool(on)
+
+    def _after_mood(self):
+        """Offer the 'after' mood check-in once, if a real non-Sleep sit ended."""
+        if self._mood_after_done or self.current_mode == "Sleep":
+            return
+        if self.controller.elapsed() < 60:
+            return
+        self._mood_after_done = True
+        from . import mood
+        mood.maybe_check_in(self, "after")
+
     # --- transport ---------------------------------------------------------
     def toggle_transport(self):
         if self.controller.running:
@@ -336,14 +352,22 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             self.controller.pause()
             self.engine.set_master_volume(0.0)
             self.narrator.stop()
-        else:
-            self.controller.start()
-            self.engine.set_master_volume(0.0 if self._is_muted else self.user_volume)
-            self._start_story()
+            self.panel.reflect_running(False)
+            self._after_mood()                       # offer it after we've paused
+            return
+        fresh = self.controller.elapsed() < 1.0
+        if fresh:
+            self._mood_after_done = False
+            from . import mood
+            mood.maybe_check_in(self, "before")      # only on a fresh start
+        self.controller.start()
+        self.engine.set_master_volume(0.0 if self._is_muted else self.user_volume)
+        self._start_story()
         self.panel.reflect_running(self.controller.running)
 
     def reset(self):
         self._log_practice()
+        self._after_mood()
         self.narrator.stop()
         self.controller.reset()
         self.engine.set_master_volume(0.0)
@@ -460,6 +484,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
             self.narrator.stop()
             running = False
             self.panel.reflect_running(False)
+            QTimer.singleShot(400, self._after_mood)   # offer mood, after the tick
         if running and state.phase != self._last_phase:
             if state.phase in ("inhale", "exhale"):
                 self.engine.trigger_chime(
