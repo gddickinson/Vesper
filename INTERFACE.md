@@ -183,8 +183,8 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 The whole audio/logic/story core lives here, gui-free (the Tk GUI is not vendored):
 `controller`, `engine`, `speech`, `narration` (Kokoro/say + lip-sync `amp`),
 `stories` + the **lecture library** (`lectures` + `lectures_*.py`, 50+ across
-8 branches; Cosmos now incl. Comets · Nebulae · Saturn's Rings) + **`shuffle`** (the
-**Cognitive Shuffle** sleep-onset aid: a stream of
+9 branches incl. Voyages & Journeys; Cosmos incl. Comets · Nebulae · Saturn's Rings) +
+**`shuffle`** (the **Cognitive Shuffle** sleep-onset aid: a stream of
 random neutral nouns, surfaced as a Sleep storyteller via `stories.extra_names()`),
 **`sound_cues`** (text→ambience), **`story_db`** (SQLite record of every
 story; `build`/`connect`/`search`/`lectures_in`/`lines_of`/`stats`; CLI

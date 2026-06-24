@@ -36,6 +36,8 @@ from . import lectures_cat, lectures_coral, lectures_moths, lectures_sloth
 from . import lectures_caves, lectures_clouds, lectures_tides
 from . import lectures_calendar, lectures_infinity, lectures_symmetry
 from . import lectures_comets, lectures_nebulae, lectures_saturnsrings
+from . import (lectures_balloon, lectures_caravan, lectures_compass,
+               lectures_railway)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -80,6 +82,8 @@ _CATALOG = [
     ("Ideas & Wonders", [lectures_numbers, lectures_light, lectures_music,
                          lectures_goldenratio, lectures_infinity,
                          lectures_symmetry, lectures_calendar]),
+    ("Voyages & Journeys", [lectures_compass, lectures_caravan, lectures_railway,
+                            lectures_balloon]),
     ("Myth & Legend", [lectures_starmyths, lectures_creation, lectures_phoenix,
                        lectures_selkie]),
 ]

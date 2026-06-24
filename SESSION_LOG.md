@@ -594,6 +594,17 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Stories round — new branch Voyages & Journeys (Compass, Caravan, Railway, Balloon)
+Added a 9th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free
+section 1, accurate history, ASCII, sleep-closing): `lectures_compass.py` (Mountain Stream -
+needle, Earth's molten core, lodestone, declination), `lectures_caravan.py` (Forest Wind -
+camels, the Silk Road web, caravanserais, oases), `lectures_railway.py` (Soft Rainstorm -
+steam, steel rails, clickety-clack, railway time, sleepers) and `lectures_balloon.py` (Forest
+Wind - warm-air lift, the 1783 sheep/duck/rooster, going with the wind). Registered the new
+`("Voyages & Journeys", [...])` branch in `_CATALOG` -> **78 lectures / 9 branches**.
+Validated structure + ASCII + sleep-close; DB rebuilt (6,533 lines / 95,249 words); selftest
+passes.
+
 ## Music round — breath-synced cosmic music (it breathes with you)
 Made the Cosmic Music breathe with the listener. `textures.TextureTrack` now feeds the breath
 state to opt-in generators (`wants_state`), keeping the existing nature textures unchanged.

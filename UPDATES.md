@@ -201,13 +201,16 @@ Guardrails (every round):
       sleep-closing; ambiences Brown Noise / Singing Bowl / Wind Chimes), registered in
       the Cosmos branch → **74 lectures / 8 branches**; DB rebuilt (6,196 lines); selftest
       passes.
-- [ ] **New branch — Voyages & Journeys** (4): The Compass · The Caravan · The Railway ·
-      The Hot-Air Balloon.
+- [x] **New branch — Voyages & Journeys** (4): The Compass · The Caravan · The Railway ·
+      The Hot-Air Balloon — added `lectures_{compass,caravan,railway,balloon}.py` (7x12-13
+      lines, accurate, ASCII, sleep-closing), new branch in `_CATALOG` → **78 lectures /
+      9 branches**; DB rebuilt (6,533 lines); selftest passes.
 - [ ] **New branch — The Quiet Crafts** (4): Bookbinding · The Blacksmith · Basketry ·
       Stained Glass.
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- New lecture branch Voyages & Journeys (Compass · Caravan · Railway · Balloon) → 78 / 9.
 - Breath-synced cosmic music: pads gently swell/brighten on the inhale, settle on the exhale.
 - Cosmic music +4 (Solar Wind · Nebula Bloom · Pulsar Pulse · Gravity Well) + ringdown
   pitch-glide + pulsar beat → 7 Cosmic Music voices.
