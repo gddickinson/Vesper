@@ -245,7 +245,15 @@ Guardrails (every round):
       it ends (never during Sleep, so it can't wake a sleeper); a **Sound > Mood check-ins** toggle.
       `store.log_mood/mood_entries/mood_summary` (avg before/after/shift); a kind trend line in
       Practice Stats ("you usually feel a little calmer afterwards"). Unit-tested; selftest passes.
-- [ ] **Multi-night courses**: sequenced programs — "7 Nights to Sleep", "21 Days of Calm".
+- [x] **Multi-night courses** (`breathsim/courses.py`): optional guided sequences over days, each
+      day reusing an existing program or mode + a one-line intention. Three courses — **7 Nights to
+      Sleep**, **Ten Days of Calm**, **Five Mornings to Energize**. Per-course progress persists in
+      `store` (`courses.json`: `course_day`/`advance_course`/`reset_course`) and advances **honestly**
+      — only when a session actually completes (hooked in `_log_practice`, the >=30 s sit gate).
+      Sessions > **Courses (multi-night)** submenu shows live progress (e.g. "Night 3/7") + Restart.
+      Honest framing (gentle structured practice, not clinical). Done: selftest passes; course model
+      + persistence round-trip unit-tested; offscreen both faces — mode & program days apply, advance
+      only on a real sit, short sits don't advance, thread-stable.
 - [ ] **Launch suggestion**: recommend a mode/lecture by time of day + recent history.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /

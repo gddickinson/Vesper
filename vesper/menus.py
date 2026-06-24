@@ -57,6 +57,21 @@ def _sessions(win, m):
         m.addAction(name).triggered.connect(
             lambda _c=False, x=name: win.start_session_mode(x))
     m.addSeparator()
+    from breathsim import courses, store
+    if courses.names():
+        cm = m.addMenu("Courses (multi-night)")
+        for cname in courses.names():
+            c = courses.get(cname)
+            day = store.course_day(cname)
+            if day >= c.total:
+                label = f"{cname}  (complete)"
+            else:
+                label = f"{cname}  ({c.unit} {day + 1}/{c.total})"
+            cm.addAction(label).triggered.connect(
+                lambda _c=False, x=cname: win.start_course_day(x))
+            cm.addAction(f"    Restart {cname}").triggered.connect(
+                lambda _c=False, x=cname: win.restart_course(x))
+    m.addSeparator()
     m.addAction("Sunrise (gentle wake-up)").triggered.connect(
         lambda: win.start_sunrise())
 

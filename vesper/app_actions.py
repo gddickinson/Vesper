@@ -95,6 +95,26 @@ class _ActionsMixin:
             self._ensure_running()
         self.panel.sync()
 
+    def start_course_day(self, name):
+        """Begin the next (or current) day of a multi-night course, reusing the
+        normal session machinery; the day advances only when the sit completes."""
+        from breathsim import courses, store
+        course = courses.get(name)
+        if not course:
+            return
+        total = course.total
+        day = store.course_day(name)
+        idx = day if day < total else total - 1      # completed -> replay last day
+        courses.apply_day(self, course, idx)
+        self._active_course = (name, total)
+        self.status.showMessage(
+            f"{name} - {courses.day_label(course, idx)}", 6000)
+
+    def restart_course(self, name):
+        from breathsim import store
+        store.reset_course(name)
+        self.start_course_day(name)
+
     def set_winddown(self, on, minutes):
         if on:
             a = self.controller.pattern

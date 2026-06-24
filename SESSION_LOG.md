@@ -594,6 +594,24 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — multi-night courses (guided sequences over days)
+Added `breathsim/courses.py` (`Course`/`Day`, 121 lines): an optional, gentle sequence of sessions
+across days, each day **reusing an existing building block** -- a `programs` program or a mode -- plus
+a one-line spoken intention (no new audio invented). Three courses ship: **7 Nights to Sleep** (7),
+**Ten Days of Calm** (10), **Five Mornings to Energize** (5). `apply_day` dispatches via the normal
+machinery (`start_session_mode` for a program day; `apply_mode` + `_ensure_running` for a mode day)
+and announces the intention through the existing `SpeechCue`. Progress persists per course in
+`store` (`courses.json`): `course_day` (next 0-based day), `advance_course(name,total)` (caps + a
+`completed` flag + dated `done` log), `reset_course`. Advancing is **honest**: a day only counts when
+a session actually completes, hooked into `window._log_practice` (the same >=30 s sit gate that logs
+practice), then `_active_course` is cleared so it advances once. A **Sessions > Courses (multi-night)**
+submenu lists each course with live progress ("Night 3/7" / "complete") + a Restart action; the app
+gains `start_course_day`/`restart_course` and a `_active_course` field. Honest framing: gentle
+structured practice, not clinical. Verified: `selftest.py` passes (105 lectures / 15 branches);
+pure course-model + persistence round-trip unit-tested (advance caps, completed flag, reset);
+offscreen both faces -- a mode day sets the mode + runs, a program day sets `director.program`, a
+real >=30 s sit advances the day and clears the active course while a 5 s sit does not, thread-stable.
+
 ## Stories round — new branch Mythic Places (Atlantis, Shangri-La, El Dorado, Avalon)
 Added a 15th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 ASCII, sleep-closing), each legend framed **honestly as a legend** -- the wonder is the tale and the

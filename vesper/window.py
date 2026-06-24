@@ -103,6 +103,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._hg_spin_to = 0.0
         self._hg_spin_t0 = None
         self.current_mode = None
+        self._active_course = None         # (course name, total) while a course day runs
         self._mood_on = False              # optional mood check-ins (opt-in; off by default)
         self._mood_after_done = False
 
@@ -413,6 +414,10 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         if not self._logged_session and self.controller.elapsed() >= 30:
             store.log_session(self.controller.elapsed() / 60.0)
             self._logged_session = True
+            ac = getattr(self, "_active_course", None)
+            if ac:                                  # a course day completed -> advance
+                store.advance_course(ac[0], ac[1])
+                self._active_course = None
 
     # --- bedtime story -----------------------------------------------------
     def _start_story(self):

@@ -212,6 +212,37 @@ def clear_history():
     _write("history.json", dict(_HIST_DEFAULT))
 
 
+# --- multi-night courses (gentle per-course progress) ----------------------
+
+def course_state():
+    """{ course_name: {'day': next-0-based-index, 'done': [iso...], 'completed': bool} }."""
+    return _read("courses.json", {})
+
+
+def course_day(name):
+    """The 0-based index of the next day to do for *name* (0 if unstarted)."""
+    return int(course_state().get(name, {}).get("day", 0))
+
+
+def advance_course(name, total):
+    """Mark today's day done and step to the next (capped at *total*). Called only
+    when a session actually completes, so progress is honest. Returns the new day."""
+    st = course_state()
+    e = dict(st.get(name, {"day": 0, "done": []}))
+    e["day"] = min(int(e.get("day", 0)) + 1, int(total))
+    e["done"] = (list(e.get("done", [])) + [_dt.date.today().isoformat()])[-90:]
+    e["completed"] = e["day"] >= int(total)
+    st[name] = e
+    _write("courses.json", st)
+    return e["day"]
+
+
+def reset_course(name):
+    st = course_state()
+    st.pop(name, None)
+    _write("courses.json", st)
+
+
 def register_all():
     """Merge saved custom patterns and voices into the live registries."""
     for d in patterns_list():
