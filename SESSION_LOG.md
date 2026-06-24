@@ -614,6 +614,36 @@ returns an in-branch name, arms it as `_story_scene`, enters Sleep, and records 
 submenu; an unknown branch is a safe no-op that leaves the scene unchanged; a 24-frame tick loop is
 thread-stable.
 
+## Investigation round (rounds paused at user request) — deep audit + reliability/UX/structure fixes
+Paused the autonomous loop and did a deep investigation: a file-size audit, an offscreen "drive" that
+cycles every mode x both views, opens every dialog (non-blocking), and runs start/pause/reset across
+modes (0 exceptions, no Qt warnings), a 181-lecture content lint, and targeted reads of the audio
+callback, narrator lifecycle, tick loop, and persistence. The app is largely clean; four concrete
+items were found and fixed (all verified offscreen on both faces):
+
+1. **[HIGH bug] Corrupted/legacy history.json crashed Stats.** A non-ISO key or non-dict value in the
+   `days` map raised ValueError/AttributeError out of `store.streak`, `insights.week_over_week`,
+   `insights.this_month`, `busiest_weekday`, and the Stats heatmap -- bricking the Stats view for
+   anyone whose history file was hand-edited, truncated, or in an older shape. Hardened at the
+   `store.daily_minutes` chokepoint (valid-ISO + dict-value filter) plus `this_month` / `busiest_weekday`
+   value guards and `history()` / `course_state()` non-dict guards. Unit-tested against junk keys,
+   non-dict values, and list/string files; normal data unchanged.
+2. **[robustness] Unguarded ~40fps `_tick`.** One bad frame would have spammed a traceback every tick
+   and frozen the animation. Renamed the body to `_tick_impl` and wrapped `_tick` to log the first
+   error once and keep running (verified by injecting a deliberately-broken frame and recovering).
+3. **[UX] Silent audio failure.** `engine.available` goes False when the device can't open, but that
+   was only printed to the console -- a visual-only session looked broken. `_note_if_silent()` now
+   shows a calm one-time "Audio unavailable - visual only" status note on first start.
+4. **[structure] window.py was 881 lines** (the only file over the project's 500 rule). Split into
+   `win_consts.py` (shared frame constants), `win_frame.py` (`_FrameMixin`: the frame loop + scene/face/
+   status + Meditate cues) and `win_story.py` (`_StoryMixin`: storyteller + speech pacing + lead-in +
+   ambience-follow + mood + practice log). window.py is now 457 lines; MainWindow behaviour is identical
+   (methods resolve via MRO); no file now exceeds 500 lines. INTERFACE.md updated.
+
+Verified throughout: `selftest.py` passes; the offscreen drive is clean on both the default and the cat
+face; the recent feature tests (per-lecture resume, branch-surprise picker, settle-in lead-in, Stats
+this-month / longest-streak / best-time) and the new robustness tests all pass; thread-stable.
+
 ## Stories round — new branch Great Libraries (Ashurbanipal, House of Wisdom, Scriptorium, Timbuktu)
 Added a 34th lecture branch via 4 parallel subagents (each 7 sections x [13,12,13,12,12,13,13] lines,
 fact-free section 1, accurate history, ASCII, every section sleep-closing): `lectures_ashurbanipal.py`
