@@ -5,15 +5,20 @@ widget picks a character by name and an optional costume; both are user choices
 from __future__ import annotations
 
 from . import char_costume
+from .char_bear import Bear
+from .char_bunny import Bunny
 from .char_cat import Cat
 from .char_chicken import Chicken
 from .char_dog import Dog
 from .char_fox import Fox
+from .char_frog import Frog
 from .char_human import Man, Woman
 from .char_owl import Owl
+from .char_panda import Panda
 from .char_penguin import Penguin
 
-_CHARS = [Cat(), Penguin(), Dog(), Owl(), Fox(), Chicken(), Woman(), Man()]
+_CHARS = [Cat(), Penguin(), Dog(), Owl(), Fox(), Chicken(),
+          Bunny(), Bear(), Panda(), Frog(), Woman(), Man()]
 CHARACTERS = {c.name: c for c in _CHARS}
 DEFAULT = "Cat"
 
