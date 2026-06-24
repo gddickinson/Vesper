@@ -7,6 +7,21 @@ from __future__ import annotations
 
 from PySide6.QtGui import QKeySequence, QShortcut
 
+# The real bindings, defined once here so the on-screen cheatsheet can never
+# drift from what is actually wired (the first six are bound in bind() below;
+# the Ctrl+ ones are the menu accelerators in menus.py).
+SHORTCUTS = [
+    ("Space", "Play / pause"),
+    ("R", "Reset the session"),
+    ("V", "Switch face / scene view"),
+    ("F", "Fullscreen"),
+    ("Z", "Focus (Zen) mode"),
+    ("Esc", "Exit fullscreen / Focus"),
+    ("?", "Show this shortcuts list"),
+    ("Ctrl+S", "Save a screenshot"),
+    ("Ctrl+Q", "Quit"),
+]
+
 
 def bind(win):
     def sc(key, fn):
@@ -20,6 +35,8 @@ def bind(win):
     sc("F", lambda: toggle_fullscreen(win))
     sc("Z", lambda: toggle_zen(win))
     sc("Escape", lambda: exit_overlays(win))
+    from . import dialogs                              # "?" -> the shortcuts cheatsheet
+    sc("?", lambda: dialogs.open_shortcuts(win))
 
 
 def toggle_fullscreen(win):

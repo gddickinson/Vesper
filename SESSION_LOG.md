@@ -594,6 +594,22 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — keyboard-shortcut help overlay (? cheatsheet)
+Added a discoverable cheatsheet of the real keyboard shortcuts. `vesper/shortcuts.py` now defines a
+single `SHORTCUTS` list of (key, description) pairs right next to `bind()`, so the on-screen list
+can never drift from what is actually wired: Space (play/pause), R (reset), V (face/scene), F
+(fullscreen), Z (Focus/Zen), Esc (exit fullscreen/Focus), plus the new **"?"** and the Ctrl+S /
+Ctrl+Q menu accelerators. `bind()` now also wires **"?"** to open the sheet. `dialogs.open_shortcuts`
+builds a calm, theme-styled dialog (an accent-coloured key column beside its description in a
+QGridLayout) and is **modeless** (`show()`, never a blocking `exec()`) with `WindowModal` modality,
+so "?" and headless tests never trap or hang; a ref is kept on the window so it isn't GC'd. Surfaced
+in **Help > Keyboard Shortcuts** too. shortcuts<->dialogs imports are both lazy to avoid a cycle.
+Honest framing: it just lists the bindings. Verified: `selftest.py` passes (121 lectures / 19
+branches); `SHORTCUTS` unit-tested (non-empty, all (str,str), includes Space/?/Esc); offscreen both
+faces -- `open_shortcuts` builds and shows without a blocking exec, every key and description from
+`SHORTCUTS` is present in the dialog's labels, building the window auto-pops no blocking dialog,
+thread-stable.
+
 ## App round — per-voice favourites (star/pin voices for quick access)
 Added favourite-voice persistence + a Voice-menu surface. `breathsim/store` gains `favourites()`
 (reads `favourites.json`, de-duplicated and order-preserving), `is_favourite(name)` and

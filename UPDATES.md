@@ -319,6 +319,13 @@ Guardrails (every round):
       is_favourite, empty no-op, dedupe, persistence round-trip); offscreen both faces — starring
       persists, the menu builds with favourites present and empty, selecting a favourite sets the
       inhale voice, thread-stable.
+- [x] **Keyboard-shortcut help overlay** (`shortcuts.SHORTCUTS` + `dialogs.open_shortcuts`): a calm
+      "?" cheatsheet of the REAL bindings, defined once next to `shortcuts.bind` so it can't drift
+      (Space / R / V / F / Z / Esc + "?" + the Ctrl+S / Ctrl+Q menu accelerators). Opened by the new
+      **"?"** shortcut and **Help > Keyboard Shortcuts**; a themed, modeless dialog (uses `show()`,
+      never a blocking exec, so it's offscreen-safe). Honest: it just lists the bindings. Done:
+      selftest passes; `SHORTCUTS` unit-tested (non-empty, well-formed); offscreen both faces build
+      the dialog without a blocking exec, every key + description is listed, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

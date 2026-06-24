@@ -258,6 +258,8 @@ def _help(win, m):
         lambda: dialogs.open_story_library(win))
     m.addAction("Practice Stats…").triggered.connect(
         lambda: dialogs.open_stats(win))
+    m.addAction("Keyboard Shortcuts…").triggered.connect(
+        lambda: dialogs.open_shortcuts(win))
     m.addAction("About…").triggered.connect(lambda: dialogs.open_about(win))
 
 

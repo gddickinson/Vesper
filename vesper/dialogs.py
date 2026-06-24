@@ -6,12 +6,13 @@ engine), so they stay thin views. Kept together because each is small.
 from __future__ import annotations
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (QDialog, QHBoxLayout, QLabel, QLineEdit,
-                               QListWidget, QListWidgetItem, QPushButton,
-                               QTextEdit, QVBoxLayout)
+from PySide6.QtWidgets import (QDialog, QGridLayout, QHBoxLayout, QLabel,
+                               QLineEdit, QListWidget, QListWidgetItem,
+                               QPushButton, QTextEdit, QVBoxLayout)
 
 from breathsim import store, story_db
 
+from . import theme
 from .widgets import LabeledSlider, muted
 
 _ROLE = Qt.ItemDataRole.UserRole
@@ -153,6 +154,34 @@ def open_story_library(win):
     v.addWidget(close)
     dlg.exec()
     con.close()
+
+
+def open_shortcuts(win):
+    """A calm cheatsheet of the real keyboard shortcuts. Modeless (show(), never
+    a blocking exec) so '?' and tests never trap or hang."""
+    from . import shortcuts
+    dlg = QDialog(win)
+    dlg.setWindowTitle("Keyboard Shortcuts")
+    dlg.setStyleSheet(win.styleSheet() or theme.STYLESHEET)
+    dlg.setWindowModality(Qt.WindowModality.WindowModal)
+    v = QVBoxLayout(dlg)
+    t = QLabel("Keyboard shortcuts")
+    t.setObjectName("title")
+    v.addWidget(t)
+    grid = QGridLayout()
+    grid.setHorizontalSpacing(18)
+    for i, (key, desc) in enumerate(shortcuts.SHORTCUTS):
+        k = QLabel(key)
+        k.setStyleSheet(f"color:{theme.ACCENT}; font-weight:600;")
+        grid.addWidget(k, i, 0)
+        grid.addWidget(QLabel(desc), i, 1)
+    v.addLayout(grid)
+    b = QPushButton("Close")
+    b.clicked.connect(dlg.accept)
+    v.addWidget(b)
+    win._shortcuts_dlg = dlg                          # keep a ref so it isn't GC'd
+    dlg.show()
+    return dlg
 
 
 def open_about(win):
