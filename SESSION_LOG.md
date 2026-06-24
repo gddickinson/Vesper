@@ -594,6 +594,20 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Feature (user request) — natural-sound breath voices (in/out combinations)
+Added `breathsim/voices_breath_nature.py`: 7 airflow-driven breath voices (GROUP_BREATH) where
+the breath becomes a soothing natural sound, with the in-breath and out-breath taking on distinct
+character via `exhale_mul` + the airflow-swept brightness: **Tide & Pebbles** (wave rolls in, draws
+back bright through pebbles), **Deep Surf** (deep dark sea hush), **Spring Rain** (fine high patter),
+**Pine Wind** (gusts that drift across the stereo field), **Ember Glow** (a fire fanned brighter on
+the in-breath, settling on the out), **Cosmic Wind** (a vast airy wind of space) and **Snowfall
+Hush** (an almost-silent winter stillness). Because they are GROUP_BREATH they can be set as the
+inhale voice AND the exhale voice, so any in/out pairing works (e.g. Pine Wind in, Tide & Pebbles
+out). Impressionistic filtered-noise (noise colour + resonant filter + brightness sweep + stereo
+motion), calibrated to ~0.70 peak; selftest passes 3x (peak-safe vs the non-deterministic noise),
+airflow voices silent on holds (<=0.008); offscreen in/out-combo session thread-stable (2->2) on
+both faces. 112 voices now.
+
 ## Feature (user request) — Sleep Hypnosis guided session
 Researched sleep hypnosis (the classic induction -> deepening -> suggestion arc; Cordi & Rasch
 2014 found hypnotic suggestion can boost slow-wave sleep up to ~80% in suggestible people;

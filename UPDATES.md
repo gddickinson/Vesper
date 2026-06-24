@@ -230,6 +230,9 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Natural-sound breath voices (`voices_breath_nature.py`): Tide & Pebbles, Deep Surf, Spring
+  Rain, Pine Wind, Ember Glow, Cosmic Wind, Snowfall Hush - airflow-driven, distinct in/out;
+  usable as the inhale voice AND the exhale voice for any combination. 112 voices.
 - Sleep Hypnosis (`hypnosis.py`): induction -> deepening countdown -> suggestions -> drift,
   as a Sleep storyteller option.
 - Fireplace scene: warm flickering flame + embers + breathing hearth glow (View > Scene).

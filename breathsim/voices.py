@@ -259,4 +259,5 @@ from . import voices_extra  # noqa: E402,F401
 from . import rhythm  # noqa: E402,F401
 from . import textures  # noqa: E402,F401
 from . import voices_cat  # noqa: E402,F401
+from . import voices_breath_nature  # noqa: E402,F401  (natural-sound breaths)
 from . import cosmic  # noqa: E402,F401  (generative Cosmic Music; needs textures)
