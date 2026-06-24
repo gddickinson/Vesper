@@ -241,9 +241,11 @@ class _StoryMixin:
         self._soundscape_follow = bool(on)
 
     def _apply_soundscape(self):
-        """Crossfade the ambience toward the text-matched target and gently DUCK
-        the bed as it swaps, so a cue blooms in rather than jumps. When the follow
-        toggle is off, ease home to the story's base ambience and hold it."""
+        """Drive the single ambience-level writer each frame: crossfade toward the
+        text-matched target and DUCK on a swap (a cue blooms in rather than jumps),
+        and — when enabled — a gentle **breath swell** (the bed rises with the inhale
+        and softens on the exhale, a soft auditory pacer). Duck * swell combine so
+        the two can never fight over the level. Follow off -> ease home to the base."""
         amb = self.engine.slot_levels.get("ambience", 0.8)   # user's base level
         target = (self._sfx_target if self._soundscape_follow
                   else self._base_ambience)
@@ -251,15 +253,23 @@ class _StoryMixin:
             self.engine.set_voice(target, "ambience", fade=2.5)
             self._cur_ambience = target
             self._duck_t0 = self._anim_t                     # start the duck
-            self.engine.set_layer_level("ambience", amb * 0.5)
-        if self._duck_t0 is not None:                        # ease the bed back up
+        duck = 1.0                                           # 0.5 just after a cue swap
+        if self._duck_t0 is not None:
             u = (self._anim_t - self._duck_t0) / 1.8
             if u >= 1.0:
-                self.engine.set_layer_level("ambience", amb)
                 self._duck_t0 = None
             else:
                 e = u * u * (3.0 - 2.0 * u)                  # smoothstep recovery
-                self.engine.set_layer_level("ambience", amb * (0.5 + 0.5 * e))
+                duck = 0.5 + 0.5 * e
+        self.engine.set_layer_level("ambience", amb * duck * self._breath_swell_factor())
+
+    def _breath_swell_factor(self):
+        """1.0 normally; when the breath swell is on, dip toward 1-depth on the
+        exhale and back to 1.0 at the top of the inhale (follows lung fullness)."""
+        if not getattr(self, "_breath_swell", False):
+            return 1.0
+        vol = max(0.0, min(1.0, self.controller.current_state().volume))
+        return 1.0 - 0.22 * (1.0 - vol)                      # depth 0.22 (subtle)
 
     def _ease_mood(self, running):
         """Ease the expression toward the line's emotion (decaying to calm)."""

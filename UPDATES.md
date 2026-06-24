@@ -213,12 +213,14 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       and re-aims at a newly chosen pattern); faint "easing to your pace…" read-out under the
       scene. Verified: numeric ease test (11.0s target: 6.6->8.8->11.0, locks + restores),
       window+menu integration test, selftest, both-faces drive (0 issues).
-- [ ] **Breath-paced auditory swell**: an optional toggle so a nature bed (ocean/rain/wind)
-      gently rises on the inhale and falls on the exhale — an external auditory pacer that
-      entrains slow breathing without a spoken count. Modulate the ambience slot level from
-      `BreathState.airflow` (live `set_layer_level`, leaving the user's level intact); keep
-      the depth shallow; off by default. Evidence: external slow auditory pacing aids slow
-      breathing. Verify by correlating slot level with airflow over a session.
+- [x] **Breath-paced auditory swell** — **Sound ▸ "Breathing soundscape (bed swells with
+      you)"** (opt-in, persisted). The ambience bed gently rises with the inhale and softens
+      ~22% on the exhale (follows lung fullness `BreathState.volume`), a soft auditory pacer
+      that entrains slow breathing without a spoken count. Folded into the single per-frame
+      ambience writer `_apply_soundscape` as `level = base * duck * swell` so it can never
+      fight the story-cue duck; leaves the user's base level intact. Verified: integration
+      test (off = flat at base; on = base at inhale-top -> base*0.78 at exhale-bottom,
+      monotonic + bounded + restorable); selftest; both-faces drive (0 issues).
 - [ ] **Bedtime gratitude / "one good thing"** (Sleep, opt-in): a single, gentle end-of-
       session reflection ("one good thing about today") shown softly + optionally logged to
       Stats — no scoring, fully skippable. Evidence: bedtime gratitude reduces pre-sleep

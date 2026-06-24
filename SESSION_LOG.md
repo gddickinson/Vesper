@@ -2253,6 +2253,20 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Efficacy round — breath-paced auditory swell (breathing soundscape)
+Added an opt-in **Sound ▸ "Breathing soundscape (bed swells with you)"** toggle
+(persisted). When on, the ambience bed gently rises with the inhale and softens ~22%
+on the exhale (it follows lung fullness, `BreathState.volume`) — a soft auditory pacer
+that entrains slow breathing without a spoken count. Implemented by folding the swell
+into the **single** per-frame ambience-level writer `win_story._apply_soundscape`:
+`level = base * duck * swell` (the `_breath_swell_factor` returns `1 - 0.22*(1-volume)`),
+so the breath swell and the existing story-cue **duck** combine cleanly and can never
+fight over the level; the user's base level is untouched. `app_actions.set_breath_swell`
+flips the flag (read each frame); persisted via `win_settings`. Verified: an integration
+test (swell off → flat at base for every phase; swell on → base at the inhale top →
+base×0.78 at the exhale bottom, monotonic, bounded, restorable on toggle-off); selftest
+passes; both-faces drive 9 scenes / threads 2→2 / 0 issues. Files < 500 lines.
+
 ## Efficacy round — ease-to-resonance "settle in" pacing
 Added an opt-in **Settle in (ease to your pace)** toggle (Pattern menu, persisted).
 When on, a fresh session begins a touch faster than the chosen pattern and the breath

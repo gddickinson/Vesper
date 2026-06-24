@@ -184,6 +184,8 @@ def _sound(win, m):
             win.set_ambience_rotate)
     _toggle(m, "Quiet hours (auto-soften late)", getattr(win, "_quiet_hours", True),
             win.set_quiet_hours)
+    _toggle(m, "Breathing soundscape (bed swells with you)",
+            getattr(win, "_breath_swell", False), win.set_breath_swell)
     m.addSeparator()
     _toggle(m, "Soundscape follows story", getattr(win, "_soundscape_follow", True),
             win.set_soundscape_follow)

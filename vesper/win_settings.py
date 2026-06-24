@@ -40,6 +40,7 @@ class _SettingsMixin:
         self._coach = bool(s.get("breath_coach", False))         # opt-in count cue
         self._intro_on = bool(s.get("intro_lead_in", True))      # gentle settle-in lead-in
         self._settle = bool(s.get("settle_in", False))           # ease-to-resonance pacing
+        self._breath_swell = bool(s.get("breath_swell", False))  # bed swells with breath
         mode = s.get("mode")                          # no saved mode -> suit the clock
         if mode not in modes.names():
             from . import clocktheme
@@ -73,4 +74,5 @@ class _SettingsMixin:
                              "breath_coach": getattr(self, "_coach", False),
                              "intro_lead_in": getattr(self, "_intro_on", True),
                              "settle_in": getattr(self, "_settle", False),
+                             "breath_swell": getattr(self, "_breath_swell", False),
                              "last_scene": self._story_scene or ""})

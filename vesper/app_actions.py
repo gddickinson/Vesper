@@ -72,6 +72,13 @@ class _ActionsMixin:
         elif not on:
             self.director.stop_settle()
 
+    def set_breath_swell(self, on):
+        """Toggle the **breathing soundscape**: the ambience bed gently rises with
+        the inhale and softens on the exhale — a soft auditory pacer (the read each
+        frame happens in `_apply_soundscape`; turning off restores the flat bed).
+        Opt-in; persisted."""
+        self._breath_swell = bool(on)
+
     def show_xtts_setup(self):
         """Explain / point at the opt-in high-quality XTTS voice engine."""
         from PySide6.QtWidgets import QMessageBox
