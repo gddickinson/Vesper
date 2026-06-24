@@ -267,14 +267,20 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
             self.status.showMessage(f"{name}: “{cv.greeting}”", 5000)
 
     def _apply_character_voice(self, name):
-        """Set the narrator to the character's preferred voice + rate (best match
-        among the active TTS engine's voices); falls back gracefully."""
-        from breathsim import narration
+        """Set the narrator to the character's preferred voice + rate. Prefers the
+        character's high-quality **XTTS** voice when that engine is installed, and
+        falls back to its Kokoro / say hint-match otherwise; always graceful."""
+        from breathsim import narration, xtts_tts
         from . import char_voice
         cv = char_voice.get(name)
         self._char_rate = cv.rate
         try:
-            v = char_voice.pick_voice(cv.hints, narration.available_voices(self.speech))
+            v = None
+            if cv.xtts and xtts_tts.ready():
+                v = xtts_tts.PREFIX + cv.xtts
+            if not v:
+                v = char_voice.pick_voice(
+                    cv.hints, narration.available_voices(self.speech))
             if v:
                 self.narrator.set_voice(v)
                 if self._story_scene and self.controller.running:

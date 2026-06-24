@@ -48,6 +48,35 @@ def combo(items, current=None, on_change=None) -> QComboBox:
     return box
 
 
+def grouped_combo(groups, current=None, label_fn=str, on_change=None) -> QComboBox:
+    """A combo with non-selectable, bold **group headers**. ``groups`` is an ordered
+    ``[(header, [id, ...])]``; each row carries its id as userData, is rendered by
+    ``label_fn(id)``, and ``on_change(id)`` fires on selection."""
+    box = QComboBox()
+    cur = first = None
+    for header, ids in groups:
+        box.addItem(f"— {header} —")
+        item = box.model().item(box.count() - 1)
+        if item is not None:
+            item.setEnabled(False)
+            f = item.font(); f.setBold(True); item.setFont(f)
+        for vid in ids:
+            box.addItem("   " + label_fn(vid), vid)
+            idx = box.count() - 1
+            if first is None:
+                first = idx
+            if current is not None and str(vid) == str(current):
+                cur = idx
+    box.setCurrentIndex(cur if cur is not None else (first or 0))
+    if on_change is not None:
+        def _sel(_i, b=box):
+            d = b.currentData()
+            if d is not None:
+                on_change(d)
+        box.activated.connect(_sel)
+    return box
+
+
 def combo_row(label: str, items, current=None, on_change=None):
     """A muted label above a combo. Returns (container_widget, combo)."""
     box = combo(items, current, on_change)

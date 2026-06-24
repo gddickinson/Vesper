@@ -53,9 +53,17 @@ then each sentence takes ~3 s on an M1 Max (RTF ≈ 0.8 on MPS, ≈ 1.3 on CPU).
 
 ## Using it
 
-When configured, the Sleep **Narration voice** picker lists the XTTS studio voices
-(e.g. *"★ Daisy Studious — XTTS (high quality)"*) above the Kokoro voices. Pick one
-and the storyteller routes that voice through XTTS; everything else stays on the
-default engine. The first narrated line waits for the one-time model load.
+When configured, the Sleep **Narration voice** picker is **grouped** —
+*Recommended*, *High quality · female/male (XTTS)* (each voice labelled with its
+gender + timbre and a ★ for the cleanest), then Kokoro *British / American / Other*
+by accent. Pick an XTTS voice and the storyteller routes it through XTTS; everything
+else stays on the default engine. The first narrated line waits for the one-time
+model load.
 
-Worker errors are logged to `~/.vesper-xtts/worker.log`.
+**Characters** also speak in a fitting XTTS voice when it's installed (e.g. Cat →
+Daisy Studious, Owl → Damien Black), falling back to their Kokoro / `say` voice
+otherwise. The **Sound ▸ "High-quality voices (XTTS)…"** menu item shows status and
+the install command.
+
+Worker errors are logged to `~/.vesper-xtts/worker.log`. The voices are studio
+English; we label gender + timbre (measured) rather than claim regional accents.

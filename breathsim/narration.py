@@ -108,7 +108,8 @@ def voice_label(voice, speech=None):
     v = str(voice)
     star = "★ " if is_recommended(v, speech) else ""
     if v.startswith(xtts_tts.PREFIX):                  # high-quality XTTS studio voice
-        return f"{star}{v[len(xtts_tts.PREFIX):]} - XTTS (high quality)"
+        from . import xtts_voices
+        return f"{star}{xtts_voices.label(v[len(xtts_tts.PREFIX):])}"
     if len(v) >= 4 and v[2] == "_" and v[0] in _LANG and v[1] in _GENDER:
         name = v[3:].replace("_", " ").title()
         return f"{star}{name} - {_LANG[v[0]]} {_GENDER[v[1]]}"
@@ -116,6 +117,44 @@ def voice_label(voice, speech=None):
     tag = (" - premium" if "(Premium)" in v
            else " - enhanced" if "(Enhanced)" in v else "")
     return f"{star}{base}{tag}"
+
+
+def voice_groups(speech):
+    """Ordered ``[(header, [voice_id, ...])]`` for a grouped picker: a cross-engine
+    Recommended shortcut, then XTTS by gender, then Kokoro by accent (or system)."""
+    from . import xtts_voices
+    groups, rec = [], []
+    if xtts_tts.ready():
+        rec += [xtts_tts.PREFIX + n for n in xtts_voices.curated()
+                if xtts_voices.is_recommended(n)]
+    if kokoro_tts.ready():
+        have = set(kokoro_tts.voice_names())
+        rec += [v for v in kokoro_tts.RECOMMENDED if v in have]
+    if rec:
+        groups.append(("Recommended", rec))
+    if xtts_tts.ready():
+        bg = xtts_voices.by_gender()
+        pre = xtts_tts.PREFIX
+        if bg.get("f"):
+            groups.append(("High quality · female (XTTS)",
+                           [pre + n for n in bg["f"]]))
+        if bg.get("m"):
+            groups.append(("High quality · male (XTTS)",
+                           [pre + n for n in bg["m"]]))
+    if kokoro_tts.ready():
+        ids = kokoro_tts.voice_names()
+        brit = [v for v in ids if v[:1] == "b"]
+        amer = [v for v in ids if v[:1] == "a"]
+        other = [v for v in ids if v[:1] not in ("a", "b")]
+        for head, lst in (("British (Kokoro)", brit), ("American (Kokoro)", amer),
+                          ("Other languages (Kokoro)", other)):
+            if lst:
+                groups.append((head, lst))
+    else:
+        sv = _say_voices(speech)
+        if sv:
+            groups.append(("System voices (macOS)", sv))
+    return groups
 
 
 def engine_label(speech):

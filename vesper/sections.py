@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (QCheckBox, QHBoxLayout, QLabel, QPushButton,
 from breathsim import choir, narration, personas, phrases, session, voices
 from breathsim.patterns import PRESETS
 
-from .widgets import LabeledSlider, card, combo, combo_row, muted
+from .widgets import LabeledSlider, card, combo, combo_row, grouped_combo, muted
 
 CUE_STYLES = ["Off", "Minimal", "Standard", "Guided"]
 
@@ -276,17 +276,13 @@ class _SectionsMixin:
         pick = QPushButton("Surprise me - tonight's pick")
         pick.clicked.connect(self.win.tonights_pick)
         body.addWidget(pick)
-        ids = narration.available_voices(self.win.speech)
-        self._story_voice_id = {narration.voice_label(v): v for v in ids}
-        labels = list(self._story_voice_id) or ["(no voice)"]
-        cur = narration.voice_label(self.win.narrator.voice
-                                    or narration.best_voice(self.win.speech))
-        if cur not in self._story_voice_id:
-            cur = labels[0]
-        vc = combo(labels, cur, lambda lbl: self.win.set_story_voice(
-            self._story_voice_id.get(lbl, lbl)))
+        groups = narration.voice_groups(self.win.speech)
+        cur = self.win.narrator.voice or narration.best_voice(self.win.speech)
+        vc = grouped_combo(groups, cur,
+                           label_fn=lambda v: narration.voice_label(v, self.win.speech),
+                           on_change=self.win.set_story_voice)
         self._w["story_voice"] = vc
-        body.addWidget(muted("Narration voice  (★ = most realistic)"))
+        body.addWidget(muted("Narration voice  (★ = most realistic, grouped by accent)"))
         body.addWidget(vc)
         s = LabeledSlider("Speech speed", 0.6, 1.2, self.win._speech_speed,
                           decimals=2, suffix="x",

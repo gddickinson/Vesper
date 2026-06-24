@@ -61,6 +61,25 @@ class _ActionsMixin:
         self._spatial = bool(on)
         self.engine.set_spatial(self._spatial)
 
+    def show_xtts_setup(self):
+        """Explain / point at the opt-in high-quality XTTS voice engine."""
+        from PySide6.QtWidgets import QMessageBox
+        from breathsim import xtts_tts
+        if xtts_tts.ready():
+            msg = ("High-quality XTTS voices are installed.\n\n"
+                   "Choose one from the Sleep ▸ Narration voice list "
+                   "(the “High quality (XTTS)” groups). Characters will also "
+                   "speak in their XTTS voice.")
+        else:
+            msg = ("Optional high-quality neural voices (XTTS-v2) are not installed.\n\n"
+                   "They are a large (~5 GB), non-commercial (Coqui CPML) add-on you "
+                   "can install yourself:\n\n"
+                   "    python tools/setup_xtts.py --accept-license\n\n"
+                   "Needs Python 3.9–3.12 and FFmpeg (brew install ffmpeg). Then "
+                   "restart Vesper and pick an ‘XTTS’ narration voice. "
+                   "See docs/XTTS.md.")
+        QMessageBox.information(self, "High-quality voices (XTTS)", msg)
+
     def set_space(self, name):
         """Select the master reverb 'space' (Off / Room / Hall / Cathedral) and
         persist it. A little hall makes chants and singing sound real."""

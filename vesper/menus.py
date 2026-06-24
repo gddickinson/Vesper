@@ -165,6 +165,7 @@ def _sound(win, m):
         a = spm.addAction(nm); a.setCheckable(True); a.setChecked(nm == cur_sp)
         spg.addAction(a)
         a.triggered.connect(lambda _c=False, x=nm: win.set_space(x))
+    m.addAction("High-quality voices (XTTS)…").triggered.connect(win.show_xtts_setup)
     nat = m.addAction("Naturalness")
     nat.setCheckable(True)
     nat.setChecked(win.controller.naturalness.amount > 1e-3)

@@ -27,15 +27,15 @@ import os
 import subprocess
 import threading
 
+from . import xtts_voices
+
 CONFIG = os.path.expanduser("~/.vesper-xtts/config.json")
 PREFIX = "xtts:"                                   # voice-id namespace in the picker
 
-# A calm, female-first ordering for the picker; the rest follow. The recommended
-# few are starred. Names are validated against the model's real speaker list.
-_PREFERRED = ("Daisy Studious", "Gracie Wise", "Alison Dietlinde", "Sofia Hellen",
-              "Annmarie Nele", "Claribel Dervla", "Tammie Ema", "Ana Florence")
-RECOMMENDED = (PREFIX + "Daisy Studious", PREFIX + "Gracie Wise",
-               PREFIX + "Alison Dietlinde")
+# Curated, female-first ordering for the picker; any other model speakers follow.
+_PREFERRED = tuple(xtts_voices.curated())
+RECOMMENDED = tuple(PREFIX + n for n in xtts_voices.curated()
+                    if xtts_voices.is_recommended(n))
 
 _lock = threading.Lock()
 _proc = None

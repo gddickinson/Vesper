@@ -2176,6 +2176,30 @@ narration lists 58 XTTS voices with labels; engine routing (xtts/kokoro/say) + g
 degrade unit-tested; selftest passes; both-faces drive clean, thread-stable; all files
 < 500 lines. Demo: scratchpad/AB_kokoro_then_xtts.wav + xtts_engine_test.wav.
 
+## Feature (user request) — XTTS made distributable + grouped picker + character voices
+Built on the XTTS engine after the user preferred its quality. Three parts:
+(1) **Distributable opt-in**: `tools/setup_xtts.py` is a one-command, licence-gated
+installer (`--accept-license`, accepts the non-commercial CPML) that builds the venv
+with the exact pins, downloads the model and writes `~/.vesper-xtts/config.json` — so a
+distributed user adds the engine themselves, nothing XTTS ships in the repo. A **Sound ▸
+"High-quality voices (XTTS)…"** menu item shows status + the command + licence.
+(2) **Better voice picker**: characterised all 58 studio voices objectively (rendered
+each, measured median F0 -> gender + spectral centroid -> warm/clear/bright; hand-fixed a
+few pitch-tracker octave slips). New **`xtts_voices.py`** holds the curated metadata.
+`narration.voice_groups()` + a new `widgets.grouped_combo` (bold non-selectable headers)
+give a **grouped** Sleep picker: *Recommended* · *High quality female/male (XTTS)* (each
+"Name - timbre gender", ★ for the best) · Kokoro *British/American/Other* by accent.
+(Honest: XTTS studio voices are neutral English, so labelled by gender+timbre, not a
+fabricated regional accent; Kokoro accents are real.)
+(3) **Character XTTS voices**: `char_voice.CharVoice.xtts` assigns each of the 15
+characters a fitting studio speaker (Cat->Daisy Studious, Owl->Damien Black,
+Bear->Aaron Dreschner, Robot->Royston Min, …); `window._apply_character_voice` prefers it
+when XTTS is installed and **falls back** to the existing Kokoro/say hint-match otherwise.
+Verified: groups + labels render; every character's XTTS assignment is a known speaker;
+window applies `xtts:Daisy Studious` for Cat with XTTS on and `Samantha` with it off;
+setup `--status`/licence-gate work; selftest passes; both-faces drive clean,
+thread-stable; all files < 500 lines.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
