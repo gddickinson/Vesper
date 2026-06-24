@@ -594,6 +594,25 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## Feature (user request) — Cosmic generative music ("music of the spheres")
+Researched generative-music best practice (Eno/Reich phasing of near-coprime loops; constrain
+randomness to a consonant scale; drone + slow harmonic drift for gentle tension/release;
+layered detuned voices + reverb for richness; NASA-style cosmic sonification) and built a
+real engine to match. New `breathsim/reverb.py` (a click-free **block-delay feedback-comb**
+reverb: all delays exceed one audio block so feedback is purely from past blocks, fully
+vectorised, with damped tails) and `breathsim/cosmic.py` (a `_Pad` additive-stack voice with
+raised-cosine attack/hold/release + vibrato; a `_Cosmic` scheduler that overlaps pads on slow
+near-coprime gaps, draws pitches from **just-intonation** scales over a steady drone, drifts
+the root slowly through consonant roots, and optionally adds a **vowel formant** colour for a
+choir or an **airy shimmer** for deep space). Three presets in a new **Cosmic Music** group
+(`GROUP_MUSIC`): **Music of the Spheres**, **Starlight Choir**, **Deep Space**, wired via
+`textures.register_generator` (no `tracks.py` change) and surfaced in the Relax/Sleep
+soundscape picker. Gains calibrated over a 200 s render (peaks 0.71-0.74, ~0.75 target);
+spectra confirm pure tonal/consonant content (Spheres 110/330/440/660 Hz; Deep Space 55/66/132
+with a just minor third) and near-zero window correlation = never repeats. selftest passes
+(98 voices); offscreen Relax session selects + crossfades the music, thread-stable (2->2) on
+both faces.
+
 ## Stories round — The Cosmos +3 (Comets, Nebulae, Saturn's Rings)
 Authored three new Cosmos sleep-lectures via parallel subagents (7 sections, 12-13 lines,
 fact-free section 1, accurate astronomy, ASCII, sleep-closing): `lectures_comets.py` (Brown

@@ -211,6 +211,17 @@ _GENS = {"campfire": _Campfire, "bowl": _Bowl, "chimes": _Chimes,
 _SEED = {"campfire": 41, "bowl": 42, "chimes": 43, "crickets": 44, "purr": 45}
 
 
+def register_generator(key, factory, seed):
+    """Plug an external texture generator in (e.g. cosmic.py's music engine).
+
+    ``factory(sr, rng)`` must return an object with ``step(tarr, frames) ->
+    (frames, 2)``. Lets other modules add ``kind="texture"`` voices without
+    importing into this file (avoids a cycle) or touching ``tracks.build_track``.
+    """
+    _GENS[key] = factory
+    _SEED[key] = seed
+
+
 class TextureTrack:
     def __init__(self, cfg: VoiceConfig, sr: int):
         self.cfg = cfg

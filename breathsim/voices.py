@@ -28,6 +28,7 @@ GROUP_EFFECTS = "Effects"
 GROUP_WORDS = "Spoken Words"
 GROUP_CUSTOM = "Custom"
 GROUP_CAT = "Cat"
+GROUP_MUSIC = "Cosmic Music"
 
 # Voice families whose primary slot supports the human<->synthetic morph and
 # per-voice morphing (everything voice/breath based).
@@ -258,3 +259,4 @@ from . import voices_extra  # noqa: E402,F401
 from . import rhythm  # noqa: E402,F401
 from . import textures  # noqa: E402,F401
 from . import voices_cat  # noqa: E402,F401
+from . import cosmic  # noqa: E402,F401  (generative Cosmic Music; needs textures)

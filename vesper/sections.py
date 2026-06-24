@@ -165,7 +165,8 @@ class _SectionsMixin:
     # --- relax / sleep ----------------------------------------------------
     def _card_soundscape(self):
         frame, body = card("Soundscape")
-        ambs = ["None"] + voices.names(voices.GROUP_NATURE)
+        ambs = (["None"] + voices.names(voices.GROUP_NATURE)
+                + voices.names(voices.GROUP_MUSIC))
         a = combo(ambs, self.win.engine.slot_voice.get("ambience") or "None",
                   self.win.set_ambience)
         self._w["ambience"] = a

@@ -136,8 +136,26 @@ Guardrails (every round):
       layer per scene (a toggle).
 
 ### Researched batch — audio & synthesis
-- [ ] **Generative ambient pad**: an evolving, non-repeating drone in a selectable
-      scale/key (a `kind="generative"` track) for Relax/Sleep.
+- [x] **Generative ambient pad** (user-requested "cosmic music"): new `breathsim/cosmic.py`
+      + `breathsim/reverb.py` — a generative engine (Eno/Reich coprime-phasing pads,
+      just-intonation consonant scales, steady drone + slow root drift, vowel-formant choir,
+      deep-space shimmer) through a block-delay feedback-comb reverb. Three **Cosmic Music**
+      voices (Music of the Spheres · Starlight Choir · Deep Space) in the Relax/Sleep
+      soundscape picker. Calibrated (~0.75 peak), tonal/consonant + non-repeating; selftest
+      + offscreen (both faces) pass.
+
+### Researched batch — cosmic / generative music (expand the engine)
+- [ ] **True data sonification**: map real astronomy to pitch (NASA scales the Perseus black
+      hole's pressure-wave note up ~57 octaves into hearing; planet/pulsar Chandra
+      sonifications) — e.g. a pulsar pulse rhythm, planetary orbital-ratio chords (Kepler).
+- [ ] **More presets / themes**: Solar Wind, Nebula Bloom, Pulsar Pulse, Aurora Tones,
+      Gravity Well (slow descending black-hole "ringdown" glide), Saturn Ring shimmer.
+- [ ] **Breath-synced harmony**: let the pad density/brightness rise on the inhale and settle
+      on the exhale (read the breath state in the generator) so the music breathes with you.
+- [ ] **Dedicated Music workspace / menu**: a first-class "Music" mode or a Sound-menu
+      section (key/scale/space sliders), not just an ambience entry.
+- [ ] **Add reverb as a shared send**: offer the new `Reverb` as an optional space on other
+      ambiences (bowls, chimes) and the drone.
 - [ ] **More ambiences**: Whale Song · Distant Train · Rain on a Tent · Wind in Pines ·
       Womb Heartbeat · Fan (white-noise machine). Calibrated.
 - [ ] **Slow-wave pink pulses**: pink noise gently pulsing at ~0.8 Hz (open-loop,
@@ -185,6 +203,8 @@ Guardrails (every round):
 - [ ] **New branch — Small Wonders** (4): Dew · Dust in Sunlight · Seeds · Snowflakes.
 
 ## Done
+- Cosmic generative music (`cosmic.py` + `reverb.py`): Music of the Spheres · Starlight
+  Choir · Deep Space — endless just-intonation pads + drone + reverb, in the soundscape.
 - The Cosmos +3 (Comets · Nebulae · Saturn's Rings) → 74 lectures / 8 branches.
 - Cognitive Shuffle sleep-onset aid (`shuffle.py`): random neutral nouns, Sleep "Shuffle".
 - NSDR / Yoga Nidra (12 min) guided program: 8-stage body-rotation + breath, rest-close.
