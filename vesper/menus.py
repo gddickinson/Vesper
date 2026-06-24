@@ -83,6 +83,8 @@ def _sessions(win, m):
         lambda: win.start_sunrise())
     m.addAction("Tonight's pick (random story)").triggered.connect(
         lambda: win.tonights_pick())
+    m.addAction("Fall asleep (one tap)").triggered.connect(
+        lambda: win.start_fall_asleep())
 
 
 def _voice(win, m):

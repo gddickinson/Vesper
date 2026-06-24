@@ -463,6 +463,14 @@ Guardrails (every round):
       cue** toggle, default off, persisted. Honest: it just narrates the pattern timing. Done: selftest
       passes; `cue` unit-tested (counts/caps/zero-length); offscreen both faces — a cue string appears
       when on and is absent when off, thread-stable.
+- [x] **"Fall asleep" one-tap preset** (`app.start_fall_asleep`): one action sets up the honest best
+      combination for drifting off — Sleep mode + a slow long-exhale pattern (Calming 4-6) + the
+      wind-down + a ~40-min sleep-timer + (if available) the storyteller — then starts, composing
+      EXISTING features (no new audio). A **Fall asleep** button on the Sleep wind-down card + a
+      **Sessions > Fall asleep (one tap)** item. Idempotent and reversible (Reset / switching modes
+      returns to normal). Honest: it just configures sleep features. Done: selftest passes; offscreen
+      both faces — leaves the app in Sleep + Calming 4-6 + wind-down armed + a sleep-timer set +
+      running with no blocking dialog, and switching modes clears the wind-down, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

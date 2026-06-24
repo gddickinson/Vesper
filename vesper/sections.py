@@ -285,6 +285,11 @@ class _SectionsMixin:
 
     def _card_winddown(self):
         frame, body = card("Sleep wind-down")
+        fa = QPushButton("Fall asleep (one tap)")
+        fa.setObjectName("accent")
+        fa.clicked.connect(self.win.start_fall_asleep)
+        body.addWidget(fa)
+        body.addWidget(muted("Sets a slow breath, wind-down, sleep-timer and a story."))
         chk = QCheckBox("Slow the breath and fade out over the session")
         chk.toggled.connect(lambda _v: self._on_winddown())
         self._w["wind_on"] = chk

@@ -626,6 +626,23 @@ branches**. Validated all four (7 sections, 12-13 lines, pure ASCII, no NAME col
 passes (148 voices); DB rebuilt (13,047 lines / 206,664 words / 5 scenes). The `units()` stream
 renders each (e.g. Saffron = 104 units).
 
+## App round — "fall asleep" one-tap preset
+Added `app.start_fall_asleep(minutes=40)`: a single action that composes the existing sleep features
+into the honest best set-up for drifting off -- it applies **Sleep mode** (`apply_mode("Sleep")`,
+which also arms the bedtime storyteller scene + its ambience), switches the breath to a slow
+long-exhale pattern (**Calming 4-6 (Long Exhale)** via `preset_by_name`), arms the **wind-down**
+(`set_winddown(True, minutes)`, which slows the breath toward Extended 7-11 and fades the volume and
+sets the session length), sets a gentle **sleep-timer** (`set_sleep_timer(min(minutes, 45))`), and
+starts the session (`_ensure_running`, which also kicks off the storyteller when a narrator is
+available). No new audio is invented -- it just wires up what already exists. Surfaced as a prominent
+accent **Fall asleep (one tap)** button on the Sleep wind-down card and a **Sessions > Fall asleep
+(one tap)** menu item. It is idempotent and reversible: Reset or switching to another mode clears the
+wind-down and returns to normal. Honest framing: it only configures sleep features for you. Verified:
+`selftest.py` passes (153 lectures / 27 branches); offscreen both faces -- after one call the app is
+in Sleep mode with the Calming 4-6 pattern, `director.sleep` True (wind-down active), the sleep-timer
+set to 40, and the controller running, with **no** blocking dialog; switching to Meditate afterward
+clears `director.sleep`; thread-stable (Sleep adds the narrator thread, within tolerance).
+
 ## App round — breathing-coach count cue
 Added an optional on-screen count cue to help a beginner follow the breath. `breathsim/coach.py`
 (22 lines, pure + testable): `cue(phase, phase_elapsed, phase_len)` names the phase and counts the

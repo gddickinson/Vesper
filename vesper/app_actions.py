@@ -186,6 +186,21 @@ class _ActionsMixin:
             self.status.showMessage("Sleep timer off", 3000)
         self.panel.sync()
 
+    def start_fall_asleep(self, minutes=40.0):
+        """One tap to drift off: Sleep mode + a slow long-exhale breath + the
+        wind-down + a sleep-timer + (if available) the storyteller, then begin.
+        Composes existing features; Reset or switching modes returns to normal."""
+        self.apply_mode("Sleep")
+        p = preset_by_name("Calming 4-6 (Long Exhale)")
+        if p:
+            self.controller.change_pattern(p)         # gentle long exhale to start
+        self.set_winddown(True, minutes)              # slow the breath + fade over time
+        self.set_sleep_timer(min(float(minutes), 45.0))   # gentle auto-stop
+        self._ensure_running()                        # start (also starts the storyteller)
+        self.status.showMessage(
+            "Falling asleep - winding down gently. Rest well.", 5000)
+        self.panel.sync()
+
     def set_winddown(self, on, minutes):
         if on:
             a = self.controller.pattern
