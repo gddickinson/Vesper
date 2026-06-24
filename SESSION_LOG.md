@@ -594,6 +594,18 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — practice streaks + calendar heatmap in Stats
+`breathsim/store.py` now keeps a per-day practice log (a `days` dict of {date: {min, sits}}, written
+by `log_session` using `datetime.date.today()`; backward-compatible via the history default). Added
+pure, unit-testable helpers: `daily_minutes()`, `streak()` (current + best runs of consecutive days
+with any practice; an un-practised today does NOT break the current streak - it counts back from
+yesterday) and `week_minutes()` (last 7 days). New `vesper/stats_heatmap.py`: a kind streak line
+("3 days in a row - lovely", inviting message at 0), this-week minutes, and a GitHub-style 13-week
+x 7-day grid painted in `paintEvent` with cells shaded by minutes (theme.CARD->ACCENT), plus a
+friendly empty state; embedded in `dialogs.open_stats`. Verified: streak/daily/week helpers on a
+synthetic history give (3,5)/(2,2)/(0,0) as expected; selftest passes; offscreen Stats dialog +
+heatmap construct without error, thread-stable; PNG looks like a clean calm calendar.
+
 ## Feature (user request) — best voices: British-female default + marked best + TTS research
 Researched offline TTS engines and set the most realistic voice we can ship as the default.
 **Decision**: Kokoro neural (already integrated, ~300 MB ONNX, Apache, faster-than-real-time on

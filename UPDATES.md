@@ -218,7 +218,12 @@ Guardrails (every round):
 - [ ] **Spatial polish**: subtle auto-pan / width on ambiences for headphone immersion.
 
 ### Researched batch — engagement & structure
-- [ ] **Streaks + calendar heatmap** in Stats (gentle, non-judgemental) + weekly minutes.
+- [x] **Streaks + calendar heatmap** in Stats: `store` now keeps a per-day practice log
+      (`days`), with pure helpers `daily_minutes()`, `streak()` (current + best consecutive days;
+      an un-practised today doesn't break it), `week_minutes()`. New `vesper/stats_heatmap.py` adds
+      a kind streak line ("3 days in a row - lovely"), this-week minutes, and a GitHub-style
+      13-week day grid shaded by minutes (theme colours), with a friendly empty state - shown in
+      the Practice Stats dialog. Pure helpers unit-tested; heatmap PNG verified; selftest passes.
 - [ ] **Mood check-in**: a 1-tap before/after mood, tracked over time.
 - [ ] **Multi-night courses**: sequenced programs — "7 Nights to Sleep", "21 Days of Calm".
 - [ ] **Launch suggestion**: recommend a mode/lecture by time of day + recent history.
@@ -281,6 +286,7 @@ Guardrails (every round):
       selftest passes.
 
 ## Done
+- Stats: gentle practice streak + 13-week calendar heatmap of minutes (store per-day log).
 - Best voices: British-female default (Kokoro bf_emma); UK-female say fallback; ★-marked best
   voices + friendly accent/gender labels in the narration picker; researched Kokoro vs Fish/XTTS.
 - 5 more ambiences (Rain on a Tent · Wind in Pines · Fan · Womb Heartbeat · Whale Song) -> 147.

@@ -39,6 +39,8 @@ def open_stats(win):
         v.addWidget(QLabel(f"Breath-holds logged: {len(holds)}  (best {best:.0f}s)"))
     else:
         v.addWidget(muted("No breath-holds logged yet."))
+    from . import stats_heatmap                      # streak + calendar heatmap
+    v.addWidget(stats_heatmap.build(win))
     row = QHBoxLayout()
     clr = QPushButton("Clear history")
     clr.clicked.connect(lambda: (store.clear_history(), dlg.accept()))

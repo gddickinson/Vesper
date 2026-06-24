@@ -6,6 +6,7 @@ at startup, so they appear in every menu and dropdown.
 """
 from __future__ import annotations
 
+import datetime as _dt
 import json
 import os
 
@@ -113,7 +114,7 @@ def save_settings(d):
 
 # --- practice history (gentle progress + breath-hold log) ------------------
 
-_HIST_DEFAULT = {"sits": 0, "minutes": 0.0, "holds": []}
+_HIST_DEFAULT = {"sits": 0, "minutes": 0.0, "holds": [], "days": {}}
 
 
 def history():
@@ -123,9 +124,54 @@ def history():
 
 def log_session(minutes: float):
     h = history()
+    mins = max(0.0, float(minutes))
     h["sits"] += 1
-    h["minutes"] = round(h["minutes"] + max(0.0, float(minutes)), 1)
+    h["minutes"] = round(h["minutes"] + mins, 1)
+    day = _dt.date.today().isoformat()             # per-day log for streaks/heatmap
+    d = dict(h.get("days", {}))
+    cur = d.get(day, {"min": 0.0, "sits": 0})
+    d[day] = {"min": round(cur["min"] + mins, 1), "sits": cur["sits"] + 1}
+    h["days"] = d
     _write("history.json", h)
+
+
+# --- streaks / heatmap (gentle, computed from the per-day log) --------------
+
+def daily_minutes(hist=None):
+    """{ 'YYYY-MM-DD': minutes } from the per-day practice log (pure / testable)."""
+    h = hist if hist is not None else history()
+    return {d: float(v.get("min", 0.0)) for d, v in h.get("days", {}).items()}
+
+
+def streak(hist=None, today=None):
+    """(current, best) run of consecutive days with any practice. Today not yet
+    practised does not break the current streak. Pure; pass *today* to test."""
+    practised = {d for d, m in daily_minutes(hist).items() if m > 0}
+    if not practised:
+        return (0, 0)
+    today = today or _dt.date.today()
+    d = today
+    if d.isoformat() not in practised:             # today still open - look back
+        d = d - _dt.timedelta(days=1)
+    cur = 0
+    while d.isoformat() in practised:
+        cur += 1
+        d -= _dt.timedelta(days=1)
+    dates = sorted(_dt.date.fromisoformat(x) for x in practised)
+    best = run = 1
+    for i in range(1, len(dates)):
+        run = run + 1 if (dates[i] - dates[i - 1]).days == 1 else 1
+        best = max(best, run)
+    return (cur, best)
+
+
+def week_minutes(hist=None, today=None):
+    """Minutes practised over the last 7 days (today included)."""
+    dm = daily_minutes(hist)
+    today = today or _dt.date.today()
+    start = today - _dt.timedelta(days=6)
+    return round(sum(m for d, m in dm.items()
+                     if start <= _dt.date.fromisoformat(d) <= today), 1)
 
 
 def log_hold(seconds: float, label: str = ""):
