@@ -303,6 +303,12 @@ class RippleScene:
         vol = c["volume"] if c["running"] else 0.5
         t, running = c["t"], c["running"]
         hue_now = theme.phase_hue(c["phase"]) if running else theme.ACCENT
+        sheen = QRadialGradient(cx, cy, min(w, h) * 0.62)  # still-water sheen, hue-drift
+        sheen.setColorAt(0.0, _qc(theme.blend(theme.RIPPLE_BG, hue_now, 0.10), 0.5))
+        sheen.setColorAt(1.0, _qc(theme.RIPPLE_BG, 0.0))
+        p.setPen(Qt.PenStyle.NoPen)
+        p.setBrush(QBrush(sheen))
+        p.drawEllipse(QPointF(cx, cy), min(w, h) * 0.62, min(w, h) * 0.62)
         if running and t >= self._next:
             self.active.append((t, hue_now, vol))
             self._next = t + (1.4 - 0.6 * vol)            # louder tone -> closer rings
@@ -323,6 +329,9 @@ class RippleScene:
                               theme.RIPPLE_BG, frac)
             p.setPen(QPen(_qc(col), max(1.0, 3 * (1 - frac))))
             p.drawEllipse(QPointF(cx, cy), rad, rad)
+            if rad > 6:                                   # faint companion (interference)
+                p.setPen(QPen(_qc(col, 0.3 * (1 - frac)), 1.0))
+                p.drawEllipse(QPointF(cx, cy), rad * 0.82, rad * 0.82)
         hue = hue_now
         cr = min(w, h) * 0.05 * (0.7 + 0.6 * vol)
         gl = QRadialGradient(cx, cy, cr * 3.0)            # central glow pulses w/ tone

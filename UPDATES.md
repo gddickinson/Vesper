@@ -396,6 +396,13 @@ Guardrails (every round):
       rms (0.12), every peak <= 0.75 — i.e. no jarring outliers — so **no gains were changed**
       (the honest outcome; the calibrated gains stand). Done: tool added + numbers recorded; selftest
       peaks <= 1.0 unchanged; offscreen both faces thread-stable.
+- [x] **Richer Chant ripple scene** (`vesper/scenes.RippleScene`): deeper resonance visuals on top
+      of the existing breath-spawned rings + breath-pulsing central glow — a soft **still-water
+      radial sheen** that gently **colour-drifts with the breath phase hue**, and a faint **companion
+      ripple** just inside each ring for an interference-like richness (alpha fading as the ring
+      ages). Low-contrast, driven by the existing `anim_t` / volume / phase, on the RIPPLE_BG theme.
+      Done: selftest passes; `scenes.py` stays 449 lines; offscreen both faces render the ripple scene
+      (564x557) to non-empty PNGs that change frame-to-frame, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never

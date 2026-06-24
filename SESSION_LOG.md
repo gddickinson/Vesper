@@ -594,6 +594,20 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — richer Chant ripple scene (water sheen + interference ripples)
+Deepened `vesper/scenes.RippleScene` (used in Chant & Sing) with two gentle, low-contrast touches
+layered onto the existing breath-spawned expanding rings and breath-pulsing central glow, both
+driven by the existing `anim_t` / volume / phase context (no new state): (1) a **still-water radial
+sheen** -- a large soft radial gradient centred on the ripple origin, from a faintly-tinted
+RIPPLE_BG out to transparent, whose tint **drifts with the current breath phase hue** so the pool
+quietly changes colour as the breath moves through inhale/hold/exhale; (2) a faint **companion
+ripple** drawn just inside each expanding ring (at ~0.82 of its radius, alpha fading as the ring
+ages) for an interference-like richness. Both respect the theme palette and never strobe. The
+PitchScene and chant timing are untouched. `scenes.py` stays 449 lines (<500), so no split was
+needed. Verified: `selftest.py` passes (137 lectures / 23 branches); offscreen both faces -- in
+Chant with the ripple scene the viz renders at 564x557 to non-empty PNGs (~47-54 KB) that **differ
+frame-to-frame** (expanding rings + the hue-drifting sheen), thread-stable.
+
 ## App round — voice loudness-consistency audit (measure, no rebalance needed)
 Added `tools/loudness.py` (65 lines, read-only): renders each voice in a group (default GROUP_NATURE,
 the ambience beds the soundscape switches between) for a fixed 12 s at a steady breath pattern and
