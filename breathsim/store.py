@@ -292,6 +292,37 @@ def push_recent_pick(name, keep=5):
     return rp
 
 
+# --- saved soundscapes (a light sound-only mix: ambience/effect/levels/flags) -
+
+def soundscapes():
+    d = _read("soundscapes.json", {})
+    return d if isinstance(d, dict) else {}
+
+
+def soundscape_names():
+    return list(soundscapes().keys())
+
+
+def save_soundscape(name, mix):
+    if not name:
+        return soundscapes()
+    d = soundscapes()
+    d[name] = dict(mix)
+    _write("soundscapes.json", d)
+    return d
+
+
+def get_soundscape(name):
+    return soundscapes().get(name)
+
+
+def delete_soundscape(name):
+    d = soundscapes()
+    d.pop(name, None)
+    _write("soundscapes.json", d)
+    return d
+
+
 def register_all():
     """Merge saved custom patterns and voices into the live registries."""
     for d in patterns_list():

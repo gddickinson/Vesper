@@ -210,7 +210,39 @@ class _SectionsMixin:
         rot.toggled.connect(self.win.set_ambience_rotate)
         self._w["amb_rotate"] = rot
         body.addWidget(rot)
+        from breathsim import store
+        body.addWidget(muted("Saved soundscapes"))
+        saved = store.soundscape_names()
+        sv = combo(["(saved mixes)"] + saved, "(saved mixes)", self._on_recall_soundscape)
+        self._w["soundscape"] = sv
+        body.addWidget(sv)
+        row = QHBoxLayout()
+        b_save = QPushButton("Save current…")
+        b_save.clicked.connect(self._on_save_soundscape)
+        b_del = QPushButton("Delete")
+        b_del.clicked.connect(self._on_delete_soundscape)
+        row.addWidget(b_save)
+        row.addWidget(b_del)
+        body.addLayout(row)
         return frame
+
+    def _on_recall_soundscape(self, name):
+        if name and name != "(saved mixes)":
+            self.win.recall_soundscape(name)
+
+    def _on_save_soundscape(self):
+        from PySide6.QtWidgets import QInputDialog
+        name, ok = QInputDialog.getText(self.win, "Save soundscape", "Name:")
+        if ok and name.strip():
+            self.win.save_soundscape(name.strip())
+            self.win.panel.build_workspace(self.win.current_mode)   # refresh the list
+
+    def _on_delete_soundscape(self):
+        sv = self._w.get("soundscape")
+        name = sv.currentText() if sv else None
+        if name and name != "(saved mixes)":
+            self.win.delete_soundscape(name)
+            self.win.panel.build_workspace(self.win.current_mode)
 
     def _card_story(self):
         from breathsim import stories

@@ -594,6 +594,25 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — soundscape preset save/recall (light sound-only mixes)
+Let the user save a named mix of just the sound layers and recall it in one tap -- distinct from the
+full Presets system (which also captures pattern/voice/persona/scene). `breathsim/store` gains
+`soundscapes()` / `soundscape_names()` / `save_soundscape(name, mix)` / `get_soundscape` /
+`delete_soundscape` (a `soundscapes.json` dict, mirroring favourites/courses). `vesper/soundscape_presets`
+(55 lines) holds `capture(win)` -> a plain dict of the ambience voice + level, the effect voice +
+level, master volume, and the spatial / auto-rotate flags, and `apply(win, mix)` which sets them back
+through the normal setters (`set_ambience` / `set_slot_level` / `set_effect` / `set_volume` /
+`set_spatial` / `set_ambience_rotate`) and **skips any voice no longer in the registry** (so an old
+mix referencing a removed bed degrades gracefully, leaving the current one). The app gains
+`save_soundscape` / `recall_soundscape` / `delete_soundscape`; the Relax/Sleep soundscape card shows a
+saved-mixes combo (recall on pick) plus **Save current...** (a name prompt) and **Delete**, rebuilding
+the workspace to refresh the list. Honest framing: it just stores names + levels. Verified:
+`selftest.py` passes (141 lectures / 24 branches); the store layer is round-trip unit-tested
+(save/list/get/delete via a temp `BREATHSIM_HOME`); offscreen both faces -- saving a distinctive mix
+(Gentle Rain @ 0.55, rotate off), changing it (Ocean Waves @ 0.9, rotate on), then recalling restores
+the ambience, level and flags, and an unknown-voice mix is tolerated (leaves the current bed),
+thread-stable.
+
 ## Stories round — new branch Volcanoes & Islands (Iceland, Hawaii, Krakatoa, Galapagos)
 Added a 24th lecture branch via 4 parallel subagents (7 sections, 12-13 lines, fact-free section 1,
 accurate geology/ecology/history, ASCII, sleep-closing): `lectures_iceland.py` (Iceland, Mountain

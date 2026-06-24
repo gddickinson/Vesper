@@ -55,6 +55,29 @@ class _ActionsMixin:
     def toggle_layer(self, slot, on):
         self.engine.set_slot_muted(slot, not on)
 
+    # --- saved soundscapes (a light sound-only mix) -----------------------
+    def save_soundscape(self, name):
+        from breathsim import store
+        from . import soundscape_presets as sp
+        if not name:
+            return
+        store.save_soundscape(name, sp.capture(self))
+        self.status.showMessage(f"Saved soundscape: {name}", 3000)
+
+    def recall_soundscape(self, name):
+        from breathsim import store
+        from . import soundscape_presets as sp
+        mix = store.get_soundscape(name)
+        if mix:
+            sp.apply(self, mix)
+            self.status.showMessage(f"Soundscape: {name}", 3000)
+            self.panel.sync()
+
+    def delete_soundscape(self, name):
+        from breathsim import store
+        if name:
+            store.delete_soundscape(name)
+
     # --- morph ------------------------------------------------------------
     def set_morph_manual(self, amount):
         self.director.set_mode("Manual")

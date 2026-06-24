@@ -403,6 +403,15 @@ Guardrails (every round):
       ages). Low-contrast, driven by the existing `anim_t` / volume / phase, on the RIPPLE_BG theme.
       Done: selftest passes; `scenes.py` stays 449 lines; offscreen both faces render the ripple scene
       (564x557) to non-empty PNGs that change frame-to-frame, thread-stable.
+- [x] **Soundscape preset save/recall** (`store` soundscapes + `vesper/soundscape_presets`): save a
+      named, light **sound-only** mix (ambience + level, effect + level, master volume, spatial &
+      auto-rotate flags) and recall it in one tap — separate from the full Presets system.
+      `store.save/list/get/delete_soundscape` (soundscapes.json); `capture(win)`/`apply(win, mix)`
+      reuse the normal setters and **skip voices no longer in the registry**. Surfaced in the
+      Relax/Sleep soundscape card (a saved-mixes combo + Save current… / Delete). Honest: it just
+      stores names + levels. Done: selftest passes; store round-trip unit-tested (save/list/get/
+      delete); offscreen both faces — save a mix, change it, recall restores ambience/level/rotate,
+      unknown voice tolerated, thread-stable.
 - [x] **First-run onboarding** (`vesper/onboarding.py`): a gentle, skippable 4-step welcome shown
       once on first launch (persisted `onboarded` flag), re-openable from **Help > Welcome /
       Getting Started**. Modeless (uses `show()`, never a blocking `exec()`) and `maybe_show` never
