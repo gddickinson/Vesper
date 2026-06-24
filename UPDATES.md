@@ -225,10 +225,15 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       session reflection ("one good thing about today") shown softly + optionally logged to
       Stats — no scoring, fully skippable. Evidence: bedtime gratitude reduces pre-sleep
       worry and improves sleep quality. Reuse the mood-check-in plumbing.
-- [ ] **Stories (next branch)** — pick a fresh theme with accurate, wonder-led content and
-      sleep-closing sections, e.g. **The Polar Worlds** (the aurora's physics, the long polar
-      night, glaciers, Antarctica's silence) or **The Moons** (Luna, Europa, Titan, Enceladus).
-      4 lectures, standard 7x12 format, distinct NAMEs/modules, register in `_CATALOG`.
+- [x] **Stories (next branch)** — **The Moons of the Giants** (4): *Io, the Volcano Moon*
+      (tidal heating, Galileo 1610, Loki Patera, Voyager's plume / Linda Morabito), *Europa,
+      the Ocean Moon* (smooth ice shell, lineae, the hidden global ocean), *Titan, the Veiled
+      Moon* (nitrogen haze, methane rivers/seas Kraken & Ligeia Mare, the Huygens 2005 landing
+      + rounded pebbles), *Enceladus, the Geyser Moon* (tiger-stripe plumes, the warm hidden
+      sea, Cassini tasting the plumes, the E ring). Standard 7x12 second-person sleep-closing
+      sentences, accurate + wonder-led, distinct NAMEs/modules, ambiences Distant Thunder /
+      Whale Song / Gentle Rain / Singing Bowl. Registered as a 36th branch. **189 lectures /
+      36 branches**; DB rebuilt (255,791 words); selftest + both-faces drive (0 issues).
 
 ### Researched batch — audio & synthesis
 - [x] **Generative ambient pad** (user-requested "cosmic music"): new `breathsim/cosmic.py`

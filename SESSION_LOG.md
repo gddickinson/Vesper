@@ -2253,6 +2253,23 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Stories round — new branch "The Moons of the Giants" (4 lectures)
+Added a 36th lecture branch, **The Moons of the Giants**: *Io, the Volcano Moon* (the most
+volcanic world in the solar system, warmed by tidal heating; Galileo 1610; Loki Patera;
+Voyager's first off-world volcano, spotted by Linda Morabito), *Europa, the Ocean Moon*
+(smooth ice shell, reddish lineae, a hidden global ocean of salty water — possibly twice
+Earth's — kept liquid by tidal heating), *Titan, the Veiled Moon* (Saturn's great moon under
+a golden nitrogen haze, rivers/seas of liquid methane Kraken & Ligeia Mare, the Huygens 2005
+landing — the most distant ever — on rounded pebbles), *Enceladus, the Geyser Moon* (a tiny
+brilliant-white moon whose tiger-stripe plumes feed Saturn's E ring from a warm hidden sea
+that Cassini flew through and tasted). Each = the standard 7x12 second-person present-tense
+sentences, accurate science kept gentle, every section sleep-closing; ambiences Distant
+Thunder / Whale Song / Gentle Rain / Singing Bowl. Drafted via four parallel subagents,
+reshaped Titan from an 8-section merge to 7x12, assembled via a validating builder (7x12 /
+ASCII / end-punct / section-1 fact-free) and registered in `lectures._CATALOG`. Verified:
+selftest (**189 lectures / 36 branches**); DB rebuilt (16,185 lines / 255,791 words); both-
+faces drive 0 issues. Files < 500 lines.
+
 ## Efficacy round — breath-paced auditory swell (breathing soundscape)
 Added an opt-in **Sound ▸ "Breathing soundscape (bed swells with you)"** toggle
 (persisted). When on, the ambience bed gently rises with the inhale and softens ~22%

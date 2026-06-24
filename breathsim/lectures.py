@@ -56,6 +56,8 @@ from . import (lectures_everest, lectures_fuji, lectures_kilimanjaro,
 from . import lectures_crane, lectures_owl, lectures_raven, lectures_swan
 from . import lectures_abyss, lectures_bioluminescence  # The Deep Ocean
 from . import lectures_twilightzone, lectures_whalefall
+from . import lectures_enceladus, lectures_europa  # The Moons of the Giants
+from . import lectures_io, lectures_titan
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -189,6 +191,8 @@ _CATALOG = [
                          lectures_scriptorium, lectures_timbuktu]),
     ("The Deep Ocean", [lectures_twilightzone, lectures_bioluminescence,
                         lectures_whalefall, lectures_abyss]),
+    ("The Moons of the Giants", [lectures_io, lectures_europa,
+                                 lectures_titan, lectures_enceladus]),
 ]
 
 LECTURES = {}
