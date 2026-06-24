@@ -247,6 +247,15 @@ def _view(win, m):
     for name in face_bg.names():
         fb.addAction(name).triggered.connect(
             lambda _c=False, x=name: win.set_face_background(x))
+    from . import face_styles                          # cyberpunk render styles
+    fs = m.addMenu("Face style")
+    cur = getattr(win, "_face_style", "Default")
+    for st in face_styles._STYLES:
+        a = fs.addAction(st.name if not st.desc else f"{st.name}  -  {st.desc}")
+        a.setCheckable(True)
+        a.setChecked(st.name == cur)
+        a.triggered.connect(lambda _c=False, x=st.name: win.set_face_style(x))
+    fs.setEnabled(win.face.faceview_available())       # 3D head only (cat ignores it)
     catf = m.addAction("Cartoon cat face")
     catf.setCheckable(True)
     catf.setChecked(win.face.uses_cat())

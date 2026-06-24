@@ -64,6 +64,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self._scene_hint = "orb"
         self._view = "face"                 # central view: "face" or "scene"
         self._face_bg = "Stars"            # animated background behind the face
+        self._face_style = "Default"       # cyberpunk face render style (see face_styles)
         self.tuner = None                   # lazy mic pitch monitor (Sing/Chant)
         self._pitch_spec = None
         self._bell_interval = 0.0           # mindfulness bell interval (minutes)
@@ -193,6 +194,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self._speech_speed = float(s.get("speech_speed", self._speech_speed))
         self.toggle_hourglass(bool(s.get("hourglass", False)))
         self.set_face_cat(bool(s.get("face_cat", False)))
+        self.set_face_style(s.get("face_style", "Default"))    # cyberpunk render style
         self._clock_light = bool(s.get("clock_light", True))   # time-of-day warmth
         self._mood_on = bool(s.get("mood_checkins", False))    # opt-in mood check-ins
         self._onboarded = bool(s.get("onboarded", False))      # first-run welcome shown?
@@ -231,6 +233,13 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         """Pick the animated background painted behind the 3D face."""
         self._face_bg = name
         self.face.set_background(name)
+
+    def set_face_style(self, name):
+        """Pick the cyberpunk face render style (eye pattern / skin / mode).
+        Persisted, applies live, and also callable by the storyteller / breath /
+        chant to animate the face's mood. The Default keeps the classic look."""
+        self._face_style = name
+        self.face.set_style(name)
 
     def set_face_cat(self, on):
         """Use the cartoon cat instead of the 3D head (View menu / persisted)."""
@@ -426,6 +435,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
                                  "volume": self.user_volume,
                                  "speech_speed": self._speech_speed,
                                  "view": self._view, "face_bg": self._face_bg,
+                                 "face_style": getattr(self, "_face_style", "Default"),
                                  "hourglass": self._hg_show,
                                  "face_cat": self.face.uses_cat(),
                                  "clock_light": self._clock_light,

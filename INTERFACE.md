@@ -76,7 +76,23 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   is coloured to the lid so there's **no shadow** around the eye. Renders to an
   **RGBA FBO with a transparent clear** (so `face_bg` shows behind the head);
   `EYE_SCALE` enlarges the eyeballs a little. Lazy standalone context on the worker
-  thread; returns **RGBA** or `None` (→ software fallback).
+  thread; returns **RGBA** or `None` (→ software fallback). Reads the chosen
+  **cyberpunk style** off `params._style` each frame and sets the shader uniforms +
+  GL state (wireframe / point-size / translucent blend) per the render mode.
+- **face_styles.py** — the **cyberpunk face-style registry** (pure data, no GPU
+  import). A `FaceStyle` = an **eye pattern** (starfield · nebula · plasma · HUD
+  circuit · matrix · solar · void · iris · holo · sonar) + a **skin treatment**
+  (smooth · chrome · neon-rim · circuit · holo-scan · iridescent · matte · grid) +
+  a **render mode** (solid · wireframe · dot-matrix points · translucent ghost) +
+  an accent colour. `STYLES` holds 15 presets; **"Default" reproduces the classic
+  look pixel-for-pixel**. Selectable by the user (**Sound ▸ Face style**, persisted
+  as `face_style`, via `window.set_face_style` → `FaceWidget.set_style`) and
+  callable by the storyteller / breath / chant to animate the face's mood.
+- **face_shaders.py** — the GLSL strings: a vertex shader (writes `gl_PointSize`
+  for the dot-matrix mode) and a fragment shader whose `eye_pattern()` /
+  `skin_shade()` switch on `u_eye` / `u_skin` (id 0 = the exact classic starfield /
+  smooth skin), plus a fresnel `u_ghost` alpha for the translucent mode and the
+  unchanged lash line shaders.
 - **scenes.py** — Qt `QPainter` visualization scenes (ambient set): `OrbScene`
   (glow + guide ring + cycle dot + progress arc + drifting **motes**, soft **exhale
   rings**, and a mint **coherence halo** near ~6 breaths/min), `NightScene` (stars +

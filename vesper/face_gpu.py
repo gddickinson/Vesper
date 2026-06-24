@@ -14,60 +14,10 @@ from __future__ import annotations
 
 import numpy as np
 
-_VS = """
-#version 330
-in vec3 in_pos; in vec3 in_nrm; in vec3 in_col; in float in_emit;
-out vec3 v_nrm; out vec3 v_col; out float v_emit; out vec3 v_pos;
-void main() {
-    gl_Position = vec4(in_pos, 1.0);
-    v_nrm = in_nrm; v_col = in_col; v_emit = in_emit; v_pos = in_pos;
-}
-"""
-_FS = """
-#version 330
-in vec3 v_nrm; in vec3 v_col; in float v_emit; in vec3 v_pos; out vec4 f;
-uniform float u_time;
-float h21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
-float starfield(vec2 uv, float t) {
-    vec2 g = floor(uv), fp = fract(uv);
-    float present = step(0.5, h21(g));             // ~50% of cells hold a star
-    vec2 c = vec2(h21(g + 11.0), h21(g + 57.0));   // star position within cell
-    float d = length(fp - c);
-    float core = smoothstep(0.18, 0.0, d) + 0.6 * smoothstep(0.45, 0.0, d);
-    float tw = 0.45 + 0.55 * sin(t * 1.8 + h21(g) * 6.2831);  // twinkle
-    return present * core * max(0.05, tw);
-}
-void main() {
-    vec3 N = normalize(v_nrm);
-    float facing = abs(N.z);
-    float d = max(0.0, dot(N, normalize(vec3(0.25, 0.4, 1.0))));
-    float fres = pow(1.0 - facing, 2.2);
-    vec3 skin = v_col * (0.55 + 0.55 * d) + v_col * fres * 1.3;
-    // Starry-sky eyeballs: deep space + drifting, twinkling stars.
-    vec2 uv = v_pos.xy * 52.0 + vec2(sin(u_time * 0.15) * 2.0,
-                                     cos(u_time * 0.11) * 1.5);
-    float s = starfield(uv, u_time)
-            + 0.85 * starfield(uv * 1.9 + vec2(3.0, 7.0), u_time * 1.3);
-    vec3 sky = vec3(0.03, 0.05, 0.13)
-             + vec3(0.06, 0.03, 0.13) * (0.5 + 0.5 * sin(v_pos.y * 7.0
-                                                          + u_time * 0.2));
-    vec3 eye = sky + vec3(0.9, 0.95, 1.0) * clamp(s * 1.5, 0.0, 1.6);
-    f = vec4(mix(skin, eye, clamp(v_emit, 0.0, 1.0)), 1.0);
-}
-"""
-
-# Eyelash strands: fine glowing lines drawn from the lash line (the solid ribbon is
-# hidden in the main pass). lin_a tapers each strand from root (bright) to tip (faint).
-_LVS = """
-#version 330
-in vec3 lin_pos; in float lin_a; out float v_a;
-void main() { gl_Position = vec4(lin_pos, 1.0); v_a = lin_a; }
-"""
-_LFS = """
-#version 330
-in float v_a; out vec4 f; uniform vec3 lcol; uniform float lalpha;
-void main() { f = vec4(lcol, v_a * lalpha); }
-"""
+# Shaders + the cyberpunk style registry live in their own modules; eye id 0 +
+# skin id 0 reproduce the classic look, so the 'Default' style is unchanged.
+from .face_shaders import VS as _VS, FS as _FS, LVS as _LVS, LFS as _LFS
+from . import face_styles
 
 _S: dict = {}                                  # lazy singleton state
 
@@ -86,6 +36,10 @@ def _init(w, h):
     from faceview.vision.ict_face import load_ict_model
     ctx = moderngl.create_context(standalone=True, require=330)
     ctx.enable(moderngl.DEPTH_TEST)
+    try:
+        ctx.enable(moderngl.PROGRAM_POINT_SIZE)     # gl_PointSize for dot-matrix mode
+    except Exception:
+        pass
     prog = ctx.program(vertex_shader=_VS, fragment_shader=_FS)
     model = load_ict_model()
     tri = model.triangles.reshape(-1).astype(np.int64)          # (3M,)
@@ -386,6 +340,18 @@ def render(params, size):
         p[:, 0] *= aspect
         zmin, zmax = float(p[:, 2].min()), float(p[:, 2].max())
         p[:, 2] = (p[:, 2] - zmin) / (zmax - zmin + 1e-6) * 1.8 - 0.9
+        # Eyeball centres in NDC (for the eye-local polar patterns) + the chosen
+        # cyberpunk style (eye pattern / skin treatment / render mode / accent).
+        clusters = _S.get("eye_clusters", [])
+        if len(clusters) == 2 and clusters[0].size and clusters[1].size:
+            cl, cr = p[clusters[0]].mean(0), p[clusters[1]].mean(0)
+            eyeL, eyeR = (float(cl[0]), float(cl[1])), (float(cr[0]), float(cr[1]))
+            rad = float(np.percentile(
+                np.linalg.norm(p[clusters[0]][:, :2] - cl[:2], axis=1), 90)) or 0.1
+        else:
+            eyeL = eyeR = (0.0, 0.0)
+            rad = 0.1
+        style = face_styles.get(getattr(params, "_style", "Default"))
         col_tri, emit_tri = _color_emit(params)        # per-triangle (all tris)
         flat_p = p[main_tri].astype("f4")               # main pass excludes lashes
         flat_n = np.repeat(nrm[main_mask], 3, axis=0).astype("f4")
@@ -400,11 +366,34 @@ def render(params, size):
         ctx.viewport = (0, 0, w, h)
         ctx.clear(0.0, 0.0, 0.0, 0.0)              # transparent: bg shows through
         mgl = _S["moderngl"]
-        try:
-            _S["prog"]["u_time"].value = float(getattr(params, "_t", 0.0)) % 1000.0
-        except Exception:
-            pass
-        _S["vao"].render(mgl.TRIANGLES, vertices=main_tri.size)
+        uniforms = {
+            "u_time": float(getattr(params, "_t", 0.0)) % 1000.0,
+            "u_eye": int(style.eye), "u_skin": int(style.skin),
+            "u_ghost": 1 if style.mode == face_styles.MODE_GHOST else 0,
+            "u_acc": tuple(float(c) for c in style.accent),
+            "u_eyeL": eyeL, "u_eyeR": eyeR, "u_eyer": float(rad),
+            "u_pt": max(2.5, h / 115.0),
+        }
+        for _k, _v in uniforms.items():
+            try:
+                _S["prog"][_k].value = _v
+            except Exception:
+                pass
+        # Render mode: solid / wireframe / dot-matrix points / translucent ghost.
+        ghost = style.mode == face_styles.MODE_GHOST
+        if style.mode == face_styles.MODE_WIRE:
+            ctx.wireframe = True
+        if ghost:
+            ctx.depth_mask = False
+            ctx.blend_func = (mgl.SRC_ALPHA, mgl.ONE_MINUS_SRC_ALPHA)
+            ctx.enable(mgl.BLEND)
+        prim = mgl.POINTS if style.mode == face_styles.MODE_DOTS else mgl.TRIANGLES
+        _S["vao"].render(prim, vertices=main_tri.size)
+        if style.mode == face_styles.MODE_WIRE:
+            ctx.wireframe = False
+        if ghost:
+            ctx.disable(mgl.BLEND)
+            ctx.depth_mask = True
         # eyelash strands: fine glowing lines on top (no depth, alpha-blended)
         ll = _lash_lines(vr)
         if ll is not None:

@@ -60,6 +60,7 @@ class FaceWidget(QWidget):
         self._params = _claude_face() if self._faceview_ok else None
         self._breath = 0.5
         self._t = 0.0
+        self._style = "Default"                  # cyberpunk face style (see face_styles)
         self._hue = theme.ACCENT
         self._req = ((copy.copy(self._params), (480, 520)) if self._faceview_ok
                      else (None, (480, 520)))
@@ -98,6 +99,16 @@ class FaceWidget(QWidget):
 
     def uses_cat(self):
         return self._show_cat
+
+    def set_style(self, name):
+        """Choose the cyberpunk render style (eye pattern / skin / mode). Unknown
+        names fall back to Default. Affects the 3D head only; the cat ignores it."""
+        from . import face_styles
+        self._style = name if name in face_styles.STYLES else "Default"
+        self.update()
+
+    def style(self):
+        return self._style
 
     def faceview_available(self):
         return self._faceview_ok
@@ -183,6 +194,7 @@ class FaceWidget(QWidget):
             p.yaw = (0.04 * math.sin(0.07 * t + self._head_ph) * calm
                      + self._tilt * 0.1)                     # idle sway + head-cock
             p.eye_open = eye_open
+            p._style = self._style                       # cyberpunk render style
             self._req = (copy.copy(p),
                          (max(2, self.width()), max(2, self.height())))
         self.update()
