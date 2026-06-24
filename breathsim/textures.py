@@ -273,10 +273,34 @@ class _Whale:
         return np.column_stack([mono, mono])
 
 
+class _SlowPulse:
+    """A soft, warm pink-noise wash that swells gently at ~0.8 Hz (about 48 pulses
+    a minute) -- an unhurried, open-loop throb to ease into deep sleep. (It is
+    simply soothing rhythmic sound, not anything clinically brain-locked.)"""
+
+    RATE = 0.8                                     # pulse rate (Hz) ~ slow-wave-ish
+    DEPTH = 0.38                                   # how deep the swell dips
+
+    def __init__(self, sr, rng):
+        self.sr = sr
+        self.pink = dsp.Noise("pink", sr, seed=int(rng.integers(1, 2 ** 31)))
+        self.brown = dsp.Noise("brown", sr, seed=int(rng.integers(1, 2 ** 31)))
+        self.lp = dsp.OnePoleLP()
+
+    def step(self, tarr, frames):
+        bed = self.lp.process(self.pink.generate(frames), 900.0, self.sr) * 1.1
+        bed = bed + self.brown.generate(frames) * 0.35        # a little low warmth
+        pulse = 1.0 - self.DEPTH + self.DEPTH * (
+            0.5 + 0.5 * np.sin(TWO_PI * self.RATE * tarr - math.pi / 2))
+        mono = bed * pulse
+        return np.column_stack([mono, mono])
+
+
 _GENS = {"campfire": _Campfire, "bowl": _Bowl, "chimes": _Chimes,
-         "crickets": _Crickets, "purr": _Purr, "womb": _Womb, "whale": _Whale}
+         "crickets": _Crickets, "purr": _Purr, "womb": _Womb, "whale": _Whale,
+         "slowpulse": _SlowPulse}
 _SEED = {"campfire": 41, "bowl": 42, "chimes": 43, "crickets": 44, "purr": 45,
-         "womb": 46, "whale": 47}
+         "womb": 46, "whale": 47, "slowpulse": 48}
 
 
 def register_generator(key, factory, seed):
@@ -334,3 +358,6 @@ _t("Womb Heartbeat", "womb", 0.179,
    "A muffled heartbeat over a soft blood-flow hush - the cosy sound of the womb.")
 _t("Whale Song", "whale", 0.393,
    "Distant whale song: slow moans gliding over a deep, dark sea.")
+_t("Slow-Wave Pulse", "slowpulse", 0.176,
+   "A soft pink-noise wash that pulses gently, about 48 a minute, to ease into "
+   "deep sleep.")

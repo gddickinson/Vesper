@@ -103,7 +103,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self._hg_spin_to = 0.0
         self._hg_spin_t0 = None
         self.current_mode = None
-        self._mood_on = True               # optional mood check-ins (before/after)
+        self._mood_on = False              # optional mood check-ins (opt-in; off by default)
         self._mood_after_done = False
 
         accents = self.speech.accent_voices()
@@ -149,6 +149,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
         self.toggle_hourglass(bool(s.get("hourglass", False)))
         self.set_face_cat(bool(s.get("face_cat", False)))
         self._clock_light = bool(s.get("clock_light", True))   # time-of-day warmth
+        self._mood_on = bool(s.get("mood_checkins", False))    # opt-in mood check-ins
         mode = s.get("mode")                          # no saved mode -> suit the clock
         if mode not in modes.names():
             from . import clocktheme
@@ -614,7 +615,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, QMainWindow):
                                  "view": self._view, "face_bg": self._face_bg,
                                  "hourglass": self._hg_show,
                                  "face_cat": self.face.uses_cat(),
-                                 "clock_light": self._clock_light})
+                                 "clock_light": self._clock_light,
+                                 "mood_checkins": self._mood_on})
         except Exception:
             pass
         try:

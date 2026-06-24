@@ -594,6 +594,19 @@ Noise — the endless), `lectures_symmetry.py` (Pink Noise — balance, Noether)
 in the Ideas & Wonders branch → **71 lectures / 8 branches**. Validated structure +
 ASCII; DB rebuilt (5,942 lines / 84,730 words); selftest passes.
 
+## App round — Slow-Wave Pulse sleep ambience (~0.8 Hz pink-noise swell)
+Added `textures._SlowPulse` -> the **"Slow-Wave Pulse"** GROUP_NATURE ambience (now 148 voices). A
+warm pink+brown noise wash (one-pole-LP'd at 900 Hz) amplitude-modulated by a slow ~0.8 Hz sine
+(depth 0.38, ~48 swells/min) so it rises and falls like deep, slow breath. **Honestly framed** in
+the blurb as open-loop soothing, not EEG-entrained — no closed-loop claims. Gain calibrated to 0.176
+(150 s unit peak 2.135; verified 300 s peak 0.752, rms 0.137). An FFT of the rendered envelope
+confirms the modulation sits at 0.80 Hz. Verified: `selftest.py` passes (97 lectures / 13 branches);
+a >=45-tick offscreen Relax session selecting it as the ambience is thread-stable (2->2) on both the
+3D and cat faces. Fixed the headless test hang: the mood "before" check-in opens a modal on a fresh
+non-Sleep Start, which blocks offscreen — disabled mood in the test, and (follow-up) defaulted the
+auto mood check-in to **off** so it no longer pops a modal before every meditation unless the user
+opts in via Sound > Mood check-ins.
+
 ## App round — clock-aware theming
 Added `vesper/clocktheme.py` (pure, testable): `clock_warm_for_hour(h)` (0 by day, ramping up in
 the evening to a capped 0.22 overnight, easing back before dawn) and `suggested_mode_for_hour(h)`

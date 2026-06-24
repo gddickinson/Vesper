@@ -197,8 +197,10 @@ Guardrails (every round):
 - [x] **More ambiences** (+5): Rain on a Tent · Wind in Pines · Fan (White Noise) [NoiseTrack]
       and Womb Heartbeat · Whale Song [new `textures.py` generators], all GROUP_NATURE in the
       soundscape picker. Calibrated (300 s peak <= 0.78). **147 voices.**
-- [ ] **Slow-wave pink pulses**: pink noise gently pulsing at ~0.8 Hz (open-loop,
-      honestly framed) for deep-sleep support.
+- [x] **Slow-wave pink pulses** (`textures._SlowPulse` -> "Slow-Wave Pulse" ambience): a warm
+      pink+brown noise wash amplitude-modulated by a gentle ~0.8 Hz swell (about 48/min), framed
+      honestly (open-loop soothing, not EEG-locked). Calibrated (300 s peak 0.75); the envelope
+      FFT confirms 0.80 Hz; in the soundscape picker. 148 voices.
 - [x] **Gong bath / tuned bowl set** (user-requested, delivered by `synth_bell.py`): a
       physically-grounded struck-resonator engine + 12 instruments (Meditation/Temple/Church/Hand
       Bell, Tibetan + Crystal + Sung Bowl, Tam-tam + Nipple Gong, Triangle, Tingsha, Tubular Bell)
