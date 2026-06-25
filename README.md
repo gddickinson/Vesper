@@ -10,11 +10,11 @@ required.</p>
 </p>
 
 Vesper paces your breath with a soft animated visualization and real-time synthesised
-sound. It spans six activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep** —
-each with its own purpose-built control panel, visual scene and soundscape. At its centre
-is a talking-head **avatar** (a 3D head, or one of **17 hand-drawn cartoon characters**)
-that breathes, blinks, gazes around, emotes, and narrates a library of **213 soothing
-sleep-lectures** that gently follow the words on screen.
+sound. It spans seven activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep ·
+Read** — each with its own purpose-built control panel, visual scene and soundscape. At its
+centre is a talking-head **avatar** (a 3D head, or one of **17 hand-drawn cartoon
+characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **233
+soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
@@ -43,13 +43,20 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   crickets…) plus synthesised **bells & gongs, drums, winds & organs, environmental FX**
   and a **cosmic generative-music** engine sonifying real planetary + pulsar data. Nothing
   to download.
-- **The bedtime storyteller** — **213 authored sleep-lectures across 42 branches** (the
-  Cosmos, Earth &amp; Sea, the Living World, the Human Body, Histories, Materials &amp;
-  Making, Ideas &amp; Wonders, Myth &amp; Legend, Colours &amp; Pigments, the Polar Worlds,
-  Weathers of the World, the Microscopic World, and many more), plus procedural bedtime
-  stories, poetry nocturnes and a cognitive-shuffle sleep aid. Spoken by neural **Kokoro**
-  TTS (or macOS `say`), slowing and quietening as you drift off — and the **soundscape,
-  the backdrop and the character all gently follow the words**.
+- **The bedtime storyteller** — **233 authored sleep-lectures across 47 branches** (the
+  Cosmos, the Inner Planets &amp; the Dwarf Planets, Earth &amp; Sea, the Living World, the
+  Human Body, Histories, Materials &amp; Making, Ideas &amp; Wonders, Myth &amp; Legend, the
+  Polar Worlds, Weathers of the World, the Microscopic World, the Great Voyages, Grasslands
+  of the World, Wetlands &amp; Marshes, and many more), plus procedural bedtime stories,
+  poetry nocturnes and a cognitive-shuffle sleep aid. Spoken by neural **Kokoro** TTS (or
+  macOS `say`), slowing and quietening as you drift off — and the **soundscape, the backdrop
+  and the character all gently follow the words**.
+- **Read a novel** — a dedicated **Read** mode and a book Reader narrate full public-domain
+  books (download from Project Gutenberg / Standard Ebooks, or drop in your own .txt/.epub)
+  with **read-along text** that highlights and auto-scrolls, **Night / Sepia / Day** reading
+  themes, adjustable pace and resume-where-you-fell-asleep. A book can also be a **bedtime
+  read** in Sleep, fading out with the sleep timer — and an optional **dramatized cast** can
+  voice each character with its own narrator, face and mood.
 - **Realistic chanting** — **66 mantras, chants &amp; songs** (Om Mani Padme Hum, Aum,
   Om Tare Tuttare, Nam Myoho Renge Kyo, Gregorian plainchant, vocalises, affirmations)
   sung as articulated syllables with real consonants, over a tonic drone with a reciting
@@ -59,7 +66,12 @@ device, no neural voices, no 3D head — there's always a calm fallback.
 - **Evidence-based calm** — resonance breathing near **~6 breaths/min**, longer exhales,
   **4-7-8 / box / physiological-sigh** patterns; guided **Body-Scan &amp; PMR**, **NSDR /
   Yoga Nidra**, a one-tap **Physiological-Sigh reset**; a warm, low-blue **Sleep
-  wind-down** that dims the screen on a melatonin-friendly curve; pink / brown noise.
+  wind-down** that dims the screen on a melatonin-friendly curve; pink / brown noise; and
+  gentle, opt-in bedtime notes — a **gratitude** "one good thing" and a **park-your-worries**
+  tomorrow's-list, both shown to shorten sleep onset.
+- **Accessible &amp; tidy** — global **UI text-size**, a **calm-visuals (reduce-motion)**
+  toggle, an **always-warm low-blue screen** for evening eye comfort, drag-and-drop file
+  loading, and a **searchable chooser** for the long lists (200+ stories, 148 voices).
 - **Per-mode visual scenes** — a breathing **orb** (motes, exhale rings, a coherence halo
   near 6 bpm), a starry **night**, a moonlit **sea**, tone-reactive **ripples**, an
   on-screen **pitch trainer**, and themed animated **backdrops** (stars, embers, rain,
@@ -80,10 +92,11 @@ device, no neural voices, no 3D head — there's always a calm fallback.
 | **Sing** | Warm-ups + an on-screen pitch trainer (target vs. your voice) | Pitch trainer |
 | **Relax** | A multi-layer nature soundscape mixer | Wave |
 | **Sleep** | The bedtime storyteller + wind-down + screen dimming | Night |
+| **Read** | Narrate a novel with read-along text (Night / Sepia / Day) | Drift |
 
 The **mode bar** is the primary navigation; a resizable side panel rebuilds into each
-mode's purpose-built tools, and a tidy menu bar (File · Modes · Sessions · Pattern · Voice ·
-Sound · Face · View · Help) is the global escape hatch for everything else.
+mode's purpose-built tools, and a tidy menu bar (File · Modes · Sessions · Books · Pattern ·
+Voice · Sound · Face · View · Help) is the global escape hatch for everything else.
 
 ## Gallery
 
@@ -149,7 +162,8 @@ Optional extras (each degrades gracefully if absent):
 - [`breathsim/`](breathsim/) — the **vendored core**: audio engine, breath controller,
   voices, patterns, modes, narration (Kokoro / `say` / XTTS), reverb, `phrases.py` +
   `vocal.py` (chant synthesis), `stories.py` + the whole **lecture library**
-  (`lectures*.py`), `sound_cues.py` (text-matched ambience), `textures.py` /
+  (`lectures*.py`), the **novels stack** (`books.py` / `bookreader.py` / `booksource.py` /
+  `bookcast.py`), `sound_cues.py` (text-matched ambience), `textures.py` /
   `cosmic.py` (procedural sound) and `story_db.py`.
 - [`tools/`](tools/) — the opt-in `setup_xtts.py` installer, the voice loudness audit.
 - `data/stories.db` — a SQLite record of every story (rebuilt on startup, or
