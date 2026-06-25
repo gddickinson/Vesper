@@ -2253,6 +2253,22 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Poetry round — pure-poetry sessions across cultures (user-requested)
+First item of the storytelling & poetry batch. Expanded the `poetry` storyteller from 8
+English nocturnes into **selectable "Pure Poetry: <tradition>" Sleep sessions**: *English
+Nocturnes* (the originals, renamed; the old "Poetry" name kept as a backward-compat `ALIAS`
+so saved settings still resolve), plus a new `breathsim/poetry_world.py` with three world
+traditions -- **Haiku & Tanka** (Japanese short forms, *mono no aware*), **Tang Nature** (in
+the spirit of Wang Wei / Meng Haoran -- still mountains, the river moon, pine wind) and
+**Persian** (ghazal couplets with a lulling *radif* refrain + rubaiyat quatrains). To stay
+DRY I factored `poetry.recite(poems, rng, guidance, intro)` as the shared reciter and
+`poetry_world` reuses it. **All verse is original, written in the spirit of each tradition**
+(no copyright), honestly framed in the docstring as homage not authentic historical text;
+ASCII; beds Wind in Pines / Gentle Rain / Singing Bowl. Drafted via three parallel subagents.
+Wired into `stories.extra_names`/`ambience_for`/`story_units` (incl. the alias). Verified: all
+three dispatch via `stories.story_units`, ambiences resolve, ASCII-only, the "Poetry" alias
+still works; selftest passes; both-faces drive 0 issues. Files < 500 lines.
+
 ## Self-help round — themed sleep-hypnosis sessions (user-requested)
 Added **6 themed self-help hypnosis sessions** (`breathsim/hypnosis_topics.py`), surfaced as
 Sleep storyteller options: **Letting Go of Stress · Quiet Confidence · Calm Focus · Letting

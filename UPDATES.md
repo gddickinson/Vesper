@@ -276,12 +276,16 @@ in these notes:
   is a soft and roomy thing"). Always honest, wonder-over-mastery.
 
 ### Researched batch — storytelling & poetry (user-requested; do these next, top-down)
-- [ ] **Pure poetry sessions across cultures** — expand the `poetry` storyteller from 8 English
-      nocturnes into **selectable traditions** (a `poems/` set or `poetry_*.py`): Japanese
-      (haiku + tanka sequences), Chinese Tang nature, Persian ghazal/rubaiyat, English
-      nocturne. Each a "Pure Poetry: <tradition>" Sleep option via `stories.extra_names`, recited
-      slowly with long *ma* pauses + a fitting bed. Honest attributions; original or
-      public-domain/paraphrased verse only. Keep files < 500 lines.
+- [x] **Pure poetry sessions across cultures** — the `poetry` storyteller is now **selectable
+      traditions**, all "Pure Poetry: <tradition>" Sleep options: *English Nocturnes* (the
+      original 8, renamed; old "Poetry" name kept as a backward-compat alias), *Haiku & Tanka*
+      (new `poetry_world.py`, Japanese short forms, *mono no aware*), *Tang Nature* (in the
+      spirit of Wang Wei / Meng Haoran), *Persian* (ghazal couplets with a lulling *radif*
+      refrain + rubaiyat quatrains). Refactored `poetry.recite(poems,...)` as the shared
+      reciter; `poetry_world` reuses it. All verses **original, written in the spirit of** each
+      tradition (no copyright), honestly framed as homage not authentic text; ASCII; beds Wind
+      in Pines / Gentle Rain / Singing Bowl. Wired via `stories.extra_names`/`ambience_for`/
+      `story_units`. Verified: dispatch + ambiences resolve + ASCII + alias; selftest + drive.
 - [ ] **Procedural haiku/tanka generator** (`breathsim/haiku.py`) — a small grammar/template
       engine that assembles gentle, season-aware (kigo) haiku and tanka from curated image
       fragments, endless + deterministically seeded, syllable-respecting, with long pauses. A

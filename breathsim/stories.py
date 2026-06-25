@@ -103,9 +103,9 @@ def scene_names():
 def extra_names():
     """Special non-templated storyteller generators (Cognitive Shuffle, Sleep
     Hypnosis + themed self-help hypnosis sessions, Poetry)."""
-    from . import hypnosis, hypnosis_topics, poetry, shuffle
+    from . import hypnosis, hypnosis_topics, poetry, poetry_world, shuffle
     return ([shuffle.NAME, hypnosis.NAME] + hypnosis_topics.names()
-            + [poetry.NAME])
+            + [poetry.NAME] + poetry_world.names())
 
 
 def lecture_names(category=None):
@@ -122,15 +122,17 @@ def lecture_categories():
 
 def ambience_for(name):
     """Ambience voice for a scene *or* a lecture (None if unknown, e.g. Random)."""
-    from . import hypnosis, hypnosis_topics, poetry, shuffle
+    from . import hypnosis, hypnosis_topics, poetry, poetry_world, shuffle
     if name == shuffle.NAME:
         return shuffle.AMBIENCE
     if name == hypnosis.NAME:
         return hypnosis.AMBIENCE
     if hypnosis_topics.has(name):
         return hypnosis_topics.ambience(name)
-    if name == poetry.NAME:
+    if name in (poetry.NAME, poetry.ALIAS):
         return poetry.AMBIENCE
+    if poetry_world.has(name):
+        return poetry_world.ambience(name)
     sc = SCENES.get(name)
     if sc:
         return sc.ambience
@@ -214,7 +216,7 @@ def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
     interlude -- breath / body-scan / relaxation, cycling -- then repeats forever.
     """
     rng = rng or random.Random()
-    from . import hypnosis, hypnosis_topics, poetry, shuffle
+    from . import hypnosis, hypnosis_topics, poetry, poetry_world, shuffle
     if scene_name == shuffle.NAME:
         yield from shuffle.units(rng, guidance)
         return
@@ -224,8 +226,11 @@ def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
     if hypnosis_topics.has(scene_name):
         yield from hypnosis_topics.units(scene_name, rng, guidance)
         return
-    if scene_name == poetry.NAME:
+    if scene_name in (poetry.NAME, poetry.ALIAS):
         yield from poetry.units(rng, guidance)
+        return
+    if poetry_world.has(scene_name):
+        yield from poetry_world.units(scene_name, rng, guidance)
         return
     from . import lectures
     if scene_name in lectures.names():

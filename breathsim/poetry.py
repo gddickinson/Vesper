@@ -14,7 +14,8 @@ from __future__ import annotations
 
 import random
 
-NAME = "Poetry"
+NAME = "Pure Poetry: English Nocturnes"
+ALIAS = "Poetry"                   # backward-compat: the old saved/menu name
 AMBIENCE = "Soft Rainstorm"        # a steady, soft bed under the verses
 
 # (title, lines). An empty string is a stanza break (a longer pause).
@@ -114,18 +115,18 @@ def _u(text, pause, kind="poem"):
     return {"text": text, "pause": pause, "phase": None, "kind": kind}
 
 
-def units(rng=None, guidance=True):
-    """Recite the poems forever in a shuffled order, slowly, with rests at stanza
-    breaks and long silences between poems."""
+def recite(poems, rng=None, guidance=True, intro=None):
+    """Recite *poems* forever in a shuffled order, slowly, with rests at stanza
+    breaks (an empty line) and long silences between poems. Shared by the world
+    poetry traditions (:mod:`breathsim.poetry_world`)."""
     rng = rng or random.Random()
-    if guidance:
-        yield _u("Let some quiet verses carry you gently down toward sleep.", 2800,
-                 kind="guide")
-    order = list(range(len(POEMS)))
+    if guidance and intro:
+        yield _u(intro, 2800, kind="guide")
+    order = list(range(len(poems)))
     while True:
         rng.shuffle(order)
         for idx in order:
-            title, lines = POEMS[idx]
+            title, lines = poems[idx]
             last = max(i for i, ln in enumerate(lines) if ln.strip())
             yield _u(title + ".", 2800)
             for j, ln in enumerate(lines):
@@ -138,3 +139,9 @@ def units(rng=None, guidance=True):
                 else:
                     pause = 2000
                 yield _u(ln, pause)
+
+
+def units(rng=None, guidance=True):
+    """Recite the English nocturnes forever (see :func:`recite`)."""
+    return recite(POEMS, rng, guidance,
+                  intro="Let some quiet verses carry you gently down toward sleep.")
