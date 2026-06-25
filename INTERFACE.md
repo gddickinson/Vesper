@@ -440,7 +440,9 @@ Lullabies of the World (Brahms · Suo Gan · Cossack · Edo) +
 The Great Voyages + The Microscopic World +
 Weathers of the World; Cosmos incl. Comets · Nebulae · Saturn's Rings) + **`shuffle`** (the **Cognitive Shuffle** sleep-onset aid) + **`hypnosis`** (a **Sleep
 Hypnosis** guided session: induction -> deepening countdown -> suggestions -> drift; exposes
-reusable `induction`/`drift_tail`) + **`hypnosis_topics`** (6 **themed self-help** hypnosis
+reusable `induction`/`drift_tail`) + **`autogenic`** (an **Autogenic Training** session: Schultz's
+six standard exercises -- heaviness · warmth · calm heart · calm breath · warm belly · cool brow --
+then `hypnosis.drift_tail` into sleep) + **`hypnosis_topics`** (6 **themed self-help** hypnosis
 sessions reusing that arc with a different permissive suggestion block -- Letting Go of Stress
 / Quiet Confidence / Calm Focus / Letting Go of Worry / Deep Self-Acceptance / Peaceful
 Gratitude, all winding down to sleep) +

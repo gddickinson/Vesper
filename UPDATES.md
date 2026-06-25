@@ -155,6 +155,15 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Sleep aid: Autogenic Training guided session** (evidence-based sleep efficacy; was missing
+      beside NSDR / Body-Scan / Hypnosis): new `breathsim/autogenic.py` walks Schultz's six standard
+      exercises -- heaviness, warmth, calm heartbeat, easy breathing, warm belly, cool brow -- with the
+      soft repeated self-suggestions, then hands off to the shared `hypnosis.drift_tail` into sleep
+      (Soft Rainstorm bed). Yields ordinary storyteller units; wired into `stories.extra_names` /
+      `ambience_for` / `story_units` so it shows in the Sleep storyteller picker (no GUI changes).
+      Verified: new `tools/test_autogenic.py` (all six exercises; guidance flag; endless drift; dispatch
+      wired) + offscreen GUI smoke (in the picker, Sleep builds, threads stable); all 40 offline tests;
+      selftest; drive_check 0 issues.
 - [x] **Scene: "Snowfall" -- slow snow on a hushed winter night** (sleep efficacy; a new calm scene):
       two parallax layers of soft **warm-grey** snowflakes drift down a dark muted-blue sky over a faint
       snow-glow horizon, swaying on a slow wind, with dim high stars; softens on the inhale. Dim + warm-

@@ -134,9 +134,9 @@ def book_id_for(name):
 def extra_names():
     """Special non-templated storyteller generators (Cognitive Shuffle, Sleep
     Hypnosis + themed self-help hypnosis sessions, Poetry)."""
-    from . import (haibun, haiku, hypnosis, hypnosis_topics, poetry,
+    from . import (autogenic, haibun, haiku, hypnosis, hypnosis_topics, poetry,
                    poetry_world, shuffle, tales)
-    return ([shuffle.NAME, hypnosis.NAME] + hypnosis_topics.names()
+    return ([shuffle.NAME, hypnosis.NAME, autogenic.NAME] + hypnosis_topics.names()
             + [poetry.NAME] + poetry_world.names()
             + [haiku.NAME, haibun.NAME, tales.NAME])
 
@@ -157,11 +157,13 @@ def ambience_for(name):
     """Ambience voice for a scene *or* a lecture (None if unknown, e.g. Random)."""
     if isinstance(name, str) and name.startswith(BOOK_PREFIX):
         return BOOK_AMBIENCE
-    from . import hypnosis, hypnosis_topics, poetry, poetry_world, shuffle
+    from . import autogenic, hypnosis, hypnosis_topics, poetry, poetry_world, shuffle
     if name == shuffle.NAME:
         return shuffle.AMBIENCE
     if name == hypnosis.NAME:
         return hypnosis.AMBIENCE
+    if name == autogenic.NAME:
+        return autogenic.AMBIENCE
     if hypnosis_topics.has(name):
         return hypnosis_topics.ambience(name)
     if name in (poetry.NAME, poetry.ALIAS):
@@ -306,12 +308,15 @@ def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
         if book:                                 # resume by sentence; finite stream
             yield from bookreader.resume_units(book)
         return
-    from . import hypnosis, hypnosis_topics, poetry, poetry_world, shuffle
+    from . import autogenic, hypnosis, hypnosis_topics, poetry, poetry_world, shuffle
     if scene_name == shuffle.NAME:
         yield from shuffle.units(rng, guidance)
         return
     if scene_name == hypnosis.NAME:
         yield from hypnosis.units(rng, guidance)
+        return
+    if scene_name == autogenic.NAME:
+        yield from autogenic.units(rng, guidance)
         return
     if hypnosis_topics.has(scene_name):
         yield from hypnosis_topics.units(scene_name, rng, guidance)

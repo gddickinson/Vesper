@@ -3536,6 +3536,24 @@ blue pixels**; idle render safe; animates over time; preview PNG eyeballed -- so
 dark winter sky with dim stars + the breath overlay); all 39 offline tests; selftest; **drive_check
 renders 12 scenes** (was 11), 0 issues; files < 500 (`scene_snow` 85).
 
+## Sleep aid: Autogenic Training guided session
+Added a classic, evidence-based relaxation method that was notably missing beside NSDR / Yoga Nidra,
+Body-Scan & PMR, the Physiological-Sigh reset and Sleep Hypnosis: **Autogenic Training** (Johannes
+Schultz, 1932). New `breathsim/autogenic.py` is a spoken guided session that walks Schultz's **six
+standard exercises** with the soft, repeated self-suggestions that are the technique's whole point --
+the body **heavy**, then **warm**, the **heartbeat calm and regular**, the **breathing easy** ("it
+breathes you"), the **belly warm**, the **brow cool** -- then hands off to the shared endless soft
+sleep drift (`hypnosis.drift_tail`), so it eases the listener all the way into sleep. Second-person,
+present-tense, gentle; a `Soft Rainstorm` masking bed. It yields the ordinary storyteller narrator
+units (`{text, pause, phase, kind}`) and a `guidance` flag keeps a few breath-paced breaths near the
+start. Wired into the `stories` dispatcher with three tiny edits (`extra_names` / `ambience_for` /
+`story_units`), so it appears automatically in the **Sleep storyteller** picker alongside Hypnosis and
+the Cognitive Shuffle -- no GUI changes. Pure + offline-testable. Verified: new `tools/test_autogenic.py`
+(well-formed units covering all six exercises; the `guidance` flag adds/removes the breath-paced
+breaths; runs endlessly into the sleep drift; wired into `extra_names`/`ambience_for`/`story_units`) +
+an offscreen GUI smoke (it shows in the storyteller options, Sleep workspace builds, threads stable
+2->2); all 40 offline tests; selftest; drive_check 0 issues; `autogenic.py` 104 < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
