@@ -305,6 +305,49 @@ in these notes:
       occasional **contemplative interludes** (a mono-no-aware noticing / a Taoist image / a
       Stoic night-thought) alongside the existing breath/body-scan interludes.
 
+### Research notes — optional LLM integration (user-requested, 2026-06-24)
+A major direction: incorporate an LLM (Claude when a key is present, else a local **Ollama**
+model) to (1) generate stories/content on the fly, savable to the library; (2) act as a quiet
+in-app helper that speaks through the face; (3) let users add modifications. Assessment +
+guardrails for the rounds below:
+- **Optional + graceful degradation is non-negotiable.** The app must work fully with no LLM
+  (feature hidden). Mirror the narration-engine auto-select + the **XTTS isolation precedent**
+  (heavy AI dep, separate env, app fine without it). **Offline-first via Ollama** to keep the
+  no-network promise; Claude API only when a key is set (and *disclose* that prompts leave the
+  device). Persisted opt-in.
+- **Sleep pacing gives latency headroom** (multi-second gaps between lines) -> generate/buffer
+  the next passage while the current one narrates; indefinite-length stories pair with the
+  existing endless-tail design.
+- **Declarative-first, NO arbitrary code execution by default.** The app already has a
+  declarative content model (BreathPattern = 4 numbers, VoiceConfig dataclass, phrase
+  vowel/pitch/onset segments, 7x12 lecture text). The LLM **fills validated schemas** the app
+  already renders; everything passes the existing lint/selftest **before** it can enter the
+  library (store.py). A validate->retry loop is the "bug test". This covers most "user
+  modifications" safely.
+- **Honest labelling.** AI-generated content is marked AI-written; AI *stories* are framed
+  atmospheric/imaginative (do NOT claim the authored lectures' factual accuracy unless
+  verified). No medical claims. The assistant is a bounded helper, never medical advice.
+- **Free-form code-plugins: defer / experimental / sandboxed.** Do NOT auto-write+execute
+  Python in the running app. If pursued: write to a `plugins/` dir, explicit opt-in, **bug-test
+  in an isolated subprocess** (the selftest/drive harness), never auto-load. Declarative path
+  first; this last.
+
+### Researched batch — LLM (pending user decisions on priority/backend/scope)
+- [ ] **LLM provider module** (`breathsim/llm.py`) — backends Ollama (local) / Claude (API key)
+      / null; `available()`, `complete(prompt, **opts)`, `chat(messages, tools=None)`;
+      offline + graceful-absent + mockable; opt-in + persisted. Mirrors narration/XTTS plumbing.
+- [ ] **LLM story generation** — generate a sleep story/lecture to the schema (or free /
+      indefinite length, streamed passage-by-passage), validate via the lint, preview + narrate,
+      and **save liked ones to the library** (store). Labelled AI-written; framed atmospheric.
+- [ ] **LLM structured content** — patterns / chants / songs / voices from a natural-language
+      prompt -> validated dataclasses (BreathPattern / phrase segments / VoiceConfig) ->
+      register + save. Reuses the Voice/Pattern editors' validation. No code execution.
+- [ ] **Quiet helper assistant** — a bounded app-help + setup assistant that drives the app via
+      a **whitelist of app actions** (apply mode / set pattern / start story) through tool-calls,
+      optionally **voiced through the face**; calm tone; no medical advice; easy to dismiss.
+- [ ] **(Experimental, gated) Sandboxed plugin generation** — LLM writes a plugin to `plugins/`,
+      bug-tested in an **isolated subprocess** before load, explicit opt-in, never auto-run.
+
 ### Researched batch — audio & synthesis
 - [x] **Generative ambient pad** (user-requested "cosmic music"): new `breathsim/cosmic.py`
       + `breathsim/reverb.py` — a generative engine (Eno/Reich coprime-phasing pads,
