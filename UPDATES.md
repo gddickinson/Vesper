@@ -358,7 +358,36 @@ in these notes:
 - [ ] **Audiobooks / novels for sleep + a reader** (user-requested 2026-06-24) — narrate full
       public-domain books (Project Gutenberg, on-demand downloader → library + DB), resume where you
       fell asleep, a narration **fade-out** timer, a non-sleep **book-reader** mode with reading
-      presets, and **user-uploaded** texts (.txt/.epub). See the research batch below; multi-round.
+      presets, and **user-uploaded** texts (.txt/.epub). See the research batch + round plan below.
+
+### Research notes — audiobooks / novels (user-requested 2026-06-24)
+The narrator already streams sentence "units"; a book is just a very long unit stream, so the core
+pipeline (narration, pacing, sleep-timer fade, ambience) is reusable. Ground the rounds in these:
+- **Free, legal text sources** (public domain only, downloaded on demand — never bundled/redistributed):
+  **Project Gutenberg** (~75k books, plain UTF-8 + EPUB; **search via the Gutendex JSON API**
+  `gutendex.com`, fetch the text from a PG **mirror** with a real User-Agent + rate-limit — the main
+  site forbids bulk crawling, single on-demand is fine; strip the PG header/footer boilerplate);
+  **Standard Ebooks** (smaller, beautifully clean public-domain EPUBs, OPDS feed); **Wikisource** API;
+  (LibriVox offers *human* audiobooks — out of scope since we synthesise). Copyright stance: in-app
+  download is **public-domain only**; **user-uploaded** texts are the user's own (narrated + stored
+  **locally**, never uploaded anywhere).
+- **Reuse what exists**: `narration.Narrator` (unit stream), the **sleep-timer** fade-out + `_story_level`
+  schedule, `resume.py` + `store.*_lecture_progress` (extend to a per-book sentence index), the Story
+  Library dialog (add books + progress), `tools/download_samples.py` (the opt-in best-effort download
+  precedent), the stories DB.
+- **Segmentation**: split into chapters → paragraphs → sentences (a small, pure, tested tokenizer);
+  ASCII-fold smart quotes/dashes for the synth; keep paragraph breaks for natural pauses.
+- **Safety**: the downloader is **opt-in** (network only on an explicit user action), rate-limited,
+  public-domain only; uploads stay local; everything degrades to "absent" with no network.
+- **Round plan** (one per loop, Stories cadence still applies): (1) **`breathsim/books.py` core** —
+  Book model + pure sentence/paragraph tokenizer + PG boilerplate strip + local library at
+  `~/.breathsim/books` + a books table; offline tests on a fixture. (2) **Narrate a book** — a
+  `BookReader` yielding sentence units, dispatched through `stories.story_units`; **resume by sentence
+  index**; fade-out timer wired. (3) **Reader mode / reading presets** (non-sleep) — steady pace,
+  optional on-screen scrolling text, no breath-gating/dimming. (4) **On-demand downloader** — Gutendex
+  search + mirror fetch (opt-in, rate-limited, progress) + Library browser with per-book progress.
+  (5) **User upload** — import `.txt` then `.epub`. (6) **Polish** — "continue your book" launch hint,
+  per-book voice/preset memory, optional LLM "previously…" recap on resume.
 - [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
       conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
       of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The
