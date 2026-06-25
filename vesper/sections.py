@@ -14,19 +14,9 @@ from PySide6.QtWidgets import (QCheckBox, QHBoxLayout, QLabel, QPushButton,
 from breathsim import choir, narration, personas, phrases, session, voices
 from breathsim.patterns import PRESETS
 
-from .widgets import LabeledSlider, card, combo, combo_row, grouped_combo, muted
+from .widgets import LabeledSlider, card, combo, combo_row, muted
 
 CUE_STYLES = ["Off", "Minimal", "Standard", "Guided"]
-
-
-def _voice_choices():
-    groups = (voices.GROUP_BREATH, voices.GROUP_CAT, voices.GROUP_VOCAL,
-              voices.GROUP_TECHNIQUE, voices.GROUP_SING, voices.GROUP_EXERCISE,
-              voices.GROUP_SYNTH, voices.GROUP_CUSTOM)
-    out = []
-    for g in groups:
-        out += voices.names(g)
-    return out
 
 
 class _SectionsMixin:
@@ -73,15 +63,19 @@ class _SectionsMixin:
 
     # --- voice ------------------------------------------------------------
     def _card_voice(self):
+        from .picker import PickerButton
+        from .picker_sources import voice_groups
         frame, body = card("Voice")
-        choices = _voice_choices()
-        va = combo(choices, self.win.engine.voice_a, self.win.set_voice_a)
+        va = PickerButton(self.win.engine.voice_a, lambda: voice_groups(),
+                          self.win.set_voice_a, title="Breath / inhale voice",
+                          win=self.win)
         self._w["voice_a"] = va
         body.addWidget(muted("Breath / inhale voice"))
         body.addWidget(va)
-        outs = ["Same as inhale"] + _voice_choices()
-        vo = combo(outs, self.win.engine.voice_out or "Same as inhale",
-                   self.win.set_voice_out)
+        vo = PickerButton(self.win.engine.voice_out or "Same as inhale",
+                          lambda: voice_groups(include_same=True),
+                          self.win.set_voice_out, title="Exhale voice",
+                          win=self.win)
         self._w["voice_out"] = vo
         body.addWidget(muted("Exhale voice"))
         body.addWidget(vo)
@@ -259,25 +253,14 @@ class _SectionsMixin:
             self.win.panel.build_workspace(self.win.current_mode)
 
     def _card_story(self):
-        from breathsim import stories
+        from .picker import PickerButton
+        from .picker_sources import story_groups
         frame, body = card("Bedtime story")
-        items = ["Off", "Random"] + stories.extra_names() + stories.scene_names()
-        sc = combo(items, self.win._story_scene or "Off", self.win.set_story)
-        books = stories.book_names()                 # library novels (empty until added)
-        if books:                                    # group them under a clear header
-            sc.insertSeparator(sc.count())
-            sc.addItem("— Your novels —")
-            sc.model().item(sc.count() - 1).setEnabled(False)
-            sc.addItems(books)
-        for cat in stories.lecture_categories():    # lectures grouped by branch
-            sc.insertSeparator(sc.count())
-            sc.addItem(f"— {cat} —")       # disabled branch header
-            sc.model().item(sc.count() - 1).setEnabled(False)
-            sc.addItems(stories.lecture_names(cat))
-        if self.win._story_scene in (stories.lecture_names() + books):
-            sc.setCurrentText(self.win._story_scene)
+        sc = PickerButton(self.win._story_scene or "Off", story_groups,
+                          self.win.set_story, title="Bedtime story or lecture",
+                          win=self.win, empty="Off")
         self._w["story"] = sc
-        body.addWidget(muted("Scene, novel or lecture"))
+        body.addWidget(muted("Scene, novel or lecture - search 200+ tales"))
         body.addWidget(sc)
         nv = QPushButton("Read me a novel - add one…")
         nv.setToolTip("Download a free public-domain book or import your own "
@@ -300,11 +283,12 @@ class _SectionsMixin:
             gen.setToolTip("Add your own API key in Help > AI Assistant to enable.")
             body.addWidget(gen)
             body.addWidget(muted("AI stories need a key (Help > AI Assistant); optional."))
-        groups = narration.voice_groups(self.win.speech)
+        from .picker import PickerButton
         cur = self.win.narrator.voice or narration.best_voice(self.win.speech)
-        vc = grouped_combo(groups, cur,
-                           label_fn=lambda v: narration.voice_label(v, self.win.speech),
-                           on_change=self.win.set_story_voice)
+        vc = PickerButton(cur, lambda: narration.voice_groups(self.win.speech),
+                          self.win.set_story_voice, title="Narration voice",
+                          label_fn=lambda v: narration.voice_label(v, self.win.speech),
+                          win=self.win)
         self._w["story_voice"] = vc
         body.addWidget(muted("Narration voice  (★ = most realistic)"))
         body.addWidget(vc)

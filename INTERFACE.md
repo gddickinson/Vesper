@@ -235,6 +235,16 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 - **widgets.py** — reusable themed building blocks: `card(title)` (hairline
   section container), `LabeledSlider` (slider + live numeric read-out over a float
   range), `combo`/`combo_row`/`muted` helpers.
+- **picker.py** + **picker_sources.py** — a **searchable grouped picker** for the
+  long selectors (combos are kept for the short ones). `choose(parent, title,
+  groups, current)` shows a search box over a filterable tree of bold group headers
+  + items (Enter / double-click to pick); `PickerButton` is a button that shows the
+  current choice, opens the dialog, and duck-types the combo slice `control_panel`
+  sync uses (`current_value`/`set_value`/`is_open`). `picker_sources` builds the
+  grouped lists (`story_groups` = scenes + novels + self-help/poetry + every lecture
+  branch; `voice_groups` = breath-voice families). Used by `_card_story` (story +
+  narration voice), `_card_voice` (inhale/exhale) and `_card_read` (narration voice).
+  Offline test: `tools/test_picker.py`.
 - **workspaces.py** — `WORKSPACES` spec: each mode → ordered list of card keys
   (resolved to `ControlPanel._card_<key>`). `get`/`names`.
 - **sections.py** — `_SectionsMixin` (inherited by `ControlPanel`): the card

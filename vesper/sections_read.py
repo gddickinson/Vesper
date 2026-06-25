@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from PySide6.QtWidgets import QCheckBox, QPushButton
 
-from .widgets import LabeledSlider, card, combo, grouped_combo, muted
+from .widgets import LabeledSlider, card, combo, muted
 
 
 class _ReadCardMixin:
@@ -56,11 +56,13 @@ class _ReadCardMixin:
         lp.toggled.connect(self.win.set_reading_pauses)
         body.addWidget(lp)
 
-        groups = narration.voice_groups(self.win.speech)
+        from .picker import PickerButton
         cur = self.win.narrator.voice or narration.best_voice(self.win.speech)
-        vc = grouped_combo(groups, cur,
-                           label_fn=lambda v: narration.voice_label(v, self.win.speech),
-                           on_change=self.win.set_reading_voice)
+        vc = PickerButton(cur, lambda: narration.voice_groups(self.win.speech),
+                          self.win.set_reading_voice, title="Narration voice",
+                          label_fn=lambda v: narration.voice_label(v, self.win.speech),
+                          win=self.win)
+        self._w["read_voice"] = vc
         body.addWidget(muted("Narration voice  (★ = most realistic)"))
         body.addWidget(vc)
         lbl = narration.engine_label(self.win.speech) or "no narration"

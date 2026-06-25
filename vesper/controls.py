@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (QButtonGroup, QHBoxLayout, QLabel, QPushButton,
 from breathsim import modes
 
 from . import workspaces
+from .picker import PickerButton
 from .sections import _SectionsMixin
 from .sections_read import _ReadCardMixin
 from .widgets import muted
@@ -170,7 +171,13 @@ class ControlPanel(_ReadCardMixin, _SectionsMixin, QWidget):
 
     def _set_combo(self, key, value):
         box = self._w.get(key)
-        if box is None or value is None or box.view().isVisible():
+        if box is None or value is None:
+            return
+        if isinstance(box, PickerButton):              # searchable-picker button
+            if not box.is_open() and box.current_value() != value:
+                box.set_value(value)
+            return
+        if box.view().isVisible():
             return                                     # skip while the popup is open
         if box.currentText() != str(value):
             box.blockSignals(True)
@@ -180,7 +187,13 @@ class ControlPanel(_ReadCardMixin, _SectionsMixin, QWidget):
     def _set_combo_data(self, key, value):
         """Select the item whose userData == *value* (for grouped_combo boxes)."""
         box = self._w.get(key)
-        if box is None or value is None or box.view().isVisible():
+        if box is None or value is None:
+            return
+        if isinstance(box, PickerButton):
+            if not box.is_open() and box.current_value() != value:
+                box.set_value(value)
+            return
+        if box.view().isVisible():
             return
         for i in range(box.count()):
             if box.itemData(i) == value:

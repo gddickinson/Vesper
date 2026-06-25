@@ -155,6 +155,16 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Searchable picker popup for long selectors** (user-requested): investigated all selectors;
+      the long ones (Sleep story ~250 items, breath voice in/out 148, narration voice ~50) now open a
+      reusable searchable grouped dialog instead of a giant combo. `vesper/picker.py` (`choose()` =
+      search box + filterable grouped tree, Enter/double-click; `PickerButton` = a button showing the
+      current choice that duck-types the combo slice sync uses) + `picker_sources.py` (story_groups /
+      voice_groups). Wired into `_card_story`, `_card_voice`, `_card_read`; `control_panel`
+      `_set_combo`/`_set_combo_data` learned a PickerButton branch. Short selectors (patterns,
+      ambience, personas, programs, choir) and native menus stay as-is. Verified: PNG of the filtered
+      picker; `tools/test_picker.py`; offscreen smoke (pick + sync tolerant, threads stable); selftest;
+      drive_check; all 24 offline tests; sections.py 482 -> 466.
 - [x] **Read mode — a dedicated in-app reading screen** (user-requested): book narration as a
       first-class 7th mode (not a separate OS window). The central area wraps the face/scene stack and
       a new `read_pane.ReadAlongPane` in a vertical splitter, so Read shows a face/scene AND a

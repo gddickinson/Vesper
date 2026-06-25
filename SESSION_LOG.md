@@ -3007,6 +3007,26 @@ independently validated (7x12, pure ASCII, every section sleepward), registered 
 `lectures._CATALOG`. Verified: selftest passes (**229 lectures across 46 branches**); story DB
 rebuilt (309k words); offline tests (23) green; drive_check 0 issues; all files < 500 lines.
 
+## UX: a searchable picker popup for the long selectors (user-requested)
+Investigated every selector. Most are fine as combos (patterns 22, ambience 21, personas 14,
+programs 11, choir 8) or hierarchical native menus. The genuinely **long** ones were bad UX: the
+Sleep **bedtime-story** picker held ~250 items (5 scenes + novels + 15 self-help/poetry + 229
+lectures across 46 branches in one dropdown), the **breath-voice** in/out pickers 148 each, and the
+**narration-voice** picker ~50. New `vesper/picker.py`: a reusable **searchable, grouped picker
+dialog** -- a search box over a `QTreeWidget` of bold group headers + items, live substring filter
+(empty groups hide), Enter/double-click to choose -- plus `PickerButton`, a button that shows the
+current choice and opens it. `vesper/picker_sources.py` builds the grouped option lists
+(`story_groups` = scenes + novels + self-help/poetry + every lecture branch; `voice_groups` = the
+breath-voice families). Wired into `_card_story` (story + narration voice), `_card_voice` (inhale +
+exhale), and `_card_read` (narration voice). `PickerButton` duck-types the combo slice that
+`control_panel` sync uses (`current_value`/`set_value`/`is_open`), and `_set_combo`/`_set_combo_data`
+got a PickerButton branch, so live state-push still keeps the buttons in sync without fighting the
+open dialog. Removed the now-dead `_voice_choices` + the per-branch combo-stuffing loop (sections.py
+482 -> 466). Verified: rendered a PNG of the picker filtered to "ser" (correctly shows Enceladus via
+"Geyser" + The Serengeti under their bold branch headers); `tools/test_picker.py` (sources +
+_norm + PickerButton state); offscreen GUI smoke (story/voice pick, sync tolerant, threads stable);
+selftest; drive_check 0 issues; all 24 offline tests green; every file < 500 lines.
+
 ## Read mode — a dedicated in-app reading screen (user-requested)
 The user asked for book narration to have "its own window," able to show faces or scenes like the
 other modes but with read-along text, reading-focused by default with sleep-style options opt-in.
