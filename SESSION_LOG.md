@@ -3219,6 +3219,29 @@ an offscreen GUI smoke (name sets + persists; greeting injected once then not re
 empty; menu present; threads stable 2->2 across 45 ticks) + selftest + drive_check (0 issues);
 all 19 offline tests green; every file < 500 lines.
 
+## Stories round — new branch "The Night Garden" (4 lectures)
+Added a 48th lecture branch, **The Night Garden** - the garden after dark, a gentle nocturnal
+counterpart to the daylight Famous Gardens branch: *The Moon Garden* (a garden planted only in
+white, silver and grey that waits modestly through the day and wakes at dusk - white roses,
+foxgloves, lilies, drifts of white cosmos and phlox, the great moonflower unfurling petal by petal
+only for the night, silver lamb's-ear and artemisia leaves, the real White Garden at Sissinghurst),
+*Night-Scented Flowers* (the flowers that hoard their perfume for the dark and release it at dusk -
+evening primrose, night phlox, jasmine, flowering tobacco, honeysuckle - and the moths they summon),
+*The Night Visitors* (the calm creatures who tend the garden after dark - moths, a snuffling
+hedgehog, the silent barn owl, fireflies, a fox merely passing through - "nothing is hunted here
+tonight"), and *Dew and Stillness* (the deep hush after midnight as dew gathers on every leaf and
+the garden holds its breath until dawn). Each = the standard 7 sections x 12 second-person
+present-tense sentences, all easing toward sleep, kept gentle (no predation; the fox passes, the owl
+is soft and silent); ambiences Night Crickets / Forest Wind / Wind Chimes / Gentle Rain. Drafted via
+four parallel subagents, independently validated (7x12, pure ASCII, every section sleepward, an
+alarm-word scan whose only flags were reassurance lines); one malformed split-sentence in The Moon
+Garden (a line ending in a comma) caught by selftest and rewritten as two complete sentences;
+registered in `lectures._CATALOG`. Verified: selftest passes (**237 lectures across 48 branches**),
+re-run x4 to confirm an intermittent phrase-peak self-test blip (Twinkle Twinkle, 1.11 > 1.0) was a
+pre-existing RNG flake unrelated to this change (soft-clip handles it; noted for a future
+calibration nudge); story DB rebuilt (322k words); offline tests (27) green; drive_check 0 issues;
+README counts bumped to 237/48; all files < 500 lines.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

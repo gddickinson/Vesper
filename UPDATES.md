@@ -371,6 +371,21 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       Sessions menu ("One good thing…" + "Bedtime gratitude" toggle), a kind "Good things noted: N"
       line in Stats, and settings persistence. Verified: `tools/test_gratitude.py` + offscreen GUI
       smoke (menus present, threads stable) + selftest + drive_check.
+- [x] **Stories (next branch)** — **The Night Garden** (4): *The Moon Garden* (a garden planted only
+      in white and silver and grey that wakes at dusk and glows by moonlight - white roses, foxgloves,
+      lilies, the slowly-unfurling moonflower, silver lamb's-ear and artemisia leaves, the real White
+      Garden at Sissinghurst), *Night-Scented Flowers* (the flowers that save their perfume for the
+      dark - evening primrose, night phlox, jasmine, tobacco flower, honeysuckle - and the moths they
+      call), *The Night Visitors* (the gentle creatures who tend the garden after dark - moths,
+      hedgehogs, the barn owl, fireflies, a fox passing through, all calm and unhurried), and *Dew and
+      Stillness* (the hush after midnight as dew gathers on every leaf and the garden holds its breath
+      until dawn). Each = 7x12 second-person present sleep-closing ASCII lines, kept gentle (the fox
+      merely passes, the owl is silent and soft, "nothing is hunted here tonight"); ambiences Night
+      Crickets / Forest Wind / Wind Chimes / Gentle Rain. Drafted via four parallel writers, validated
+      (7x12, pure ASCII, sleepward, alarm-scan clean - flags were reassurance lines), one malformed
+      split-sentence fixed, registered in `lectures._CATALOG`. Verified: **selftest 237 lectures / 48
+      branches** (re-run x4 to confirm a flaky phrase-peak blip was unrelated); story DB rebuilt
+      (322k words); all 27 offline tests; drive_check 0 issues; README counts bumped.
 - [x] **Stories (next branch)** — **Wetlands & Marshes** (4): *The Marsh* (a freshwater reed marsh -
       cattails, the patient heron, the dusk frog chorus, the marsh as a green sponge, evening mist),
       *The Cypress Swamp* (a drowned cypress forest mirrored in tea-dark water, Spanish moss, cypress

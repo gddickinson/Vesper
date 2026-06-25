@@ -80,6 +80,8 @@ from . import lectures_pampas, lectures_prairie  # Grasslands of the World
 from . import lectures_serengeti, lectures_steppe
 from . import lectures_bog, lectures_mangroves  # Wetlands & Marshes
 from . import lectures_marsh, lectures_swamp
+from . import lectures_dewfall, lectures_moongarden  # The Night Garden
+from . import lectures_nightflowers, lectures_nightvisitors
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -237,6 +239,8 @@ _CATALOG = [
                                  lectures_prairie, lectures_pampas]),
     ("Wetlands & Marshes", [lectures_marsh, lectures_swamp,
                             lectures_mangroves, lectures_bog]),
+    ("The Night Garden", [lectures_moongarden, lectures_nightflowers,
+                          lectures_nightvisitors, lectures_dewfall]),
 ]
 
 LECTURES = {}

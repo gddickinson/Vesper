@@ -13,8 +13,9 @@ Vesper paces your breath with a soft animated visualization and real-time synthe
 sound. It spans seven activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep ·
 Read** — each with its own purpose-built control panel, visual scene and soundscape. At its
 centre is a talking-head **avatar** (a 3D head, or one of **17 hand-drawn cartoon
-characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **233
+characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **237
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
+<!-- counts: 237 lectures / 48 branches · 148 voices · 66 phrases · 7 modes · 17 characters -->
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
@@ -43,11 +44,11 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   crickets…) plus synthesised **bells & gongs, drums, winds & organs, environmental FX**
   and a **cosmic generative-music** engine sonifying real planetary + pulsar data. Nothing
   to download.
-- **The bedtime storyteller** — **233 authored sleep-lectures across 47 branches** (the
+- **The bedtime storyteller** — **237 authored sleep-lectures across 48 branches** (the
   Cosmos, the Inner Planets &amp; the Dwarf Planets, Earth &amp; Sea, the Living World, the
   Human Body, Histories, Materials &amp; Making, Ideas &amp; Wonders, Myth &amp; Legend, the
   Polar Worlds, Weathers of the World, the Microscopic World, the Great Voyages, Grasslands
-  of the World, Wetlands &amp; Marshes, and many more), plus procedural bedtime stories,
+  of the World, Wetlands &amp; Marshes, the Night Garden, and many more), plus procedural bedtime stories,
   poetry nocturnes and a cognitive-shuffle sleep aid. Spoken by neural **Kokoro** TTS (or
   macOS `say`), slowing and quietening as you drift off — and the **soundscape, the backdrop
   and the character all gently follow the words**.
