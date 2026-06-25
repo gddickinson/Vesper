@@ -2253,6 +2253,24 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## LLM-in-GUI round 2 — Sleep "Generate a bedtime story" (off-thread, opt-in)
+The second LLM-in-GUI step: a real, useful AI action, still strictly opt-in + fail-closed. New
+`vesper/llm_story_action.py` adds a **"Generate a bedtime story (AI)"** button to the Sleep story
+card — enabled only when a backend is configured (`llm_story.available()`), otherwise **disabled**
+with a muted hint pointing at Help ▸ AI Assistant. On click it asks for a topic (a calming
+suggestion pre-filled), then runs `llm_story.generate` on a **daemon thread** (the model reply is
+untrusted: parsed + linted to the 7x12 schema + repaired or rejected by `llm_story`), delivering the
+result back via a **queued Qt signal** so the UI never blocks on the network. A valid story
+**registers into `lectures.LECTURES`** under "AI Stories" (labelled `AI:`), is armed as tonight's
+Sleep story and starts narrating like any lecture; the user is then asked to **Keep it** (persist to
+`~/.breathsim` via `store.save_ai_story`) or **Just tonight** (drifts away on close). Qt-free helpers
+`can_generate`/`make_story` unit-tested by new `tools/test_llm_story_action.py` (off with no backend;
+a stubbed reply registers a narratable AI story whose ambience resolves and which yields 84 units; a
+bad reply registers nothing). Verified: selftest (148 voices, 201 lectures); both-faces drive (3d &
+cat, 0 issues, threads stable — the Sleep workspace builds the disabled button); rendered + eyeballed
+the Sleep-panel PNG (button + hint in place); all SEVEN LLM offline tests pass with no backend. Files:
+llm_story_action ~130, sections 461 — all < 500. (Next LLM step: the quiet-helper assistant.)
+
 ## LLM-in-GUI round 1 — opt-in masked API-key Settings dialog
 First step wiring the (already-complete, key-safe) LLM stack into the GUI, as strictly OPT-IN.
 New `vesper/llm_settings.py`: an "AI Assistant (optional)" dialog under the Help menu, the ONE

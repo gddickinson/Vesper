@@ -276,6 +276,16 @@ class _SectionsMixin:
         pick = QPushButton("Surprise me - tonight's pick")
         pick.clicked.connect(self.win.tonights_pick)
         body.addWidget(pick)
+        from . import llm_story_action               # optional, opt-in AI story
+        gen = QPushButton("Generate a bedtime story (AI)")
+        gen.clicked.connect(lambda: llm_story_action.generate_dialog(self.win))
+        if llm_story_action.can_generate():
+            body.addWidget(gen)
+        else:
+            gen.setEnabled(False)
+            gen.setToolTip("Add your own API key in Help > AI Assistant to enable.")
+            body.addWidget(gen)
+            body.addWidget(muted("AI stories need a key (Help > AI Assistant); optional."))
         groups = narration.voice_groups(self.win.speech)
         cur = self.win.narrator.voice or narration.best_voice(self.win.speech)
         vc = grouped_combo(groups, cur,

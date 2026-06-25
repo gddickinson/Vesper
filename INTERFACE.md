@@ -293,6 +293,12 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   Status shows backend + key **source**, never the key. Qt-free helpers `status_text`/
   `apply_key`/`forget` (the key is never returned in any message). Offline test:
   `tools/test_llm_settings.py`.
+- **llm_story_action.py** — the Sleep **"Generate a bedtime story (AI)"** action (a button on the
+  story card). `can_generate` gates on `llm_story.available()` (disabled + hinted with no backend);
+  `make_story(topic, complete=None)` generates + registers one AI story (Qt-free, off-thread safe);
+  `generate_dialog(win)` asks a topic, runs generation on a **daemon thread**, returns via a
+  **queued signal** (UI never blocks), arms the story for Sleep and offers Keep/Just-tonight. Offline
+  test: `tools/test_llm_story_action.py`.
 - **window.py** — `_breath_routing(phase, voice_a, voice_out)` + `_mouth_shape`
   decide the face's mouth/nostril motion per breath: **nose in-breath** (mouth
   closed, nostrils flare) and **mouth out-breath** shaped by the active voice

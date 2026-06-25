@@ -345,6 +345,20 @@ in these notes:
       a ~60-tick offscreen open/close of the modal dialog (zero thread leak, backend `none`); rendered
       + eyeballed the dialog PNG; all 6 LLM offline tests pass with no backend. (Next: a Sleep
       "Generate a bedtime story" action via `llm_story`, then the quiet-helper assistant.)
+- [x] **LLM in the GUI — Sleep "Generate a bedtime story"** (`vesper/llm_story_action.py`, a button
+      on the Sleep story card) — opt-in + fail-closed. Enabled only when a backend is configured
+      (`llm_story.available()`), else **disabled** with a hint to Help ▸ AI Assistant. Asks a topic,
+      runs `llm_story.generate` on a **daemon thread** (untrusted reply linted to 7x12 + repaired/
+      rejected), returns via a **queued Qt signal** so the UI never blocks. A valid story registers
+      into `lectures.LECTURES` ("AI Stories", labelled `AI:`), arms as tonight's Sleep story and
+      narrates like any lecture; user chooses **Keep it** (persist) or **Just tonight**. Qt-free
+      `can_generate`/`make_story` unit-tested by `tools/test_llm_story_action.py`. Verified: selftest;
+      both-faces drive (0 issues); Sleep-panel PNG (button + hint); all 7 LLM offline tests pass with
+      no backend. (Next LLM step: the quiet-helper assistant `llm_assist` as an opt-in chat.)
+- [ ] **Audiobooks / novels for sleep + a reader** (user-requested 2026-06-24) — narrate full
+      public-domain books (Project Gutenberg, on-demand downloader → library + DB), resume where you
+      fell asleep, a narration **fade-out** timer, a non-sleep **book-reader** mode with reading
+      presets, and **user-uploaded** texts (.txt/.epub). See the research batch below; multi-round.
 - [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
       conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
       of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The
