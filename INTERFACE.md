@@ -389,10 +389,11 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 The whole audio/logic/story core lives here, gui-free (the Tk GUI is not vendored):
 `controller`, `engine`, `speech`, `narration` (Kokoro/say + lip-sync `amp`),
 `stories` + the **lecture library** (`lectures` + `lectures_*.py`, 220+ across
-45 branches incl. a small-worlds trilogy — The Inner Planets (Mercury · Venus · Mars · Earth
+46 branches incl. a small-worlds trilogy — The Inner Planets (Mercury · Venus · Mars · Earth
 from Space) + The Dwarf Planets (Pluto · Ceres · Eris · Haumea) + The Moons of the Giants — plus
-The Great Voyages + The Microscopic World + Weathers of the World + The Polar Worlds; Cosmos incl.
-Comets · Nebulae · Saturn's Rings) + **`shuffle`** (the **Cognitive Shuffle** sleep-onset aid) + **`hypnosis`** (a **Sleep
+Grasslands of the World (Serengeti · Steppe · Prairie · Pampas) + The Great Voyages + The
+Microscopic World + Weathers of the World + The Polar Worlds; Cosmos incl. Comets · Nebulae ·
+Saturn's Rings) + **`shuffle`** (the **Cognitive Shuffle** sleep-onset aid) + **`hypnosis`** (a **Sleep
 Hypnosis** guided session: induction -> deepening countdown -> suggestions -> drift; exposes
 reusable `induction`/`drift_tail`) + **`hypnosis_topics`** (6 **themed self-help** hypnosis
 sessions reusing that arc with a different permissive suggestion block -- Letting Go of Stress

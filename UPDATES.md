@@ -344,6 +344,18 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       Sessions menu ("One good thing…" + "Bedtime gratitude" toggle), a kind "Good things noted: N"
       line in Stats, and settings persistence. Verified: `tools/test_gratitude.py` + offscreen GUI
       smoke (menus present, threads stable) + selftest + drive_check.
+- [x] **Stories (next branch)** — **Grasslands of the World** (4): *The Serengeti* (East African
+      savanna; wind over endless golden grass; the slow wildebeest migration; acacias + giraffes;
+      dozing lions; the Milky Way over the plain), *The Steppe* (the Eurasian grass ocean; endless
+      wind in feather grass; herders, gers and horses; the huge sky; the old roads), *The Prairie*
+      (the North American tallgrass sea; the deepest soil held by roots; calm bison herds; the
+      meadowlark; gold-rose evenings), and *The Pampas* (the flat plains of Argentina/Uruguay; the
+      lone ombu tree; unhurried gauchos; pampas-grass plumes; a soft far storm on the horizon). Each
+      = 7x12 second-person present sleep-closing ASCII lines, kept gentle (no kills - lions doze; far
+      thunder stays soft); ambiences Night Crickets / Forest Wind / Wind in Pines / Distant Thunder.
+      Drafted via four parallel writers, validated (7x12, pure ASCII, every section sleepward),
+      registered in `lectures._CATALOG`. Verified: **selftest 229 lectures / 46 branches**; story DB
+      rebuilt (309k words); all 23 offline tests; drive_check 0 issues.
 - [x] **Stories (next branch)** — **The Dwarf Planets** (4): *Pluto* (Clyde Tombaugh's patient
       1930 find, school-children naming, the gentle dwarf-planet reclassification, New Horizons 2015,
       the pale heart Tombaugh Regio + Sputnik Planitia nitrogen glaciers, the blue haze, the

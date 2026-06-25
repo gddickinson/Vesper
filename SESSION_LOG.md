@@ -2987,6 +2987,26 @@ parallel subagents, independently validated (7x12, pure ASCII, every section sle
 branches**); story DB rebuilt (297k words); offline tests (19) green; drive_check 0 issues,
 threads stable; all files < 500 lines.
 
+## Stories round — new branch "Grasslands of the World" (4 lectures)
+Added a 46th lecture branch, **Grasslands of the World** - a calming set of the great grass seas,
+a kind not yet covered (we had forests, deserts, mountains, rivers, lakes, but no grasslands):
+*The Serengeti* (the East African savanna; the warm wind breathing across endless golden grass;
+the slow million-strong wildebeest migration; flat-topped acacias and browsing giraffes; lions
+dozing in the heat; the huge sky and the Milky Way over the plain), *The Steppe* (the vast Eurasian
+grass ocean from Hungary to Mongolia; the endless wind in silvery feather grass; the herders in
+round felt gers with their horses and flocks; the enormous sky; the old roads across the grass),
+*The Prairie* (the North American tallgrass sea once taller than a person, "sailed" by covered
+wagons; the deepest soil on Earth held by the roots; the great calm bison herds; the meadowlark's
+clear song; gold-and-rose evenings), and *The Pampas* (the perfectly flat plains of Argentina and
+Uruguay; silver-green grass to a ring of horizon; the lone beloved ombu tree; the unhurried gauchos;
+pampas-grass plumes; a soft far storm drifting along the edge of the sky). Each = the standard 7
+sections x 12 second-person present-tense sentences, accurate but gentle (no predator-kill scenes -
+the lions only doze; the far thunder stays soft), every section easing toward sleep; ambiences Night
+Crickets / Forest Wind / Wind in Pines / Distant Thunder. Drafted via four parallel subagents,
+independently validated (7x12, pure ASCII, every section sleepward), registered in
+`lectures._CATALOG`. Verified: selftest passes (**229 lectures across 46 branches**); story DB
+rebuilt (309k words); offline tests (23) green; drive_check 0 issues; all files < 500 lines.
+
 ## Read mode — a dedicated in-app reading screen (user-requested)
 The user asked for book narration to have "its own window," able to show faces or scenes like the
 other modes but with read-along text, reading-focused by default with sleep-style options opt-in.
