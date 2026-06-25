@@ -96,6 +96,21 @@ def delete_ai_story(name):
            [s for s in ai_stories_list() if s.get("name") != name])
 
 
+def ai_mantras_list():
+    return _read("ai_mantras.json", [])
+
+
+def save_ai_mantra(d):
+    data = [m for m in ai_mantras_list() if m.get("name") != d.get("name")]
+    data.append(d)
+    _write("ai_mantras.json", data)
+
+
+def delete_ai_mantra(name):
+    _write("ai_mantras.json",
+           [m for m in ai_mantras_list() if m.get("name") != name])
+
+
 # --- presets ---------------------------------------------------------------
 
 def presets_list():

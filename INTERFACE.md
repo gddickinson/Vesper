@@ -90,6 +90,12 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   `delete`/`register_saved` persist them to `store` (`ai_stories`, loaded from
   `store.register_all`). Gated on `llm.available()`; absent with no LLM. Offline test:
   `tools/test_llm_story.py`.
+- **llm_content.py** — optional **structured-content** generation (no code execution): a plain
+  request → a validated `BreathPattern` (`pattern`), a safe whitelisted `VoiceConfig` that is
+  constructed **and rendered** finite/non-clipping (`voice`), or a simple letters-only `mantra`.
+  Model JSON is untrusted → coerced/clamped/range-checked → constructed → repaired → else
+  rejected; saved via `store.save_pattern`/`save_voice`/`save_ai_mantra` with an **"AI: "**
+  prefix. Gated on `llm.available()`. Offline test: `tools/test_llm_content.py`.
 - **story_char.py** — maps a story scene / lecture to a fitting cartoon character
   (`char_for_scene`: sea→Penguin, night→Owl, forest→Bear, …, default Owl). Opt-in
   **Face ▸ "Character follows the story"** (persisted): when on and the cartoon face is

@@ -418,9 +418,19 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
       `tools/test_llm_story.py` (stubbed completer + temp store, NO network): gating, validator
       accept/reject, the repair loop, and save -> narrate -> persist -> reload -> delete.
       Verified: the test, `tools/test_llm.py`, selftest, both-faces drive; files < 500.
-- [ ] **LLM structured content** — patterns / chants / songs / voices from a natural-language
-      prompt -> validated dataclasses (BreathPattern / phrase segments / VoiceConfig) ->
-      register + save. Reuses the Voice/Pattern editors' validation. No code execution.
+- [x] **LLM structured content** (`breathsim/llm_content.py`) — turns a plain-language request
+      into the app's own *data* (no code): a **breathing pattern** -> `BreathPattern` (4 phase
+      seconds, ranges clamped, cycle 3-60s) saved via `store.save_pattern`; a safe **breath
+      voice** -> a `VoiceConfig` restricted to a whitelisted breath-family field set (unknown
+      fields dropped, enums restricted, gain/freq/Q clamped) that is **constructed AND rendered**
+      (a few blocks must be finite + non-clipping, gain auto-reduced if it peaks) then saved via
+      `store.save_voice`; and a simple **mantra** -> validated letters-only syllables + a real
+      tonic note, saved. Model JSON is treated as UNTRUSTED: parse -> coerce/clamp -> construct
+      -> (voice) render-check -> repair by re-prompting with errors -> else reject. Gated on
+      `llm.available()`; absent with no backend. Offline test `tools/test_llm_content.py`
+      (stubbed completer + temp store, NO network): gating; clamp out-of-range; drop unknown
+      fields; render-check; reject non-JSON; save + register + reload. Verified: that test + the
+      other llm tests + selftest + both-faces drive; files < 500.
 - [ ] **Quiet helper assistant** — a bounded app-help + setup assistant that drives the app via
       a **whitelist of app actions** (apply mode / set pattern / start story) through tool-calls,
       optionally **voiced through the face**; calm tone; no medical advice; easy to dismiss.

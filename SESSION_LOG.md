@@ -2253,6 +2253,30 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## LLM round 3 — structured content (patterns / voices / mantras, no code)
+Third LLM item -- the safe half of "user modifications": turning a plain-language request into
+the app's own *data* objects, never code. New `breathsim/llm_content.py`:
+- **pattern(request)** -> a `BreathPattern` (name + 4 phase seconds + description), every number
+  **clamped** to safe ranges (inhale 1-30, exhale 1-40, holds 0-30, total cycle 3-60s),
+  constructed to verify, saved via `store.save_pattern` (which also adds it to PRESETS).
+- **voice(request)** -> a `VoiceConfig` restricted to a **whitelisted breath-family field set**
+  (name/noise/filt/bright/exhale_mul/gain/width/air/description); unknown fields are dropped,
+  enums restricted (noise white/pink/brown, filt type bandpass/lowpass/highpass), numbers
+  clamped (gain 0.05-0.6, centre 80-12000 Hz, Q 0.3-8), then **constructed AND rendered** (48
+  blocks across a breath cycle must be finite and peak <= 1.0; gain is auto-reduced and re-checked
+  if it clips), saved via `store.save_voice` (registers as a Custom voice).
+- **mantra(request)** -> a simple validated mantra: 1-12 letters-only lowercase syllables + a
+  real tonic note (via `music.note_to_hz`), saved to a new `store.ai_mantras` store.
+All model JSON is treated as **untrusted**: parse -> coerce/clamp -> construct -> (voice)
+render-check -> **repair** by re-prompting with the exact errors -> else reject (None). Names get
+the **"AI: "** prefix. Everything is gated on `llm.available()` and absent with no backend.
+Offline test `tools/test_llm_content.py` (stubbed completer + temp store, **no network**):
+gating; out-of-range clamping; unknown-field drop (`evil`/`kind:sample` ignored, kind stays
+"noise"); the voice render-check; non-JSON rejection; and save -> register (pattern in
+`preset_by_name` + PRESETS, voice in `voices.names()`) -> persisted to the (temp) store. Verified:
+that test, `tools/test_llm.py` + `tools/test_llm_story.py` still pass, selftest, both-faces drive
+0 issues; files < 500 (llm_content 250); secret scan clean.
+
 ## LLM round 2 — AI story generation (validate -> repair -> save to library)
 Second LLM item. New `breathsim/llm_story.py`: when `llm.available()`, it asks the model for a
 soothing bedtime story in the lecture **7x12** schema, then treats the reply as **untrusted** --
