@@ -12,6 +12,12 @@ from __future__ import annotations
 import random
 from dataclasses import dataclass, field
 
+# A library book can be narrated as a Sleep storyteller option ("Book: <title>").
+# It plays under the same wind-down + fade-out as any lecture, and resumes by
+# sentence index. Books carry no ambience of their own, so use one calm bed.
+BOOK_PREFIX = "Book: "
+BOOK_AMBIENCE = "Soft Rainstorm"
+
 # Shared vocabulary used by every scene's templates.
 _SHARED = {
     "opener": ["Somewhere", "For a while", "Slowly", "And so", "Outside",
@@ -100,6 +106,31 @@ def scene_names():
     return list(SCENES.keys())
 
 
+def book_names():
+    """'Book: <title>' for each book in the local library (empty if none). These
+    surface in the Sleep story picker and narrate under the Sleep wind-down."""
+    try:
+        from . import books
+        return [BOOK_PREFIX + b.get("title", "Untitled") for b in books.list_books()]
+    except Exception:
+        return []
+
+
+def book_id_for(name):
+    """Resolve a 'Book: <title>' picker name back to a library book id, or None."""
+    if not isinstance(name, str) or not name.startswith(BOOK_PREFIX):
+        return None
+    title = name[len(BOOK_PREFIX):]
+    try:
+        from . import books
+        for b in books.list_books():
+            if b.get("title") == title:
+                return b.get("id")
+    except Exception:
+        pass
+    return None
+
+
 def extra_names():
     """Special non-templated storyteller generators (Cognitive Shuffle, Sleep
     Hypnosis + themed self-help hypnosis sessions, Poetry)."""
@@ -124,6 +155,8 @@ def lecture_categories():
 
 def ambience_for(name):
     """Ambience voice for a scene *or* a lecture (None if unknown, e.g. Random)."""
+    if isinstance(name, str) and name.startswith(BOOK_PREFIX):
+        return BOOK_AMBIENCE
     from . import hypnosis, hypnosis_topics, poetry, poetry_world, shuffle
     if name == shuffle.NAME:
         return shuffle.AMBIENCE
@@ -266,6 +299,13 @@ def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
     interlude -- breath / body-scan / relaxation, cycling -- then repeats forever.
     """
     rng = rng or random.Random()
+    if isinstance(scene_name, str) and scene_name.startswith(BOOK_PREFIX):
+        from . import bookreader, books
+        bid = book_id_for(scene_name)
+        book = books.load(bid) if bid else None
+        if book:                                 # resume by sentence; finite stream
+            yield from bookreader.resume_units(book)
+        return
     from . import hypnosis, hypnosis_topics, poetry, poetry_world, shuffle
     if scene_name == shuffle.NAME:
         yield from shuffle.units(rng, guidance)

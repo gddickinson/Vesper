@@ -419,6 +419,17 @@ pipeline (narration, pacing, sleep-timer fade, ambience) is reusable. Ground the
   the current sentence via a GUI-thread QTimer). Offline test `tools/test_bookreader.py`. selftest +
   both-faces drive (0 issues) + a thread-stable offscreen open/close + a populated Reader PNG; all 9
   offline tests pass. (Next R3: BookReader under the Sleep wind-down + fade-out.)
+- [x] **R3 done — a book under the Sleep wind-down**: a library book is now a **Sleep storyteller
+  option** ("Book: <title>"). `stories.py` gains `BOOK_PREFIX`/`BOOK_AMBIENCE`, `book_names()`,
+  `book_id_for()` and dispatch so `story_units("Book: ...")` yields `bookreader` units resuming from
+  the saved sentence index and `ambience_for` resolves a calm bed; the Sleep picker appends
+  `book_names()` (empty-safe). `win_story._start_story` resolves the book + a resume note;
+  `_on_story_unit` persists `books.set_position` per spoken sentence and holds the bed steady for a
+  novel. It rides the SAME path as a lecture, so the existing Sleep wind-down + **sleep-timer
+  fade-out** quietens/stops it for free, and it resumes next night. Offline test
+  `tools/test_book_story.py`; selftest + both-faces drive (0 issues) + a thread-stable offscreen Sleep
+  session (book listed, armed, calm ambience); all 10 offline tests pass. (Next R4: downloader +
+  Library browser.)
 - [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
       conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
       of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The

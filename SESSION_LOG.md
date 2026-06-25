@@ -2253,6 +2253,25 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Audiobooks round 3 — a book under the Sleep wind-down
+A library book can now be chosen as a **Sleep storyteller option** and falls asleep with you. In
+`stories.py`: a `BOOK_PREFIX` ("Book: ") + `BOOK_AMBIENCE` ("Soft Rainstorm"), `book_names()` (lists
+"Book: <title>" for every library book; empty until the downloader/import populate it),
+`book_id_for(name)`, and dispatch branches so `story_units("Book: <title>")` yields `bookreader`
+units **resuming from the saved sentence index** (`resume_units`) and `ambience_for` resolves the calm
+bed. The Sleep story picker (`sections._card_story`) now appends `stories.book_names()`. In
+`win_story`: `_start_story` resolves the book id + shows a "resuming where you left off" note;
+`_on_story_unit` **persists `books.set_position`** as each sentence is spoken and holds the ambience
+bed steady for `kind=="book"` (a novel shouldn't chase the soundscape). A book narrates through the
+SAME path as a lecture, so it honours the existing Sleep **wind-down + sleep-timer fade-out** (the
+narrator `level_fn`/`_story_level` quietens + stops it) for free. Robust + empty-safe (unknown/missing
+book -> empty stream, never raises). Offline test `tools/test_book_story.py` (book surfaces, ambience
+resolves to a real voice, units yield + resume by sentence, unknown -> empty). Verified: that test +
+the 9 other offline tests pass; selftest (148 voices, 205 lectures); both-faces drive (0 issues,
+threads stable); a ~55-tick offscreen Sleep session where a saved book appears in the picker, arms as
+the story with the calm ambience, **zero thread leak**. Files: stories 354, win_story 337, sections
+462 -- all < 500. (Next R4: the on-demand downloader + Library browser.)
+
 ## Stories round — new branch "The Polar Worlds" (4 lectures)
 A Stories lecture-branch round (cadence was overdue -- 4 non-Stories rounds since Colours & Pigments).
 Added a 40th branch on the frozen ends of the Earth via 4 parallel content subagents:

@@ -261,7 +261,8 @@ class _SectionsMixin:
     def _card_story(self):
         from breathsim import stories
         frame, body = card("Bedtime story")
-        items = ["Off", "Random"] + stories.extra_names() + stories.scene_names()
+        items = (["Off", "Random"] + stories.extra_names() + stories.scene_names()
+                 + stories.book_names())          # library books (empty until added)
         sc = combo(items, self.win._story_scene or "Off", self.win.set_story)
         for cat in stories.lecture_categories():    # lectures grouped by branch
             sc.insertSeparator(sc.count())

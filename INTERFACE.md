@@ -401,7 +401,11 @@ library** at `~/.breathsim/books` (`save`/`load`/`list_books`/`delete` + a self-
 And **`bookreader`** — `units(book, start, line_pause, para_pause)` / `resume_units(book)` yield one
 narrator unit per sentence (longer pause at paragraph ends; the `sentence` index drives resume).
 Offline-tested (`tools/test_books.py`, `tools/test_bookreader.py`). The non-sleep Reader UI is
-`vesper/reader.py` (Books menu); the on-demand downloader + import land in later rounds.
+`vesper/reader.py` (Books menu). A library book is ALSO a **Sleep storyteller option** ("Book:
+<title>"): `stories.book_names()`/`book_id_for()` + a `BOOK_PREFIX` dispatch in `story_units`/
+`ambience_for` narrate it through the ordinary Sleep path (so it rides the wind-down + sleep-timer
+fade-out) and resume by sentence (`tools/test_book_story.py`). The on-demand downloader + import land
+in later rounds.
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

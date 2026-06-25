@@ -145,7 +145,14 @@ class _StoryMixin:
                 and self.controller.running):
             return
         start = 0                                      # resume a long lecture, gently
-        from breathsim import lectures, resume, store
+        from breathsim import lectures, resume, stories, store
+        self._book_id = stories.book_id_for(self._story_scene)   # set if it's a book
+        if self._book_id:                              # books resume by sentence index
+            from breathsim import books
+            pos = books.position(self._book_id)
+            if pos:
+                self.status.showMessage(
+                    f"Resuming \"{self._story_scene}\" where you left off", 4000)
         total = lectures.section_count(self._story_scene)
         if total:
             import datetime as _dt
@@ -184,8 +191,11 @@ class _StoryMixin:
                 store.clear_lecture_progress(self._story_scene)
             else:
                 store.set_lecture_progress(self._story_scene, sec)
-        if unit.get("kind") in ("shuffle", "hypnosis", "poem"):
-            # Shuffle nouns / hypnosis / poems shouldn't steer the bed; hold it.
+        if unit.get("kind") == "book" and getattr(self, "_book_id", None):
+            from breathsim import books               # remember where the sleeper got to
+            books.set_position(self._book_id, int(unit.get("sentence", 0)))
+        if unit.get("kind") in ("shuffle", "hypnosis", "poem", "book"):
+            # Shuffle / hypnosis / poems / a novel shouldn't chase the bed; hold it.
             self._mood_target = (0.0, 0.0, 0.0)
             return
         cue = sound_cues.cue_for_text(text)
