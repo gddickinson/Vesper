@@ -3519,6 +3519,23 @@ sleepward; the only alarm-scan flag was "polished by tenderness alone"); registe
 `lectures._CATALOG`. Verified: selftest passes (**253 lectures across 52 branches**); story DB rebuilt
 (341,150 words); all 38 offline tests; drive_check 0 issues; every file < 500 (each lecture 105).
 
+## Scene: "Snowfall" -- slow snow on a hushed winter night (sleep)
+A new visualization scene for sleep onset, distinct from the 11 existing ones: soft snow drifting down
+through a dark, quiet winter night. Two **parallax** layers of flakes (a far layer -- small, slow, dim;
+a near layer -- larger, a touch faster, brighter) drift down and sway on a slow wind over a dark
+muted-blue sky that deepens overhead and warms to a faint snow-glow at the horizon, with a scatter of
+dim high stars; the snow softens and brightens a touch on the inhale, keeping a calm breath cue. The
+flakes are a **warm-grey white** (not a cold blue) and the sky stays dim, so it remains easy on the
+eyes late at night (and the warm Sleep dimming composites over it). New `vesper/scene_snow.py` (85
+lines) follows the scene contract (a class with `name` + `draw(p, w, h, c)`, reusing
+`scenes._overlay`/`_qc`, reading the virtual `t` so the drift auto-eases under Calm visuals), registered
+at the bottom of `scenes.py` (`_CLASSES["snow"]` + `AMBIENT.append`), so it appears automatically in
+**View > Scene** with no menu changes. Deterministic (seeded flake params + anim-time motion). Verified:
+new offscreen `tools/test_snow_scene.py` (registered/selectable; paints soft snow **and zero bright cold-
+blue pixels**; idle render safe; animates over time; preview PNG eyeballed -- soft layered snow on a
+dark winter sky with dim stars + the breath overlay); all 39 offline tests; selftest; **drive_check
+renders 12 scenes** (was 11), 0 issues; files < 500 (`scene_snow` 85).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

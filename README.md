@@ -86,7 +86,8 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   chooser** for the long lists (200+ stories, 150 voices).
 - **Per-mode visual scenes** — a breathing **orb** (motes, exhale rings, a coherence halo
   near 6 bpm), a starry **night**, a moonlit **sea**, tone-reactive **ripples**, warm
-  rising **lanterns** (a low-blue sleep bed), an on-screen **pitch trainer**, and themed
+  rising **lanterns** and a hushed **snowfall** (low-blue sleep beds), an on-screen
+  **pitch trainer**, and themed
   animated **backdrops** (stars, embers, rain, forest, a quiet city…) that crossfade to
   match the story.
 - **Real tools** — pitch trainer, mindfulness bell, breath-hold (retention) timer, mala /

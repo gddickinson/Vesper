@@ -155,6 +155,15 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Scene: "Snowfall" -- slow snow on a hushed winter night** (sleep efficacy; a new calm scene):
+      two parallax layers of soft **warm-grey** snowflakes drift down a dark muted-blue sky over a faint
+      snow-glow horizon, swaying on a slow wind, with dim high stars; softens on the inhale. Dim + warm-
+      grey (not cold-blue) to stay easy at night. New `vesper/scene_snow.py` follows the scene contract
+      (reuses `_overlay`/`_qc`, reads the virtual `t` so it eases under Calm visuals); registered in
+      `scenes._CLASSES`/`AMBIENT` so it auto-appears in **View > Scene**. Verified: new offscreen
+      `tools/test_snow_scene.py` (registered/selectable; soft snow + zero bright-blue; idle safe;
+      animates; PNG eyeballed); all 39 offline tests; selftest; **drive_check now renders 12 scenes**, 0
+      issues.
 - [x] **Books: strip non-story front-matter for narration** (user-requested): downloaded books narrated
       the title page, edition note, **table of contents** and `[Illustration]` captions before the
       story. `booktext.segment` now removes `[Illustration]`/`[Sidenote]` markers + Gutenberg `_italics_`
