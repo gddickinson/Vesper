@@ -58,6 +58,8 @@ from . import lectures_abyss, lectures_bioluminescence  # The Deep Ocean
 from . import lectures_twilightzone, lectures_whalefall
 from . import lectures_enceladus, lectures_europa  # The Moons of the Giants
 from . import lectures_io, lectures_titan
+from . import lectures_doubt, lectures_knowstars  # Ways of Knowing
+from . import lectures_territory, lectures_unseen
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -193,6 +195,8 @@ _CATALOG = [
                         lectures_whalefall, lectures_abyss]),
     ("The Moons of the Giants", [lectures_io, lectures_europa,
                                  lectures_titan, lectures_enceladus]),
+    ("Ways of Knowing", [lectures_knowstars, lectures_doubt,
+                         lectures_territory, lectures_unseen]),
 ]
 
 LECTURES = {}

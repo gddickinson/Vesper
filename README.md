@@ -13,7 +13,7 @@ Vesper paces your breath with a soft animated visualization and real-time synthe
 sound. It spans six activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep** —
 each with its own purpose-built control panel, visual scene and soundscape. At its centre
 is a talking-head **avatar** (a 3D head, or one of **15 hand-drawn cartoon characters**)
-that breathes, blinks, gazes around, emotes, and narrates a library of **189 soothing
+that breathes, blinks, gazes around, emotes, and narrates a library of **193 soothing
 sleep-lectures** that gently follow the words on screen.
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
@@ -42,7 +42,7 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   crickets…) plus synthesised **bells & gongs, drums, winds & organs, environmental FX**
   and a **cosmic generative-music** engine sonifying real planetary + pulsar data. Nothing
   to download.
-- **The bedtime storyteller** — **189 authored sleep-lectures across 36 branches** (the
+- **The bedtime storyteller** — **193 authored sleep-lectures across 37 branches** (the
   Cosmos, Earth &amp; Sea, the Living World, the Human Body, Histories, Materials &amp;
   Making, Ideas &amp; Wonders, Myth &amp; Legend, and many more), plus procedural bedtime
   stories, poetry nocturnes and a cognitive-shuffle sleep aid. Spoken by neural **Kokoro**

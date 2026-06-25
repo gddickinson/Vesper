@@ -300,10 +300,16 @@ in these notes:
       the walk on, forever. Original; deterministic with an injected seed; bed "Wind in Pines".
       Wired via `stories.extra_names`/`ambience_for`/`story_units`. Verified: dispatch +
       prose/haiku interleave + ASCII + determinism + a/an; selftest + both-faces drive.
-- [ ] **Lecture branch: Ways of Knowing** (epistemology + science, 4) — e.g. *How We Know the
-      Stars* (parallax / the cosmic distance ladder / humility), *The Art of Doubt* (the
-      scientific method as gentle inquiry), *The Map and the Territory* (models vs. reality),
-      *What the Eye Cannot See* (instruments extending the senses). Wonder-led, sleep-closing.
+- [x] **Lecture branch: Ways of Knowing** (epistemology + science, 4) — *How We Know the Stars*
+      (parallax, Bessel + 61 Cygni 1838, light-years, the cosmic distance ladder / Leavitt's
+      Cepheids, humility), *The Art of Doubt* (the patient notice->wonder->guess->test loop;
+      doubt as kindness; "knowing you do not know"; glad to be corrected), *The Map and the
+      Territory* (models/words/memories as maps; "the map is not the territory"; the world is
+      larger + gentler than our drawing), *What the Eye Cannot See* (the thin visible ribbon;
+      Leeuwenhoek's animalcules; telescope; infrared/UV/radio/x-ray extending the senses).
+      Standard 7x12, fact-free section 1, all sleep-closing; ambiences Singing Bowl / Gentle
+      Rain / Wind in Pines / Night Crickets. **193 lectures / 37 branches**; DB rebuilt; selftest
+      + both-faces drive (0 issues).
 - [ ] **Lecture branch: Quiet Philosophies** (4) — Stoic night-counsel (Marcus Aurelius),
       Taoism (the watercourse way / wu wei), mono no aware & wabi-sabi (Japanese aesthetics of
       transience), Epicurean tranquility. Practical, soothing, never preachy; close to sleep.

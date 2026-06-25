@@ -2253,6 +2253,25 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Lecture round — new branch "Ways of Knowing" (epistemology, 4 lectures)
+Fourth item of the storytelling & poetry batch -- weaving philosophy/epistemology + science
+gently. Added a 37th lecture branch, **Ways of Knowing**: *How We Know the Stars* (parallax,
+Friedrich Bessel measuring 61 Cygni in 1838, light-years, starlight as old light, the cosmic
+distance ladder with Henrietta Leavitt's Cepheids -- measured with patience, geometry and
+light), *The Art of Doubt* (the gentle notice->wonder->guess->test loop; doubt as a kindness;
+"knowing you do not know" as the start of wisdom; the scientist *glad* to be corrected),
+*The Map and the Territory* (every word/theory/memory a map; "the map is not the territory";
+the world larger and gentler than our drawing), *What the Eye Cannot See* (the thin visible
+ribbon of light; Leeuwenhoek's animalcules in a drop; telescope; infrared/ultraviolet/radio/
+x-ray as gentle extensions of the senses). Each = the standard 7x12 second-person present-tense
+sentences, accurate + wonder-led + honest (paraphrased, attributed softly), every section
+sleep-closing; ambiences Singing Bowl / Gentle Rain / Wind in Pines / Night Crickets. Drafted
+via four parallel subagents (one flattened its output; reshaped to 7x12 via SendMessage),
+assembled with a validating builder (7x12 / ASCII / end-punct / section-1 fact-free) and
+registered in `lectures._CATALOG`. Verified: selftest (**193 lectures / 37 branches**); DB
+rebuilt (16,521 lines / 260,422 words); both-faces drive 0 issues. Files < 500 lines; secret
+scan clean.
+
 ## Poetry round — haibun storyteller ("A Wandering Haibun")
 Third item of the storytelling & poetry batch, and the direct answer to "weave poetry through
 stories". New `breathsim/haibun.py`: a *haibun* (Basho's prose-plus-haiku travel form). A slow,
