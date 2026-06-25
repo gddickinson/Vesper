@@ -320,6 +320,18 @@ in these notes:
       section 1, all sleep-closing, paraphrased + softly attributed (no verbatim quotes);
       ambiences Singing Bowl / Mountain Stream / Gentle Rain / Wind in Pines. **197 lectures /
       38 branches**; DB rebuilt; selftest + both-faces drive (0 issues).
+- [x] **Lecture branch: Colours & Pigments** (4) — *The Story of Indigo* (the rare blue in nature;
+      green leaves that secretly hold blue; the fermentation vat and the green-to-blue turn in the
+      open air; aizome / West African cloth / denim; the dyer's blue-stained patient hands),
+      *Ultramarine* (the longing for a heavenly blue; lapis lazuli flecked with gold from the far
+      mountains; "beyond the sea"; the patient grinding/washing that frees the colour; costlier than
+      gold, the Madonna's robe, Vermeer), *Tyrian Purple* (purple between red and blue, between day
+      and night; the murex snails of Tyre; thousands of shells per cloth; the sunlit yellow->green->
+      purple turn; emperors and the lost secret), *Cochineal Red* (the hunger for a true crimson; the
+      tiny insects under the prickly pear's white bloom; the careful Mexican harvest; the astonishing
+      carmine from grey specks; the guarded trade across the sea). Standard 7x12, fact-free section 1,
+      all sleep-closing; ambiences Gentle Rain / Singing Bowl / Ocean Waves / Forest Wind. Registered
+      as a 39th branch. **201 lectures / 39 branches**; selftest + both-faces drive (0 issues).
 - [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
       conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
       of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The

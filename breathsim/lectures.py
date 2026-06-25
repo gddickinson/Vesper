@@ -62,6 +62,8 @@ from . import lectures_doubt, lectures_knowstars  # Ways of Knowing
 from . import lectures_territory, lectures_unseen
 from . import lectures_epicurus, lectures_stoic  # Quiet Philosophies
 from . import lectures_tao, lectures_wabisabi
+from . import lectures_cochineal, lectures_indigo  # Colours & Pigments
+from . import lectures_tyrian, lectures_ultramarine
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -201,6 +203,8 @@ _CATALOG = [
                          lectures_territory, lectures_unseen]),
     ("Quiet Philosophies", [lectures_stoic, lectures_tao,
                             lectures_wabisabi, lectures_epicurus]),
+    ("Colours & Pigments", [lectures_indigo, lectures_ultramarine,
+                            lectures_tyrian, lectures_cochineal]),
 ]
 
 LECTURES = {}

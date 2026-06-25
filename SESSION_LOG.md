@@ -2253,6 +2253,23 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Stories round — new branch "Colours & Pigments" (4 lectures)
+A fresh Stories lecture-branch round (every ~3rd). Added a 39th branch on the history and craft of
+four storied colours, via 4 parallel content subagents: `lectures_indigo.py` (The Story of Indigo,
+Gentle Rain — rare blue in nature, green leaves hiding blue, the fermentation vat's green-to-blue
+turn in air, aizome/West-African cloth/denim, the dyer's stained patient hands), `lectures_ultramarine.py`
+(Ultramarine, Singing Bowl — lapis lazuli flecked with gold from far mountains, "beyond the sea",
+the patient grinding/washing that frees the blue, costlier than gold, the Madonna's robe, Vermeer),
+`lectures_tyrian.py` (Tyrian Purple, Ocean Waves — the murex snails of Tyre, thousands of shells per
+cloth, the sunlit yellow->green->purple turn, emperors and the lost secret), `lectures_cochineal.py`
+(Cochineal Red, Forest Wind — tiny insects under the prickly pear's white bloom, the careful Mexican
+harvest, the astonishing carmine from grey specks, the guarded trade across the sea). Each 7x12
+second-person sleep-lecture: fact-free settling section 1, every section sleep-closing, ASCII-only.
+Registered in `lectures._CATALOG`. **201 lectures / 39 branches**. Verified independently (7 sections
+x 12 sentences, endings .?!, ASCII, importable), end-to-end narration (102 units each incl.
+interludes, ambience resolves to a real GROUP_NATURE voice), selftest, both-faces drive (0 issues);
+all files ~105 lines (< 500). README/CLAUDE/UPDATES/INTERFACE counts bumped 197/38 -> 201/39.
+
 ## LLM round 5 (final) — experimental sandboxed code-plugin path
 Final LLM item, and the most guarded. New `breathsim/llm_plugin.py`: the one place the LLM writes
 actual *code*. **Off by default**; `enable(accept_risk=True)` is required or it refuses. The LLM
