@@ -327,6 +327,12 @@ class _ActionsMixin:
         from . import greeting
         greeting.ask_name(self)
 
+    def set_scene(self, name):
+        """Pick which 2D scene shows, and switch to the scene view."""
+        self._scene_hint = name
+        self.viz.set_scene(name)
+        self.set_view("scene")
+
     def set_weather(self, kind):
         """Optional particle weather overlay (off / snow / leaves / bubbles / fireflies)."""
         self.viz.set_weather(kind)

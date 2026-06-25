@@ -32,6 +32,7 @@ from .viz import VizWidget
 from .win_hourglass import _HourglassMixin
 from .win_consts import FPS
 from .cast import _CastMixin
+from .win_dnd import _DnDMixin
 from .win_frame import _FrameMixin
 from .win_settings import _SettingsMixin
 from .win_story import _StoryMixin
@@ -43,12 +44,13 @@ _MODE_BG = {"Meditate": "Gradient", "Breathwork": "Aurora", "Chant": "Nebula",
 
 
 class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
-                 _StoryMixin, _FrameMixin, _SettingsMixin, QMainWindow):
+                 _StoryMixin, _FrameMixin, _DnDMixin, _SettingsMixin, QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Vesper")
         self.resize(1200, 780)
         self.setStyleSheet(theme.STYLESHEET)
+        self.setAcceptDrops(True)                   # drop a .txt/.epub to add a novel
 
         store.register_all()                       # merge saved patterns/voices
         try:
@@ -292,12 +294,6 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         act = getattr(self, "_act_cat", None)
         if act is not None and act.isChecked() != self.face.uses_cat():
             act.setChecked(self.face.uses_cat())
-
-    def set_scene(self, name):
-        """Pick which 2D scene shows, and switch to the scene view."""
-        self._scene_hint = name
-        self.viz.set_scene(name)
-        self.set_view("scene")
 
     def set_clock_light(self, on):
         self._clock_light = bool(on)

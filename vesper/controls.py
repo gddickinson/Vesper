@@ -19,6 +19,16 @@ from . import workspaces
 from .sections import _SectionsMixin
 from .widgets import muted
 
+# One-line purpose for each mode, shown on hover over the mode buttons.
+_MODE_TIPS = {
+    "Meditate": "Paced, resonance breathing with a calm orb and a mindfulness bell.",
+    "Breathwork": "Guided techniques (4-7-8, box, Wim Hof) with a breath-hold timer.",
+    "Chant": "Mantra and reciting tone over a drone, with on-screen tone matching.",
+    "Sing": "Vocal warm-ups and a pitch trainer - sing the target line in tune.",
+    "Relax": "Gentle soundscapes and soft visuals to unwind to.",
+    "Sleep": "Bedtime stories or a narrated novel, wind-down pacing and dimming.",
+}
+
 
 class ControlPanel(_SectionsMixin, QWidget):
     def __init__(self, win):
@@ -47,6 +57,7 @@ class ControlPanel(_SectionsMixin, QWidget):
         for i, name in enumerate(modes.names()):
             b = QPushButton(name)
             b.setCheckable(True)
+            b.setToolTip(_MODE_TIPS.get(name, ""))
             b.clicked.connect(lambda _=False, n=name: self.win.apply_mode(n))
             self.mode_group.addButton(b)
             self._mode_btns[name] = b
@@ -75,9 +86,12 @@ class ControlPanel(_SectionsMixin, QWidget):
         v.addWidget(muted("Visualization"))
         vrow = QHBoxLayout()
         self._view_btns = {}
+        _vtips = {"face": "Show the animated face / character.",
+                  "scene": "Show the ambient visualization (press V to toggle)."}
         for key, label in (("face", "Face"), ("scene", "Scene")):
             b = QPushButton(label)
             b.setCheckable(True)
+            b.setToolTip(_vtips[key])
             b.clicked.connect(lambda _=False, k=key: self.win.set_view(k))
             vrow.addWidget(b)
             self._view_btns[key] = b
@@ -88,13 +102,16 @@ class ControlPanel(_SectionsMixin, QWidget):
         self.vol = QSlider(Qt.Orientation.Horizontal)
         self.vol.setRange(0, 100)
         self.vol.setValue(int(win.user_volume * 100))
+        self.vol.setToolTip("Master volume for everything you hear.")
         self.vol.valueChanged.connect(lambda x: self.win.set_volume(x / 100.0))
         v.addWidget(self.vol)
         row = QHBoxLayout()
         self.start_btn = QPushButton("Start")
         self.start_btn.setObjectName("accent")
+        self.start_btn.setToolTip("Start or pause the session (Spacebar).")
         self.start_btn.clicked.connect(self.win.toggle_transport)
         reset = QPushButton("Reset")
+        reset.setToolTip("Reset the session to the beginning (R).")
         reset.clicked.connect(self.win.reset)
         row.addWidget(self.start_btn)
         row.addWidget(reset)

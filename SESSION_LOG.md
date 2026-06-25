@@ -2987,6 +2987,21 @@ parallel subagents, independently validated (7x12, pure ASCII, every section sle
 branches**); story DB rebuilt (297k words); offline tests (19) green; drive_check 0 issues,
 threads stable; all files < 500 lines.
 
+## Novels in the Sleep window + tooltips + drag-and-drop loading (user-requested)
+Three connected UX wins for reading novels at bedtime. (1) **Novel as a bedtime read**: the Sleep
+"Bedtime story" picker now groups library books under a clear "— Your novels —" header, with a
+"Read me a novel - add one…" button (opens the library to download a free public-domain book or
+import a .txt/.epub) and a hint that novels read slowly, resume where you fell asleep, and fade
+with the sleep timer. The book-as-story path (resume-by-sentence, wind-down fade) already existed;
+this surfaces it. (2) **Drag-and-drop**: new `vesper/win_dnd.py` (`_DnDMixin`) + `setAcceptDrops`
+on the window - drop a `.txt`/`.epub` anywhere and it imports into the local library (never
+uploaded) and appears under "Your novels"; other files are ignored. Pure `book_paths` filter +
+`import_dropped_books` driver, both tested. (3) **Tooltips**: one-line hover help on the mode bar
+buttons (each mode's purpose), the Face/Scene view toggles, master volume, Start/Pause and Reset,
+and the new novel button. Kept window.py < 500 by moving `set_scene` into `_ActionsMixin`. Verified:
+`tools/test_dragdrop.py` + offscreen GUI smoke (tooltips present, drop imports a novel, Sleep groups
+it, threads stable) + selftest + drive_check (0 issues); all 22 offline tests green.
+
 ## Fix: Sing pitch-trainer exercise selector (only "Hold note" worked)
 User report: changing the exercise from "Hold note" to a scale/arpeggio did nothing -- the target
 just sat on one note. Root cause: the trainer fed `vocaltrainer.target_at` the value of

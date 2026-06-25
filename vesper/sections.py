@@ -261,19 +261,32 @@ class _SectionsMixin:
     def _card_story(self):
         from breathsim import stories
         frame, body = card("Bedtime story")
-        items = (["Off", "Random"] + stories.extra_names() + stories.scene_names()
-                 + stories.book_names())          # library books (empty until added)
+        items = ["Off", "Random"] + stories.extra_names() + stories.scene_names()
         sc = combo(items, self.win._story_scene or "Off", self.win.set_story)
+        books = stories.book_names()                 # library novels (empty until added)
+        if books:                                    # group them under a clear header
+            sc.insertSeparator(sc.count())
+            sc.addItem("— Your novels —")
+            sc.model().item(sc.count() - 1).setEnabled(False)
+            sc.addItems(books)
         for cat in stories.lecture_categories():    # lectures grouped by branch
             sc.insertSeparator(sc.count())
             sc.addItem(f"— {cat} —")       # disabled branch header
             sc.model().item(sc.count() - 1).setEnabled(False)
             sc.addItems(stories.lecture_names(cat))
-        if self.win._story_scene in stories.lecture_names():
+        if self.win._story_scene in (stories.lecture_names() + books):
             sc.setCurrentText(self.win._story_scene)
         self._w["story"] = sc
-        body.addWidget(muted("Scene or lecture"))
+        body.addWidget(muted("Scene, novel or lecture"))
         body.addWidget(sc)
+        nv = QPushButton("Read me a novel - add one…")
+        nv.setToolTip("Download a free public-domain book or import your own "
+                      ".txt/.epub, then pick it above. You can also drag a file "
+                      "onto the window.")
+        nv.clicked.connect(lambda: self._add_novel())
+        body.addWidget(nv)
+        body.addWidget(muted("Novels are read slowly at bedtime - they resume where "
+                             "you fell asleep and fade out with the sleep timer."))
         pick = QPushButton("Surprise me - tonight's pick")
         pick.clicked.connect(self.win.tonights_pick)
         body.addWidget(pick)
@@ -303,6 +316,13 @@ class _SectionsMixin:
         lbl = narration.engine_label(self.win.speech) or "no narration"
         body.addWidget(muted(f"Engine: {lbl}"))
         return frame
+
+    def _add_novel(self):
+        """Open the book library (download a free public-domain novel or import a
+        local .txt/.epub). On adding, the dialog refreshes this Sleep picker so the
+        new novel appears under 'Your novels' to pick as a bedtime read."""
+        from . import booklib
+        booklib.open_library(self.win)
 
     def _card_winddown(self):
         frame, body = card("Sleep wind-down")
