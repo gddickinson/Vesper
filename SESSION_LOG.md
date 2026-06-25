@@ -3350,6 +3350,26 @@ and audible rms; softer than Ocean Waves; in the rotation and all beds reachable
 (now 22 Nature voices / 149 voice names, every voice peak <= 1.0); all 32 offline tests; drive_check 0
 issues; README voice count bumped 148 -> 149.
 
+## Stories round — new branch "The Standing Stones" (4 lectures)
+A 50th lecture branch, **The Standing Stones** -- the great megaliths people raised long ago, four
+sites across four corners of the world (and four distinct ambiences): *Stonehenge* (the stone circle on
+Salisbury Plain; the sarsens and the bluestones carried ~150 miles from the Preseli Hills in Wales; the
+solstice alignment that keeps a slow appointment with the sun; the hush of the plain) [Forest Wind],
+*The Stones of Carnac* (the thousands of menhirs in long rows across Brittany near the sea, older than
+the pyramids, the stones shrinking along each row) [Ocean Waves], *The Moai of Easter Island* (nearly
+900 great stone figures of Rapa Nui carved at Rano Raraku and "walked" to coastal ahu, most facing
+inland as patient ancestors, some still sleeping half-carved in the quarry) [the new **Distant Surf
+(night)** bed -- a remote island ringed by the Pacific], and *Gobekli Tepe* (the ~11,000-12,000-year-old
+carved T-pillars on a quiet Turkish hilltop, raised by hunter-gatherers before pottery or farming, the
+gentle animal reliefs, the whole site deliberately and kindly buried for millennia) [Night Crickets].
+Each = the standard 7 sections x 12 second-person present-tense sentences, all easing toward sleep, kept
+gentle (the ancient mystery framed with warmth and wonder, never eerie; no decline/violence; the Moai
+are calm guardians; the carved animals "asleep in the stone"). Drafted via four parallel subagents,
+independently validated (7x12, pure ASCII, every section sleepward; the lone alarm-scan flag was a
+reassurance line -- "You feel no fear, only the gentle company..."); registered in `lectures._CATALOG`.
+Verified: selftest passes (**245 lectures across 50 branches**); story DB rebuilt (331,473 words); all
+32 offline tests green; drive_check 0 issues; every file < 500 (each lecture 105).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

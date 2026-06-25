@@ -84,6 +84,8 @@ from . import lectures_dewfall, lectures_moongarden  # The Night Garden
 from . import lectures_nightflowers, lectures_nightvisitors
 from . import lectures_arctictern, lectures_graywhale  # The Great Migrations
 from . import lectures_monarch, lectures_salmonrun
+from . import lectures_carnac, lectures_gobeklitepe  # The Standing Stones
+from . import lectures_moai, lectures_stonehenge
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -245,6 +247,8 @@ _CATALOG = [
                           lectures_nightvisitors, lectures_dewfall]),
     ("The Great Migrations", [lectures_monarch, lectures_salmonrun,
                               lectures_graywhale, lectures_arctictern]),
+    ("The Standing Stones", [lectures_stonehenge, lectures_carnac,
+                             lectures_moai, lectures_gobeklitepe]),
 ]
 
 LECTURES = {}

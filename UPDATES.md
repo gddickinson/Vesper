@@ -415,6 +415,17 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       Sessions menu ("One good thing…" + "Bedtime gratitude" toggle), a kind "Good things noted: N"
       line in Stats, and settings persistence. Verified: `tools/test_gratitude.py` + offscreen GUI
       smoke (menus present, threads stable) + selftest + drive_check.
+- [x] **Stories (next branch)** — **The Standing Stones** (4): *Stonehenge* (the circle on Salisbury
+      Plain; bluestones carried ~150 mi from Wales; the solstice alignment) [Forest Wind], *The Stones
+      of Carnac* (thousands of menhirs in long rows in Brittany, older than the pyramids) [Ocean Waves],
+      *The Moai of Easter Island* (nearly 900 stone figures of Rapa Nui carved at Rano Raraku and walked
+      to coastal ahu, facing inland as patient ancestors) [the new **Distant Surf (night)** bed], and
+      *Gobekli Tepe* (the ~12,000-year-old carved T-pillars raised by hunter-gatherers before farming,
+      gently buried for millennia) [Night Crickets]. Each = 7x12 second-person present sleep-closing
+      ASCII lines, the ancient mystery framed with warmth (no eerie/decline/violence). Four parallel
+      writers; validated (7x12, ASCII, sleepward; lone flag a reassurance line); registered in
+      `lectures._CATALOG`. Verified: **selftest 245 lectures / 50 branches**; story DB rebuilt (331k
+      words); all 32 offline tests; drive_check 0 issues; README counts bumped.
 - [x] **Stories (next branch)** — **The Great Migrations** (4): *The Monarch's Journey* (the
       butterfly's multi-generational flight to the oyamel firs of Michoacan; the super-generation; a
       sun-compass + magnetic sense), *The Salmon's Homecoming* (return from the ocean up to its birth
