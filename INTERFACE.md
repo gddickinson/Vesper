@@ -474,7 +474,11 @@ Bell). Together these four `synth_*` modules add 31 synthesised instrument/effec
 processing (no I/O): `to_ascii` (fold smart quotes/dashes/accents), `strip_boilerplate`
 (Project Gutenberg header/footer), **`pg_markers`** (has-START/has-END, so a truncated download is
 detectable), `split_paragraphs`, `split_sentences` (abbreviation-aware),
-`segment` → paragraphs-of-sentences, `chapter_marks`; and **`books`** — a `Book` model
+`segment` → paragraphs-of-sentences **ready to narrate** (it also strips inline `[Illustration]`/
+`[Sidenote]` markers + Gutenberg `_italics_` via `_strip_markup`, and drops the leading **title page /
+table of contents / list of illustrations** before the story via `_drop_frontmatter` -- a conservative
+scrub that stops at the first chapter heading or real prose, so a genuine preface survives), and
+`chapter_marks`; and **`books`** — a `Book` model
 (`paragraphs` + `sentences()`/`sentence_count()`/`paragraph_starts()`), `from_text`, and a **local
 library** at `~/.breathsim/books` (`save`/`load`/`list_books`/`delete`/**`disk_bytes`**/
 **`update_meta`** (rename in place) + a self-contained

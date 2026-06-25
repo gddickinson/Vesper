@@ -126,14 +126,19 @@ def split_sentences(text):
 
 def segment(text):
     """Clean + segment raw body text into ``[[sentence, ...], ...]`` (paragraphs
-    of sentences). ASCII-folded and boilerplate-stripped along the way."""
-    body = to_ascii(strip_boilerplate(text))
-    paras = []
-    for para in split_paragraphs(body):
+    of sentences), ready to narrate. Along the way it ASCII-folds, strips the
+    Project Gutenberg legal band, removes non-story markup ([Illustration]/
+    [Sidenote], ``_italic_`` underscores) and drops the leading title page / table
+    of contents / list of illustrations, so the narration starts at the story (and
+    a genuine preface/prologue is preserved)."""
+    body = _strip_markup(to_ascii(strip_boilerplate(text)))
+    paras = _drop_frontmatter(split_paragraphs(body))
+    out = []
+    for para in paras:
         sents = split_sentences(para)
         if sents:
-            paras.append(sents)
-    return paras
+            out.append(sents)
+    return out
 
 
 # --- chapter detection (for navigation) ------------------------------------
@@ -152,3 +157,58 @@ def chapter_marks(paragraphs):
         if len(text) <= 50 and _HEADING.match(text.strip()):
             marks.append((i, text.strip()))
     return marks
+
+
+# --- non-story material removal (so it isn't narrated) ---------------------
+
+# Editorial markers Project Gutenberg leaves inline; never spoken aloud.
+_ILLUS = re.compile(
+    r"\[\s*(?:illustration|sidenote|image|picture|figure|plate|music)\b[^\]]*\]",
+    re.I)
+# Gutenberg marks italics with underscores (``_very_``); fold to the bare word.
+_ITALIC = re.compile(
+    r"(?<![A-Za-z0-9])_([A-Za-z0-9][^_\n]*?[A-Za-z0-9]|[A-Za-z0-9])_(?![A-Za-z0-9])")
+_TOC_HEAD = re.compile(
+    r"^\s*(contents|table of contents|index|list of (?:illustrations|plates))\s*$",
+    re.I)
+# A run of 'CHAPTER <numeral>' references packed together == a table-of-contents
+# blob (real prose almost never lists three numbered chapters in one paragraph).
+_TOC_BLOB = re.compile(r"(?:chapter|book|part|canto|letter)\s+[ivxlcdm\d]+\b", re.I)
+
+
+def _strip_markup(body):
+    """Drop inline [Illustration]/[Sidenote] markers and unwrap ``_italics_``."""
+    return _ITALIC.sub(r"\1", _ILLUS.sub(" ", body or ""))
+
+
+def _is_heading(p):
+    return len(p) <= 60 and bool(_HEADING.match(p.strip()))
+
+
+def _is_titlepage_line(p):
+    """A short line with no sentence punctuation -- a title / author / edition line.
+    NOT a chapter heading (those mark the start of the story and must be kept)."""
+    s = p.strip()
+    return 0 < len(s) <= 70 and s[-1] not in ".?!" and not _HEADING.match(s)
+
+
+def _is_toc_blob(p):
+    return len(_TOC_BLOB.findall(p)) >= 3
+
+
+def _drop_frontmatter(paras):
+    """Drop a leading title page / table of contents / list of illustrations -- the
+    non-story matter Project Gutenberg keeps before the text -- **stopping at the
+    first chapter heading or the first real paragraph**, so the story (and any
+    genuine preface) is preserved. Conservative: it only removes positively
+    identified front-matter lines and never looks past the start of the story."""
+    i = 0
+    while i < len(paras) and i < 40:
+        p = paras[i]
+        if _is_heading(p):                      # a chapter heading: the story starts
+            break
+        if _TOC_HEAD.match(p.strip()) or _is_toc_blob(p) or _is_titlepage_line(p):
+            i += 1                              # title / author / edition / contents
+            continue
+        break                                   # first real prose paragraph
+    return paras[i:]

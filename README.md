@@ -55,8 +55,10 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   slowing and quietening as you drift off, and the **soundscape, the backdrop and the
   character all gently follow the words**.
 - **Read a novel** — a dedicated **Read** mode and a book Reader narrate full public-domain
-  books (download from Project Gutenberg / Standard Ebooks, or drop in your own .txt/.epub)
-  with **read-along text** that highlights and auto-scrolls, **Night / Sepia / Day** reading
+  books (download from Project Gutenberg / Standard Ebooks, or drop in your own .txt/.epub) —
+  cleaned to read **the story, not the boilerplate** (the title page, table of contents and
+  illustration captions are skipped) — with **read-along text** that highlights and
+  auto-scrolls, **Night / Sepia / Day** reading
   themes, a searchable **jump-to-chapter** picker, adjustable pace, an opt-in
   **sleep fade** that quietens the narration and stops after a set time, and
   resume-where-you-fell-asleep. A book can also be a **bedtime

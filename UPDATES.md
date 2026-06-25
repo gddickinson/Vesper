@@ -155,6 +155,16 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Books: strip non-story front-matter for narration** (user-requested): downloaded books narrated
+      the title page, edition note, **table of contents** and `[Illustration]` captions before the
+      story. `booktext.segment` now removes `[Illustration]`/`[Sidenote]` markers + Gutenberg `_italics_`
+      and drops the leading title page / `Contents` block (a conservative scan that stops at the first
+      chapter heading or real prose, so the story + any preface survive). Chapters were already detected,
+      so jump-to-chapter still works and now starts at chapter 1. Applies to new downloads/imports;
+      Re-download regenerates an old book cleanly. (An LLM can't faithfully reproduce a whole novel, so
+      the deterministic strip is the right tool.) Verified on the live Gutenberg *Alice* (12 chapters,
+      starts at "CHAPTER I", no illustration/edition/TOC) + new `tools/test_booktext_clean.py` + all book
+      tests re-greened; all 38 offline tests; selftest; drive_check 0 issues.
 - [x] **Accessibility: Mono audio toggle (single-sided hearing)**: downmix the whole soundscape to
       mono so it is fully audible through one ear/speaker -- for people with single-sided hearing who
       otherwise miss whatever the stereo width/pan places on the far side. Done at the engine's final

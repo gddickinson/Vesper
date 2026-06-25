@@ -3473,6 +3473,35 @@ a live check (9 language groups present with Kokoro installed here) + an offscre
 narration PickerButton builds, threads stable 2->2); all 37 offline tests; selftest; drive_check 0
 issues; `narration.py` 401 < 500.
 
+## Books: strip non-story front-matter so novels narrate the story (user-requested)
+A user reported downloaded books were "a solid piece of text" that narrated the non-story matter --
+the title page, edition note, **table of contents** (a jumble of chapter titles), copyright and
+`[Illustration]` captions -- before the story. `strip_boilerplate` only removed Gutenberg's legal
+START/END band, not the book's own front-matter. Fixed in pure `booktext.segment` (so every download
+*and* import benefits): `_strip_markup` removes inline `[Illustration]`/`[Sidenote]`/`[Figure]`...
+markers and unwraps Gutenberg's `_italic_` underscores; `_drop_frontmatter` then drops the leading
+title page / `Contents` block / list-of-illustrations. The drop is a **conservative single scan from the
+top** that removes only positively-identified front-matter (a `Contents`/`Index` heading, a
+"CHAPTER I... CHAPTER II... CHAPTER III..." contents *blob* (>=3 numbered-chapter refs), or a short
+title/author/edition line) and **stops at the first chapter heading or the first real prose paragraph**
+-- so it never eats the story, a chapter heading, or a genuine preface (which is long prose and halts
+the scan). Chapters were already detected (`chapter_marks`), so the jump-to-chapter picker keeps
+working and now starts at chapter 1. The fix is retroactive only for *new* downloads/imports; the
+library's **Re-download** button regenerates an existing book cleanly. Two debugging passes hardened it:
+an early "prose = >=2 periods" test wrongly dropped one-long-sentence paragraphs (cascading the cut),
+and `if first_ch:` mis-handled a book that *opens* on chapter 1 (`first_ch == 0`); the final
+single-loop design sidesteps both and is robust to short-paragraph books / poetry / prose that happens
+to say "chapter". Verified on the live Project Gutenberg *Alice* (now: 12 chapters, first sentence
+"CHAPTER I. Down the Rabbit-Hole", no illustration/edition/TOC, full prose intact) + new
+`tools/test_booktext_clean.py` (Gutenberg fixture: front-matter/TOC/illustrations/italics stripped,
+both chapters + prose kept; a preface preserved; a heading-less book keeps its prose) + all existing
+book tests re-greened; all 38 offline tests; selftest; drive_check 0 issues; `booktext.py` 214 < 500.
+
+On the LLM option the user asked about: programmatic cleaning is the right tool here -- an LLM cannot
+faithfully reproduce a whole 100k-word novel (context limits + the risk of abridging/hallucinating),
+so the deterministic strip is safer and free; the opt-in LLM stays for *generating* short bedtime
+content, not rewriting downloaded books.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
