@@ -2253,6 +2253,24 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Stories round — new branch "The Polar Worlds" (4 lectures)
+A Stories lecture-branch round (cadence was overdue -- 4 non-Stories rounds since Colours & Pigments).
+Added a 40th branch on the frozen ends of the Earth via 4 parallel content subagents:
+`lectures_arctic.py` (The Arctic, Brown Noise -- the frozen ocean at the top of the world, the long
+polar night/day, the creaking sea ice, white bear and seal, the people of the long winter, the
+aurora), `lectures_antarctica.py` (Antarctica, Forest Wind -- the white continent, the mile-deep ice
+sheet, dry valleys and ice shelves, emperor penguins through the winter dark, the explorers' huts),
+`lectures_icebergs.py` (Icebergs, Ocean Waves -- calving from a glacier, the vast hidden bulk below,
+blue ice and ancient trapped air, the years-long melting drift home), `lectures_tundra.py` (The
+Tundra, Wind in Pines -- the treeless plain, permafrost, moss and lichen and dwarf willow, the brief
+bright summer bloom and the caribou herds, the long snow). Each a 7x12 second-person sleep-lecture:
+fact-free settling section 1, every section sleep-closing, ASCII-only; distinct NAMEs/modules,
+ambiences resolve to real GROUP_NATURE voices. Registered in `lectures._CATALOG`. **205 lectures /
+40 branches**; story DB rebuilt (275,397 words). Verified independently (7x12 / endings / ASCII /
+importable), end-to-end narration (102 units each, ambience resolves), selftest (205/40), both-faces
+drive (0 issues, threads stable), all 9 offline tests still pass. README/CLAUDE bumped 201/39 ->
+205/40; all four files 105 lines. (Next round: audiobook R3 -- a book under the Sleep wind-down.)
+
 ## Audiobooks round 2 — the Reader mode (non-sleep) + BookReader
 Per the user's decision, built the non-sleep READER before the sleep slice. New pure
 `breathsim/bookreader.py`: `units(book, start, line_pause, para_pause)` yields one narrator unit per

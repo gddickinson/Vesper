@@ -332,6 +332,16 @@ in these notes:
       carmine from grey specks; the guarded trade across the sea). Standard 7x12, fact-free section 1,
       all sleep-closing; ambiences Gentle Rain / Singing Bowl / Ocean Waves / Forest Wind. Registered
       as a 39th branch. **201 lectures / 39 branches**; selftest + both-faces drive (0 issues).
+- [x] **Lecture branch: The Polar Worlds** (4) — *The Arctic* (the frozen ocean at the top of the
+      world; the long polar night and day; the creaking sea ice; bear, seal and the people of the long
+      winter; the aurora), *Antarctica* (the white continent; the mile-deep ice sheet; dry valleys and
+      ice shelves; emperor penguins through the winter dark; the explorers' huts), *Icebergs* (calving
+      from a glacier; the vast hidden bulk below the water; blue ice and ancient trapped air; the slow
+      melting drift home), *The Tundra* (the treeless plain; permafrost; moss, lichen and dwarf willow;
+      the brief bright summer bloom and the caribou herds; the long snow). Standard 7x12, fact-free
+      section 1, all sleep-closing; ambiences Brown Noise / Forest Wind / Ocean Waves / Wind in Pines.
+      Registered as a 40th branch. **205 lectures / 40 branches**; DB rebuilt; selftest + both-faces
+      drive (0 issues); all 9 offline tests pass.
 - [x] **LLM in the GUI — opt-in API-key Settings dialog** (`vesper/llm_settings.py`, Help ▸ "AI
       Assistant (optional)…") — the safe gateway that finally exposes the (already-built) LLM stack,
       strictly opt-in + fail-closed. The ONE place a key is typed: **password-masked**, never shown

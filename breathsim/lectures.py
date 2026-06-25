@@ -64,6 +64,8 @@ from . import lectures_epicurus, lectures_stoic  # Quiet Philosophies
 from . import lectures_tao, lectures_wabisabi
 from . import lectures_cochineal, lectures_indigo  # Colours & Pigments
 from . import lectures_tyrian, lectures_ultramarine
+from . import lectures_antarctica, lectures_arctic  # The Polar Worlds
+from . import lectures_icebergs, lectures_tundra
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -205,6 +207,8 @@ _CATALOG = [
                             lectures_wabisabi, lectures_epicurus]),
     ("Colours & Pigments", [lectures_indigo, lectures_ultramarine,
                             lectures_tyrian, lectures_cochineal]),
+    ("The Polar Worlds", [lectures_arctic, lectures_antarctica,
+                          lectures_icebergs, lectures_tundra]),
 ]
 
 LECTURES = {}
