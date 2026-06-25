@@ -82,6 +82,8 @@ from . import lectures_bog, lectures_mangroves  # Wetlands & Marshes
 from . import lectures_marsh, lectures_swamp
 from . import lectures_dewfall, lectures_moongarden  # The Night Garden
 from . import lectures_nightflowers, lectures_nightvisitors
+from . import lectures_arctictern, lectures_graywhale  # The Great Migrations
+from . import lectures_monarch, lectures_salmonrun
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -241,6 +243,8 @@ _CATALOG = [
                             lectures_mangroves, lectures_bog]),
     ("The Night Garden", [lectures_moongarden, lectures_nightflowers,
                           lectures_nightvisitors, lectures_dewfall]),
+    ("The Great Migrations", [lectures_monarch, lectures_salmonrun,
+                              lectures_graywhale, lectures_arctictern]),
 ]
 
 LECTURES = {}

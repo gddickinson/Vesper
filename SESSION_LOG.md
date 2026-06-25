@@ -3294,6 +3294,27 @@ offscreen `tools/test_read_chapters.py` (button enable/disable, jump-while-pause
 highlights, jump-while-reading restarts, threads stable 2->2); all 30 offline tests green; selftest +
 drive_check (0 issues); every file < 500 (`bookreader` 63, `win_read` 185, `sections_read` 124).
 
+## Stories round — new branch "The Great Migrations" (4 lectures)
+A 49th lecture branch, **The Great Migrations** -- the long, patient, ancient journeys animals make,
+four creatures across four realms so the branch never repeats itself: *The Monarch's Journey* (the
+butterfly's multi-generational autumn flight from Canada to the oyamel fir forests of Michoacan; the
+months-long "super-generation"; navigation by a sun-compass + the Earth's magnetic field; millions
+clustered like orange leaves on the boughs), *The Salmon's Homecoming* (the return from the open ocean
+up to the very gravel stream of its birth -- a magnetic compass at sea, then home recognized by its
+remembered *smell*; resting in cool deep pools; framed purely as a peaceful homecoming and a gift to
+the river, never death), *The Gray Whale's Road* (one of the longest mammal migrations, Arctic feeding
+grounds down to the warm calm lagoons of Baja California where mothers nurse their calves; the
+unhurried day-and-night pace; the "friendly whales" who bring their calves to the boats), and *The
+Arctic Tern* (the longest migration on Earth, pole to pole, a small white bird living in almost endless
+summer light, gliding and resting on the wind). Each = the standard 7 sections x 12 second-person
+present-tense sentences, all easing toward sleep, kept gentle (no predation; the salmon's run is a
+homecoming, the whale and tern calm and safe); ambiences Forest Wind / Mountain Stream / Whale Song /
+Ocean Waves. Drafted via four parallel subagents, independently validated (7x12, pure ASCII, every
+section sleepward; the only alarm-scan flags were reassurance lines -- "There is no fear in this...");
+registered in `lectures._CATALOG`. Verified: selftest passes (**241 lectures across 49 branches**);
+story DB rebuilt (326,643 words); all 30 offline tests green; drive_check 0 issues; every file < 500
+(each lecture 105).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

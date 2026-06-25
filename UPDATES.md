@@ -397,6 +397,18 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       Sessions menu ("One good thing…" + "Bedtime gratitude" toggle), a kind "Good things noted: N"
       line in Stats, and settings persistence. Verified: `tools/test_gratitude.py` + offscreen GUI
       smoke (menus present, threads stable) + selftest + drive_check.
+- [x] **Stories (next branch)** — **The Great Migrations** (4): *The Monarch's Journey* (the
+      butterfly's multi-generational flight to the oyamel firs of Michoacan; the super-generation; a
+      sun-compass + magnetic sense), *The Salmon's Homecoming* (return from the ocean up to its birth
+      stream, found by remembered smell; a peaceful homecoming, never death), *The Gray Whale's Road*
+      (Arctic feeding grounds to the warm lagoons of Baja; the unhurried pace; the "friendly whales"),
+      and *The Arctic Tern* (the longest migration on Earth, pole to pole, a life in endless summer
+      light). Each = 7x12 second-person present sleep-closing ASCII lines, kept gentle (no predation);
+      ambiences Forest Wind / Mountain Stream / Whale Song / Ocean Waves; four distinct realms (insect /
+      fish / whale / seabird). Drafted via four parallel writers, validated (7x12, pure ASCII, sleepward;
+      alarm-flags were reassurance lines), registered in `lectures._CATALOG`. Verified: **selftest 241
+      lectures / 49 branches**; story DB rebuilt (326,643 words); all 30 offline tests; drive_check 0
+      issues; README counts bumped.
 - [x] **Stories (next branch)** — **The Night Garden** (4): *The Moon Garden* (a garden planted only
       in white and silver and grey that wakes at dusk and glows by moonlight - white roses, foxgloves,
       lilies, the slowly-unfurling moonflower, silver lamb's-ear and artemisia leaves, the real White
