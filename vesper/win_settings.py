@@ -26,6 +26,7 @@ class _SettingsMixin:
         self.set_costume(s.get("costume", "None"))
         self._clock_light = bool(s.get("clock_light", True))   # time-of-day warmth
         self._mood_on = bool(s.get("mood_checkins", False))    # opt-in mood check-ins
+        self._gratitude_on = bool(s.get("gratitude", False))   # opt-in bedtime gratitude
         self._onboarded = bool(s.get("onboarded", False))      # first-run welcome shown?
         self._spatial = bool(s.get("spatial", True))           # ambience stereo width
         self.engine.set_spatial(self._spatial)
@@ -72,6 +73,7 @@ class _SettingsMixin:
                              "face_cat": self.face.uses_cat(),
                              "clock_light": self._clock_light,
                              "mood_checkins": self._mood_on,
+                             "gratitude": getattr(self, "_gratitude_on", False),
                              "onboarded": getattr(self, "_onboarded", False),
                              "spatial": getattr(self, "_spatial", True),
                              "font_scale": getattr(self, "_font_scale", 1.0),

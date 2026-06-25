@@ -97,6 +97,9 @@ def _sessions(win, m):
     for cat in lectures.categories():
         surprise.addAction(cat).triggered.connect(
             lambda _c=False, x=cat: win.surprise_in_branch(x))
+    m.addSeparator()
+    m.addAction("One good thing (gratitude)…").triggered.connect(
+        lambda: win.gratitude_now())
 
 
 def _books(win, m):
@@ -218,6 +221,8 @@ def _sound(win, m):
             win.set_story_bg_follow)
     _toggle(m, "Mood check-ins", getattr(win, "_mood_on", False),
             win.set_mood_checkins)
+    _toggle(m, "Bedtime gratitude (one good thing)",
+            getattr(win, "_gratitude_on", False), win.set_gratitude)
     m.addSeparator()
     inst = m.addMenu("Ambience & instruments")           # all sound beds in one place
     _sub_list(inst, "Cosmic Music", voices.names(voices.GROUP_MUSIC), win.set_ambience)

@@ -2922,6 +2922,25 @@ Drafted via four parallel subagents, assembled + registered in `lectures._CATALO
 Verified: selftest passes (**185 lectures across 35 branches**); story DB rebuilt (251k
 words); both-faces drive clean; all files < 500 lines.
 
+## Bedtime gratitude — "one good thing" (Sleep, opt-in)
+A tiny, kind end-of-day reflection grounded in the sleep-hygiene evidence that a brief
+bedtime gratitude note eases pre-sleep worry and improves sleep quality. **Off by
+default**; when enabled it is offered **once** at the start of a Sleep session (and any
+time from the Sessions menu), never scored, fully skippable, kept only on this device.
+Reused the mood-check-in plumbing: added `store.log_gratitude` / `gratitude_entries` /
+`gratitude_count` / `gratitude_last_date` (history caps at 200 notes, each clamped to 280
+chars, malformed values degrade to empty so Stats never crashes). New `vesper/gratitude.py`
+(< 90 lines): `should_offer(on, last_date, today)` (pure gate), `ask_gratitude` (a soft
+Keep/Skip `QLineEdit` dialog → `store.log_gratitude`), `maybe_offer_bedtime` (Sleep-only,
+once-per-app-run guard, off by default). Wired into `window.toggle_transport` (fresh
+start, beside `mood.maybe_check_in`), `app_actions.set_gratitude`/`gratitude_now`, the
+Sessions menu ("One good thing…" action + "Bedtime gratitude (one good thing)" toggle), a
+gentle "Good things noted: N" line in Practice Stats, and settings round-trip
+(`win_settings`). Verified: new `tools/test_gratitude.py` (store helpers + `should_offer`,
+clamps/caps/malformed-safe) + an offscreen GUI smoke (toggle persists, menus carry the
+action + toggle, threads stable) + selftest (213 lectures / 42 branches) + drive_check
+(issues=0); all 18 offline tests green; every file < 500 lines.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

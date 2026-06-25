@@ -273,6 +273,35 @@ def mood_summary(hist=None):
     return (len(es), ab, aa, shift)
 
 
+# --- bedtime gratitude ("one good thing", optional, gentle) ----------------
+
+def log_gratitude(text):
+    """Record a short 'one good thing' note (most recent 200 kept). Empty = no-op."""
+    text = (text or "").strip()
+    if not text:
+        return
+    h = history()
+    e = {"t": _dt.datetime.now().isoformat(timespec="seconds"), "text": text[:280]}
+    h["gratitude"] = (h.get("gratitude", []) + [e])[-200:]
+    _write("history.json", h)
+
+
+def gratitude_entries(hist=None):
+    h = hist if hist is not None else history()
+    es = h.get("gratitude", [])
+    return list(es) if isinstance(es, list) else []
+
+
+def gratitude_count(hist=None):
+    return len(gratitude_entries(hist))
+
+
+def gratitude_last_date(hist=None):
+    """The date (YYYY-MM-DD) of the most recent note, or '' if none."""
+    es = gratitude_entries(hist)
+    return es[-1].get("t", "")[:10] if es else ""
+
+
 def log_hold(seconds: float, label: str = ""):
     """Record one breath-hold (retention) time; keeps the most recent 50."""
     h = history()

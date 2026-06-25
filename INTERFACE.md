@@ -286,6 +286,14 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   (per-slot levels), **`open_story_library`** (browse + search the stories DB via
   `story_db` — branch/lecture list, line view, full-text LIKE search) and
   `open_about`.
+- **gratitude.py** — the optional **bedtime "one good thing"** note (Sessions ▸ "One good
+  thing…" + a "Bedtime gratitude" toggle; off by default). `should_offer(on, last_date,
+  today)` (pure gate), `ask_gratitude(win)` (a soft Keep/Skip `QLineEdit` dialog →
+  `store.log_gratitude`, returns the note or None) and `maybe_offer_bedtime(win)` (offered
+  **once** at a fresh Sleep start, beside `mood.maybe_check_in`). Persisted via
+  `win_settings` (`gratitude`); a "Good things noted: N" line shows in Stats. Backed by
+  `store.log_gratitude` / `gratitude_entries` / `gratitude_count` / `gratitude_last_date`
+  (cap 200, 280-char clamp, malformed-safe). Offline test: `tools/test_gratitude.py`.
 - **llm_settings.py** — **`open_llm_settings`** (Help ▸ "AI Assistant (optional)…"): the
   opt-in, fail-closed gateway to the LLM stack. A **password-masked** key field with three
   honest storage choices (session-only / OS keychain / chmod-600 file), a **Forget** button,

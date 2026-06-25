@@ -302,6 +302,17 @@ class _ActionsMixin:
         if not self.controller.running:
             self.toggle_transport()
 
+    def set_gratitude(self, on):
+        """Toggle the opt-in bedtime 'one good thing' prompt (persisted)."""
+        self._gratitude_on = bool(on)
+        from breathsim import store
+        store.save_settings({"gratitude": self._gratitude_on})
+
+    def gratitude_now(self):
+        """Offer the gratitude note on demand (any time, any mode)."""
+        from . import gratitude
+        gratitude.ask_gratitude(self)
+
     # --- mindfulness bell / retention timer -------------------------------
     def set_bell_interval(self, minutes):
         self._bell_interval = float(minutes)

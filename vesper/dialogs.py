@@ -40,6 +40,9 @@ def open_stats(win):
         v.addWidget(QLabel(f"Breath-holds logged: {len(holds)}  (best {best:.0f}s)"))
     else:
         v.addWidget(muted("No breath-holds logged yet."))
+    gcount = store.gratitude_count(h)                # gentle 'one good thing' tally
+    if gcount:
+        v.addWidget(QLabel(f"Good things noted: {gcount}"))
     from . import stats_heatmap                      # streak + calendar heatmap
     v.addWidget(stats_heatmap.build(win))
     row = QHBoxLayout()

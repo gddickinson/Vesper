@@ -302,10 +302,17 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       swapped permissive suggestion block, always winding down to sleep (no alerting language,
       honest framing). Wired via `stories.extra_names`/`ambience_for`/`story_units`; appear in
       the Sleep picker. Verified: dispatch + ambience resolve + sleep-close; selftest + drive.
-- [ ] **Bedtime gratitude / "one good thing"** (Sleep, opt-in): a single, gentle end-of-
+- [x] **Bedtime gratitude / "one good thing"** (Sleep, opt-in): a single, gentle end-of-
       session reflection ("one good thing about today") shown softly + optionally logged to
       Stats — no scoring, fully skippable. Evidence: bedtime gratitude reduces pre-sleep
-      worry and improves sleep quality. Reuse the mood-check-in plumbing.
+      worry and improves sleep quality. Reused the mood-check-in plumbing: `store.log_gratitude`
+      / `gratitude_entries` / `gratitude_count` / `gratitude_last_date` (cap 200, 280-char clamp,
+      malformed-value safe); `vesper/gratitude.py` (`should_offer` pure gate · `ask_gratitude`
+      Keep/Skip dialog · `maybe_offer_bedtime`, once-per-Sleep-start, off by default). Wired into
+      `window.toggle_transport` (fresh start), `app_actions.set_gratitude`/`gratitude_now`,
+      Sessions menu ("One good thing…" + "Bedtime gratitude" toggle), a kind "Good things noted: N"
+      line in Stats, and settings persistence. Verified: `tools/test_gratitude.py` + offscreen GUI
+      smoke (menus present, threads stable) + selftest + drive_check.
 - [x] **Stories (next branch)** — **The Moons of the Giants** (4): *Io, the Volcano Moon*
       (tidal heating, Galileo 1610, Loki Patera, Voyager's plume / Linda Morabito), *Europa,
       the Ocean Moon* (smooth ice shell, lineae, the hidden global ocean), *Titan, the Veiled
