@@ -155,6 +155,15 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Sleep ambience: "Distant Surf (night)"** (sleep efficacy): a new procedural nature bed -- a
+      far-off, dark, low ocean wash that breathes softly, gentler than the brighter "Ocean Waves".
+      One data-driven `register(VoiceConfig(...))` in the Nature group: brown noise + a low 560 Hz
+      lowpass (distance rolls off the highs) + a high floor (0.72, a continuous distant hush) + wide,
+      slow pan. Gain **calibrated** to 0.08 (peak ~0.30, rms ~0.065 -- a touch under Ocean's 0.078;
+      ample headroom under the selftest 1.0 ceiling). Added to `ambrotate.BEDS` so the auto-rotate
+      includes it; auto-listed in every Nature picker. Verified: new `tools/test_distant_surf.py`
+      (Nature/brown registration; finite, peak <0.7, audible; softer than Ocean; in the rotation);
+      selftest (149 voices, all peak <= 1.0); all 32 offline tests; drive_check 0 issues; README 148->149.
 - [x] **Read mode: opt-in sleep fade** (sleep efficacy; fall asleep to a novel in the Read screen):
       the docstring promised it but it was never built, and the global sleep-timer fade keys off the
       breath clock (frozen during pure reading), so Read got its own. `win_read.set_read_fade(minutes)`

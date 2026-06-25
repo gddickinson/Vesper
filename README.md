@@ -15,7 +15,7 @@ Read** — each with its own purpose-built control panel, visual scene and sound
 centre is a talking-head **avatar** (a 3D head, or one of **17 hand-drawn cartoon
 characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **241
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
-<!-- counts: 241 lectures / 49 branches · 148 voices · 66 phrases · 7 modes · 17 characters -->
+<!-- counts: 241 lectures / 49 branches · 149 voices · 66 phrases · 7 modes · 17 characters -->
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
@@ -37,11 +37,11 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   (incl. sleep-friendly Nightcap / Sleep Mask / Earmuffs), and its own narrator
   **voice + personality**. The bedtime storyteller can even pick a fitting character per
   scene (a cosy bear for a hibernation tale, a wise owl for the night sky).
-- **Fully procedural sound** — **148 voices** synthesised in real time from noise, filters
+- **Fully procedural sound** — **149 voices** synthesised in real time from noise, filters
   and a vocal-tract (formant) model: realistic breath timbres, human voice, vocal
   exercises, pranayama, singing, a playful **Cat** voice family, and nature **ambiences**
   (ocean, rain, forest, a crackling campfire, a struck singing bowl, wind chimes, night
-  crickets…) plus synthesised **bells & gongs, drums, winds & organs, environmental FX**
+  crickets, a distant night surf…) plus synthesised **bells & gongs, drums, winds & organs, environmental FX**
   and a **cosmic generative-music** engine sonifying real planetary + pulsar data. Nothing
   to download.
 - **The bedtime storyteller** — **241 authored sleep-lectures across 49 branches** (the
@@ -78,7 +78,7 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   tomorrow's-list, both shown to shorten sleep onset.
 - **Accessible &amp; tidy** — global **UI text-size**, a **calm-visuals (reduce-motion)**
   toggle, an **always-warm low-blue screen** for evening eye comfort, drag-and-drop file
-  loading, and a **searchable chooser** for the long lists (200+ stories, 148 voices).
+  loading, and a **searchable chooser** for the long lists (200+ stories, 149 voices).
 - **Per-mode visual scenes** — a breathing **orb** (motes, exhale rings, a coherence halo
   near 6 bpm), a starry **night**, a moonlit **sea**, tone-reactive **ripples**, an
   on-screen **pitch trainer**, and themed animated **backdrops** (stars, embers, rain,

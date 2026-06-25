@@ -171,6 +171,15 @@ register(VoiceConfig(
     description="A wave swells in on the inhale and recedes on the exhale."))
 
 register(VoiceConfig(
+    # Calibrated: at gain 1.0 this brown-noise wash peaks ~3.9 / rms ~0.81; gain
+    # 0.08 -> peak ~0.30, rms ~0.065 (a touch softer than Ocean Waves, for sleep).
+    "Distant Surf (night)", GROUP_NATURE, noise="brown", env="volume",
+    filt=("lowpass", 560.0, 0.7), bright_base=240.0, bright_mod=520.0,
+    floor=0.72, gain=0.08, width=0.85, pan_rate=0.02, pan_depth=0.28,
+    description="A far-off ocean at night: a low, steady wash that breathes "
+                "softly in and out, darker and gentler than Ocean Waves."))
+
+register(VoiceConfig(
     "Gentle Rain", GROUP_NATURE, noise="white", env="volume",
     filt=("bandpass", 2600.0, 0.5), bright_base=9000.0, bright_mod=3000.0,
     floor=0.2, gain=0.22, width=0.85,

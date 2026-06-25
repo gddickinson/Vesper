@@ -3333,6 +3333,23 @@ to ~0.5 and keeps reading; past the ramp -> 0.0 and `_read_follow` stops it; the
 threads stable 2->2) -- using a back-dated `_read_fade_t0` so it needs no real waiting; all 31 offline
 tests green; selftest + drive_check (0 issues); files < 500 (`win_read` 223, `sections_read` 141).
 
+## Sleep ambience: "Distant Surf (night)"
+A new procedural nature bed tuned for falling asleep: a far-off ocean at night -- a low, steady,
+*dark* wash that breathes softly in and out, gentler than the existing brighter "Ocean Waves". It is a
+single data-driven `register(VoiceConfig(...))` in the Nature group (no synthesis code): brown noise
+(warmer/darker than pink), a low `lowpass` cutoff (560 Hz, so there is no bright spray/hiss -- distance
+rolls off the highs), a high `floor` (0.72) so it reads as a continuous distant hush rather than
+discrete crashing waves, a wide stereo image and a very slow gentle pan. **Calibrated** per the project
+rule (build at gain 1.0, measure, set gain = target/peak): at unit gain it peaks ~3.9 / rms ~0.81, so
+gain **0.08** gives peak ~0.30 (ample headroom under the 1.0 ceiling selftest enforces for every voice)
+and rms ~0.065 -- a touch softer than Ocean Waves (0.078), which suits a subtle night bed. Also added
+to `ambrotate.BEDS` so the long-session ambience auto-rotate includes it; it appears automatically in
+every GROUP_NATURE picker (Relax soundscape mixer, Sleep/story ambience, the mixer). Verified: new
+`tools/test_distant_surf.py` (registered as a brown-noise Nature voice; renders finite with peak <0.7
+and audible rms; softer than Ocean Waves; in the rotation and all beds reachable); **selftest passes**
+(now 22 Nature voices / 149 voice names, every voice peak <= 1.0); all 32 offline tests; drive_check 0
+issues; README voice count bumped 148 -> 149.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
