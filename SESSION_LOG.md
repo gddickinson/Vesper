@@ -3242,6 +3242,37 @@ pre-existing RNG flake unrelated to this change (soft-clip handles it; noted for
 calibration nudge); story DB rebuilt (322k words); offline tests (27) green; drive_check 0 issues;
 README counts bumped to 237/48; all files < 500 lines.
 
+## Books: library management + a diagnostic, integrity-checked downloader (user-requested)
+Four linked book complaints, investigated end-to-end and fixed together.
+**(1) "Downloaded books don't appear in the Read picker."** Root cause: the Find & manage dialog
+rebuilt only the *Sleep* workspace after a download/import; Read (which also has a book picker) was
+left stale. Fix: a shared `booklib._refresh_app` rebuilds the menus AND the *current* workspace when
+it is Sleep **or** Read, so a new book shows up immediately. **(2) "Books come through shortened."**
+Measured the whole pipeline against real downloads (Pride and Prejudice 6,598 sentences, War and Peace
+34,170; strip keeps 97-99%) -- the text processing was fine. The real cause was that the fetch did
+**no integrity check**: an interrupted / short read returned a partial body and `download()` happily
+saved a half-book. Fix: `booksource` now reads to EOF in chunks, lets a `Content-Length` mismatch
+surface as an IncompleteRead, raises the size cap to 25 MB (and *reports* `too_large` instead of
+silently truncating), and -- the key check -- **refuses a Gutenberg body that has a START band but no
+END band** (`booktext.pg_markers`), the signature of a truncated download, rather than saving it short.
+**(3) "Downloads fail with no reason."** `search`/`download` swallowed every exception into None/[].
+Added `search_ex`/`download_ex` returning a typed `Outcome`/reason via a `DownloadError`/`_classify`
+taxonomy (no_network · timeout · tls · http_404/403/429/5xx · incomplete · too_large · empty ·
+not_text), with **retry+backoff** on transient failures (429/5xx/timeout/incomplete) and none on
+permanent ones (404/403); the dialog now shows the exact, plain-language reason. **(4) "Show length /
+quality before downloading."** New pure `bookmeta` turns Gutenberg's `download_count` into a ★ popularity
+band, spells out the language, and estimates calm-narration length; search rows now read e.g. "Alice's
+Adventures in Wonderland -- ★★★ very popular", a "Check length" button probes the size on demand, and
+the **exact** length (sentences · ~hours · MB) shows on download and in the library list. Plus real
+**management**: rename in place, re-download (find a fresh copy), delete-with-confirm, and a live
+"N books · ~Xh · Y MB" report (`books.update_meta`/`disk_bytes`, `bookmeta.library_report`). Kept the
+back-compat `search`/`download`; everything stays public-domain-only, network-only-on-an-explicit-call,
+fail-closed. New `breathsim/bookmeta.py` (191); `booksource` 129->~345; `booklib` rewritten (388). Verified:
+live search+download of a real book (1,697 sentences, ~3.6 h, 170 KB, boilerplate stripped); new
+`tools/test_bookmeta.py` + `test_booklib.py` (offscreen: the Read-picker refresh, typed-reason display,
+rename/delete, report) + extended `test_booksource.py` (Outcome paths, integrity refusal, 404/403/429
++ retry, no-network); all 29 offline tests green; selftest + drive_check (0 issues); every file < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

@@ -54,6 +54,17 @@ _PG_END2 = re.compile(r"^\s*END OF (?:THE|THIS) PROJECT GUTENBERG.*$", re.I | re
 _PRODUCED = re.compile(r"^\s*Produced by .*$", re.I | re.M)
 
 
+def pg_markers(text):
+    """Return ``(has_start, has_end)`` for the Project Gutenberg header/footer
+    bands. A Gutenberg download with a START band but no END band was almost
+    certainly **truncated** mid-book -- the downloader uses this to refuse a
+    half-book rather than save a silently-shortened one."""
+    t = text or ""
+    has_start = bool(_PG_START.search(t) or _PG_START2.search(t))
+    has_end = bool(_PG_END.search(t) or _PG_END2.search(t))
+    return has_start, has_end
+
+
 def strip_boilerplate(text):
     """Return just the book body: drop the PG header (everything up to the START
     band) and footer (everything from the END band), plus a stray 'Produced by'

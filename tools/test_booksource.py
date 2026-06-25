@@ -89,7 +89,63 @@ def main():
     assert booksource.download(r, fetch=boom) is None
     print("ok: network failure degrades to []/None")
 
-    print("PASS: booksource -- public-domain search/download, offline, fail-closed")
+    # --- richer metadata in parsed results ---
+    assert "download_count" in r and "languages" in r
+    print("ok: parsed results carry download_count + languages")
+
+    # --- typed download outcomes (the diagnostics) ---
+    out = booksource.download_ex(r, fetch=lambda url: PG_TEXT)
+    assert out.ok and out.reason == "saved" and out.sentences >= 3
+    assert out.byte_size == len(PG_TEXT)
+    print(f"ok: download_ex -> Outcome(saved, {out.sentences} sentences)")
+
+    # integrity: a Gutenberg START band with no END band == a truncated download,
+    # refused with reason 'incomplete' (the 'my book is shortened' fix)
+    truncated = (b"*** START OF THE PROJECT GUTENBERG EBOOK FOO ***\n\n"
+                 b"Half a chapter that the connection cut off mid-sen")
+    o = booksource.download_ex({"title": "Foo", "text_url": "u",
+                                "source": "gutenberg"}, fetch=lambda url: truncated)
+    assert not o.ok and o.reason == "incomplete", o
+    print("ok: truncated Gutenberg body refused (incomplete), not saved short")
+
+    # empty / no-text-format outcomes
+    assert booksource.download_ex(r, fetch=lambda url: b"  \n ").reason == "empty"
+    assert booksource.download_ex({"title": "X"}).reason == "not_text"
+    print("ok: empty body + no-text-format carry clear reasons")
+
+    # typed network reasons surfaced (not just None)
+    import urllib.error
+    def http(code):
+        def f(url):
+            raise urllib.error.HTTPError("u", code, "x", {}, None)
+        return f
+    assert booksource.download_ex(r, fetch=http(404)).reason == "http_404"
+    assert booksource.download_ex(r, fetch=http(403)).reason == "http_403"
+    assert booksource.download_ex(r, fetch=boom).reason == "no_network"
+    print("ok: HTTP 404/403 + no-network surfaced as typed reasons")
+
+    # classification covers timeouts + incomplete reads
+    import http.client
+    import socket
+    assert booksource._classify(socket.timeout()).reason == "timeout"
+    assert booksource._classify(http.client.IncompleteRead(b"")).reason == "incomplete"
+    assert booksource._classify(http.client.IncompleteRead(b"")).retryable
+    print("ok: timeouts + incomplete reads classified (retryable)")
+
+    # search_ex carries a reason; retryable failures are retried then reported
+    rows, reason = booksource.search_ex("pride", fetch=lambda url: GUTENDEX_JSON)
+    assert rows and reason == ""
+    assert booksource.search_ex("")[1] == "empty_query"
+    assert booksource.search_ex("x", fetch=boom)[1] == "no_network"
+    calls = [0]
+    def flaky(url):
+        calls[0] += 1
+        raise urllib.error.HTTPError("u", 429, "Too Many", {}, None)
+    assert booksource.search_ex("x", fetch=flaky)[1] == "http_429"
+    assert calls[0] >= 2, "a 429 (retryable) should be retried before giving up"
+    print(f"ok: search_ex reasons + retry (429 tried {calls[0]}x)")
+
+    print("PASS: booksource -- search/download, diagnostics, integrity, offline")
     return 0
 
 

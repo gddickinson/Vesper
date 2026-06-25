@@ -148,6 +148,33 @@ def delete(book_id):
     clear_position(book_id)
 
 
+def disk_bytes(book_id):
+    """Bytes the book's content file occupies on disk (0 if missing)."""
+    try:
+        return os.path.getsize(_content_path(book_id))
+    except OSError:
+        return 0
+
+
+def update_meta(book_id, title=None, author=None):
+    """Rename a saved book in place: update its title/author in both the content
+    file and the index, keeping the same id (so resume + reader links survive).
+    Returns True on success, False if the book is missing. Empty strings ignored."""
+    book = load(book_id)
+    if book is None:
+        return False
+    if title and title.strip():
+        book.title = title.strip()
+    if author is not None and author.strip():
+        book.author = author.strip()
+    with open(_content_path(book.id), "w") as fh:
+        json.dump(book.to_dict(), fh)
+    idx = [b for b in list_books() if b.get("id") != book_id]
+    idx.append(book.meta())
+    _meta_write("_index.json", idx)
+    return True
+
+
 # --- resume position (a flat sentence index) -------------------------------
 
 def _progress():

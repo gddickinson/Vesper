@@ -57,7 +57,11 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   with **read-along text** that highlights and auto-scrolls, **Night / Sepia / Day** reading
   themes, adjustable pace and resume-where-you-fell-asleep. A book can also be a **bedtime
   read** in Sleep, fading out with the sleep timer — and an optional **dramatized cast** can
-  voice each character with its own narrator, face and mood.
+  voice each character with its own narrator, face and mood. A **Find & manage books** window
+  shows each result's popularity and estimated length, **says exactly why** a download failed
+  (no internet · not found · timed out · server busy…), **verifies a book arrives whole**
+  (no more silently-shortened downloads), and lets you rename, re-download and delete books
+  with a running "N books · ~X h · Y MB" library summary.
 - **Realistic chanting** — **66 mantras, chants &amp; songs** (Om Mani Padme Hum, Aum,
   Om Tare Tuttare, Nam Myoho Renge Kyo, Gregorian plainchant, vocalises, affirmations)
   sung as articulated syllables with real consonants, over a tonic drone with a reciting

@@ -155,6 +155,24 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Books: library management + a diagnostic, integrity-checked downloader** (user-requested; four
+      linked complaints fixed together). (1) *Downloaded books never showed in the Read picker* -- the
+      dialog rebuilt only the Sleep workspace; `booklib._refresh_app` now rebuilds the current workspace
+      (Sleep **or** Read). (2) *Books came through shortened* -- the fetch had no integrity check, so an
+      interrupted read saved a half-book; `booksource` now reads to EOF, verifies completeness, raises +
+      reports the size cap, and **refuses a Gutenberg body with a START band but no END band**
+      (`booktext.pg_markers`) -- the signature of a truncated download. (3) *Downloads failed with no
+      reason* -- new `search_ex`/`download_ex` return a typed `Outcome`/reason (no_network · timeout ·
+      http_404/403/429/5xx · incomplete · too_large · empty · not_text) with retry+backoff on transient
+      errors; the dialog shows the exact reason. (4) *Show length/quality before downloading* -- new pure
+      `bookmeta` gives a ★ popularity band (from `download_count`), language, and an estimated narration
+      length; rows read e.g. "★★★ very popular", a "Check length" probe + the exact post-download length
+      (sentences · ~hours · MB) show too. Plus rename / re-download / delete-with-confirm and a live
+      "N books · ~Xh · Y MB" report (`books.update_meta`/`disk_bytes`). Back-compat `search`/`download`
+      kept; public-domain-only, network-only-on-call, fail-closed. New `breathsim/bookmeta.py`;
+      `booklib.py` rewritten. Verified: live download of a real book (1,697 sentences, ~3.6 h, full,
+      boilerplate stripped); `tools/test_bookmeta.py` + `test_booklib.py` + extended `test_booksource.py`;
+      all 29 offline tests; selftest; drive_check (0 issues).
 - [x] **Read mode: Night / Sepia / Day reading themes** (reading comfort): the read-along page can be
       Night (dark default), Sepia (warm cream/brown paper) or Day (light). `read_pane.THEMES` +
       `set_theme` recolour the `QTextEdit` and the per-theme sentence highlight (re-highlighting the

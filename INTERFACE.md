@@ -458,10 +458,12 @@ Bell). Together these four `synth_*` modules add 31 synthesised instrument/effec
 
 **Audiobooks (the novels/reader feature, in progress):** **`booktext`** — pure text
 processing (no I/O): `to_ascii` (fold smart quotes/dashes/accents), `strip_boilerplate`
-(Project Gutenberg header/footer), `split_paragraphs`, `split_sentences` (abbreviation-aware),
+(Project Gutenberg header/footer), **`pg_markers`** (has-START/has-END, so a truncated download is
+detectable), `split_paragraphs`, `split_sentences` (abbreviation-aware),
 `segment` → paragraphs-of-sentences, `chapter_marks`; and **`books`** — a `Book` model
 (`paragraphs` + `sentences()`/`sentence_count()`/`paragraph_starts()`), `from_text`, and a **local
-library** at `~/.breathsim/books` (`save`/`load`/`list_books`/`delete` + a self-contained
+library** at `~/.breathsim/books` (`save`/`load`/`list_books`/`delete`/**`disk_bytes`**/
+**`update_meta`** (rename in place) + a self-contained
 `_index.json`/`_progress.json`) with a per-book **resume** `position`/`set_position`/`clear_position`.
 And **`bookreader`** — `units(book, start, line_pause, para_pause)` / `resume_units(book)` yield one
 narrator unit per sentence (longer pause at paragraph ends; the `sentence` index drives resume).
@@ -470,11 +472,25 @@ Offline-tested (`tools/test_books.py`, `tools/test_bookreader.py`). The non-slee
 <title>"): `stories.book_names()`/`book_id_for()` + a `BOOK_PREFIX` dispatch in `story_units`/
 `ambience_for` narrate it through the ordinary Sleep path (so it rides the wind-down + sleep-timer
 fade-out) and resume by sentence (`tools/test_book_story.py`). **`booksource`** is the on-demand
-public-domain **downloader** -- pure `parse_gutendex`/`text_to_book` + networked `search`/`download`
-(Project Gutenberg via the open Gutendex API, NO key; network only on an explicit call, UA + timeout +
-size cap + rate limit, fail-closed); `vesper/booklib.py` is its **Find & manage books** dialog (Books
-menu: off-thread search/download + a delete-able library list). Offline-tested with an injected fetch
-(`tools/test_booksource.py`, zero sockets). **`bookimport`** imports the user's OWN files (no network):
+public-domain **downloader** -- pure `parse_gutendex` (now also carries `download_count`/`languages`)
+/`text_to_book` + networked `search`/`download` (back-compat) **and the diagnostic
+`search_ex`/`download_ex`** returning a typed `Outcome`/reason + a `DownloadError`/`_classify`
+taxonomy (no_network · timeout · tls · http_404/403/429/5xx · incomplete · too_large · empty ·
+not_text), an **integrity check** (a Gutenberg START band with no END band == a truncated download,
+*refused* not saved — the fix for "my book came through shortened"), a full **read-to-EOF + retry +
+raised size cap**, and `probe_size` (a best-effort pre-download size). Project Gutenberg via the open
+Gutendex API, NO key; network only on an explicit call, UA + timeout + rate limit, fail-closed. NEW
+**`bookmeta`** — pure book *descriptions*: `popularity`/`popularity_label` (★ banding from
+`download_count`), `language_label`, `estimate_minutes`/`length_label`/`format_duration`/`format_size`,
+`describe_result` (search row: popularity · language · est. length) / `describe_book` (library row:
+sentences · est. hours), and `library_report`/`report_line` (count · reading-time · disk).
+`vesper/booklib.py` is the **Find & manage books** dialog (Books menu: off-thread search/download
+showing **the specific failure reason**, popularity/length on each result, a "Check length" probe, and
+a managed library list — open-in-Reader, rename, **re-download**, **delete with confirm**, + a live
+"N books · ~Xh · Y MB" report). `booklib._refresh_app` rebuilds the menus AND the **current** workspace
+(Sleep *or* **Read**) so a newly added book appears in the Read picker at once (a fixed bug).
+Offline-tested with an injected fetch + an offscreen GUI test
+(`tools/test_booksource.py`/`test_bookmeta.py`/`test_booklib.py`, zero sockets). **`bookimport`** imports the user's OWN files (no network):
 `import_txt`/`import_epub`/`import_file` -- defensive decode, stdlib zipfile+xml.etree EPUB parse (OPF
 spine + tag-strip) with **zip-bomb guards** (per-entry/total/entry-count caps), fail-closed, saved
 LOCAL; the GUI hook is `booklib.import_book_dialog` (Books ▸ "Import a book (file)..." + a button in
