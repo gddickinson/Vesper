@@ -65,6 +65,8 @@ class _StoryMixin:
     def _apply_speech_pace(self):
         """Subtly slow the speech + lengthen the between-statement pauses as the
         session goes on (gentle wind-down over ~10 minutes)."""
+        if getattr(self, "_reading", False):
+            return                              # the book reader owns the pace
         prog = min(1.0, self.controller.elapsed() / 600.0)
         rate = getattr(self, "_char_rate", 1.0)             # the character's own pace
         self.narrator.speed = self._speech_speed * rate * (1.0 - 0.18 * prog)

@@ -400,6 +400,15 @@ pipeline (narration, pacing, sleep-timer fade, ambience) is reusable. Ground the
   `_index.json` "books table" + `_progress.json` resume, so `store.py` stays < 500); save/load/list/
   delete + resume position. Offline test `tools/test_books.py`; selftest + both-faces drive + all 7
   LLM tests still pass. (Next R2: BookReader narration + reader mode.)
+- [x] **R2 done — Reader mode + `BookReader`** (non-sleep, per the user, before the sleep slice):
+  pure `breathsim/bookreader.py` (`units`/`resume_units` -- one narrator unit per sentence, longer
+  pause at paragraph ends, resume from the saved index) + `vesper/reader.py` (a new **Books ▸ Read a
+  book…** dialog: book picker (empty-safe), **TEXT↔AUDIO toggle**, paragraph-pause preset, reading-
+  speed slider; narrates through the shared Narrator at a steady reading pace with a `_reading` guard
+  so the session loop doesn't fight it; persists resume per sentence; read-along **highlights + scrolls**
+  the current sentence via a GUI-thread QTimer). Offline test `tools/test_bookreader.py`. selftest +
+  both-faces drive (0 issues) + a thread-stable offscreen open/close + a populated Reader PNG; all 9
+  offline tests pass. (Next R3: BookReader under the Sleep wind-down + fade-out.)
 - [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
       conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
       of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The

@@ -293,6 +293,11 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   Status shows backend + key **source**, never the key. Qt-free helpers `status_text`/
   `apply_key`/`forget` (the key is never returned in any message). Offline test:
   `tools/test_llm_settings.py`.
+- **reader.py** — the non-sleep **Book Reader** (Books ▸ "Read a book…"): a modeless dialog with a
+  book picker (empty-safe), a **read-along text ↔ audio-only** toggle, paragraph-pause + reading-speed
+  presets; narrates a `books.Book` via `bookreader.units` through the shared Narrator at a steady pace
+  (no breath-gating; `win._reading` guards `_apply_speech_pace`), persists the resume position per
+  sentence, and (read-along) highlights + scrolls the current sentence via a GUI-thread QTimer.
 - **llm_story_action.py** — the Sleep **"Generate a bedtime story (AI)"** action (a button on the
   story card). `can_generate` gates on `llm_story.available()` (disabled + hinted with no backend);
   `make_story(topic, complete=None)` generates + registers one AI story (Qt-free, off-thread safe);
@@ -393,7 +398,10 @@ processing (no I/O): `to_ascii` (fold smart quotes/dashes/accents), `strip_boile
 (`paragraphs` + `sentences()`/`sentence_count()`/`paragraph_starts()`), `from_text`, and a **local
 library** at `~/.breathsim/books` (`save`/`load`/`list_books`/`delete` + a self-contained
 `_index.json`/`_progress.json`) with a per-book **resume** `position`/`set_position`/`clear_position`.
-Offline-tested (`tools/test_books.py`); narration + reader UI land in later rounds.
+And **`bookreader`** — `units(book, start, line_pause, para_pause)` / `resume_units(book)` yield one
+narrator unit per sentence (longer pause at paragraph ends; the `sentence` index drives resume).
+Offline-tested (`tools/test_books.py`, `tools/test_bookreader.py`). The non-sleep Reader UI is
+`vesper/reader.py` (Books menu); the on-demand downloader + import land in later rounds.
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

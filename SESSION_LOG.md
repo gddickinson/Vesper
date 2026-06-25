@@ -2253,6 +2253,27 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Audiobooks round 2 — the Reader mode (non-sleep) + BookReader
+Per the user's decision, built the non-sleep READER before the sleep slice. New pure
+`breathsim/bookreader.py`: `units(book, start, line_pause, para_pause)` yields one narrator unit per
+sentence (`{"text","pause","kind":"book","sentence":i}`) with a longer pause at each paragraph end
+(via `Book.paragraph_starts`), plus `resume_units(book)` that starts from the saved position (and
+restarts when finished). New `vesper/reader.py` — a modeless **Reader** dialog (Books ▸ "Read a
+book…", new top-level **Books** menu): a book picker (empty-safe -- Start disabled with a gentle note
+until the library has books, which the downloader/import rounds populate), a **TEXT↔AUDIO toggle**
+("Show read-along text"), a "Longer pauses between paragraphs" preset, and a **reading-speed** slider.
+Start narrates the book through the shared `narration.Narrator` at a STEADY reading pace -- no
+breath-gating, no Sleep wind-down (a new `_reading` guard in `win_story._apply_speech_pace` stops the
+session loop fighting the reader's pace) -- and **persists the resume position** (`books.set_position`)
+as each sentence is spoken. In read-along, a GUI-thread `QTimer` follows the narrator's current
+sentence and **highlights + scrolls** to it (paragraph breaks preserved in the pane). Offline test
+`tools/test_bookreader.py` (units/pauses/start/resume). Verified: that test + the 8 other offline
+tests (7 LLM + books) pass; selftest (148 voices, 201 lectures); both-faces drive (0 issues, threads
+stable); a ~60-tick offscreen open/close of the Reader with **zero thread leak** (empty library ->
+Start disabled); rendered + eyeballed a populated Reader PNG (read-along highlight on sentence 3).
+Files: reader 190, bookreader 40, menus 371 -- all < 500. (Next R3: the same BookReader under the
+Sleep wind-down + fade-out timer; a Stories branch round is also due soon.)
+
 ## Audiobooks round 1 — books.py core (model + tokenizer + library, offline)
 Start of the user-requested audiobooks/novels thread. Two pure new core modules, no network:
 `breathsim/booktext.py` (text processing — `to_ascii` folds smart quotes/dashes/ellipses/accents to

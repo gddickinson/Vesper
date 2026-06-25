@@ -33,6 +33,7 @@ def build(win):
     _file(win, mb.addMenu("File"))
     _list_menu(mb.addMenu("Modes"), _modes(), win.apply_mode)
     _sessions(win, mb.addMenu("Sessions"))
+    _books(win, mb.addMenu("Books"))
     _pattern(win, mb.addMenu("Pattern"))
     _voice(win, mb.addMenu("Voice"))
     _sound(win, mb.addMenu("Sound"))
@@ -96,6 +97,18 @@ def _sessions(win, m):
     for cat in lectures.categories():
         surprise.addAction(cat).triggered.connect(
             lambda _c=False, x=cat: win.surprise_in_branch(x))
+
+
+def _books(win, m):
+    """The audiobook / novels feature. The Reader narrates a public-domain or
+    user-supplied book at a steady reading pace, with read-along text. Importing
+    and downloading books arrive in later rounds."""
+    from . import reader
+    m.addAction("Read a book…").triggered.connect(lambda: reader.open_reader(win))
+    from breathsim import books
+    n = len(books.list_books())
+    info = m.addAction(f"In your library: {n}" if n else "Library is empty")
+    info.setEnabled(False)
 
 
 def _voice(win, m):
