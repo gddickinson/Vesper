@@ -3007,6 +3007,26 @@ independently validated (7x12, pure ASCII, every section sleepward), registered 
 `lectures._CATALOG`. Verified: selftest passes (**229 lectures across 46 branches**); story DB
 rebuilt (309k words); offline tests (23) green; drive_check 0 issues; all files < 500 lines.
 
+## Stories round — new branch "Wetlands & Marshes" (4 lectures)
+Added a 47th lecture branch, **Wetlands & Marshes** - the slow water worlds, a habitat the library
+hadn't covered (we had rivers, lakes, ocean, forests, grasslands): *The Marsh* (a freshwater reed
+marsh - cattails in still brown water, the patient motionless heron, red-winged blackbirds, the
+dusk frog chorus, the marsh as a great green sponge, mist rising at evening), *The Cypress Swamp*
+(a drowned forest of bald cypress rising from glassy tea-dark water that mirrors every trunk,
+Spanish moss in soft grey veils, the knobbly cypress knees, the dim green hush, turtles and a
+dozing alligator, a warm dusk rain), *The Mangroves* (the trees that wade in the warm sea on
+arching stilt roots, the tide breathing in and out, the sheltering nursery for tiny fish and crabs,
+the green wall that softens storms, the vast Sundarbans, a tide turning at dusk), and *The Peat Bog*
+(the soft spongy mossy ground, sphagnum holding water like a sponge, peat gathering a hair's breadth
+a year over millennia - nothing lost, only kept - cottongrass and sundews, dark still pools, a grey
+drizzle and low mist). Each = the standard 7 sections x 12 second-person present-tense sentences,
+accurate but gentle (the alligator only dozes; the bog framed purely as patient keeping, no grim
+imagery), every section easing toward sleep; ambiences Night Crickets / Soft Rainstorm / Ocean
+Waves / Gentle Rain. Drafted via four parallel subagents, independently validated (7x12, pure
+ASCII, every section sleepward, an alarm-word scan clean), registered in `lectures._CATALOG`.
+Verified: selftest passes (**233 lectures across 47 branches**); story DB rebuilt (315k words);
+offline tests (25) green; drive_check 0 issues; all files < 500 lines.
+
 ## Bedtime "park your worries" / tomorrow's-list offload (Sleep, opt-in)
 A second gentle, evidence-based bedtime note alongside gratitude: writing a brief to-do / worry list
 just before bed measurably shortens sleep-onset latency (Scullin et al. 2018) -- setting tomorrow's

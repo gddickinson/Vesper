@@ -78,6 +78,8 @@ from . import lectures_ceres, lectures_eris  # The Dwarf Planets
 from . import lectures_haumea, lectures_pluto
 from . import lectures_pampas, lectures_prairie  # Grasslands of the World
 from . import lectures_serengeti, lectures_steppe
+from . import lectures_bog, lectures_mangroves  # Wetlands & Marshes
+from . import lectures_marsh, lectures_swamp
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -233,6 +235,8 @@ _CATALOG = [
                            lectures_eris, lectures_haumea]),
     ("Grasslands of the World", [lectures_serengeti, lectures_steppe,
                                  lectures_prairie, lectures_pampas]),
+    ("Wetlands & Marshes", [lectures_marsh, lectures_swamp,
+                            lectures_mangroves, lectures_bog]),
 ]
 
 LECTURES = {}

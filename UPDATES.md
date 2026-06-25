@@ -359,6 +359,18 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       Sessions menu ("One good thing…" + "Bedtime gratitude" toggle), a kind "Good things noted: N"
       line in Stats, and settings persistence. Verified: `tools/test_gratitude.py` + offscreen GUI
       smoke (menus present, threads stable) + selftest + drive_check.
+- [x] **Stories (next branch)** — **Wetlands & Marshes** (4): *The Marsh* (a freshwater reed marsh -
+      cattails, the patient heron, the dusk frog chorus, the marsh as a green sponge, evening mist),
+      *The Cypress Swamp* (a drowned cypress forest mirrored in tea-dark water, Spanish moss, cypress
+      knees, the dim green hush, a dozing alligator, warm dusk rain), *The Mangroves* (trees wading in
+      the sea on stilt roots, the breathing tide, the fish nursery, the storm-softening green wall,
+      the Sundarbans), and *The Peat Bog* (soft sphagnum moss, peat gathering a hair a year over
+      millennia - nothing lost only kept, cottongrass and sundews, dark pools, grey drizzle). Each =
+      7x12 second-person present sleep-closing ASCII lines, kept gentle (the alligator dozes; the bog
+      framed as patient keeping, no grim imagery); ambiences Night Crickets / Soft Rainstorm / Ocean
+      Waves / Gentle Rain. Drafted via four parallel writers, validated (7x12, pure ASCII, sleepward,
+      alarm-scan clean), registered in `lectures._CATALOG`. Verified: **selftest 233 lectures / 47
+      branches**; story DB rebuilt (315k words); all 25 offline tests; drive_check 0 issues.
 - [x] **Stories (next branch)** — **Grasslands of the World** (4): *The Serengeti* (East African
       savanna; wind over endless golden grass; the slow wildebeest migration; acacias + giraffes;
       dozing lions; the Milky Way over the plain), *The Steppe* (the Eurasian grass ocean; endless
