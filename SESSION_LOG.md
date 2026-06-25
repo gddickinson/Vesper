@@ -2253,6 +2253,22 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## CAST round 1 — more characters + costumes (start of the dramatized-books thread)
+First round of the user-requested cast-narration thread: more cast members. Two new 2D characters on
+the shared cute-character kit -- `char_mouse.py` (a soft grey Mouse: big round ears, pink nose, fine
+whiskers, curling tail) and `char_sheep.py` (a fluffy cream Sheep: a cloud of wool around a calm tan
+face, floppy ears, a brow curl) -- registered in `characters.py` (15 -> **17 characters**) with their
+own `char_voice` profiles (Mouse: tiny/gentle af_sky; Sheep: fluffy/calm af_heart). Five new costumes
+in `char_costume.py` (12 -> **17**): sleep-friendly **Nightcap** (droopy pompom cap), **Sleep Mask**
+(on the brow), **Earmuffs**, plus **Witch Hat** and **Pirate Hat** (cast-ready), all drawn from the
+shared Head anchor so they fit every character. Verified: rendered a montage PNG of the two new
+characters + the five costumes on assorted characters and eyeballed it (all cute + on-theme);
+selftest; both-faces drive (3d & cat, 0 issues, threads stable); a ~45-tick offscreen FaceWidget run
+switching to Mouse then Sheep + Nightcap with **zero thread leak**; all 13 offline tests still pass.
+README/CLAUDE bumped to 17 characters / 17 costumes. Files: char_mouse 107, char_sheep 102,
+char_costume 318 -- all < 500. (Next CAST-2: breathsim/bookcast.py heuristic dialogue/attribution ->
+a cast Script.)
+
 ## Audiobooks round 6 — progress polish (% read + "Continue your book" hint) -- thread COMPLETE
 The final audiobook polish round; the novels/audiobook thread is now end-to-end. Two pure additions to
 `breathsim/books.py`: `percent_read(book_id)` (0..100 from the saved position vs the index sentence

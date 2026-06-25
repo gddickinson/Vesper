@@ -53,6 +53,6 @@ and **lip-syncs** the bedtime story. **Always read `INTERFACE.md` first.**
 ## Status
 At parity with (and well beyond) the legacy Tk app: 6 modes, 148 voices, 22 breath
 patterns, 11 guided programs, 66 chants, **209 sleep-lectures across 41 branches**,
-15 cartoon characters + costumes + per-character voices, optional XTTS voices, a
+17 cartoon characters + costumes + per-character voices, optional XTTS voices, a
 master reverb space, and story-following soundscape/backdrop/character. Ongoing work
 is tracked in `UPDATES.md`; per-round notes in `SESSION_LOG.md`.

@@ -188,6 +188,102 @@ def _halo(p, hd, a, hue):                         # glowing floating halo
     p.setPen(B.NOPEN)
 
 
+def _nightcap(p, hd, a, hue):                     # cosy sleeping cap + droopy tip
+    cx, R, top = hd.cx, hd.R, hd.top
+    p.setPen(B.NOPEN)
+    p.setBrush(B.qc(theme.blend(hue, "#13202c", 0.5)))
+    p.drawChord(QRectF(cx - R * 1.0, top - R * 0.55, R * 2.0, R * 1.5),
+                8 * 16, 164 * 16)                      # snug dome
+    droop = math.sin(a.t * 0.9) * R * 0.12
+    tipx = cx - R * (0.7 + 0.2 * a.sway) + droop
+    tipy = top - R * 0.2
+    p.drawPolygon(B.poly((cx - R * 0.2, top - R * 0.5),
+                         (cx + R * 0.1, top - R * 0.5),
+                         (tipx, tipy)))                # flopping point
+    p.setBrush(B.qc(theme.blend(hue, "#ffffff", 0.22)))   # fold band
+    p.drawRoundedRect(QRectF(cx - R * 1.0, top + R * 0.12, R * 2.0, R * 0.28),
+                      R * 0.14, R * 0.14)
+    _pompom(p, tipx, tipy, R * 0.17, hue, a)
+
+
+def _sleepmask(p, hd, a, hue):                    # eye mask pushed up on the brow
+    cx, cy, R = hd.cx, hd.cy, hd.R
+    y = cy - R * 0.36
+    p.setPen(B.NOPEN)
+    p.setBrush(B.qc(theme.blend(hue, "#241a3a", 0.45)))
+    p.drawRoundedRect(QRectF(cx - R * 0.86, y - R * 0.24, R * 1.72, R * 0.5),
+                      R * 0.24, R * 0.24)
+    B.pen(p, B.qc(theme.blend(hue, "#ffffff", 0.5), 0.6), R * 0.05)   # strap
+    p.drawArc(QRectF(cx - R * 1.02, y - R * 0.3, R * 2.04, R * 0.7),
+              200 * 16, 140 * 16)
+    p.setPen(B.NOPEN)
+    for s in (-1, 1):                                  # closed-eye stitches
+        B.pen(p, B.qc("#cfe0ea", 0.7), R * 0.03)
+        p.drawArc(QRectF(cx + s * R * 0.42 - R * 0.18, y - R * 0.1,
+                         R * 0.36, R * 0.24), 200 * 16, 140 * 16)
+    p.setPen(B.NOPEN)
+
+
+def _earmuffs(p, hd, a, hue):                     # fuzzy ear warmers on a band
+    cx, cy, R, top = hd.cx, hd.cy, hd.R, hd.top
+    B.pen(p, B.qc(theme.blend(hue, "#ffffff", 0.4), 0.85), R * 0.12)
+    p.drawArc(QRectF(cx - R * 0.96, top - R * 0.2, R * 1.92, R * 1.2),
+              20 * 16, 140 * 16)                       # head band
+    p.setPen(B.NOPEN)
+    for s in (-1, 1):
+        ex, ey = cx + s * R * 0.96, cy - R * 0.18
+        gl = QRadialGradient(ex, ey, R * 0.5)
+        gl.setColorAt(0.0, B.qc(theme.blend(hue, "#ffffff", 0.5), 0.9))
+        gl.setColorAt(1.0, B.qc(hue, 0.0))
+        p.setBrush(QBrush(gl)); p.drawEllipse(QPointF(ex, ey), R * 0.5, R * 0.5)
+        p.setBrush(B.qc("#ffffff", 0.92))
+        p.drawEllipse(QPointF(ex, ey), R * 0.34, R * 0.4)
+
+
+def _witch(p, hd, a, hue):                        # pointed witch hat + buckle
+    cx, R, top = hd.cx, hd.R, hd.top
+    sway = a.sway * R * 1.2
+    tip = (cx + sway, top - R * 1.7)
+    base_y = top + R * 0.1
+    bend = (cx + sway * 1.6 + R * 0.18, top - R * 0.9)   # bent point
+    p.setPen(B.NOPEN)
+    p.setBrush(B.qc("#1c1530"))
+    p.drawPolygon(B.poly(tip, bend, (cx - R * 0.72, base_y),
+                         (cx + R * 0.72, base_y)))
+    p.setBrush(B.qc("#15102a"))                          # wide brim
+    p.drawEllipse(QPointF(cx, base_y), R * 1.05, R * 0.24)
+    p.setBrush(B.qc(theme.blend(hue, "#241a3a", 0.4)))   # band
+    p.drawRect(QRectF(cx - R * 0.5, base_y - R * 0.28, R * 1.0, R * 0.18))
+    p.setBrush(B.qc(theme.blend(hue, "#ffffff", 0.45)))  # buckle
+    p.drawRect(QRectF(cx - R * 0.1, base_y - R * 0.3, R * 0.2, R * 0.22))
+    _star(p, tip[0], tip[1] + R * 0.1, R * 0.1, hue, 0.6 + 0.4 * math.sin(a.t * 3))
+
+
+def _pirate(p, hd, a, hue):                       # tricorne pirate hat + skull
+    cx, R, top = hd.cx, hd.R, hd.top
+    base_y = top - R * 0.04
+    p.setPen(B.NOPEN)
+    p.setBrush(B.qc("#1a2330"))
+    p.drawPolygon(B.poly((cx - R * 1.05, base_y + R * 0.1),
+                         (cx + R * 1.05, base_y + R * 0.1),
+                         (cx + R * 0.5, base_y - R * 0.7),
+                         (cx, base_y - R * 0.86),
+                         (cx - R * 0.5, base_y - R * 0.7)))
+    B.pen(p, B.qc(theme.blend(hue, "#ffffff", 0.4), 0.8), R * 0.05)   # trim
+    p.drawPolyline(B.poly((cx - R * 1.0, base_y + R * 0.08),
+                          (cx + R * 0.46, base_y - R * 0.66),
+                          (cx, base_y - R * 0.82),
+                          (cx - R * 0.46, base_y - R * 0.66),
+                          (cx + R * 1.0, base_y + R * 0.08)))
+    p.setPen(B.NOPEN)
+    p.setBrush(B.qc("#eef2f5", 0.95))                    # little skull
+    p.drawEllipse(QPointF(cx, base_y - R * 0.34), R * 0.16, R * 0.17)
+    p.setBrush(B.qc("#1a2330"))
+    for s in (-1, 1):
+        p.drawEllipse(QPointF(cx + s * R * 0.06, base_y - R * 0.36),
+                      R * 0.04, R * 0.05)
+
+
 def _star(p, x, y, s, hue, glow):
     p.setBrush(B.qc(theme.blend(hue, "#ffffff", 0.4), 0.6 + 0.4 * glow))
     p.drawPolygon(B.poly((x, y - s), (x + s * 0.28, y - s * 0.28), (x + s, y),
@@ -205,7 +301,9 @@ def _pompom(p, x, y, r, hue, a):
 
 
 _COSTUMES = {
-    "None": _none, "Wizard Hat": _wizard, "Party Hat": _party, "Beanie": _beanie,
+    "None": _none, "Nightcap": _nightcap, "Sleep Mask": _sleepmask,
+    "Earmuffs": _earmuffs, "Wizard Hat": _wizard, "Witch Hat": _witch,
+    "Pirate Hat": _pirate, "Party Hat": _party, "Beanie": _beanie,
     "Top Hat": _tophat, "Crown": _crown, "Halo": _halo, "Headphones": _headphones,
     "Sunglasses": _shades, "Flower": _flower, "Scarf": _scarf, "Bow Tie": _bowtie,
 }

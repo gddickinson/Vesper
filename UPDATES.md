@@ -56,6 +56,11 @@ sounds to play and when. Ground the rounds in these:
   sound per segment. CAST-4 = `breathsim/llm_cast.py` opt-in LLM director (validated cast, saved per
   book, heuristic fallback). CAST-5 = polish (props rendering, smoother crossfades, per-book cast
   memory, a who's-who cast list). Interleave with the Stories cadence (every ~3rd round).
+- [x] **CAST-1 done — more characters + costumes**: 2 new 2D characters (Mouse, Sheep, with voices)
+  -> **17 characters**; 5 new costumes (Nightcap, Sleep Mask, Earmuffs, Witch Hat, Pirate Hat) ->
+  **17 costumes**. Montage PNG eyeballed; selftest + both-faces drive (0 issues) + a thread-stable
+  offscreen FaceWidget character swap; all 13 offline tests pass; README/CLAUDE bumped. (Next CAST-2:
+  bookcast.py heuristic Script.)
 
 ## Research notes (evidence-based — ground each round in these)
 - **Slow breathing ~6 breaths/min (0.1 Hz)** maximizes HRV via the baroreflex

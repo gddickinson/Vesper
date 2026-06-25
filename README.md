@@ -12,7 +12,7 @@ required.</p>
 Vesper paces your breath with a soft animated visualization and real-time synthesised
 sound. It spans six activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep** —
 each with its own purpose-built control panel, visual scene and soundscape. At its centre
-is a talking-head **avatar** (a 3D head, or one of **15 hand-drawn cartoon characters**)
+is a talking-head **avatar** (a 3D head, or one of **17 hand-drawn cartoon characters**)
 that breathes, blinks, gazes around, emotes, and narrates a library of **209 soothing
 sleep-lectures** that gently follow the words on screen.
 
@@ -30,9 +30,10 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   narrator and shifts expression with the mood of the words. A **cyberpunk face-style**
   system (starry eyes, Tron/circuit grids that follow the head, translucent / dot-matrix
   renders) can react to the story, breath and chant. Or switch to the **2D cast**.
-- **15 cartoon characters + costumes** — Cat, Penguin, Dog, Owl, Fox, Chicken, Bunny,
-  Bear, Panda, Frog, Duckling, Hedgehog, **Robot**, Woman and Man, each with breathing,
-  blinks, tail-swishes and "hair-on-end" startles, **12 costumes**, and its own narrator
+- **17 cartoon characters + costumes** — Cat, Penguin, Dog, Owl, Fox, Chicken, Bunny,
+  Bear, Panda, Frog, Duckling, Hedgehog, **Mouse**, **Sheep**, **Robot**, Woman and Man,
+  each with breathing, blinks, tail-swishes and "hair-on-end" startles, **17 costumes**
+  (incl. sleep-friendly Nightcap / Sleep Mask / Earmuffs), and its own narrator
   **voice + personality**. The bedtime storyteller can even pick a fitting character per
   scene (a cosy bear for a hibernation tale, a wise owl for the night sky).
 - **Fully procedural sound** — **148 voices** synthesised in real time from noise, filters
