@@ -394,6 +394,12 @@ pipeline (narration, pacing, sleep-timer fade, ambience) is reusable. Ground the
   rate-limited, progress) + Library browser with per-book progress. (5) **User upload** — import `.txt`
   then `.epub`. (6) **Polish** — "continue your book" launch hint, per-book voice/preset memory,
   optional LLM "previously…" recap on resume.
+- [x] **R1 done — `books.py` + `booktext.py` core** (offline, no network): pure ASCII-folding +
+  PG boilerplate strip + abbreviation-aware sentence/paragraph tokenizer + chapter detection; a
+  `Book` model + a **local library** at `~/.breathsim/books` (content files + a self-contained
+  `_index.json` "books table" + `_progress.json` resume, so `store.py` stays < 500); save/load/list/
+  delete + resume position. Offline test `tools/test_books.py`; selftest + both-faces drive + all 7
+  LLM tests still pass. (Next R2: BookReader narration + reader mode.)
 - [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
       conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
       of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The

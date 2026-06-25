@@ -2253,6 +2253,25 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Audiobooks round 1 — books.py core (model + tokenizer + library, offline)
+Start of the user-requested audiobooks/novels thread. Two pure new core modules, no network:
+`breathsim/booktext.py` (text processing — `to_ascii` folds smart quotes/dashes/ellipses/accents to
+plain ASCII for the synth; `strip_boilerplate` removes the Project Gutenberg START/END band + legal
+front-matter + a stray "Produced by" line; `split_paragraphs` rejoins hard-wrapped lines;
+`split_sentences` is an abbreviation-aware splitter — Mr./Dr./St. etc. don't break a sentence;
+`segment` → `[[sentence,...],...]`; `chapter_marks` flags heading-like paragraphs) and
+`breathsim/books.py` (a `Book` dataclass with `paragraphs` + `sentences()`/`sentence_count()`/
+`paragraph_starts()`; `from_text` segments raw text; a **local library** under `~/.breathsim/books`
+— content as `<id>.json`, a small `_index.json` "books table" + `_progress.json` resume position, all
+self-contained so `store.py` stays < 500; `save`/`load`/`list_books`/`exists`/`delete`; resume
+`position`/`set_position`/`clear_position`). NO GUI wiring yet (the app is unaffected; books narrate
+in R2/R3). Offline test `tools/test_books.py` on a PG-shaped fixture: boilerplate stripped, ASCII
+folding, abbreviation-safe segmentation (exact sentence count), chapter detection, save/load/index
+round-trip, resume round-trip, empty-refused + delete-cleans-up. Verified: that test + the 7 LLM
+offline tests still pass; selftest (148 voices, 201 lectures); both-faces drive (0 issues, threads
+stable). Files: books 176, booktext 143, store back to 459 — all < 500. (Next R2: a BookReader
+narrating via stories.story_units + the reader mode.)
+
 ## LLM-in-GUI round 2 — Sleep "Generate a bedtime story" (off-thread, opt-in)
 The second LLM-in-GUI step: a real, useful AI action, still strictly opt-in + fail-closed. New
 `vesper/llm_story_action.py` adds a **"Generate a bedtime story (AI)"** button to the Sleep story

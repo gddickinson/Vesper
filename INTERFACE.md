@@ -386,6 +386,15 @@ Train Whistle / Fog Horn / Ship Horn periodic blasts); and **`synth_fx`** — co
 Bell). Together these four `synth_*` modules add 31 synthesised instrument/effect voices. The
 2D fallback face is the **character cast** (`vesper/characters.py` + `char_*`).
 
+**Audiobooks (the novels/reader feature, in progress):** **`booktext`** — pure text
+processing (no I/O): `to_ascii` (fold smart quotes/dashes/accents), `strip_boilerplate`
+(Project Gutenberg header/footer), `split_paragraphs`, `split_sentences` (abbreviation-aware),
+`segment` → paragraphs-of-sentences, `chapter_marks`; and **`books`** — a `Book` model
+(`paragraphs` + `sentences()`/`sentence_count()`/`paragraph_starts()`), `from_text`, and a **local
+library** at `~/.breathsim/books` (`save`/`load`/`list_books`/`delete` + a self-contained
+`_index.json`/`_progress.json`) with a per-book **resume** `position`/`set_position`/`clear_position`.
+Offline-tested (`tools/test_books.py`); narration + reader UI land in later rounds.
+
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.
 - **requirements.txt** / **README.md** — external pip deps + run instructions.
