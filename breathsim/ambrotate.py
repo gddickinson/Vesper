@@ -12,7 +12,7 @@ DEFAULT_PERIOD = 360.0          # seconds per bed (~6 minutes)
 
 # A curated set of calm, continuous GROUP_NATURE beds to cycle through.
 BEDS = ["Ocean Waves", "Distant Surf (night)", "Gentle Rain", "Forest Wind",
-        "Mountain Stream", "Night Crickets", "Soft Rainstorm"]
+        "Mountain Stream", "Night Crickets", "Summer Porch", "Soft Rainstorm"]
 
 
 def next_ambience(beds, elapsed, period=DEFAULT_PERIOD):

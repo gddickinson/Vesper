@@ -3437,6 +3437,23 @@ fear but a soft cradle"); registered in `lectures._CATALOG`. Verified: selftest 
 across 51 branches**); story DB rebuilt (336,503 words); all 35 offline tests; drive_check 0 issues;
 every file < 500 (each lecture 105).
 
+## Sleep ambience: "Summer Porch" (warm night air)
+A second new nature bed (after Distant Surf), closing the queued "new procedural sleep bed" backlog
+item: the soft warmth of a summer night on a porch -- a continuous, gently-breathing wash of warm air
+with no chill in it, distinct from the rhythmic chirp of Night Crickets and the dark roll of Distant
+Surf. One data-driven `register(VoiceConfig(...))` in the Nature group (no synthesis code): pink noise
+(warm but not muddy), a *broad* bandpass centred ~1500 Hz (Q 0.45 -- a wide warm mid-band, a hint of
+high "air" without hiss), a high `floor` (0.62, so it is a steady hush that only swells a little on
+the inhale), a wide image and a slow gentle pan. **Calibrated** per the project rule (build at gain
+1.0, measure, set gain = target/peak): at unit gain it peaks ~1.9 / rms ~0.32, so gain **0.24** gives
+peak ~0.41 (ample headroom under the 1.0 ceiling selftest enforces) and rms ~0.077 -- matched to the
+other beds (Ocean ~0.078) for loudness consistency. Added to `ambrotate.BEDS` so the long-session
+auto-rotate includes it; auto-listed in every GROUP_NATURE picker (Relax mixer, Sleep/story ambience,
+the mixer). Verified: new `tools/test_summer_porch.py` (registered as a pink-noise Nature voice;
+renders finite with peak <0.7; rms in a gentle sleep-bed range and near the other beds; in the rotation
+with all beds reachable); **selftest passes** (now 23 Nature voices / 150 voice names, every voice
+peak <= 1.0); all 36 offline tests; drive_check 0 issues; README voice count bumped 149 -> 150.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

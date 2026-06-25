@@ -180,6 +180,15 @@ register(VoiceConfig(
                 "softly in and out, darker and gentler than Ocean Waves."))
 
 register(VoiceConfig(
+    # Calibrated: at gain 1.0 this warm mid-band wash peaks ~1.9 / rms ~0.32; gain
+    # 0.24 -> peak ~0.41, rms ~0.077 (matched to the other nature beds).
+    "Summer Porch", GROUP_NATURE, noise="pink", env="volume",
+    filt=("bandpass", 1500.0, 0.45), bright_base=900.0, bright_mod=1100.0,
+    floor=0.62, gain=0.24, width=0.8, pan_rate=0.025, pan_depth=0.3,
+    description="A warm summer night on a porch: a soft, steady wash of warm "
+                "air that breathes gently, with no chill in it."))
+
+register(VoiceConfig(
     "Gentle Rain", GROUP_NATURE, noise="white", env="volume",
     filt=("bandpass", 2600.0, 0.5), bright_base=9000.0, bright_mod=3000.0,
     floor=0.2, gain=0.22, width=0.85,

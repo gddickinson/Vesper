@@ -279,9 +279,15 @@ Set with the user after the realistic-chanting round. Tick as completed.
       (+ persist), `_always_warm` default, `win_settings` round-trip, View-menu toggle. Verified: PNG
       eyeballed; `tools/test_always_warm.py` (off=unwarmed, on=0.18 floor on face+scene+persist, off
       clears, menu present, threads stable) + selftest + drive_check; all 26 offline tests.
-- [ ] **Ambience: a new procedural sleep bed** (e.g. "Distant Surf (night)" or "Summer Porch"):
-      one calibrated `VoiceConfig` (build at unit gain, set `gain = 0.8/peak`); selftest verifies
-      finite + peak <= 1.0. Adds masking/soothing variety with no track-code change.
+- [x] **Ambience: a new procedural sleep bed** (done twice -- "Distant Surf (night)" earlier, and now
+      **"Summer Porch"**): a warm summer-night-air bed -- a soft, steady mid-band wash (pink noise +
+      a broad ~1500 Hz bandpass + a high floor for continuity) that breathes gently with no chill,
+      distinct from the rhythmic Night Crickets and the dark Distant Surf. One calibrated `VoiceConfig`
+      in the Nature group: at gain 1.0 it peaks ~1.9 / rms ~0.32, so gain **0.24** gives peak ~0.41
+      (headroom under the selftest 1.0 ceiling) and rms ~0.077 (matched to the other beds). Added to
+      `ambrotate.BEDS`; auto-listed in every Nature picker. Verified: new `tools/test_summer_porch.py`
+      (Nature/pink registration; finite, peak <0.7, gentle rms; loudness near the beds; in the rotation);
+      selftest (150 voices, all peak <= 1.0); all 36 offline tests; drive_check 0 issues; README 149->150.
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 - [x] Per-window **themed backdrops** behind the face + two new effects
       (**Underwater** for Relax, **Embers** cozy). Modes auto-theme the bg.
