@@ -226,6 +226,10 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   while the breath-driven orb + guide dot, which read volume/cycle_frac, stay live) and
   drops the busy weather overlay. Driven by `window.set_calm_visuals` (View menu toggle,
   persisted `calm_visuals`, off by default). Offline test: `tools/test_calm_visuals.py`.
+  A second a11y toggle, **Mono audio** (single-sided hearing), lives beside it:
+  `window.set_mono_audio` -> `engine.set_mono` collapses the final output to ``(L+R)/2``
+  on both channels (read lock-free in the audio callback after `soft_clip` + master gain),
+  persisted `mono_audio`, off by default. Offline test: `tools/test_mono_audio.py`.
 - **hourglass.py** — the session **countdown timer** painter: `draw(p, rect, frac, t,
   running, spin)` renders a glass hourglass whose top bulb empties / bottom heap fills
   as `frac` (elapsed fraction) goes 0→1, with a falling sand stream; `spin` rotates it

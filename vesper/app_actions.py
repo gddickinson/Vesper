@@ -365,6 +365,15 @@ class _ActionsMixin:
         from breathsim import store
         store.save_settings({"calm_visuals": self._calm_visuals})
 
+    def set_mono_audio(self, on):
+        """Accessibility (persisted, off by default): downmix the output to mono so
+        the whole soundscape is audible through one ear/speaker (single-sided
+        hearing). The stereo width/auto-pan still runs; it is collapsed at output."""
+        self._mono_audio = bool(on)
+        self.engine.set_mono(self._mono_audio)
+        from breathsim import store
+        store.save_settings({"mono_audio": self._mono_audio})
+
     # --- mindfulness bell / retention timer -------------------------------
     def set_bell_interval(self, minutes):
         self._bell_interval = float(minutes)

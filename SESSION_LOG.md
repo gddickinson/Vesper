@@ -3402,6 +3402,22 @@ amber lanterns with halos + bright inner points rising on a dark ember sky, the 
 centered). All 34 offline tests; selftest; **drive_check renders 11 scenes** (was 10), 0 issues; files
 < 500 (`scene_lanterns` 95, `scenes` 475).
 
+## Accessibility: Mono audio toggle (single-sided hearing)
+A small but genuinely inclusive a11y win: a **Mono audio** toggle that downmixes the whole
+soundscape to mono so it is fully audible through a single ear or speaker -- important for people
+with single-sided hearing (one deaf/weak ear), who otherwise miss whatever the gentle stereo width,
+auto-pan and per-voice panning place on the far side. Implemented at the **final output** of the
+engine: after `soft_clip` + the master-gain ramp, `engine._callback` collapses the stereo buffer to
+``(L+R)/2`` on both channels when `self._mono` is set (a plain bool, read lock-free in the audio
+thread). New `engine.set_mono(on)`; the stereo path (width/pan) keeps running and is simply summed at
+the end, so toggling is instant and click-free. Wired exactly like the existing reduce-motion toggle:
+`window._mono_audio` default, `app_actions.set_mono_audio` (-> `engine.set_mono` + persist
+`mono_audio`), a **View-menu** toggle beside "Calm visuals", and `win_settings` restore on launch
+(off by default). Verified: new `tools/test_mono_audio.py` -- at the engine level a panned ambience
+renders with distinct L/R, `set_mono(True)` makes the two channels bit-identical and still audible,
+toggling back restores stereo; at the GUI level the View toggle round-trips through the window, drives
+the engine and persists. All 35 offline tests; selftest; drive_check (0 issues); `engine.py` 498 < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

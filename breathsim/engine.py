@@ -124,6 +124,7 @@ class AudioEngine:
         self.chime_enabled = False
         self.space = reverb.SpaceReverb(self.sr)   # master "room" send (Off by default)
         self.spatial = True               # gentle stereo width + auto-pan on ambience
+        self._mono = False                # a11y: downmix output to mono (off by default)
         self._chime_q: queue.Queue = queue.Queue()
         self._chimes: list[Chime] = []
         self.stream = None
@@ -295,6 +296,12 @@ class AudioEngine:
         amb = self.slot_voice.get("ambience")
         if amb:
             self.set_voice(amb, "ambience")
+
+    def set_mono(self, on: bool):
+        """Downmix the output to mono -- both channels carry ``(L+R)/2`` -- so the
+        whole soundscape is audible through a single ear/speaker. Accessibility
+        (single-sided hearing); off by default. Read lock-free in the callback."""
+        self._mono = bool(on)
 
     def set_voice_a(self, name: str | None, fade: float = 0.35):
         self.voice_a = name
@@ -481,6 +488,11 @@ class AudioEngine:
                 target = self.master_target
             gain = np.linspace(self.master, target, frames)[:, None]
             self.master = target
-            outdata[:] = dsp.soft_clip(buf * gain).astype(np.float32)
+            out = dsp.soft_clip(buf * gain)
+            if self._mono:                         # a11y: single-sided-hearing downmix
+                m = 0.5 * (out[:, 0] + out[:, 1])
+                out[:, 0] = m
+                out[:, 1] = m
+            outdata[:] = out.astype(np.float32)
         except Exception:
             outdata.fill(0)

@@ -84,6 +84,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         self._listener_name = ""           # optional spoken-greeting name ('' = off)
         self._greeted_session = False      # greeted by name yet this session?
         self._calm_visuals = False         # 'reduce motion' (set in restore)
+        self._mono_audio = False           # a11y: mono downmix (set in restore)
         self.tuner = None                   # lazy mic pitch monitor (Sing/Chant)
         self._pitch_spec = None
         self._bell_interval = 0.0           # mindfulness bell interval (minutes)

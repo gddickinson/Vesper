@@ -155,6 +155,15 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Accessibility: Mono audio toggle (single-sided hearing)**: downmix the whole soundscape to
+      mono so it is fully audible through one ear/speaker -- for people with single-sided hearing who
+      otherwise miss whatever the stereo width/pan places on the far side. Done at the engine's final
+      output: after soft_clip + master gain, `engine._callback` collapses to `(L+R)/2` on both channels
+      when `engine.set_mono(True)` (a lock-free bool). Wired like the reduce-motion toggle:
+      `window._mono_audio`, `app_actions.set_mono_audio`, a View-menu toggle beside "Calm visuals",
+      persisted `mono_audio` (off by default). Verified: new `tools/test_mono_audio.py` (panned ambience
+      -> distinct L/R; mono -> L==R, still audible; GUI toggle round-trips + persists); all 35 offline
+      tests; selftest; drive_check (0 issues); engine.py 498 < 500.
 - [x] **Scene: "Lanterns" -- warm lights rising in the dark** (sleep efficacy; the warmest, lowest-blue
       scene): warm amber paper-lanterns drift slowly up a near-black sky (warming to an ember glow at
       the horizon), flickering out of step over a faint ember layer, swelling/brightening on the inhale
