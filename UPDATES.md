@@ -155,6 +155,26 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Scene: "Drifting" — slow cloud-band twilight sky** (Relax/Sleep): soft, low-contrast
+      grey-violet cloud puffs drift slowly across a dusk gradient (deep indigo -> mauve horizon)
+      with a faint breathing moon glow and a hint of stars peeking through; the sky brightens
+      gently on the inhale. Own `scene_drift.py` (105 lines; scenes.py stays small, registered at
+      its foot); reads the virtual `t` so the drift auto-eases under Calm visuals. View ▸ Scene
+      lists it automatically. Verified: rendered PNG eyeballed (calm + on-theme), drive_check
+      (scenes=10, 0 issues), selftest, all 20 offline tests.
+- [ ] **Bedtime "park your worries" / tomorrow's-list offload** (efficacy, opt-in, off by
+      default): a brief constructive-worry / to-do brain-dump before sleep measurably shortens
+      sleep-onset latency (Scullin et al. 2018). Mirror the gratitude plumbing exactly
+      (`store.log_worry`/entries/count + `vesper/worries.py` should_offer/ask/maybe_offer_bedtime
+      + Sessions menu + Stats line), distinct purpose from gratitude (offload vs savor). Pure
+      tests like `test_gratitude.py`.
+- [ ] **Accessibility: "Always warm (low-blue) screen" toggle**: hold the warm amber wash on
+      regardless of clock, for evening eye comfort / melatonin-friendliness (persisted, off by
+      default; composes with the Sleep wind-down warmth). Verify offscreen render + persistence.
+- [ ] **Ambience: a new procedural sleep bed** (e.g. "Distant Surf (night)" or "Summer Porch"):
+      one calibrated `VoiceConfig` (build at unit gain, set `gain = 0.8/peak`); selftest verifies
+      finite + peak <= 1.0. Adds masking/soothing variety with no track-code change.
+- [ ] **Narration language**: expose Kokoro's languages/voices where available.
 - [x] Per-window **themed backdrops** behind the face + two new effects
       (**Underwater** for Relax, **Embers** cozy). Modes auto-theme the bg.
 - [x] **Sleep — warm, low-blue progressive dimming**: a warm amber wash on the view

@@ -2987,6 +2987,18 @@ parallel subagents, independently validated (7x12, pure ASCII, every section sle
 branches**); story DB rebuilt (297k words); offline tests (19) green; drive_check 0 issues,
 threads stable; all files < 500 lines.
 
+## Scene: "Drifting" — slow cloud-band twilight sky
+Added a new calming visualization, `vesper/scene_drift.py` (105 lines, its own module so scenes.py
+stays small; registered at the foot of scenes.py and listed automatically by View > Scene). Soft,
+low-contrast grey-violet cloud puffs drift slowly sideways (wrapping off-screen) at differing
+speeds across a dusk gradient - deep indigo above easing to a muted mauve horizon - with a faint
+moon and halo low on the left and a sparse hint of stars twinkling through the high gaps; the sky,
+clouds, moon and stars all brighten a touch with the lung volume, so the scene breathes on the
+inhale. Each puff is a flattened soft radial gradient; all motion is deterministic (seeded params +
+anim-time), and it reads the per-frame virtual `t` so its drift auto-eases when "Calm visuals" is
+on. Verified: rendered a 640x480 PNG and eyeballed it (calm, on-theme, subtitle legible); drive_check
+(scenes=10, 0 issues); selftest; all 20 offline tests; both new files < 500 lines.
+
 ## Stories round — new branch "The Dwarf Planets" (4 lectures)
 Added a 45th lecture branch, **The Dwarf Planets**, completing a small-worlds trilogy alongside
 The Inner Planets and The Moons of the Giants: *Pluto* (the patient 1930 discovery by Clyde
