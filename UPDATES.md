@@ -405,9 +405,19 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
       empty; a `set_session` key resolves but is never written to disk nor shown in `status()`;
       `mask()` hides all but the last 4; the chmod-600 file store round-trips + `clear()` wipes
       it. Verified: import (no network), the unit test, selftest + both-faces drive; files <500.
-- [ ] **LLM story generation** — generate a sleep story/lecture to the schema (or free /
-      indefinite length, streamed passage-by-passage), validate via the lint, preview + narrate,
-      and **save liked ones to the library** (store). Labelled AI-written; framed atmospheric.
+- [x] **LLM story generation** (`breathsim/llm_story.py`) — when `llm.available()`, asks the
+      model for a sleep story in the lecture **7x12** schema, then treats the reply as
+      **untrusted**: parses the JSON, runs `validate()` (7x12 / ASCII / end-punct / fact-free
+      section 1 / sleep-closing final) and **repairs** by re-prompting with the specific errors
+      (a few times) before rejecting (None). Valid stories register straight into the lecture
+      library under the **"AI Stories"** category with an **"AI: "** name prefix (clearly
+      labelled, framed atmospheric -- no factual-accuracy claims), so they narrate through the
+      ordinary storyteller and can be **saved** to `~/.breathsim` (store `ai_stories`, reloaded
+      via `register_saved` from `store.register_all`). Fully gated on `llm.available()` (raises
+      `LLMUnavailable` with no backend; the feature is simply absent). Offline test
+      `tools/test_llm_story.py` (stubbed completer + temp store, NO network): gating, validator
+      accept/reject, the repair loop, and save -> narrate -> persist -> reload -> delete.
+      Verified: the test, `tools/test_llm.py`, selftest, both-faces drive; files < 500.
 - [ ] **LLM structured content** — patterns / chants / songs / voices from a natural-language
       prompt -> validated dataclasses (BreathPattern / phrase segments / VoiceConfig) ->
       register + save. Reuses the Voice/Pattern editors' validation. No code execution.

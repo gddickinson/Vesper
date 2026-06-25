@@ -79,6 +79,23 @@ def delete_voice(name):
     _write("voices.json", [v for v in voices_list() if v.get("name") != name])
 
 
+# --- AI-generated stories (saved to the library) ---------------------------
+
+def ai_stories_list():
+    return _read("ai_stories.json", [])
+
+
+def save_ai_story(d):
+    data = [s for s in ai_stories_list() if s.get("name") != d.get("name")]
+    data.append(d)
+    _write("ai_stories.json", data)
+
+
+def delete_ai_story(name):
+    _write("ai_stories.json",
+           [s for s in ai_stories_list() if s.get("name") != name])
+
+
 # --- presets ---------------------------------------------------------------
 
 def presets_list():
@@ -420,3 +437,8 @@ def register_all():
             voices.register_from_dict(d)
         except Exception as exc:
             print(f"[breathsim] bad saved voice: {exc}")
+    try:                                      # saved AI-generated stories (opt-in)
+        from . import llm_story
+        llm_story.register_saved()
+    except Exception as exc:
+        print(f"[breathsim] could not load saved AI stories: {exc}")

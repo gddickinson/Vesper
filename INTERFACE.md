@@ -82,6 +82,14 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   over urllib, no SDK dep). **Key-safe:** the key is fetched lazily and never stored on a
   provider, never logged (errors `_sanitize`d), never committed/shipped; `mask()` shows only
   the last 4. No network at import. Offline safety test: `tools/test_llm.py`.
+- **llm_story.py** — optional **AI story generation** built on the provider. `generate(topic)`
+  asks the model for a sleep story in the lecture **7x12** schema, treats the reply as
+  *untrusted* (`validate` + a re-prompt **repair** loop), and registers valid stories into
+  `lectures.LECTURES` under the **"AI Stories"** category with an **"AI: "** prefix (labelled,
+  framed atmospheric -- no accuracy claims), so they narrate like any lecture; `save`/`saved`/
+  `delete`/`register_saved` persist them to `store` (`ai_stories`, loaded from
+  `store.register_all`). Gated on `llm.available()`; absent with no LLM. Offline test:
+  `tools/test_llm_story.py`.
 - **story_char.py** — maps a story scene / lecture to a fitting cartoon character
   (`char_for_scene`: sea→Penguin, night→Owl, forest→Bear, …, default Owl). Opt-in
   **Face ▸ "Character follows the story"** (persisted): when on and the cartoon face is

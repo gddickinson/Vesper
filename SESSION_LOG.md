@@ -2253,6 +2253,28 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## LLM round 2 — AI story generation (validate -> repair -> save to library)
+Second LLM item. New `breathsim/llm_story.py`: when `llm.available()`, it asks the model for a
+soothing bedtime story in the lecture **7x12** schema, then treats the reply as **untrusted** --
+parses the JSON, runs `validate()` (exactly 7 sections x 12 sentences, ASCII, each sentence ends
+. ? !, a fact-free settling section 1 (no numbers), a sleep-closing final section) and
+**repairs** by re-prompting with the exact errors, up to a few times, before rejecting (None).
+Validated stories register straight into `lectures.LECTURES` under a new **"AI Stories"**
+category with an **"AI: "** name prefix -- clearly labelled AI-written and framed atmospheric /
+imaginative (they make none of the authored lectures' factual-accuracy claims) -- so they narrate
+through the ordinary storyteller with zero new wiring, and can be **saved** to `~/.breathsim`
+(new `store.ai_stories_list`/`save_ai_story`/`delete_ai_story`, reloaded by
+`llm_story.register_saved` from `store.register_all`). The whole feature is gated on
+`llm.available()` (raises `LLMUnavailable` with no backend) and is absent when there is no LLM --
+the app is unaffected (a fresh checkout has no AI stories, so selftest/story_db are unchanged at
+197 lectures). Offline test `tools/test_llm_story.py` (a stubbed completer + a temp store dir, so
+**no network** and the real `~/.breathsim` is untouched) asserts: generation is gated; the
+validator accepts a good 7x12 and rejects malformed variants (wrong counts / no end-punct /
+section-1 with a year); a mocked malformed-then-good reply exercises the repair loop; and
+save -> narrates via `stories.story_units` + ambience resolves -> persists -> reloads -> delete.
+Verified: the new test, `tools/test_llm.py` still passes, selftest, both-faces drive 0 issues;
+files < 500 (llm_story 180); secret scan clean.
+
 ## LLM round 1 — provider + key store (safety-critical foundation)
 First item of the LLM batch. Added `breathsim/llm_keys.py` (the API-key store) and
 `breathsim/llm.py` (the auto-selecting provider). **Backend selection** (re-evaluated each call):
