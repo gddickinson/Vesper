@@ -320,9 +320,15 @@ in these notes:
       section 1, all sleep-closing, paraphrased + softly attributed (no verbatim quotes);
       ambiences Singing Bowl / Mountain Stream / Gentle Rain / Wind in Pines. **197 lectures /
       38 branches**; DB rebuilt; selftest + both-faces drive (0 issues).
-- [ ] **Kishotenketsu sleep-tales** (`breathsim/tales.py`) — a few authored conflict-free
-      4-movement micro-tales (intro -> development -> a soft turn of view -> dissolve), as a
-      new gentle *narrative* class (distinct from the factual lectures). Endless-safe tail.
+- [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
+      conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
+      of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The
+      Still Lake, Snow on the Village, The Old Gardener, The Tea House on the Hill, The Child
+      and the Moon. A gentle *narrative* storyteller class distinct from the factual lectures;
+      recited forever in shuffled order with a breath between movements + a long rest after each
+      tale. Original; deterministic with an injected seed; bed "Soft Rainstorm". Wired via
+      `stories.extra_names`/`ambience_for`/`story_units`. Verified: dispatch + 4-movement
+      structure + ASCII + determinism + every ketsu sleep-closing; selftest + both-faces drive.
 - [ ] **Story-craft polish for the procedural scenes** — apply the descending-structure
       toolkit to `stories.py` scenes (Rainy Cottage etc.): gentle **refrains**, "rule of three"
       cadence, a slow **zoom-out-and-fade** as the session deepens, richer sensory layering, and

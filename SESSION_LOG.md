@@ -2253,6 +2253,22 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Storytelling round — kishotenketsu sleep-tales ("Quiet Tales")
+Sixth item of the storytelling & poetry batch -- a new gentle *narrative* class distinct from
+the factual lectures. New `breathsim/tales.py` (`NAME = "Quiet Tales"`): 6 authored,
+**conflict-free** micro-tales in the East-Asian **kishotenketsu** shape (ki a quiet intro ->
+sho a slow development -> **ten** a soft *turn of view* (a widening / a gentle realisation,
+never a clash) -> ketsu a reconciliation that dissolves into sleep): The Lamplighter, The Still
+Lake, Snow on the Village, The Old Gardener, The Tea House on the Hill, The Child and the Moon.
+Each ten quietly widens the camera (the lamps look like warm stars; the snow has not buried the
+village, it has tucked it in; the moon is not watching, only shining), and each ketsu turns the
+scene toward the listener's own rest. Recited forever in shuffled order, a longer breath between
+the four movements and a long rest after each tale -- endless and conflict-free. Original;
+deterministic with an injected seed; bed "Soft Rainstorm". Surfaced as the Sleep option "Quiet
+Tales" via `stories.extra_names`/`ambience_for`/`story_units`. Verified: dispatch through
+`stories.story_units`, every tale has the 4 movements, ASCII, same-seed determinism, every ketsu
+sleep-closing; selftest passes; both-faces drive 0 issues. Files < 500 lines; secret scan clean.
+
 ## Lecture round — new branch "Quiet Philosophies" (4 lectures)
 Fifth item of the storytelling & poetry batch -- weaving philosophy gently. Added a 38th lecture
 branch, **Quiet Philosophies**: *The Stoic Night* (in the spirit of Marcus Aurelius's private
