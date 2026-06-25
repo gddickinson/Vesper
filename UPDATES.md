@@ -342,6 +342,17 @@ in these notes:
       section 1, all sleep-closing; ambiences Brown Noise / Forest Wind / Ocean Waves / Wind in Pines.
       Registered as a 40th branch. **205 lectures / 40 branches**; DB rebuilt; selftest + both-faces
       drive (0 issues); all 9 offline tests pass.
+- [x] **Lecture branch: Weathers of the World** (4) — *The Monsoon* (the long dry wait; the turning
+      wind off the warm sea; petrichor and the first downpour; the green return; steady rainy-day
+      calm), *Fog and Mist* (a cloud come to rest on the ground; droplets forming in the still cool
+      night; a muffled walk through halos and dissolving trees; sea fog and valley mist; the slow gold
+      lifting), *The Thunderstorm* (deliberately gentle + safe-indoors: the warm heavy evening; soft
+      distant flicker; rain on the roof while you are dry; the flash-and-count receding; the washed
+      calm after), *The Trade Winds* (the steady reliable winds of the warm latitudes; the age of
+      sail; a slow blue voyage; leaning palms and coral shores; the faithful wind through the night).
+      Standard 7x12, fact-free section 1, all sleep-closing; ambiences Soft Rainstorm / Forest Wind /
+      Distant Thunder / Ocean Waves. Registered as a 41st branch. **209 lectures / 41 branches**; DB
+      rebuilt; selftest + both-faces drive (0 issues); all 11 offline tests pass.
 - [x] **LLM in the GUI — opt-in API-key Settings dialog** (`vesper/llm_settings.py`, Help ▸ "AI
       Assistant (optional)…") — the safe gateway that finally exposes the (already-built) LLM stack,
       strictly opt-in + fail-closed. The ONE place a key is typed: **password-masked**, never shown

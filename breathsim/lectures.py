@@ -66,6 +66,8 @@ from . import lectures_cochineal, lectures_indigo  # Colours & Pigments
 from . import lectures_tyrian, lectures_ultramarine
 from . import lectures_antarctica, lectures_arctic  # The Polar Worlds
 from . import lectures_icebergs, lectures_tundra
+from . import lectures_fog, lectures_monsoon  # Weathers of the World
+from . import lectures_thunderstorm, lectures_tradewinds
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -209,6 +211,8 @@ _CATALOG = [
                             lectures_tyrian, lectures_cochineal]),
     ("The Polar Worlds", [lectures_arctic, lectures_antarctica,
                           lectures_icebergs, lectures_tundra]),
+    ("Weathers of the World", [lectures_monsoon, lectures_fog,
+                               lectures_thunderstorm, lectures_tradewinds]),
 ]
 
 LECTURES = {}

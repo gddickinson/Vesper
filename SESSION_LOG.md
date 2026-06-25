@@ -2253,6 +2253,25 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Stories round — new branch "Weathers of the World" (4 lectures)
+A Stories lecture-branch round (cadence due -- 3 rounds since The Polar Worlds). Added a 41st branch
+on the moods of the sky via 4 parallel content subagents: `lectures_monsoon.py` (The Monsoon, Soft
+Rainstorm -- the long dry wait, the turning wind off the warm sea, petrichor and the first downpour,
+the green return, steady rainy-day calm), `lectures_fog.py` (Fog and Mist, Forest Wind -- a cloud
+come to rest on the ground, droplets forming in the still cool night, a muffled walk through halos
+and dissolving trees, sea fog and valley mist, the slow gold lifting), `lectures_thunderstorm.py`
+(The Thunderstorm, Distant Thunder -- deliberately GENTLE/safe-indoors: the warm heavy evening, soft
+distant flicker, rain on the roof while you are dry, the flash-and-count receding, the washed calm
+after), `lectures_tradewinds.py` (The Trade Winds, Ocean Waves -- the steady reliable winds of the
+warm latitudes, the age of sail, a slow blue voyage, leaning palms and coral shores, the faithful
+wind through the night). Each a 7x12 second-person sleep-lecture: fact-free settling section 1, every
+section sleep-closing, ASCII-only; distinct NAMEs/modules, ambiences resolve to real GROUP_NATURE
+voices. Registered in `lectures._CATALOG`. **209 lectures / 41 branches**; story DB rebuilt (280,095
+words). Verified independently (7x12 / endings / ASCII / importable), end-to-end narration (102 units
+each, ambience resolves), selftest (209/41), both-faces drive (0 issues, threads stable), all 11
+offline tests still pass. README/CLAUDE bumped 205/40 -> 209/41; all four files 105 lines. (Next: the
+audiobook thread resumes at R5 -- user .txt/.epub upload.)
+
 ## Audiobooks round 4 — on-demand downloader + Library browser (first networked round)
 The first networked round, and the most cautious. New `breathsim/booksource.py` (pure/networked
 split): `parse_gutendex` + `text_to_book` are pure (offline-tested); `search`/`download` reach the
