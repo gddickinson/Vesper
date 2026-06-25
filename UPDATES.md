@@ -194,9 +194,14 @@ Set with the user after the realistic-chanting round. Tick as completed.
       "Worries set down: N" line in Stats, and settings persistence. Distinct from gratitude (offload
       vs savor). Verified: `tools/test_worries.py` + offscreen GUI smoke (toggle persists, menus
       present, gates, threads stable) + selftest + drive_check; all 25 offline tests green.
-- [ ] **Accessibility: "Always warm (low-blue) screen" toggle**: hold the warm amber wash on
-      regardless of clock, for evening eye comfort / melatonin-friendliness (persisted, off by
-      default; composes with the Sleep wind-down warmth). Verify offscreen render + persistence.
+- [x] **Accessibility: "Always warm (low-blue) screen" toggle**: holds a gentle warm amber wash on
+      the view at any time (off by default, persisted) for evening eye comfort / melatonin-friendliness.
+      Reuses the warm-overlay: a 0.18 floor folded into `win_frame`'s single warm computation as
+      `max(sleep_warm, clock_warm, always_warm)`, so the Sleep wind-down still deepens beyond it, the
+      Sunrise branch is untouched, and only the colour warms (no dimming). `app_actions.set_always_warm`
+      (+ persist), `_always_warm` default, `win_settings` round-trip, View-menu toggle. Verified: PNG
+      eyeballed; `tools/test_always_warm.py` (off=unwarmed, on=0.18 floor on face+scene+persist, off
+      clears, menu present, threads stable) + selftest + drive_check; all 26 offline tests.
 - [ ] **Ambience: a new procedural sleep bed** (e.g. "Distant Surf (night)" or "Summer Porch"):
       one calibrated `VoiceConfig` (build at unit gain, set `gain = 0.8/peak`); selftest verifies
       finite + peak <= 1.0. Adds masking/soothing variety with no track-code change.

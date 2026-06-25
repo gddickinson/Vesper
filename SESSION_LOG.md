@@ -3027,6 +3027,20 @@ ASCII, every section sleepward, an alarm-word scan clean), registered in `lectur
 Verified: selftest passes (**233 lectures across 47 branches**); story DB rebuilt (315k words);
 offline tests (25) green; drive_check 0 issues; all files < 500 lines.
 
+## Accessibility: "Always warm (low-blue) screen" toggle
+A gentle eye-comfort / melatonin-friendly option (off by default, persisted): holds a subtle warm
+amber wash on the view at any time, regardless of clock or mode, reducing blue light in the
+evening. Reuses the existing warm-overlay (`face_bg.warm_overlay` via `face.set_warm`/`viz.set_warm`)
+-- folded a 0.18 floor into the single per-frame warm computation in `win_frame` as
+`warm = max(sleep_warm, clock_warm, always_warm)`, so it composes cleanly: the Sleep wind-down still
+deepens beyond it, the Sunrise wake-up (the inverse branch) is untouched, and only the colour warms
+(opacity/dimming is unchanged -- it's a low-blue wash, not a darkening). Wired:
+`app_actions.set_always_warm` (-> persist `always_warm`), a `_always_warm` default in `window.__init__`,
+`win_settings` round-trip, and a View-menu toggle beside "Clock-aware light". Verified: rendered a
+PNG (a soft amber tint over the view); new `tools/test_always_warm.py` (off = unwarmed; on = 0.18
+floor on face + scene + persisted; off clears; menu carries it; threads stable) + selftest +
+drive_check (0 issues); all 26 offline tests green; every file < 500 lines.
+
 ## Bedtime "park your worries" / tomorrow's-list offload (Sleep, opt-in)
 A second gentle, evidence-based bedtime note alongside gratitude: writing a brief to-do / worry list
 just before bed measurably shortens sleep-onset latency (Scullin et al. 2018) -- setting tomorrow's

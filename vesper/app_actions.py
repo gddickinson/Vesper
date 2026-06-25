@@ -324,6 +324,14 @@ class _ActionsMixin:
         from . import worries
         worries.ask_worries(self)
 
+    def set_always_warm(self, on):
+        """Hold a gentle warm (low-blue) wash on at any time, for evening eye
+        comfort / melatonin-friendliness (persisted, off by default). Composes
+        with the Sleep wind-down warmth, which still deepens beyond it."""
+        self._always_warm = bool(on)
+        from breathsim import store
+        store.save_settings({"always_warm": self._always_warm})
+
     def set_listener_name(self, name):
         """Set (and persist) the optional spoken-greeting name. Sanitised to a
         short plain-ASCII first name; '' = off. Returns the stored value."""

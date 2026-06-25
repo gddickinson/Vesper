@@ -28,6 +28,7 @@ class _SettingsMixin:
         self._mood_on = bool(s.get("mood_checkins", False))    # opt-in mood check-ins
         self._gratitude_on = bool(s.get("gratitude", False))   # opt-in bedtime gratitude
         self._worry_on = bool(s.get("worry_parking", False))   # opt-in 'park your worries'
+        self._always_warm = bool(s.get("always_warm", False))  # low-blue warm screen (a11y)
         from . import greeting                                  # optional spoken greeting
         self._listener_name = greeting.sanitize_name(s.get("listener_name", ""))
         self.set_calm_visuals(bool(s.get("calm_visuals", False)))   # reduce-motion (a11y)
@@ -79,6 +80,7 @@ class _SettingsMixin:
                              "mood_checkins": self._mood_on,
                              "gratitude": getattr(self, "_gratitude_on", False),
                              "worry_parking": getattr(self, "_worry_on", False),
+                             "always_warm": getattr(self, "_always_warm", False),
                              "listener_name": getattr(self, "_listener_name", ""),
                              "calm_visuals": getattr(self, "_calm_visuals", False),
                              "onboarded": getattr(self, "_onboarded", False),

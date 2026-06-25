@@ -237,7 +237,8 @@ class _FrameMixin:
         else:
             cw = self._clock_warm()                       # gentle time-of-day warmth
             sw = 0.5 * (prog or 0.0) if sleep else 0.0
-            warm = max(sw, cw)                            # Sleep dominates when active
+            aw = 0.18 if getattr(self, "_always_warm", False) else 0.0  # low-blue floor
+            warm = max(sw, cw, aw)                        # Sleep dominates when active
             self.face.set_warm(warm)
             self.viz.set_warm(warm)
             op = (sleepdim.sleep_dim(prog or 0.0) if sleep   # deepen toward 'lights out'

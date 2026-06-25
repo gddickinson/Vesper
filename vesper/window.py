@@ -80,6 +80,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         self._cast = None                  # the live cast script (or None)
         self._gratitude_on = False         # opt-in bedtime 'one good thing' (set in restore)
         self._worry_on = False             # opt-in bedtime 'park your worries' (set in restore)
+        self._always_warm = False          # low-blue warm screen, any time (set in restore)
         self._listener_name = ""           # optional spoken-greeting name ('' = off)
         self._greeted_session = False      # greeted by name yet this session?
         self._calm_visuals = False         # 'reduce motion' (set in restore)

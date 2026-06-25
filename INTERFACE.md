@@ -388,7 +388,11 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   talking-over-breathing face mouth (`_face_inputs`, layering lip-sync to
   `narrator.amp` over the `breath_routing` mouth), the status line
   (`_update_status`), Meditate guidance cues (`_med_phrase` over `_MED_CUES`,
-  which stays a `MainWindow` class attr) and `_clock_warm`.
+  which stays a `MainWindow` class attr) and `_clock_warm`. The per-frame warm
+  wash is `max(sleep_warm, clock_warm, always_warm)` — the **"Always warm
+  (low-blue) screen"** accessibility toggle (`app_actions.set_always_warm`, View
+  menu, persisted, off by default) adds a 0.18 floor for evening eye comfort,
+  composing under the Sleep wind-down. Offline test: `tools/test_always_warm.py`.
 - **win_story.py** — `_StoryMixin` (inherited by `MainWindow`): the **storyteller
   + session runtime** — `set_story` / `set_story_voice`, the bedtime story
   (`_start_story` + per-lecture resume + `_on_story_unit` + `_story_level` fade +

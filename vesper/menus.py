@@ -325,6 +325,8 @@ def _view(win, m):
             win.set_intro_lead_in)
     _toggle(m, "Clock-aware light", getattr(win, "_clock_light", True),
             win.set_clock_light)
+    _toggle(m, "Warm screen (low blue) - always", getattr(win, "_always_warm", False),
+            win.set_always_warm)
     m.addSeparator()
     hg = m.addAction("Hourglass timer")
     hg.setCheckable(True)
