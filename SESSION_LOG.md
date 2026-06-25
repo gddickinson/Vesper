@@ -2253,6 +2253,28 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## CAST round 4 — opt-in LLM cast director (validated, fail-closed)
+When (and only when) a backend is configured, an LLM now **directs the cast** -- it pre-reads the book
+and picks fitting characters/costumes for each speaker. New `breathsim/llm_cast.py` (pure-ish, no
+vesper import -- the allowed character/costume name lists are passed in): `direct(book, characters,
+costumes, complete=None)` samples the book (opening + a couple of middle slices, capped ~6k chars --
+never the whole novel), prompts for STRICT JSON, parses defensively, and **validates + clamps every
+field against the registries** (`validate_cast`: character must be in the list else the heuristic's;
+costume in the list else "None"; voice/emotion length-clamped), filling any gap from the CAST-2
+heuristic and **failing closed** to the pure heuristic on any error / no backend (never raises, never
+blocks). The result caches **once per book** in `~/.breathsim/casts.json` (`save_cast`/`load_cast`/
+`delete_cast`, its own file -- store.py untouched). `vesper/cast.build_cast` now PREFERS a saved
+(LLM-refined) cast, falling back to the heuristic, and -- when Dramatized is on AND a backend is
+configured AND no cast is saved -- kicks off `llm_cast.direct` on a **daemon thread** (`_maybe_direct_cast`,
+fire-and-forget; this session uses the heuristic, the next uses the saved LLM cast). Opt-in only: with
+no backend nothing runs and the heuristic stands. Offline test `tools/test_llm_cast.py` (stubbed
+completer, no network): a good reply refines within the registries + caches; an out-of-registry
+character/costume is clamped; malformed JSON + no-backend fall back to the heuristic; a plain book ->
+empty cast. Verified: that test + the 15 other offline tests (16/16); selftest (213 lectures);
+both-faces drive (0 issues, threads stable); an offscreen drive where a pre-saved LLM cast (Alice->
+Sheep, Bob->Bear) is honoured by build_cast with **zero thread leak**. Files: llm_cast 161, cast 160 --
+all < 500. (Next CAST-5: dramatized polish -- costume rendering, crossfades, a who's-who cast list.)
+
 ## CAST round 3 — Dramatized playback (a little cast acts out a book)
 The dramatized reading is now live: with the **"Dramatized (cast voices)"** toggle on (Books menu,
 persisted, default OFF), a book is read by its cast. New `vesper/cast.py` (`_CastMixin`): `build_cast(

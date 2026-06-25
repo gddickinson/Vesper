@@ -424,7 +424,11 @@ reader; no LLM, no `vesper` import (`tools/test_bookcast.py`). The **Dramatized*
 `vesper/cast.py` (`_CastMixin`, a Books-menu toggle, default off): `build_cast`/`cast_annotate`/
 `apply_cast_tick` read the cast Script and per line switch the narrator **voice** (via `unit["voice"]`,
 honoured by `narration.Narrator._loop`), swap the visible 2D **character** + set a gentle **mood**;
-pure `segment_plan` offline-tested (`tools/test_cast_plan.py`). An opt-in LLM "director" lands next.
+pure `segment_plan` offline-tested (`tools/test_cast_plan.py`). **`llm_cast`** is the opt-in LLM
+**cast director** (validated + fail-closed): `direct(book, characters, costumes, complete=None)`
+pre-reads a capped sample, clamps the model's cast to the registries, falls back to the heuristic, and
+caches once per book (`~/.breathsim/casts.json`); `cast.build_cast` prefers the saved cast and runs the
+director off-thread only when Dramatized is on AND a backend exists (`tools/test_llm_cast.py`, stubbed).
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

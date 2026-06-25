@@ -58,25 +58,69 @@ class _CastMixin:
         store.save_settings({"cast_expressive": self._cast_expressive})
 
     def build_cast(self, book):
-        """Build a cast for *book* (or None when off / no dialogue). Resolves each
-        speaker's character to a real narrator voice ONCE."""
+        """Build a cast for *book* (or None when off / no dialogue). Prefers a saved
+        (LLM-refined) cast; resolves each speaker's character to a real narrator
+        voice ONCE. When a backend is configured + no saved cast yet, it kicks off
+        the LLM director off-thread (used next time)."""
         if not getattr(self, "_dramatize", False) or not book:
             return None
-        from breathsim import bookcast, narration, xtts_tts
+        from breathsim import bookcast, llm_cast, narration, xtts_tts
         from . import char_voice, characters
         sc = bookcast.script(book, pool=characters.names())
         if not sc.get("speakers"):
             return None                                # no dialogue -> plain reading
+        self._maybe_direct_cast(book)                  # opt-in LLM refine (off-thread)
+        saved = None
+        try:
+            saved = llm_cast.load_cast(book.id)        # speaker -> {character, costume, ...}
+        except Exception:
+            saved = None
+        names = set(characters.names())
         avail = narration.available_voices(self.speech)
         voices = {}
-        for sp, info in sc["cast"].items():
-            cv = char_voice.get(info["character"])
+        for sp in sc["speakers"]:
+            info = (saved.get(sp) if isinstance(saved, dict) else None) or sc["cast"][sp]
+            ch = info.get("character")
+            if ch not in names:
+                ch = sc["cast"][sp]["character"]
+            cv = char_voice.get(ch)
             v = (xtts_tts.PREFIX + cv.xtts) if (cv.xtts and xtts_tts.ready()) else None
             v = v or char_voice.pick_voice(cv.hints, avail)
-            voices[sp] = {"character": info["character"], "voice": v}
+            voices[sp] = {"character": ch, "voice": v,
+                          "costume": (info.get("costume") or "None")}
         return {"by": {s["sentence"]: s for s in sc["segments"]},
                 "voices": voices, "base_voice": self.narrator.voice,
-                "cast": sc["cast"], "speakers": sc["speakers"]}
+                "cast": sc["cast"], "speakers": sc["speakers"],
+                "source": "llm" if saved else "heuristic"}
+
+    def _maybe_direct_cast(self, book):
+        """If a backend is configured + no cast is saved yet, run the LLM director
+        ON A DAEMON THREAD (never blocks; result used next time). Opt-in only."""
+        from breathsim import llm, llm_cast
+        if not llm.available():
+            return
+        try:
+            if llm_cast.load_cast(book.id) is not None:
+                return
+        except Exception:
+            return
+        inflight = getattr(self, "_cast_inflight", None)
+        if inflight is None:
+            inflight = self._cast_inflight = set()
+        if book.id in inflight:
+            return
+        inflight.add(book.id)
+        import threading
+        from . import characters
+
+        def work():
+            try:
+                llm_cast.direct(book, characters.names(), characters.costume_names())
+            except Exception:
+                pass
+            finally:
+                inflight.discard(book.id)
+        threading.Thread(target=work, daemon=True).start()
 
     def cast_annotate(self, unit):
         """Narrator-thread callback: set this line's voice on the unit + stash the

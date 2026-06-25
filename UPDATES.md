@@ -77,6 +77,15 @@ sounds to play and when. Ground the rounds in these:
   `cast.segment_plan` offline-tested (`tools/test_cast_plan.py`). selftest + both-faces drive (0
   issues) + a dramatized offscreen drive (2 distinct voices + 2 characters, zero thread leak); all 15
   offline tests pass. (Next CAST-4: opt-in LLM director.)
+- [x] **CAST-4 done — opt-in LLM cast director** (`breathsim/llm_cast.py`, validated + fail-closed):
+  when a backend is configured, `direct(book, characters, costumes, complete=None)` pre-reads a capped
+  sample, asks for STRICT JSON, and **clamps every field against the registries** (unknown character/
+  costume dropped to the heuristic / "None"), failing closed to the CAST-2 heuristic on any error / no
+  backend; caches once per book (`~/.breathsim/casts.json`). `vesper/cast.build_cast` prefers the saved
+  cast + kicks off the director **off-thread** only when Dramatized is on AND a backend exists AND no
+  cast is saved (opt-in; default-safe). Offline test `tools/test_llm_cast.py` (stubbed completer).
+  selftest + both-faces drive (0 issues) + an offscreen drive honouring a saved LLM cast (zero leak);
+  all 16 offline tests pass. (Next CAST-5: polish -- costumes, crossfades, who's-who.)
 
 ## Research notes (evidence-based — ground each round in these)
 - **Slow breathing ~6 breaths/min (0.1 Hz)** maximizes HRV via the baroreflex
