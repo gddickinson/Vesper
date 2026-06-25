@@ -286,10 +286,13 @@ in these notes:
       tradition (no copyright), honestly framed as homage not authentic text; ASCII; beds Wind
       in Pines / Gentle Rain / Singing Bowl. Wired via `stories.extra_names`/`ambience_for`/
       `story_units`. Verified: dispatch + ambiences resolve + ASCII + alias; selftest + drive.
-- [ ] **Procedural haiku/tanka generator** (`breathsim/haiku.py`) — a small grammar/template
-      engine that assembles gentle, season-aware (kigo) haiku and tanka from curated image
-      fragments, endless + deterministically seeded, syllable-respecting, with long pauses. A
-      real generative tool; surfaced as an endless "Drifting Haiku" Sleep session.
+- [x] **Procedural haiku/tanka generator** (`breathsim/haiku.py`, "Drifting Haiku") — a small
+      season-aware grammar: per-season image banks (opening / middle / quiet turn = the *kigo*
+      built in) compose endless haiku (short/longer/short, in the haiku spirit), ~30% become
+      tanka via a shared two-line reflective tail; the seasons drift slowly through the year,
+      announced softly. Original fragments (no copyright); deterministic with an injected seed;
+      bed "Night Crickets". Wired via `stories.extra_names`/`ambience_for`/`story_units`.
+      Verified: dispatch + ambience resolve + ASCII + determinism; selftest + both-faces drive.
 - [ ] **Haibun storyteller** — weave poem *through* story: a slow wandering prose passage
       (reuse the scene vocab) punctuated every few lines by a haiku from the generator. New
       Sleep option ("A Wandering Haibun"); directly answers "weave poetry through stories."

@@ -103,9 +103,9 @@ def scene_names():
 def extra_names():
     """Special non-templated storyteller generators (Cognitive Shuffle, Sleep
     Hypnosis + themed self-help hypnosis sessions, Poetry)."""
-    from . import hypnosis, hypnosis_topics, poetry, poetry_world, shuffle
+    from . import haiku, hypnosis, hypnosis_topics, poetry, poetry_world, shuffle
     return ([shuffle.NAME, hypnosis.NAME] + hypnosis_topics.names()
-            + [poetry.NAME] + poetry_world.names())
+            + [poetry.NAME] + poetry_world.names() + [haiku.NAME])
 
 
 def lecture_names(category=None):
@@ -133,6 +133,9 @@ def ambience_for(name):
         return poetry.AMBIENCE
     if poetry_world.has(name):
         return poetry_world.ambience(name)
+    from . import haiku
+    if name == haiku.NAME:
+        return haiku.AMBIENCE
     sc = SCENES.get(name)
     if sc:
         return sc.ambience
@@ -231,6 +234,10 @@ def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
         return
     if poetry_world.has(scene_name):
         yield from poetry_world.units(scene_name, rng, guidance)
+        return
+    from . import haiku
+    if scene_name == haiku.NAME:
+        yield from haiku.units(rng, guidance)
         return
     from . import lectures
     if scene_name in lectures.names():

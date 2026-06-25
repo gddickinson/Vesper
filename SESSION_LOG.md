@@ -2253,6 +2253,19 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Poetry round — procedural haiku/tanka generator ("Drifting Haiku")
+Second item of the storytelling & poetry batch. New `breathsim/haiku.py`: a small season-aware
+grammar that assembles endless gentle verse. Per-season image banks (an opening image, a middle
+development, a quiet closing turn -- so the *kigo*/season word is built in) compose haiku in the
+short/longer/short haiku spirit; ~30% gain a shared two-line reflective tail to become a tanka.
+The four seasons **drift slowly through the year**, announced softly, so the listener wanders an
+endless low-arousal almanac of small still images toward sleep. All fragments are **original**
+(no copyright); the generator is **deterministic** with an injected seed (unit-testable); bed
+"Night Crickets". Surfaced as a Sleep storyteller option "Drifting Haiku" via
+`stories.extra_names`/`ambience_for`/`story_units`. Verified: dispatch through
+`stories.story_units`, ambience resolves, ASCII-only, same-seed determinism, seasons drift +
+tankas appear; selftest passes; both-faces drive 0 issues. Files < 500 lines; secret scan clean.
+
 ## Poetry round — pure-poetry sessions across cultures (user-requested)
 First item of the storytelling & poetry batch. Expanded the `poetry` storyteller from 8
 English nocturnes into **selectable "Pure Poetry: <tradition>" Sleep sessions**: *English
