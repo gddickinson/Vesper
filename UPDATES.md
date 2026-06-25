@@ -61,6 +61,13 @@ sounds to play and when. Ground the rounds in these:
   **17 costumes**. Montage PNG eyeballed; selftest + both-faces drive (0 issues) + a thread-stable
   offscreen FaceWidget character swap; all 13 offline tests pass; README/CLAUDE bumped. (Next CAST-2:
   bookcast.py heuristic Script.)
+- [x] **CAST-2 done — `bookcast.py` heuristic cast Script** (pure, offline, no LLM): `script(book)`
+  assigns a speaker per sentence (quoted dialogue + "said Alice"/"Alice asked" attribution, a
+  stop-list, a one-sentence look-ahead for tags split after `?`/`!`, last-speaker continuation),
+  casts recurring speakers deterministically to distinct characters + voice archetypes, with a
+  per-line emotion + `sound_cues` ambience; pure (no vesper import). Offline test
+  `tools/test_bookcast.py`; selftest + both-faces drive (0 issues); all 14 offline tests pass. (Next
+  CAST-3: dramatized playback.)
 
 ## Research notes (evidence-based — ground each round in these)
 - **Slow breathing ~6 breaths/min (0.1 Hz)** maximizes HRV via the baroreflex

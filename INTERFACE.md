@@ -417,7 +417,11 @@ the dialog). Offline-tested (`tools/test_bookimport.py`, in-memory epub/txt). Th
 Standard Ebooks (EPUB). Progress: `books.percent_read`/`books.in_progress` + `resumehint.
 book_continue_hint` drive a **% read** read-out (Reader + library list) and a "Continue your book"
 launch hint (`tools/test_bookprogress.py`). The audiobook feature is end-to-end (download / import /
-read / sleep-narrate / resume), all opt-in + local-first.
+read / sleep-narrate / resume), all opt-in + local-first. **`bookcast`** (pure, offline) turns a Book
+into a **cast Script** -- `script(book)` heuristically assigns who speaks each sentence (dialogue +
+attribution detection, deterministic character casting, emotion + ambience hints) for the dramatized
+reader; no LLM, no `vesper` import (`tools/test_bookcast.py`). Dramatized playback + an opt-in LLM
+"director" land in later CAST rounds.
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

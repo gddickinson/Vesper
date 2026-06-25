@@ -2253,6 +2253,25 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## CAST round 2 — bookcast.py: who-speaks-each-line heuristic (pure, offline)
+The foundation for dramatized reading: a PURE `breathsim/bookcast.py` (no LLM, no network, no Qt) that
+turns a `books.Book` into a **cast Script**. `script(book, pool=None)` decides a **speaker** per
+sentence -- detecting quoted dialogue + "..., said Alice" / "Alice asked," attribution via two regexes
+(`Name verb` / `verb [the] Name`) with a pronoun/sentence-initial **stop-list**, a **one-sentence
+look-ahead** so a tag split onto the next fragment after a `?`/`!` (the sentence splitter cuts there)
+is still picked up, and **last-speaker continuation** for bare dialogue lines. Recurring dialogue
+speakers map **deterministically** (first-appearance order over a casting POOL of real character
+names) to distinct 2D characters + voice archetypes, so the same book always casts the same way; a
+light per-line ambience comes from `sound_cues.cue_for_text`, and a coarse **emotion** from
+punctuation/keywords (`!`->bright, `?`->soft, whisper/hush->hush, else neutral). Output =
+`{segments:[{sentence,text,speaker,is_dialogue,character,voice,emotion,sound}], cast, speakers,
+dialogue_lines, narrator_lines}`. Kept PURE: the pool is a plain name list (overridable), no
+`vesper` import. Offline test `tools/test_bookcast.py` (two speakers incl. a `?`-split tag -> distinct
+characters, dialogue/narration flagged, deterministic, a plain book -> all-Narrator + empty cast). NO
+playback yet (CAST-3). Verified: that test + the 13 other offline tests (14/14); selftest (209
+lectures); both-faces drive (0 issues, threads stable). File: bookcast 125 -- < 500. (Next CAST-3: the
+Dramatized playback toggle wiring voice/character/costume/mood/sound per segment.)
+
 ## CAST round 1 — more characters + costumes (start of the dramatized-books thread)
 First round of the user-requested cast-narration thread: more cast members. Two new 2D characters on
 the shared cute-character kit -- `char_mouse.py` (a soft grey Mouse: big round ears, pink nose, fine
