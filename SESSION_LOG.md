@@ -3370,6 +3370,20 @@ reassurance line -- "You feel no fear, only the gentle company..."); registered 
 Verified: selftest passes (**245 lectures across 50 branches**); story DB rebuilt (331,473 words); all
 32 offline tests green; drive_check 0 issues; every file < 500 (each lecture 105).
 
+## Reader dialog: jump-to-chapter navigation
+Mirrored the Read-mode chapter nav into the standalone book **Reader** dialog (`vesper/reader.py`) so
+both reading surfaces share one implementation. A "Jump to a chapter..." button under the book picker
+opens the same searchable `picker.choose` popup, fed by the already-shared pure
+`bookreader.chapters(book)` -> `[(sentence_index, title)]`; `_load_selected` caches the current book's
+chapters and enables/disables the button per book (a heading-less text disables it).
+`_jump_to_chapter(sentence_index)` persists the resume position and either restarts the narration from
+that chapter (when reading -- gated on `stop_btn.isEnabled()`) or moves the read-along highlight +
+scroll (when paused, by resetting `_last_hl` and calling `_follow`), exactly like the Read-mode jump.
+No core changes -- pure reuse of `bookreader.chapters` + `picker.choose`. Verified: new offscreen
+`tools/test_reader_chapters.py` (button enables for a chaptered book; jump-while-paused moves +
+persists + highlights; jump-while-reading restarts; a heading-less book disables the button; threads
+stable 2->2); all 33 offline tests green; selftest + drive_check (0 issues); `reader.py` 240 < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

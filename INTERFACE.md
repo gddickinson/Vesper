@@ -474,7 +474,9 @@ paragraph starts) for **jump-to-chapter** navigation. In Read mode, `win_read.se
 caches the book's chapters, `book_chapters()`/`jump_to_chapter(sentence_index)` expose + act on them
 (persisting the resume position; restarting the narrator if mid-read), and the Read card's "Jump to a
 chapter…" button (`sections_read._choose_chapter`, enabled via `refresh_read_chapters`) opens the
-searchable `picker.choose` chapter list. An **opt-in Read sleep fade** lets you fall asleep to a book
+searchable `picker.choose` chapter list. The standalone book **Reader** dialog (`vesper/reader.py`)
+has the same "Jump to a chapter…" button (`_choose_chapter`/`_jump_to_chapter`, enabled per-book in
+`_load_selected`), so both reading surfaces share the one `bookreader.chapters` + `picker.choose`. An **opt-in Read sleep fade** lets you fall asleep to a book
 in the Read screen: `win_read.set_read_fade(minutes)` arms a monotonic timer (independent of the
 breath clock, which Read often doesn't run), `_read_level()` feeds the *reading narrator's* level
 function so the **voice gently quietens** (via `sleeptimer.fade_gain`), and `_read_follow` stops the

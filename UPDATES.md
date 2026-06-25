@@ -155,6 +155,14 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Reader dialog: jump-to-chapter navigation** (GUI polish; feature parity across reading
+      surfaces): mirrored the Read-mode chapter jump into the standalone book Reader (`reader.py`). A
+      "Jump to a chapter…" button under the book picker opens the same searchable `picker.choose` popup,
+      fed by the shared pure `bookreader.chapters`; `_load_selected` caches + enables it per book
+      (heading-less -> disabled); `_jump_to_chapter` persists resume and restarts the narration if
+      reading, else moves the read-along highlight. No core changes -- pure reuse. Verified: new
+      offscreen `tools/test_reader_chapters.py` (enable/disable, jump paused/while-reading, threads
+      stable); all 33 offline tests; selftest; drive_check (0 issues).
 - [x] **Sleep ambience: "Distant Surf (night)"** (sleep efficacy): a new procedural nature bed -- a
       far-off, dark, low ocean wash that breathes softly, gentler than the brighter "Ocean Waves".
       One data-driven `register(VoiceConfig(...))` in the Nature group: brown noise + a low 560 Hz

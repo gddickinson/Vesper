@@ -53,6 +53,13 @@ class _ReaderDialog(QDialog):
         v.addWidget(muted("Book"))
         v.addWidget(self.combo)
 
+        self.chapters_btn = QPushButton("Jump to a chapter…")
+        self.chapters_btn.setToolTip("Open a searchable list of the book's "
+                                     "chapters and jump to one (your place is "
+                                     "saved).")
+        self.chapters_btn.clicked.connect(self._choose_chapter)
+        v.addWidget(self.chapters_btn)
+
         self.readalong = QCheckBox("Show read-along text (highlight as it reads)")
         self.readalong.setChecked(True)
         self.readalong.toggled.connect(self._sync_pane)
@@ -88,6 +95,7 @@ class _ReaderDialog(QDialog):
                               "importing your own texts arrive soon.")
             self.start_btn.setEnabled(False)
             self.combo.setEnabled(False)
+            self.chapters_btn.setEnabled(False)
         else:
             self._load_selected()
 
@@ -124,7 +132,42 @@ class _ReaderDialog(QDialog):
                      f"({books.percent_read(bid)}% read)" if pos
                      else f"{done} sentences")
             self.note.setText(f"{self._book.title} — {where}.")
+        self._chapters = bookreader.chapters(self._book) if self._book else []
+        self.chapters_btn.setEnabled(bool(self._chapters))
         self._sync_pane()
+
+    # --- chapter navigation ---
+    def _choose_chapter(self):
+        """Searchable chapter picker -> jump the reader to the chosen chapter."""
+        from .picker import choose
+        chs = getattr(self, "_chapters", None) or []
+        if not chs:
+            self.note.setText("This book has no chapters to jump to.")
+            return
+        items = [(si, (f"{n}.  {title}" if title else f"Section {n}"))
+                 for n, (si, title) in enumerate(chs, 1)]
+        here = getattr(self, "_reader_idx",
+                       books.position(self._book.id) if self._book else 0)
+        cur = max((si for si, _ in chs if si <= here), default=None)
+        pick = choose(self, "Jump to a chapter", [("Chapters", items)],
+                      current=cur, placeholder="Search chapters…")
+        if pick is not None:
+            self._jump_to_chapter(pick)
+
+    def _jump_to_chapter(self, sentence_index):
+        """Move to a chapter's first sentence (persisting resume); restart the
+        narration if reading, else move the read-along highlight."""
+        if not self._book:
+            return
+        i = max(0, int(sentence_index))
+        books.set_position(self._book.id, i)
+        self._reader_idx = i
+        if self.stop_btn.isEnabled():               # currently narrating
+            self._stop()
+            self._start()
+        else:
+            self._last_hl = -1
+            self._follow()
 
     def _sync_pane(self, *_):
         self.pane.setVisible(self.readalong.isChecked())
