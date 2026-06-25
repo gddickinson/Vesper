@@ -22,3 +22,13 @@ def resume_hint(settings):
     if mode == "Sleep" and scene and scene.lower() != "off":
         return f"Last time: Sleep with \"{scene}\"."
     return f"Welcome back to {mode}."
+
+
+def book_continue_hint(in_progress):
+    """A "pick up your book" line from ``books.in_progress()`` (the most recent),
+    or ``None`` when no book is partway through. Pure + unit-testable."""
+    if not in_progress:
+        return None
+    b = in_progress[0]
+    title = (str(b.get("title", "")).strip() or "your book")
+    return f"Continue your book: \"{title}\" ({int(b.get('percent', 0))}% read)."

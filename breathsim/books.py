@@ -174,3 +174,30 @@ def clear_position(book_id):
     d = _progress()
     d.pop(book_id, None)
     _meta_write("_progress.json", d)
+
+
+def percent_read(book_id):
+    """How far through a book the saved position is, 0..100 (0 if none/unknown)."""
+    total = next((b.get("sentences", 0) for b in list_books()
+                  if b.get("id") == book_id), 0)
+    if not total:
+        return 0
+    return max(0, min(100, round(100 * position(book_id) / total)))
+
+
+def in_progress():
+    """Books with a saved position partway through (not at the start or finished),
+    most-recently-read first. Each entry is the index meta + sentence/percent/t."""
+    prog = _progress()
+    idx = {b.get("id"): b for b in list_books()}
+    out = []
+    for bid, e in prog.items():
+        meta = idx.get(bid)
+        if not (meta and isinstance(e, dict)):
+            continue
+        pos, total = int(e.get("sentence", 0)), int(meta.get("sentences", 0))
+        if 0 < pos < total:
+            out.append({**meta, "sentence": pos, "t": e.get("t", ""),
+                        "percent": max(0, min(100, round(100 * pos / total)))})
+    out.sort(key=lambda m: m.get("t", ""), reverse=True)
+    return out

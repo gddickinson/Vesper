@@ -207,7 +207,9 @@ class _LibraryDialog(QDialog):
             label = b.get("title", "Untitled")
             if b.get("author"):
                 label += f"  --  {b['author']}"
-            label += f"   ({b.get('sentences', 0)} sentences)"
+            pct = books.percent_read(b.get("id"))
+            label += (f"   ({pct}% read)" if pct
+                      else f"   ({b.get('sentences', 0)} sentences)")
             it = QListWidgetItem(label)
             it.setData(_ROLE, b.get("id"))
             self.library.addItem(it)

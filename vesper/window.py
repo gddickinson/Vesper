@@ -177,6 +177,10 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
             rh = resumehint.resume_hint(store.load_settings())
             if rh and sug.kind != "course":
                 self._launch_suggestion = rh
+            from breathsim import books               # an in-progress book wins (kindest)
+            book_rh = resumehint.book_continue_hint(books.in_progress())
+            if book_rh and sug.kind != "course":
+                self._launch_suggestion = book_rh
         except Exception:
             self._launch_suggestion = None
 

@@ -460,6 +460,15 @@ pipeline (narration, pacing, sleep-timer fade, ambience) is reusable. Ground the
   (in-memory epub + txt, odd encodings, path dispatch, zip-bomb + junk refused). selftest + both-faces
   drive (0 issues) + a thread-stable offscreen Sleep session (imported epub in the picker) + dialog
   PNG; all 12 offline tests pass with no network. (Next R6: polish.)
+- [x] **R6 done — progress polish; AUDIOBOOK THREAD COMPLETE**: pure `books.percent_read` +
+  `books.in_progress` + `resumehint.book_continue_hint`; the launch hint now prefers "Continue your
+  book: \"<title>\" (N% read)." when a book is partway through, and **% read** shows in the Find &
+  manage library list + the Reader note. Offline test `tools/test_bookprogress.py`. selftest +
+  both-faces drive (0 issues) + a thread-stable offscreen launch surfacing the hint; all 13 offline
+  tests pass with no network. **The audiobooks/novels feature is now end-to-end (R1-R6)**: search +
+  download public-domain books, import your own .txt/.epub, read (read-along/audio) or fall asleep to
+  them, resume by sentence, % read, continue-at-launch -- all opt-in, local-first, offline-degrading.
+  The loop returns to normal top-down improvements next.
 - [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
       conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
       of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The

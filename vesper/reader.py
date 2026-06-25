@@ -120,7 +120,8 @@ class _ReaderDialog(QDialog):
         if self._book:
             pos = books.position(bid)
             done = self._book.sentence_count()
-            where = (f"resume at sentence {pos + 1} of {done}" if pos
+            where = (f"resume at sentence {pos + 1} of {done} "
+                     f"({books.percent_read(bid)}% read)" if pos
                      else f"{done} sentences")
             self.note.setText(f"{self._book.title} — {where}.")
         self._sync_pane()

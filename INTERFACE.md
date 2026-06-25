@@ -414,7 +414,10 @@ menu: off-thread search/download + a delete-able library list). Offline-tested w
 spine + tag-strip) with **zip-bomb guards** (per-entry/total/entry-count caps), fail-closed, saved
 LOCAL; the GUI hook is `booklib.import_book_dialog` (Books ▸ "Import a book (file)..." + a button in
 the dialog). Offline-tested (`tools/test_bookimport.py`, in-memory epub/txt). This also unlocks
-Standard Ebooks (EPUB).
+Standard Ebooks (EPUB). Progress: `books.percent_read`/`books.in_progress` + `resumehint.
+book_continue_hint` drive a **% read** read-out (Reader + library list) and a "Continue your book"
+launch hint (`tools/test_bookprogress.py`). The audiobook feature is end-to-end (download / import /
+read / sleep-narrate / resume), all opt-in + local-first.
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

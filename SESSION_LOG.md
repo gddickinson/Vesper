@@ -2253,6 +2253,25 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Audiobooks round 6 — progress polish (% read + "Continue your book" hint) -- thread COMPLETE
+The final audiobook polish round; the novels/audiobook thread is now end-to-end. Two pure additions to
+`breathsim/books.py`: `percent_read(book_id)` (0..100 from the saved position vs the index sentence
+count) and `in_progress()` (books with a saved position partway through -- 0 < pos < total -- most-
+recently-read first, each stamped with sentence/percent/t). A pure `vesper/resumehint.book_continue_hint(
+in_progress)` turns that into a calm launch line ("Continue your book: \"<title>\" (N% read)."); the
+window's launch hint prefers it (unless an in-progress course already owns the line). **% read** now
+shows in the Find & manage **library list** (e.g. "Title -- Author (25% read)") and in the **Reader**
+note ("resume at sentence X of Y (N% read)"). All pure + offline-tested by `tools/test_bookprogress.py`
+(empty -> none; 25% mid; finished + start-of-book are NOT "in progress"; the exact hint string).
+Verified: that test + the 12 other offline tests pass with NO network; selftest (148 voices, 209
+lectures); both-faces drive (0 issues, threads stable); a ~55-tick offscreen launch where a 30%-read
+book yields the "Continue your book" hint with **zero thread leak**. Files: books 203, resumehint 34,
+window 492 -- all < 500. The AUDIOBOOK THREAD IS COMPLETE (R1-R6): search/download free public-domain
+books, import your own .txt/.epub, read them (read-along text or audio-only) or fall asleep to them,
+resume by sentence next time, see how far you are, and get a gentle continue hint at launch -- all
+opt-in, local-first, offline-degrading. The loop now returns to normal top-down improvements
+(scenes/ambiences/efficacy) with the Stories cadence (last: Weathers of the World).
+
 ## Audiobooks round 5 — import your own .txt / .epub (local, untrusted-safe)
 You can now bring your OWN books -- and this also unlocks Standard Ebooks (EPUB). New pure
 `breathsim/bookimport.py` (no Qt, no network): `import_txt` (bytes or path; hard size cap; defensive
