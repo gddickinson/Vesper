@@ -266,12 +266,13 @@ class Narrator:
                     text_cb(unit)
                 except Exception:
                     pass
+            uv = unit.get("voice") or voice            # per-line voice (cast reading)
             if engine == "kokoro":
-                self._speak_neural(tok, unit, lvl, timing_fn, voice, kokoro_tts.synth)
+                self._speak_neural(tok, unit, lvl, timing_fn, uv, kokoro_tts.synth)
             elif engine == "xtts":
-                self._speak_neural(tok, unit, lvl, timing_fn, voice, xtts_tts.synth)
+                self._speak_neural(tok, unit, lvl, timing_fn, uv, xtts_tts.synth)
             else:
-                self._speak_say(tok, unit, lvl, timing_fn, voice)
+                self._speak_say(tok, unit, lvl, timing_fn, uv)
         self.amp = 0.0
         self._kill_proc()
 

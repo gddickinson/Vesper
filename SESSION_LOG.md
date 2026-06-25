@@ -2253,6 +2253,28 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## CAST round 3 — Dramatized playback (a little cast acts out a book)
+The dramatized reading is now live: with the **"Dramatized (cast voices)"** toggle on (Books menu,
+persisted, default OFF), a book is read by its cast. New `vesper/cast.py` (`_CastMixin`): `build_cast(
+book)` runs `bookcast.script(book, pool=characters.names())` once and resolves each speaker's character
+to a real narrator voice (XTTS speaker if installed, else a Kokoro/say hint-match via `char_voice`);
+`cast_annotate(unit)` (narrator-thread callback) sets that line's **voice on the unit** + stashes the
+pending character/mood/sound as plain state; `apply_cast_tick()` (GUI thread, in the ~40fps loop)
+swaps the **visible 2D character** to the speaker (via `face.set_character` -- VISUAL only, so it never
+restarts narration) and sets a gentle **mood** from the line's emotion; `_restore_cast_character`
+puts the user's character back when the book/toggle ends. Per-line voice works because
+`narration.Narrator._loop` now honours `unit.get("voice")` (a 3-line change; no behaviour change
+without it). Wired into both paths: the Sleep "Book:" story (`win_story._start_story` builds the cast,
+`_on_story_unit` annotates) and the non-sleep `reader.py` (build on Start, annotate per unit, restore
+on Stop). An **"Expressive cast (daytime reading)"** toggle adds gentle background-sound following
+(off by default = sleep-gentle). Robust + empty-safe (no book / no dialogue / off -> single-voice
+narration, unchanged). The pure `cast.segment_plan(seg, voices, base)` is offline-tested
+(`tools/test_cast_plan.py`). Verified: that test + the 14 other offline tests (15/15); selftest (213
+lectures); both-faces drive (0 issues, threads stable); a ~5-segment offscreen dramatized drive where
+two speakers map to **two distinct character voices + two distinct visible characters**, restoring the
+base character with **zero thread leak**. Files: cast 116, narration 388, win_story 344 -- all < 500.
+(Next CAST-4: the opt-in LLM director `llm_cast.py`.)
+
 ## Stories round — new branch "The Microscopic World" (4 lectures)
 A Stories lecture-branch round (cadence due -- 3 CAST rounds since Weathers of the World). Added a
 42nd branch on the hidden world too small to see, via 4 parallel content subagents:

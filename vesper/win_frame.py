@@ -211,6 +211,8 @@ class _FrameMixin:
             self._apply_story_bg()             # backdrop follows the words too
             if self._amb_rotate and not self._story_scene:
                 self._apply_ambience_rotate()  # slowly cycle beds (when no storyteller)
+        if running and getattr(self, "_cast", None):
+            self.apply_cast_tick()             # dramatized: swap character + mood
         self._ease_mood(running)               # expression eases toward the mood
         self._react_face(state, running)       # reactive style/glow (when toggled on)
         if self._view == "scene":

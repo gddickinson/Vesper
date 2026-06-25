@@ -109,6 +109,11 @@ def _books(win, m):
         lambda: booklib.open_library(win))
     m.addAction("Import a book (file)…").triggered.connect(
         lambda: booklib.import_book_dialog(win))
+    m.addSeparator()
+    _toggle(m, "Dramatized (cast voices)", getattr(win, "_dramatize", False),
+            win.set_dramatized)
+    _toggle(m, "Expressive cast (daytime reading)",
+            getattr(win, "_cast_expressive", False), win.set_cast_expressive)
     from breathsim import books
     n = len(books.list_books())
     info = m.addAction(f"In your library: {n}" if n else "Library is empty")

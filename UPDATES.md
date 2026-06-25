@@ -68,6 +68,15 @@ sounds to play and when. Ground the rounds in these:
   per-line emotion + `sound_cues` ambience; pure (no vesper import). Offline test
   `tools/test_bookcast.py`; selftest + both-faces drive (0 issues); all 14 offline tests pass. (Next
   CAST-3: dramatized playback.)
+- [x] **CAST-3 done — Dramatized playback** (`vesper/cast.py` + a Books-menu toggle, default OFF,
+  persisted): a book is read by its cast -- per line the narrator switches to the speaker's character
+  **voice** (`unit["voice"]`, now honoured by `narration.Narrator._loop`), the visible 2D **character**
+  swaps to the speaker (`face.set_character`, visual only -- never restarts narration), and a gentle
+  **mood** is set from the emotion; an **Expressive** toggle adds soft sound-following for daytime.
+  Wired into the Sleep "Book:" path + the Reader; empty-safe (off / no dialogue -> single voice). Pure
+  `cast.segment_plan` offline-tested (`tools/test_cast_plan.py`). selftest + both-faces drive (0
+  issues) + a dramatized offscreen drive (2 distinct voices + 2 characters, zero thread leak); all 15
+  offline tests pass. (Next CAST-4: opt-in LLM director.)
 
 ## Research notes (evidence-based — ground each round in these)
 - **Slow breathing ~6 breaths/min (0.1 Hz)** maximizes HRV via the baroreflex

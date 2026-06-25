@@ -31,6 +31,7 @@ from .pitch import _PitchMixin
 from .viz import VizWidget
 from .win_hourglass import _HourglassMixin
 from .win_consts import FPS
+from .cast import _CastMixin
 from .win_frame import _FrameMixin
 from .win_settings import _SettingsMixin
 from .win_story import _StoryMixin
@@ -41,7 +42,7 @@ _MODE_BG = {"Meditate": "Gradient", "Breathwork": "Aurora", "Chant": "Nebula",
             "Sing": "Aurora", "Relax": "Underwater", "Sleep": "Stars"}
 
 
-class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
+class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
                  _StoryMixin, _FrameMixin, _SettingsMixin, QMainWindow):
     def __init__(self):
         super().__init__()
@@ -71,6 +72,9 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin,
         self._costume = "None"             # costume overlay for the 2D character
         self._char_voices = True           # give each character its own voice + rate
         self._char_rate = 1.0              # current character's speaking-rate multiplier
+        self._dramatize = False            # cast reading (each speaker its own voice)
+        self._cast_expressive = False      # wider variation (sound follow) for the Reader
+        self._cast = None                  # the live cast script (or None)
         self.tuner = None                   # lazy mic pitch monitor (Sing/Chant)
         self._pitch_spec = None
         self._bell_interval = 0.0           # mindfulness bell interval (minutes)

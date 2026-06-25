@@ -153,6 +153,11 @@ class _StoryMixin:
             if pos:
                 self.status.showMessage(
                     f"Resuming \"{self._story_scene}\" where you left off", 4000)
+            self._cast = (self.build_cast(books.load(self._book_id))   # dramatized?
+                          if getattr(self, "_dramatize", False) else None)
+        else:
+            self._cast = None
+            self._restore_cast_character()
         total = lectures.section_count(self._story_scene)
         if total:
             import datetime as _dt
@@ -194,6 +199,8 @@ class _StoryMixin:
         if unit.get("kind") == "book" and getattr(self, "_book_id", None):
             from breathsim import books               # remember where the sleeper got to
             books.set_position(self._book_id, int(unit.get("sentence", 0)))
+            if getattr(self, "_cast", None):
+                self.cast_annotate(unit)              # dramatized: per-line voice/char/mood
         if unit.get("kind") in ("shuffle", "hypnosis", "poem", "book"):
             # Shuffle / hypnosis / poems / a novel shouldn't chase the bed; hold it.
             self._mood_target = (0.0, 0.0, 0.0)

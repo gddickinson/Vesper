@@ -420,8 +420,11 @@ launch hint (`tools/test_bookprogress.py`). The audiobook feature is end-to-end 
 read / sleep-narrate / resume), all opt-in + local-first. **`bookcast`** (pure, offline) turns a Book
 into a **cast Script** -- `script(book)` heuristically assigns who speaks each sentence (dialogue +
 attribution detection, deterministic character casting, emotion + ambience hints) for the dramatized
-reader; no LLM, no `vesper` import (`tools/test_bookcast.py`). Dramatized playback + an opt-in LLM
-"director" land in later CAST rounds.
+reader; no LLM, no `vesper` import (`tools/test_bookcast.py`). The **Dramatized** playback is
+`vesper/cast.py` (`_CastMixin`, a Books-menu toggle, default off): `build_cast`/`cast_annotate`/
+`apply_cast_tick` read the cast Script and per line switch the narrator **voice** (via `unit["voice"]`,
+honoured by `narration.Narrator._loop`), swap the visible 2D **character** + set a gentle **mood**;
+pure `segment_plan` offline-tested (`tools/test_cast_plan.py`). An opt-in LLM "director" lands next.
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

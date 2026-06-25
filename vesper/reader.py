@@ -144,6 +144,8 @@ class _ReaderDialog(QDialog):
         self.win.narrator.speed = float(self.speed.value())
         self.win.narrator.pause_scale = 1.0
         self._reader_idx = books.position(bid)
+        self.win._cast = (self.win.build_cast(self._book)   # dramatized cast (or None)
+                          if getattr(self.win, "_dramatize", False) else None)
         self.win.narrator.start(us, lambda: 1.0, None, self._on_unit)
         self.start_btn.setEnabled(False)
         self.stop_btn.setEnabled(True)
@@ -156,6 +158,8 @@ class _ReaderDialog(QDialog):
         self._reader_idx = i
         if self._book:
             books.set_position(self._book.id, i)
+        if getattr(self.win, "_cast", None):       # dramatized: per-line voice/char/mood
+            self.win.cast_annotate(unit)
 
     def _follow(self):
         # GUI thread: highlight + scroll to the current sentence
@@ -183,6 +187,8 @@ class _ReaderDialog(QDialog):
         self.win._reading = False
         if self._book:
             books.set_position(self._book.id, getattr(self, "_reader_idx", 0))
+        self.win._cast = None                       # end the cast, restore character
+        self.win._restore_cast_character()
         self.start_btn.setEnabled(bool(self._book))
         self.stop_btn.setEnabled(False)
 

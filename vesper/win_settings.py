@@ -45,6 +45,8 @@ class _SettingsMixin:
         if self._llm_ollama:                                     # honour the saved opt-in
             from breathsim import llm
             llm.enable_ollama(True)
+        self._dramatize = bool(s.get("dramatize", False))        # cast book reading
+        self._cast_expressive = bool(s.get("cast_expressive", False))
         mode = s.get("mode")                          # no saved mode -> suit the clock
         if mode not in modes.names():
             from . import clocktheme
@@ -80,4 +82,6 @@ class _SettingsMixin:
                              "settle_in": getattr(self, "_settle", False),
                              "breath_swell": getattr(self, "_breath_swell", False),
                              "llm_ollama": getattr(self, "_llm_ollama", False),
+                             "dramatize": getattr(self, "_dramatize", False),
+                             "cast_expressive": getattr(self, "_cast_expressive", False),
                              "last_scene": self._story_scene or ""})
