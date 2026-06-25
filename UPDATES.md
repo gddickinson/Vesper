@@ -332,10 +332,15 @@ guardrails for the rounds below:
   in an isolated subprocess** (the selftest/drive harness), never auto-load. Declarative path
   first; this last.
 
-### Researched batch — LLM (pending user decisions on priority/backend/scope)
-- [ ] **LLM provider module** (`breathsim/llm.py`) — backends Ollama (local) / Claude (API key)
-      / null; `available()`, `complete(prompt, **opts)`, `chat(messages, tools=None)`;
-      offline + graceful-absent + mockable; opt-in + persisted. Mirrors narration/XTTS plumbing.
+### Researched batch — LLM (DECIDED 2026-06-24 — do AFTER the storytelling & poetry batch)
+User decisions: **sequence** = finish the storytelling & poetry batch first, then this; **backend**
+= **auto-select** (prefer Claude when an API key is present, else local **Ollama**, else hide the
+feature); **scope** = declarative content **and** an experimental **sandboxed code-plugin** path
+(last item, gated/opt-in). Do these top-down once poetry is complete.
+- [ ] **LLM provider module** (`breathsim/llm.py`) — **auto-selecting** backend: Claude (when an
+      `ANTHROPIC_API_KEY` is set) else Ollama (local) else null; `available()`,
+      `complete(prompt, **opts)`, `chat(messages, tools=None)`; offline + graceful-absent +
+      mockable; opt-in + persisted. Mirrors narration/XTTS plumbing.
 - [ ] **LLM story generation** — generate a sleep story/lecture to the schema (or free /
       indefinite length, streamed passage-by-passage), validate via the lint, preview + narrate,
       and **save liked ones to the library** (store). Labelled AI-written; framed atmospheric.
@@ -345,8 +350,10 @@ guardrails for the rounds below:
 - [ ] **Quiet helper assistant** — a bounded app-help + setup assistant that drives the app via
       a **whitelist of app actions** (apply mode / set pattern / start story) through tool-calls,
       optionally **voiced through the face**; calm tone; no medical advice; easy to dismiss.
-- [ ] **(Experimental, gated) Sandboxed plugin generation** — LLM writes a plugin to `plugins/`,
-      bug-tested in an **isolated subprocess** before load, explicit opt-in, never auto-run.
+- [ ] **(Experimental, gated) Sandboxed plugin generation** — IN SCOPE per user. LLM writes a
+      plugin to `plugins/`, **bug-tested in an isolated subprocess** (the selftest/drive harness)
+      before it can load, explicit opt-in, never auto-run; restricted imports; the generate ->
+      test -> fix loop runs out-of-process. Marked Experimental in the UI.
 
 ### Researched batch — audio & synthesis
 - [x] **Generative ambient pad** (user-requested "cosmic music"): new `breathsim/cosmic.py`
