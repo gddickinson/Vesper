@@ -161,15 +161,21 @@ def _u(text, pause=950, phase=None, kind="story"):
     return {"text": text, "pause": pause, "phase": phase, "kind": kind}
 
 
-def _sentence(scene, rng, last=[None]):
-    pools = {**_SHARED, **scene.pools}
-    tmpl = rng.choice([t for t in _TEMPLATES if t != last[0]])
-    last[0] = tmpl
-    s = tmpl.format_map(_Pick(pools, rng))
+def _fill(scene, rng, tmpl):
+    """Fill a template from the shared + scene pools, capitalise + punctuate."""
+    s = tmpl.format_map(_Pick({**_SHARED, **scene.pools}, rng))
     s = s[0].upper() + s[1:]
     if s[-1] not in ".?!":
         s += "."
-    return _u(s, pause=rng.randint(650, 1150))
+    return s
+
+
+def _sentence(scene, rng, last=[None], fade=1.0):
+    """One scene sentence. *fade* (>=1) lengthens the pause as the session
+    deepens -- part of the slow zoom-out-and-fade toward sleep."""
+    tmpl = rng.choice([t for t in _TEMPLATES if t != last[0]])
+    last[0] = tmpl
+    return _u(_fill(scene, rng, tmpl), pause=int(rng.randint(650, 1150) * fade))
 
 
 # --- guidance interludes ---------------------------------------------------
@@ -214,7 +220,42 @@ def _relax(rng):
         yield _u(line, 3000, kind="guide")
 
 
-_INTERLUDES = [_breath, _bodyscan, _relax]
+# Occasional contemplative lines, in the spirit of mono no aware (transience),
+# the Taoist watercourse way, and Stoic night-counsel -- woven in as a fourth
+# interlude alongside the breath / body-scan / relaxation ones.
+_REFLECT = [
+    "Nothing here will last, and that is what makes it lovely; let it pass, and rest.",
+    "This quiet moment will not come again, and so it is enough, just as it is.",
+    "Be soft now, like water, which yields to everything and yet wears the hardest stone.",
+    "Water always finds the low, still place, and settles there; settle there too.",
+    "The world turns on its own tonight -- the tides, the stars, your breath -- and needs no help from you.",
+    "Whatever the day held is behind you now; this night asks only that you rest.",
+    "Let what is not yours to carry rest outside the door, soft and harmless in the dark.",
+]
+
+
+def _contemplate(rng):
+    yield _u(rng.choice(_REFLECT), 4400, kind="guide")
+
+
+_INTERLUDES = [_breath, _bodyscan, _relax, _contemplate]
+
+# A gentle recurring refrain, built once per session and repeated softly at the
+# close of each pass (a lullaby-like comfort). Scene-flavoured via the pools.
+_REFRAINS = [
+    "And the {sound_src} goes on, {sa}, on and on.",
+    "Still the {sound_src} {gv}, {sa}, and you drift a little deeper.",
+    "And everything here is {heavy}, and {calm}, and far away.",
+    "The {place} keeps its quiet, and holds you, and holds you.",
+]
+
+# As the session deepens, the view slowly widens and dims -- a soft zoom-out.
+_WIDEN = [
+    "The {place} grows wider, and dimmer, and softer now.",
+    "Everything is drifting further away, and growing quiet.",
+    "The edges blur, the details fade, and only the calm remains.",
+    "Smaller and softer now, the whole {place} settling into the dark.",
+]
 
 
 def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
@@ -258,9 +299,16 @@ def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
     scene = SCENES.get(scene_name) or rng.choice(list(SCENES.values()))
     last = [None]
     turn = 0
+    refrain = _fill(scene, rng, rng.choice(_REFRAINS))   # a recurring soft refrain
     while True:
-        for _ in range(run):
-            yield _sentence(scene, rng, last)
+        fade = min(2.2, 1.0 + 0.12 * turn)          # slow zoom-out: pauses lengthen
+        cur_run = max(4, run - turn)                # ... and fewer sentences over time
+        for _ in range(cur_run):
+            yield _sentence(scene, rng, last, fade)
+        if turn >= 3:                               # the view widens + dims as it deepens
+            yield _u(_fill(scene, rng, rng.choice(_WIDEN)),
+                     int(2200 * fade), kind="guide")
+        yield _u(refrain, int(1800 * fade), kind="guide")   # the gentle recurring refrain
         if guidance:
             yield from _INTERLUDES[turn % len(_INTERLUDES)](rng)
-            turn += 1
+        turn += 1

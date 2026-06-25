@@ -329,11 +329,17 @@ in these notes:
       tale. Original; deterministic with an injected seed; bed "Soft Rainstorm". Wired via
       `stories.extra_names`/`ambience_for`/`story_units`. Verified: dispatch + 4-movement
       structure + ASCII + determinism + every ketsu sleep-closing; selftest + both-faces drive.
-- [ ] **Story-craft polish for the procedural scenes** — apply the descending-structure
-      toolkit to `stories.py` scenes (Rainy Cottage etc.): gentle **refrains**, "rule of three"
-      cadence, a slow **zoom-out-and-fade** as the session deepens, richer sensory layering, and
-      occasional **contemplative interludes** (a mono-no-aware noticing / a Taoist image / a
-      Stoic night-thought) alongside the existing breath/body-scan interludes.
+- [x] **Story-craft polish for the procedural scenes** — applied the descending-structure
+      toolkit to the `stories.py` scene generator (refactored `_sentence` to share `_fill` +
+      take a `fade` factor): a per-session **refrain** (a scene-flavoured recurring line, e.g.
+      "And the river goes on, slowly, on and on.", repeated at the close of each pass); a slow
+      **zoom-out-and-fade** as the session deepens -- pauses lengthen (`fade` 1.0 -> 2.2) and the
+      pass shrinks (`run` -> min 4 sentences), with **widen** lines appearing from the 4th pass
+      ("Smaller and softer now, the whole {place} settling into the dark."); and a 4th
+      **contemplative interlude** (`_contemplate`/`_REFLECT`: mono-no-aware / Taoist water /
+      Stoic night-thoughts) woven into the breath/body-scan/relax rotation. Deterministic;
+      Scene/SCENES API + dispatch unchanged. Verified: every scene yields valid ASCII units, the
+      refrain recurs, pauses fade (974 -> 2220), contemplative lines appear; selftest + drive.
 
 ### Research notes — optional LLM integration (user-requested, 2026-06-24)
 A major direction: incorporate an LLM (Claude when a key is present, else a local **Ollama**

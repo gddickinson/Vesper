@@ -2253,6 +2253,28 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Storytelling round — scene-craft polish (descending structure)
+Seventh and final item of the storytelling & poetry batch. Applied the sleep-storytelling
+"descending structure" toolkit to the **procedural scene generator** in `breathsim/stories.py`
+(the endless Rainy Cottage / Seaside / Riverside / Quiet Cafe / Night Meadow streams):
+- refactored `_sentence` to share a `_fill(scene, rng, tmpl)` helper and take a **`fade`**
+  factor (>=1) that lengthens pauses as the session deepens;
+- a per-session **refrain** -- one scene-flavoured recurring line (e.g. "And the river goes on,
+  slowly, on and on.") built once and repeated softly at the close of each pass, a lullaby-like
+  comfort;
+- a slow **zoom-out-and-fade**: `fade` grows 1.0 -> 2.2 (pauses lengthen) and the pass shrinks
+  (`run` down to a floor of 4 sentences), with **widen** lines from the 4th pass on ("The edges
+  blur, the details fade, and only the calm remains.", "Smaller and softer now, the whole
+  {place} settling into the dark.");
+- a 4th **contemplative interlude** (`_contemplate` over `_REFLECT`: mono-no-aware transience /
+  the Taoist watercourse / Stoic night-counsel) woven into the breath / body-scan / relax
+  rotation.
+All deterministic (injected seed); the `Scene`/`SCENES` API and scene dispatch are unchanged.
+Verified: every scene yields valid ASCII units, the refrain recurs (34x in a long stream),
+story-sentence pauses fade (974 -> 2220), contemplative lines appear; selftest passes; both-
+faces drive 0 issues. `stories.py` 314 lines (< 500); secret scan clean.
+**This completes the storytelling & poetry batch (7/7); the loop next moves to the LLM batch.**
+
 ## Storytelling round — kishotenketsu sleep-tales ("Quiet Tales")
 Sixth item of the storytelling & poetry batch -- a new gentle *narrative* class distinct from
 the factual lectures. New `breathsim/tales.py` (`NAME = "Quiet Tales"`): 6 authored,
