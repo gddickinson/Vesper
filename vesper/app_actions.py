@@ -327,6 +327,19 @@ class _ActionsMixin:
         from . import greeting
         greeting.ask_name(self)
 
+    def set_weather(self, kind):
+        """Optional particle weather overlay (off / snow / leaves / bubbles / fireflies)."""
+        self.viz.set_weather(kind)
+
+    def set_calm_visuals(self, on):
+        """Accessibility 'reduce motion' (persisted, off by default): eases the
+        decorative drift/twinkle and drops the weather overlay; the breathing orb
+        + guide dot stay responsive."""
+        self._calm_visuals = bool(on)
+        self.viz.set_calm(self._calm_visuals)
+        from breathsim import store
+        store.save_settings({"calm_visuals": self._calm_visuals})
+
     # --- mindfulness bell / retention timer -------------------------------
     def set_bell_interval(self, minutes):
         self._bell_interval = float(minutes)

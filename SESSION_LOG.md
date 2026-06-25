@@ -2987,6 +2987,24 @@ parallel subagents, independently validated (7x12, pure ASCII, every section sle
 branches**); story DB rebuilt (297k words); offline tests (19) green; drive_check 0 issues,
 threads stable; all files < 500 lines.
 
+## Accessibility: "Calm visuals (reduce motion)" toggle
+A global, persisted, off-by-default View toggle for motion-sensitive users and for lowering
+pre-sleep visual stimulation (less bright on-screen motion is gentler near sleep). Implemented at
+the single `viz` chokepoint, so it needs no per-scene surgery: `VizWidget.update_state` now feeds
+the scenes a **virtual decorative clock** that advances at the real rate normally, or at 15%
+(`_CALM_RATE`) when calm is on -- so every time-driven decorative motion (star drift, twinkle,
+floating motes, flame flicker, ripple/aurora) eases at once. The breath-driven terms (orb radius
+from `volume`, guide dot from `cycle_frac`) read the live breath state, NOT this clock, so the
+breathing visualization stays fully responsive -- only the decoration calms. `paintEvent` also
+drops the busy particle weather overlay when calm. The virtual clock is monotonic (dt clamped >= 0)
+so a session reset never jolts it. Wired: `window.set_calm_visuals` (-> `viz.set_calm` + persist) +
+a `_calm_visuals` default, `win_settings` round-trip (`calm_visuals`, restored into the viz), and a
+View-menu toggle in the accessibility cluster (beside Text size / count cue). Verified: new
+`tools/test_calm_visuals.py` (clock tracks real time off / advances at 15% on, breath terms passed
+through untouched, weather gated, monotonic across a reset) + an offscreen GUI smoke (menu present,
+handler reaches the viz, persists, the calm clock advanced 0.33s over ~2.2s of frames, threads
+stable 2->2) + selftest + drive_check (0 issues); all 20 offline tests green; every file < 500 lines.
+
 ## Optional spoken-name greeting (off by default)
 A small, warm personalisation: if the listener sets a name, the storyteller opens a Sleep
 session with one soft, time-aware line ("Good evening, Alex. Let's settle in and unwind.")

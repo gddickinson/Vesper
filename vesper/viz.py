@@ -21,6 +21,9 @@ class VizWidget(QWidget):
         self._scene = scenes.make("orb")
         self._weather = scene_particles.ParticleLayer()   # optional weather overlay
         self._warm = 0.0                          # warm low-blue Sleep dimming
+        self._calm = False                        # 'reduce motion' (accessibility)
+        self._vt = 0.0                            # virtual decorative clock (slows when calm)
+        self._last_t = None
         self._hg = None                           # hourglass timer state (or None)
         self._hg_rect = None
         self._hg_click_cb = None
@@ -28,8 +31,15 @@ class VizWidget(QWidget):
                      "phase": "inhale", "cycle_frac": 0.0, "remaining": 0.0,
                      "label": "Ready", "t": 0.0, "prog": None}
 
+    _CALM_RATE = 0.15                             # decorative motion runs at 15% when calm
+
     def set_warm(self, amount):
         self._warm = max(0.0, min(1.0, float(amount)))
+
+    def set_calm(self, on):
+        """'Reduce motion': slow the decorative drift/twinkle and drop the weather
+        overlay, while the breath-driven orb + guide dot (informational) stay live."""
+        self._calm = bool(on)
 
     def set_weather(self, kind):
         self._weather.set_kind(kind)
@@ -56,6 +66,22 @@ class VizWidget(QWidget):
             self.update()
 
     def update_state(self, ctx):
+        # Feed the scenes a virtual clock that advances at the real rate normally,
+        # or much more slowly when 'calm visuals' is on, so every time-driven
+        # decorative motion (star drift, twinkle, motes, flicker) eases without
+        # touching any scene. The breath-driven terms read volume/cycle_frac, not
+        # this clock, so the breathing visualization stays fully responsive.
+        rt = float(ctx.get("t", 0.0))
+        if self._last_t is None:
+            self._last_t = rt
+        dt = rt - self._last_t
+        self._last_t = rt
+        if dt < 0.0:                              # guard a clock reset (new session)
+            dt = 0.0
+        self._vt += dt * (self._CALM_RATE if self._calm else 1.0)
+        ctx = dict(ctx)
+        ctx["t"] = self._vt
+        ctx["calm"] = self._calm
         self._ctx = ctx
         self.update()
 
@@ -67,8 +93,9 @@ class VizWidget(QWidget):
             self._scene.draw(p, w, h, self._ctx)
         except Exception:
             p.fillRect(0, 0, w, h, theme.BG)
-        self._weather.draw(p, w, h, self._ctx.get("t", 0.0),
-                           self._ctx.get("volume", 0.5))   # optional weather layer
+        if not self._calm:                            # 'reduce motion' drops the busy layer
+            self._weather.draw(p, w, h, self._ctx.get("t", 0.0),
+                               self._ctx.get("volume", 0.5))   # optional weather layer
         face_bg.warm_overlay(p, w, h, self._warm)     # Sleep wind-down warmth
         self._hg_rect = hourglass.draw_corner(p, w, h, self._hg)
         p.end()

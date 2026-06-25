@@ -78,6 +78,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         self._gratitude_on = False         # opt-in bedtime 'one good thing' (set in restore)
         self._listener_name = ""           # optional spoken-greeting name ('' = off)
         self._greeted_session = False      # greeted by name yet this session?
+        self._calm_visuals = False         # 'reduce motion' (set in restore)
         self.tuner = None                   # lazy mic pitch monitor (Sing/Chant)
         self._pitch_spec = None
         self._bell_interval = 0.0           # mindfulness bell interval (minutes)
@@ -297,10 +298,6 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         self._scene_hint = name
         self.viz.set_scene(name)
         self.set_view("scene")
-
-    def set_weather(self, kind):
-        """Optional particle weather overlay (off / snow / leaves / bubbles / fireflies)."""
-        self.viz.set_weather(kind)
 
     def set_clock_light(self, on):
         self._clock_light = bool(on)

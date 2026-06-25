@@ -211,7 +211,12 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 - **viz.py** — `VizWidget(QWidget)`: hosts a persistent scene, `set_scene(name)`,
   `update_state(ctx)` each frame; paints via `scene.draw(p, w, h, ctx)`. Also draws
   the corner **hourglass timer** (`set_hourglass(state)`) and forwards taps on it to
-  `_hg_click_cb` (flip-to-reset). `FaceWidget` does the same.
+  `_hg_click_cb` (flip-to-reset). `FaceWidget` does the same. **`set_calm(on)`** is the
+  accessibility **"reduce motion"** chokepoint: it feeds the scenes a virtual decorative
+  clock that advances at 15% when on (so star-drift / twinkle / motes / flicker ease,
+  while the breath-driven orb + guide dot, which read volume/cycle_frac, stay live) and
+  drops the busy weather overlay. Driven by `window.set_calm_visuals` (View menu toggle,
+  persisted `calm_visuals`, off by default). Offline test: `tools/test_calm_visuals.py`.
 - **hourglass.py** — the session **countdown timer** painter: `draw(p, rect, frac, t,
   running, spin)` renders a glass hourglass whose top bulb empties / bottom heap fills
   as `frac` (elapsed fraction) goes 0→1, with a falling sand stream; `spin` rotates it

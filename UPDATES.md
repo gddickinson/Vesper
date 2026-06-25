@@ -1153,6 +1153,17 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
       (`xtts_tts.py` + `xtts_worker.py`, persistent subprocess in a separate venv;
       `narration` lists its voices, routes per-voice, degrades to Kokoro/`say`).
       Faster-than-real-time on MPS; non-commercial CPML; see `docs/XTTS.md`. Done.
+- [x] **Calm visuals (reduce motion)** (accessibility + sleep efficacy, off by default): a global
+      View-menu toggle for motion-sensitive users and for lowering pre-sleep visual stimulation.
+      Implemented at the single `viz` chokepoint: `VizWidget.update_state` feeds scenes a virtual
+      decorative clock that runs at 15% when on (so star drift / twinkle / motes / flicker / ripples
+      all ease at once, no per-scene edits), while the breath-driven orb + guide dot (volume /
+      cycle_frac) stay live; `paintEvent` also drops the busy weather overlay. Monotonic across a
+      session reset. Wired via `window.set_calm_visuals` (-> `viz.set_calm` + persist), `_calm_visuals`
+      default, `win_settings` round-trip, and a View toggle in the accessibility cluster. Verified:
+      `tools/test_calm_visuals.py` (clock off=real / on=15%, breath terms untouched, weather gated,
+      monotonic) + offscreen GUI smoke (menu present, handler->viz, persists, threads stable) +
+      selftest + drive_check; all 20 offline tests green.
 - [x] **Optional spoken name**: greet/settle the listener by name (off by default). New
       `vesper/greeting.py` (pure + tested): `sanitize_name` (NFKD ASCII-fold → letters/space/`-`/`'`
       only, 24-char cap, `''` = off), `greeting_line(name, hour)` (one soft, time-aware line —
