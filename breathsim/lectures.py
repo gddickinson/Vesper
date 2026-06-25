@@ -74,6 +74,8 @@ from . import lectures_circumnav, lectures_endurance  # The Great Voyages
 from . import lectures_treasurefleet, lectures_wayfinders
 from . import lectures_earthspace, lectures_mars  # The Inner Planets
 from . import lectures_mercury, lectures_venus
+from . import lectures_ceres, lectures_eris  # The Dwarf Planets
+from . import lectures_haumea, lectures_pluto
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -225,6 +227,8 @@ _CATALOG = [
                            lectures_circumnav, lectures_endurance]),
     ("The Inner Planets", [lectures_mercury, lectures_venus,
                            lectures_mars, lectures_earthspace]),
+    ("The Dwarf Planets", [lectures_pluto, lectures_ceres,
+                           lectures_eris, lectures_haumea]),
 ]
 
 LECTURES = {}

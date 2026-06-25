@@ -2987,6 +2987,27 @@ parallel subagents, independently validated (7x12, pure ASCII, every section sle
 branches**); story DB rebuilt (297k words); offline tests (19) green; drive_check 0 issues,
 threads stable; all files < 500 lines.
 
+## Stories round — new branch "The Dwarf Planets" (4 lectures)
+Added a 45th lecture branch, **The Dwarf Planets**, completing a small-worlds trilogy alongside
+The Inner Planets and The Moons of the Giants: *Pluto* (the patient 1930 discovery by Clyde
+Tombaugh, school-children naming, the gentle reclassification to dwarf planet, New Horizons' 2015
+flyby and the great pale heart Tombaugh Regio with its slow nitrogen glaciers of Sputnik Planitia,
+the blue haze, and the waltzing companion moon Charon), *Ceres* (the largest body in the asteroid
+belt, the first dwarf planet found - by Giuseppe Piazzi on the first night of the 1800s - named
+for the harvest goddess, Dawn's mapping, the bright Occator salt deposits Cerealia Facula left by
+briny water, and the lone ice-volcano Ahuna Mons), *Eris* (the far scattered-disc world a whole
+recorded-history-long 557-year orbit out, Mike Brown's 2005 discovery, its near-twinning of Pluto
+that gently birthed the "dwarf planet" name, and the small companion moon Dysnomia), and *Haumea*
+(the egg-shaped Kuiper-Belt world whose calm tireless ~4-hour spin eased it into an oval, its
+bright water-ice gleam, the first ring found on such a distant world, and the two icy moons Hiiaka
+and Namaka). Each = the standard 7 sections x 12 second-person present-tense sentences, accurate
+astronomy kept gentle (the "demotion" and Eris's discord-goddess name both told kindly; Haumea's
+fast spin framed as graceful, not dizzying), every section easing toward sleep; ambiences Brown
+Noise / Singing Bowl / Pink Noise / Wind Chimes. Drafted via four parallel subagents,
+independently validated (7x12, pure ASCII, every section sleepward), registered in
+`lectures._CATALOG`. Verified: selftest passes (**225 lectures across 45 branches**); story DB
+rebuilt (303k words); offline tests (20) green; drive_check 0 issues; all files < 500 lines.
+
 ## Accessibility: "Calm visuals (reduce motion)" toggle
 A global, persisted, off-by-default View toggle for motion-sensitive users and for lowering
 pre-sleep visual stimulation (less bright on-screen motion is gentler near sleep). Implemented at

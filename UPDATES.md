@@ -313,6 +313,20 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       Sessions menu ("One good thing…" + "Bedtime gratitude" toggle), a kind "Good things noted: N"
       line in Stats, and settings persistence. Verified: `tools/test_gratitude.py` + offscreen GUI
       smoke (menus present, threads stable) + selftest + drive_check.
+- [x] **Stories (next branch)** — **The Dwarf Planets** (4): *Pluto* (Clyde Tombaugh's patient
+      1930 find, school-children naming, the gentle dwarf-planet reclassification, New Horizons 2015,
+      the pale heart Tombaugh Regio + Sputnik Planitia nitrogen glaciers, the blue haze, the
+      waltzing moon Charon), *Ceres* (largest in the asteroid belt, first dwarf planet found by
+      Piazzi on the first night of 1801, harvest-goddess name, Dawn mapping, the Occator/Cerealia
+      Facula salt that briny water left behind, the ice-volcano Ahuna Mons), *Eris* (a 557-year
+      orbit out in the scattered disc, Mike Brown's 2005 discovery, near-twin of Pluto that gently
+      birthed the "dwarf planet" name, the moon Dysnomia), and *Haumea* (egg-shaped Kuiper-Belt
+      world whose calm tireless ~4-hour spin eased it into an oval, bright water-ice gleam, the
+      first ring found on such a world, the moons Hiiaka and Namaka). Each = 7×12 second-person
+      present sleep-closing ASCII lines; ambiences Brown Noise / Singing Bowl / Pink Noise / Wind
+      Chimes. Drafted via four parallel writers, validated (7×12, pure ASCII, every section
+      sleepward), registered in `lectures._CATALOG`. Verified: **selftest 225 lectures / 45
+      branches**; story DB rebuilt (303k words); all 20 offline tests; drive_check 0 issues.
 - [x] **Stories (next branch)** — **The Inner Planets** (4): *Mercury* (smallest, airless,
       closest to the Sun; ancient craters + Caloris Basin; the slow 3:2 spin so a day lasts months;
       a large iron heart; the near-perihelion double sunrise; polar-shadow water ice; Messenger),
