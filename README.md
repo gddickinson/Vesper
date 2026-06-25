@@ -50,8 +50,10 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   Polar Worlds, Weathers of the World, the Microscopic World, the Great Voyages, Grasslands
   of the World, Wetlands &amp; Marshes, the Night Garden, the Great Migrations, the Standing Stones, Great Canyons, and many more), plus procedural bedtime stories,
   poetry nocturnes and a cognitive-shuffle sleep aid. Spoken by neural **Kokoro** TTS (or
-  macOS `say`), slowing and quietening as you drift off — and the **soundscape, the backdrop
-  and the character all gently follow the words**.
+  macOS `say`) — with the narration voices **grouped by language** (English, Spanish, French,
+  Hindi, Italian, Japanese, Portuguese, Chinese) so you can pick a narrator in yours —
+  slowing and quietening as you drift off, and the **soundscape, the backdrop and the
+  character all gently follow the words**.
 - **Read a novel** — a dedicated **Read** mode and a book Reader narrate full public-domain
   books (download from Project Gutenberg / Standard Ebooks, or drop in your own .txt/.epub)
   with **read-along text** that highlights and auto-scrolls, **Night / Sepia / Day** reading

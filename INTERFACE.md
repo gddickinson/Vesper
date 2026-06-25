@@ -69,7 +69,10 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   `xtts_tts` mirrors the `kokoro_tts` interface and reads `~/.vesper-xtts/config.json`.
   **`xtts_voices.py`** holds curated per-speaker metadata (gender + timbre + a quality
   star, derived by *measuring* each rendered voice). `narration.voice_groups()` feeds
-  the **grouped** Sleep picker (Recommended · XTTS by gender · Kokoro by accent), and
+  the **grouped** Sleep picker (Recommended · XTTS by gender · Kokoro **by language** --
+  British/American English first, then Spanish · French · Hindi · Italian · Japanese ·
+  Portuguese · Chinese via the pure, offline-tested `narration.kokoro_language_groups`,
+  so a non-English listener finds a narrator in their language), and
   the storyteller routes per chosen voice (`xtts:` ids); absent → Kokoro/`say`.
   Characters carry an `xtts` voice (`char_voice`) used when installed, falling back to
   their Kokoro/say hints. Users add the engine themselves via `tools/setup_xtts.py`

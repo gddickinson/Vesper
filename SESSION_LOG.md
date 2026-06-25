@@ -3454,6 +3454,25 @@ renders finite with peak <0.7; rms in a gentle sleep-bed range and near the othe
 with all beds reachable); **selftest passes** (now 23 Nature voices / 150 voice names, every voice
 peak <= 1.0); all 36 offline tests; drive_check 0 issues; README voice count bumped 149 -> 150.
 
+## Narration language: group Kokoro voices by language
+The narration-voice picker grouped Kokoro voices as British / American / **Other languages** -- so all
+the non-English neural voices (live: 26 of them -- Spanish, French, Hindi, Italian, Japanese, Portuguese,
+Chinese) were dumped into a single undifferentiated bucket, hard to browse for a listener who wants a
+narrator in their own language. Split that bucket **by language**. New pure
+`narration.kokoro_language_groups(ids)` reads the language from each Kokoro id's prefix (already known to
+`_LANG`: `e`->Spanish, `j`->Japanese...) and returns ordered `[(header, [ids]), ...]` with the English
+variants first (the default audience), the other languages alphabetically, and any unknown prefix under
+'Other' last; `voice_groups` now calls it, so the Sleep/Read narration picker shows British English ·
+American English · Spanish · French · Hindi · Italian · Japanese · Portuguese · Chinese (Kokoro) groups
+when the model is installed, and degrades to the macOS `say` system voices when it isn't. Also hardened
+`_say_voices` to be **None-safe** -- a latent crash if `voice_groups` was ever called with `speech=None`
+and Kokoro absent (the headless path). Pure + offline-testable (no model needed). Verified: new
+`tools/test_narration_language.py` (fixture-id grouping: all 9 languages split out, English first,
+'Other' last, every id routed exactly once, empty/None safe, `voice_groups` None-safe + labels work) +
+a live check (9 language groups present with Kokoro installed here) + an offscreen GUI smoke (the Read
+narration PickerButton builds, threads stable 2->2); all 37 offline tests; selftest; drive_check 0
+issues; `narration.py` 401 < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

@@ -288,7 +288,17 @@ Set with the user after the realistic-chanting round. Tick as completed.
       `ambrotate.BEDS`; auto-listed in every Nature picker. Verified: new `tools/test_summer_porch.py`
       (Nature/pink registration; finite, peak <0.7, gentle rms; loudness near the beds; in the rotation);
       selftest (150 voices, all peak <= 1.0); all 36 offline tests; drive_check 0 issues; README 149->150.
-- [ ] **Narration language**: expose Kokoro's languages/voices where available.
+- [x] **Narration language**: the narration-voice picker now groups Kokoro voices **by language** --
+      British/American English first, then Spanish · French · Hindi · Italian · Japanese · Portuguese ·
+      Chinese -- instead of one big "Other languages" bucket (live: 26 non-English voices were lumped
+      together; now they split into 7 language groups), so a non-English listener can find a narrator in
+      their language. Pure `narration.kokoro_language_groups(ids)` (language from the Kokoro id prefix;
+      English first, rest A-Z, unknown -> 'Other' last) wired into `voice_groups`; degrades to system
+      voices when Kokoro's model isn't installed. Also hardened `_say_voices` to be None-safe (a latent
+      crash if `voice_groups` was ever called with `speech=None` and no Kokoro). Verified: new
+      `tools/test_narration_language.py` (fixture-id grouping + order + routing + None-safety; live: 9
+      language groups present); offscreen GUI smoke (Read voice picker builds, threads stable); all 37
+      offline tests; selftest; drive_check 0 issues.
 - [x] Per-window **themed backdrops** behind the face + two new effects
       (**Underwater** for Relax, **Embers** cozy). Modes auto-theme the bg.
 - [x] **Sleep — warm, low-blue progressive dimming**: a warm amber wash on the view

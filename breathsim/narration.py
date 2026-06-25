@@ -29,7 +29,7 @@ _UK_FEMALE = {"Serena", "Stephanie", "Kate", "Martha", "Jamie", "Kathryn"}
 
 
 def _say_voices(speech):
-    if not speech.available:
+    if speech is None or not speech.available:   # None-safe (e.g. headless callers)
         return []
     out, seen = [], set()
     for base in RELAXING:
@@ -83,6 +83,26 @@ _LANG = {"a": "American", "b": "British", "e": "Spanish", "f": "French",
          "h": "Hindi", "i": "Italian", "j": "Japanese", "p": "Portuguese",
          "z": "Chinese"}
 _GENDER = {"f": "female", "m": "male"}
+
+# Picker order for Kokoro language groups: English variants first (the default
+# audience), then the other spoken languages alphabetically; 'Other' last.
+_LANG_ORDER = ["British", "American", "Spanish", "French", "Hindi", "Italian",
+               "Japanese", "Portuguese", "Chinese"]
+
+
+def kokoro_language_groups(ids):
+    """Group Kokoro voice ids by spoken **language** into ordered
+    ``[(header, [id, ...]), ...]`` -- e.g. ``("Spanish (Kokoro)", [...])`` -- so a
+    listener can find a narrator in their language instead of one big 'Other'
+    bucket. Language is read from the id prefix (``e`` -> Spanish, ``j`` ->
+    Japanese...); English variants come first, the rest A-Z, unknown prefixes
+    under 'Other' last. Pure + offline-testable (no model needed)."""
+    by_lang = {}
+    for v in ids or []:
+        by_lang.setdefault(_LANG.get(str(v)[:1], "Other"), []).append(v)
+    order = [lang for lang in _LANG_ORDER if lang in by_lang]
+    order += sorted(lang for lang in by_lang if lang not in _LANG_ORDER)
+    return [(f"{lang} (Kokoro)", by_lang[lang]) for lang in order]
 
 
 def recommended(speech=None):
@@ -142,14 +162,7 @@ def voice_groups(speech):
             groups.append(("High quality · male (XTTS)",
                            [pre + n for n in bg["m"]]))
     if kokoro_tts.ready():
-        ids = kokoro_tts.voice_names()
-        brit = [v for v in ids if v[:1] == "b"]
-        amer = [v for v in ids if v[:1] == "a"]
-        other = [v for v in ids if v[:1] not in ("a", "b")]
-        for head, lst in (("British (Kokoro)", brit), ("American (Kokoro)", amer),
-                          ("Other languages (Kokoro)", other)):
-            if lst:
-                groups.append((head, lst))
+        groups += kokoro_language_groups(kokoro_tts.voice_names())
     else:
         sv = _say_voices(speech)
         if sv:
