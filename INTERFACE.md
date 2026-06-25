@@ -96,6 +96,13 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   Model JSON is untrusted → coerced/clamped/range-checked → constructed → repaired → else
   rejected; saved via `store.save_pattern`/`save_voice`/`save_ai_mantra` with an **"AI: "**
   prefix. Gated on `llm.available()`. Offline test: `tools/test_llm_content.py`.
+- **llm_assist.py** — optional **quiet helper**: plain language → a **whitelist** of 9 bounded
+  app actions (`set_mode`/`set_pattern`/`set_ambience`/`set_voice`/`play`/`pause`/`set_volume`/
+  `start_story`/`set_sleep_timer`) via `llm.chat(tools=...)`. `ask()` returns
+  `{reply, actions, refused}`: a calm reply + **validated** `{action, args}` intents (names
+  checked against the real registries, numbers clamped) for the Qt layer to apply; anything
+  unknown/out-of-range/off-whitelist is refused, never executed. GUI-free, stateless, no
+  free-form code; gated on `llm.available()`. Offline test: `tools/test_llm_assist.py`.
 - **story_char.py** — maps a story scene / lecture to a fitting cartoon character
   (`char_for_scene`: sea→Penguin, night→Owl, forest→Bear, …, default Owl). Opt-in
   **Face ▸ "Character follows the story"** (persisted): when on and the cartoon face is

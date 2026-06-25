@@ -431,9 +431,19 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
       (stubbed completer + temp store, NO network): gating; clamp out-of-range; drop unknown
       fields; render-check; reject non-JSON; save + register + reload. Verified: that test + the
       other llm tests + selftest + both-faces drive; files < 500.
-- [ ] **Quiet helper assistant** — a bounded app-help + setup assistant that drives the app via
-      a **whitelist of app actions** (apply mode / set pattern / start story) through tool-calls,
-      optionally **voiced through the face**; calm tone; no medical advice; easy to dismiss.
+- [x] **Quiet helper assistant** (`breathsim/llm_assist.py`) — plain language -> a **whitelist**
+      of 9 bounded app actions (set_mode / set_pattern / set_ambience / set_voice / play / pause
+      / set_volume / start_story / set_sleep_timer) via `llm.chat(tools=...)`. Returns a
+      normalized `{reply, actions, refused}`: a short calm reply + **validated** intents (every
+      name checked against the real registries -- modes / `preset_by_name` / `voices.names` /
+      story names -- and numbers clamped: volume 0..1, timer 1..180), with everything unknown or
+      out of range **refused, never executed**. GUI-free + stateless (the Qt layer maps intents
+      to its methods + may voice the reply later -- no GUI change this round). Never runs
+      free-form code. Gated on `llm.available()`; absent with no backend; calm, brief, no medical
+      advice. Offline test `tools/test_llm_assist.py` (stubbed `llm.chat`, NO network): gating; a
+      known action validates/clamps; unknown action / unknown name / out-of-range / off-whitelist
+      are refused; only whitelisted actions are ever returned. Verified: that test + all LLM tests
+      + selftest + both-faces drive; files < 500.
 - [ ] **(Optional, advanced, experimental) Sandboxed plugin generation** — **off by default**;
       gated behind an explicit "Advanced / Experimental" opt-in with a **risk acknowledgement**
       (for users happy to accept the additional risk). LLM writes a plugin to `plugins/`,

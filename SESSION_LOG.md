@@ -2253,6 +2253,25 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## LLM round 4 — quiet-helper assistant (whitelist-bounded app actions)
+Fourth LLM item -- application (2), a bounded in-app helper. New `breathsim/llm_assist.py`: the
+user asks in plain language ("set me up for sleep") and the assistant calls `llm.chat` with a
+small fixed set of **9 tools** (set_mode / set_pattern / set_ambience / set_voice / play / pause
+/ set_volume / start_story / set_sleep_timer) and returns a normalized `{reply, actions,
+refused}` -- a short calm reply plus a list of **validated intents** for the Qt layer to apply.
+It **never runs free-form code**: every returned tool call is checked against the real registries
+(`modes.names`, `patterns.preset_by_name`, `voices.names`, the union of scene/extra/lecture story
+names) and numeric ranges (volume clamped 0..1, sleep timer 1..180); anything unknown, off-
+whitelist, or out of range is put in `refused` and **never executed**. The module is GUI-free and
+stateless -- it returns `{action, args}` intents (a later round wires the Qt mapping and may voice
+the reply through the face); calm + brief by design, no medical advice. Gated on
+`llm.available()`; absent with no backend. Offline test `tools/test_llm_assist.py` (a stubbed
+`llm.chat`, **no network**) asserts: gating; a real mode/story validates, `set_volume 9.0` clamps
+to 1.0 and `set_sleep_timer 999` clamps to 180; an unknown pattern name, an unknown mode, and an
+off-whitelist `delete_everything` are all refused (not in actions); and only whitelisted actions
+are ever returned as executable. Verified: that test + the other four LLM tests, selftest, both-
+faces drive 0 issues; files < 500 (llm_assist 124); secret scan clean.
+
 ## LLM round 3 — structured content (patterns / voices / mantras, no code)
 Third LLM item -- the safe half of "user modifications": turning a plain-language request into
 the app's own *data* objects, never code. New `breathsim/llm_content.py`:
