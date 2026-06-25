@@ -444,12 +444,24 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
       known action validates/clamps; unknown action / unknown name / out-of-range / off-whitelist
       are refused; only whitelisted actions are ever returned. Verified: that test + all LLM tests
       + selftest + both-faces drive; files < 500.
-- [ ] **(Optional, advanced, experimental) Sandboxed plugin generation** — **off by default**;
-      gated behind an explicit "Advanced / Experimental" opt-in with a **risk acknowledgement**
-      (for users happy to accept the additional risk). LLM writes a plugin to `plugins/`,
-      **bug-tested in an isolated subprocess** (the selftest/drive harness) before it can load,
-      explicit opt-in, never auto-run; restricted imports; the generate -> test -> fix loop runs
-      out-of-process. Clearly labelled Experimental + risk-bearing in the UI and docs.
+- [x] **(Optional, advanced, experimental) Sandboxed plugin generation** (`breathsim/llm_plugin.py`)
+      — **off by default**; `enable(accept_risk=True)` is required (refuses otherwise). The LLM
+      writes a plugin to a **gitignored** `~/.breathsim/plugins` dir (never the repo tree); the
+      code is **never executed in the app process**. Each candidate is (1) **statically
+      pre-screened** (a denylist rejects subprocess/socket/ctypes/network libs/eval/exec/compile/
+      __import__/os.system/exec/remove/write-mode `open` ... before it is even written), then (2)
+      **bug-tested in an isolated subprocess** (`python -I`, minimal env with no inherited
+      secrets, cwd = plugin dir, hard timeout) that imports it + runs `selfcheck()`, capturing
+      stdout/stderr/returncode, with a generate -> test -> repair loop. Even after passing, the
+      app does NOT auto-load it -- `loadable()` only exposes manifests; loading stays a separate
+      explicit user action. PRIMARY guarantees: opt-in + process isolation + no in-process exec
+      (the static screen is defence-in-depth). Marked **Experimental**. Offline test
+      `tools/test_llm_plugin.py` (stubbed completer + temp dir, NO network): off-by-default +
+      opt-in gate; screen flags dangerous + passes benign; a dangerous plugin is rejected and
+      never written; a benign plugin passes in the **subprocess** (its print is captured;
+      `plugin_under_test` never enters `sys.modules` in-process); an erroring plugin is caught
+      (nonzero rc, no crash). Verified: that test + all LLM tests + selftest + both-faces drive;
+      files < 500. **The LLM batch is now complete (5/5).**
 
 ### Researched batch — audio & synthesis
 - [x] **Generative ambient pad** (user-requested "cosmic music"): new `breathsim/cosmic.py`

@@ -2253,6 +2253,33 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## LLM round 5 (final) — experimental sandboxed code-plugin path
+Final LLM item, and the most guarded. New `breathsim/llm_plugin.py`: the one place the LLM writes
+actual *code*. **Off by default**; `enable(accept_risk=True)` is required or it refuses. The LLM
+writes a plugin into a **gitignored** `~/.breathsim/plugins` dir (never the repo tree), and the
+code is **never executed in the app process**. Each candidate is (1) **statically pre-screened**
+-- a denylist rejects subprocess / socket / ctypes / multiprocessing / network libs (urllib,
+requests, http, ftplib, smtplib...) / pickle / importlib / `os.system`/`exec`/`remove`/`rename`/
+`chmod` / shutil / eval / exec / compile / `__import__` / write-mode `open` -- BEFORE the file is
+even written; (2) **bug-tested in an isolated subprocess** (`python -I -c <runner> <path>`, a
+minimal env with PATH only so no inherited secrets, cwd = plugin dir, an 8s hard timeout) that
+imports the module and runs its `selfcheck()`, capturing stdout/stderr/returncode; with a
+generate -> screen -> write -> test -> **repair** loop (re-prompting with the captured error a few
+times) and the failing file removed on give-up. Even after a plugin passes, the app does NOT load
+it automatically -- `loadable()` exposes manifests only; loading stays a separate explicit user
+action. The PRIMARY guarantees are opt-in + process isolation + no in-process exec; the static
+screen is defence-in-depth. Marked Experimental throughout. Offline test `tools/test_llm_plugin.py`
+(stubbed completer + temp plugin dir, **no network, no real LLM**) asserts: off by default and
+`generate` refused until opt-in; the screen flags dangerous constructs (subprocess / write-open /
+eval) and passes benign code; a dangerous plugin is **rejected and never written**; a benign
+plugin **passes in the subprocess** (its print 'PLUGIN_RAN_IN_SUBPROCESS' is captured from the
+child, and `plugin_under_test` never enters this process's `sys.modules`); and an erroring plugin
+is caught (nonzero returncode, 'boom' in stderr, the app not crashed). Verified: that test + the
+other four LLM tests, selftest, both-faces drive 0 issues; files < 500 (llm_plugin 179); secret
+scan clean. **This completes the LLM batch (5/5): provider+keys -> story-gen -> structured content
+-> quiet helper -> sandboxed plugins. The loop now returns to normal top-down app-improvement
+rounds (Stories every ~3rd).**
+
 ## LLM round 4 — quiet-helper assistant (whitelist-bounded app actions)
 Fourth LLM item -- application (2), a bounded in-app helper. New `breathsim/llm_assist.py`: the
 user asks in plain language ("set me up for sleep") and the assistant calls `llm.chat` with a

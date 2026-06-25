@@ -103,6 +103,15 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   checked against the real registries, numbers clamped) for the Qt layer to apply; anything
   unknown/out-of-range/off-whitelist is refused, never executed. GUI-free, stateless, no
   free-form code; gated on `llm.available()`. Offline test: `tools/test_llm_assist.py`.
+- **llm_plugin.py** — **EXPERIMENTAL**, opt-in, sandboxed LLM **code-plugin** generation. Off by
+  default; `enable(accept_risk=True)` required. Writes to a gitignored `~/.breathsim/plugins`
+  dir; the code is **never run in the app process**. Each candidate is statically pre-screened
+  (`screen` -- a denylist of subprocess/socket/network/eval/exec/os.system/write-open …), then
+  bug-tested in an **isolated subprocess** (`run_isolated`: `python -I`, minimal env, cwd =
+  plugin dir, hard timeout, imports it + runs `selfcheck()`), with a generate→test→repair loop.
+  Passing plugins are exposed via `loadable()` manifests only — the app never auto-loads them.
+  Primary guarantees: opt-in + process isolation + no in-process exec. Offline test:
+  `tools/test_llm_plugin.py`.
 - **story_char.py** — maps a story scene / lecture to a fitting cartoon character
   (`char_for_scene`: sea→Penguin, night→Owl, forest→Bear, …, default Owl). Opt-in
   **Face ▸ "Character follows the story"** (persisted): when on and the cartoon face is
