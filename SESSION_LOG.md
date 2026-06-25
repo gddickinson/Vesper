@@ -2253,6 +2253,26 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## LLM-in-GUI round 1 — opt-in masked API-key Settings dialog
+First step wiring the (already-complete, key-safe) LLM stack into the GUI, as strictly OPT-IN.
+New `vesper/llm_settings.py`: an "AI Assistant (optional)" dialog under the Help menu, the ONE
+place a key is entered. Honours every key-security rule: the field is **password-masked** and the
+key is **never shown back / logged / committed**; the user picks where it lives -- **session only**
+(memory, default), the **OS keychain** (if `keyring` is installed; the radio is disabled + labelled
+otherwise), or a **chmod-600 `~/.breathsim/llm.json`** (clearly labelled plaintext-on-device);
+**Forget** wipes session+file+keychain; **Ollama** is an explicit opt-in checkbox (no network
+otherwise), persisted via `win_settings` (`llm_ollama`, default off) and re-enabled on next launch
+only if the user chose it. Status shows the backend + key SOURCE, never the key. Added a small
+Qt-free `llm_keys.keychain_available()` capability probe. The Qt-free helpers (`status_text`/
+`apply_key`/`forget`) are unit-tested by new `tools/test_llm_settings.py` (asserts the key is stored
+where chosen, source transitions env->keychain->file->session correctly, the chmod-600 file lands at
+the user-data path not the repo, and the key NEVER appears in any returned message). Saving/forgetting
+calls `win.rebuild_menu()` so downstream LLM features can reveal/hide. Verified: selftest; both-faces
+drive (3d & cat, 0 issues, threads stable); a ~60-tick offscreen session that opens + closes the modal
+dialog with **zero thread leak** and backend correctly `none`; rendered + eyeballed the dialog PNG
+(wrapped honest copy, masked field, three honest storage options, Ollama off); all SIX LLM offline
+tests pass with no backend. Files: llm_settings 180, menus 358, all < 500.
+
 ## Stories round — new branch "Colours & Pigments" (4 lectures)
 A fresh Stories lecture-branch round (every ~3rd). Added a 39th branch on the history and craft of
 four storied colours, via 4 parallel content subagents: `lectures_indigo.py` (The Story of Indigo,

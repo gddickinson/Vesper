@@ -324,6 +324,10 @@ def _help(win, m):
         lambda: dialogs.open_stats(win))
     m.addAction("Keyboard Shortcuts…").triggered.connect(
         lambda: dialogs.open_shortcuts(win))
+    m.addSeparator()
+    from . import llm_settings                            # optional, opt-in AI assistant
+    m.addAction("AI Assistant (optional)…").triggered.connect(
+        lambda: llm_settings.open_llm_settings(win))
     m.addAction("About…").triggered.connect(lambda: dialogs.open_about(win))
 
 

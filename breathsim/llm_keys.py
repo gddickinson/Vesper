@@ -39,6 +39,12 @@ def _keyring():
         return None
 
 
+def keychain_available():
+    """True when the optional ``keyring`` package is importable (so the OS
+    keychain can be used). No network, no key access -- just a capability probe."""
+    return _keyring() is not None
+
+
 def _from_keychain():
     kr = _keyring()
     if kr is None:

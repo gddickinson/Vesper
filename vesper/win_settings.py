@@ -41,6 +41,10 @@ class _SettingsMixin:
         self._intro_on = bool(s.get("intro_lead_in", True))      # gentle settle-in lead-in
         self._settle = bool(s.get("settle_in", False))           # ease-to-resonance pacing
         self._breath_swell = bool(s.get("breath_swell", False))  # bed swells with breath
+        self._llm_ollama = bool(s.get("llm_ollama", False))      # opt-in local Ollama
+        if self._llm_ollama:                                     # honour the saved opt-in
+            from breathsim import llm
+            llm.enable_ollama(True)
         mode = s.get("mode")                          # no saved mode -> suit the clock
         if mode not in modes.names():
             from . import clocktheme
@@ -75,4 +79,5 @@ class _SettingsMixin:
                              "intro_lead_in": getattr(self, "_intro_on", True),
                              "settle_in": getattr(self, "_settle", False),
                              "breath_swell": getattr(self, "_breath_swell", False),
+                             "llm_ollama": getattr(self, "_llm_ollama", False),
                              "last_scene": self._story_scene or ""})

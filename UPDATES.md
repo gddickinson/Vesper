@@ -332,6 +332,19 @@ in these notes:
       carmine from grey specks; the guarded trade across the sea). Standard 7x12, fact-free section 1,
       all sleep-closing; ambiences Gentle Rain / Singing Bowl / Ocean Waves / Forest Wind. Registered
       as a 39th branch. **201 lectures / 39 branches**; selftest + both-faces drive (0 issues).
+- [x] **LLM in the GUI — opt-in API-key Settings dialog** (`vesper/llm_settings.py`, Help ▸ "AI
+      Assistant (optional)…") — the safe gateway that finally exposes the (already-built) LLM stack,
+      strictly opt-in + fail-closed. The ONE place a key is typed: **password-masked**, never shown
+      back / logged / committed; choose where it lives — **session only** (default), **OS keychain**
+      (if `keyring` present, else the radio is disabled + labelled), or **chmod-600 file** (labelled
+      plaintext-on-device); **Forget** wipes session+file+keychain; **Ollama** opt-in checkbox (no
+      network unless ticked), persisted (default off). Status shows backend + key SOURCE, never the
+      key. New Qt-free `llm_keys.keychain_available()`; Qt-free helpers unit-tested by
+      `tools/test_llm_settings.py` (key stored where chosen, source transitions, chmod-600 lands at
+      the user path not the repo, key NEVER echoed). Verified: selftest; both-faces drive (0 issues);
+      a ~60-tick offscreen open/close of the modal dialog (zero thread leak, backend `none`); rendered
+      + eyeballed the dialog PNG; all 6 LLM offline tests pass with no backend. (Next: a Sleep
+      "Generate a bedtime story" action via `llm_story`, then the quiet-helper assistant.)
 - [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
       conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
       of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The

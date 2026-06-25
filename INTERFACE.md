@@ -74,14 +74,15 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   Characters carry an `xtts` voice (`char_voice`) used when installed, falling back to
   their Kokoro/say hints. Users add the engine themselves via `tools/setup_xtts.py`
   (Sound ▸ "High-quality voices (XTTS)…"). Setup + licence: `docs/XTTS.md`.
-- **llm.py** + **llm_keys.py** — optional **LLM provider** (foundation; not yet wired into
-  the UI). Auto-selects **Claude** when an Anthropic key resolves (`llm_keys.resolve`: env →
-  OS keychain → chmod-600 `~/.breathsim/llm.json` → session-only) else **Ollama** (local,
-  **opt-in** via `enable_ollama` — no network unless asked) else a **null** provider
-  (`available()` False). API: `available`/`backend_name`/`status`/`complete`/`chat` (Claude
-  over urllib, no SDK dep). **Key-safe:** the key is fetched lazily and never stored on a
-  provider, never logged (errors `_sanitize`d), never committed/shipped; `mask()` shows only
-  the last 4. No network at import. Offline safety test: `tools/test_llm.py`.
+- **llm.py** + **llm_keys.py** — optional **LLM provider** (wired into the UI via
+  `vesper/llm_settings.py`). Auto-selects **Claude** when an Anthropic key resolves
+  (`llm_keys.resolve`: env → OS keychain → chmod-600 `~/.breathsim/llm.json` → session-only)
+  else **Ollama** (local, **opt-in** via `enable_ollama` — no network unless asked) else a
+  **null** provider (`available()` False). API: `available`/`backend_name`/`status`/`complete`/
+  `chat` (Claude over urllib, no SDK dep). `llm_keys` also exposes `set_session`/`set_file`/
+  `set_keychain`/`clear`/`source`/`keychain_available`. **Key-safe:** the key is fetched lazily
+  and never stored on a provider, never logged (errors `_sanitize`d), never committed/shipped;
+  `mask()` shows only the last 4. No network at import. Offline safety test: `tools/test_llm.py`.
 - **llm_story.py** — optional **AI story generation** built on the provider. `generate(topic)`
   asks the model for a sleep story in the lecture **7x12** schema, treats the reply as
   *untrusted* (`validate` + a re-prompt **repair** loop), and registers valid stories into
@@ -285,6 +286,13 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   (per-slot levels), **`open_story_library`** (browse + search the stories DB via
   `story_db` — branch/lecture list, line view, full-text LIKE search) and
   `open_about`.
+- **llm_settings.py** — **`open_llm_settings`** (Help ▸ "AI Assistant (optional)…"): the
+  opt-in, fail-closed gateway to the LLM stack. A **password-masked** key field with three
+  honest storage choices (session-only / OS keychain / chmod-600 file), a **Forget** button,
+  and a local-**Ollama** opt-in (persisted via `win_settings` `llm_ollama`, default off).
+  Status shows backend + key **source**, never the key. Qt-free helpers `status_text`/
+  `apply_key`/`forget` (the key is never returned in any message). Offline test:
+  `tools/test_llm_settings.py`.
 - **window.py** — `_breath_routing(phase, voice_a, voice_out)` + `_mouth_shape`
   decide the face's mouth/nostril motion per breath: **nose in-breath** (mouth
   closed, nostrils flare) and **mouth out-breath** shaped by the active voice
