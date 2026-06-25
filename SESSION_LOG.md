@@ -3315,6 +3315,24 @@ registered in `lectures._CATALOG`. Verified: selftest passes (**241 lectures acr
 story DB rebuilt (326,643 words); all 30 offline tests green; drive_check 0 issues; every file < 500
 (each lecture 105).
 
+## Read mode: opt-in sleep fade (fall asleep to a novel)
+The Read screen's docstring had long promised "a sleep-style fade as an opt-in extra," but it was
+never built -- to fall asleep to a book you had to switch to Sleep mode's bedtime-read. The global
+sleep-timer fade in `win_frame` keys off `controller.elapsed()`, which is *frozen* during pure reading
+(Read narrates without running the breath clock), so Read needed its own. Added a self-contained Read
+sleep fade: `win_read.set_read_fade(minutes)` arms a **monotonic** timer (0 = off, default off each
+launch like the Sleep timer); `_read_level()` -- now passed to the reading narrator in place of the old
+constant `lambda: 1.0` -- returns `sleeptimer.fade_gain(...)` so the **narrator's voice itself gently
+quietens** over the 30s ramp once the chosen mark is reached (not just the ambient bed); and
+`_read_follow` (the 160ms read-along follower already running while reading) stops the reading cleanly
+when the fade completes. A "Sleep fade  (fall asleep to the book)" combo (Off / 15 / 30 / 45 / 60 min,
+reusing `sleeptimer.OPTIONS`) sits in the Read card -> `_on_read_fade` -> `set_read_fade`. Reuses the
+pure, already-tested `sleeptimer.fade_gain`; no second clock in the engine. Verified: new offscreen
+`tools/test_read_fade.py` (the narrator gets `_read_level`; off -> 1.0; pre-mark -> 1.0; mid-ramp eases
+to ~0.5 and keeps reading; past the ramp -> 0.0 and `_read_follow` stops it; the combo is present;
+threads stable 2->2) -- using a back-dated `_read_fade_t0` so it needs no real waiting; all 31 offline
+tests green; selftest + drive_check (0 issues); files < 500 (`win_read` 223, `sections_read` 141).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

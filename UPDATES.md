@@ -155,6 +155,15 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Read mode: opt-in sleep fade** (sleep efficacy; fall asleep to a novel in the Read screen):
+      the docstring promised it but it was never built, and the global sleep-timer fade keys off the
+      breath clock (frozen during pure reading), so Read got its own. `win_read.set_read_fade(minutes)`
+      arms a monotonic timer (0 = off, default off each launch); `_read_level()` -- now the reading
+      narrator's level function instead of a constant 1.0 -- returns `sleeptimer.fade_gain` so the
+      **voice itself quietens** over the ramp; `_read_follow` stops the reading when the fade completes.
+      A "Sleep fade" combo (Off / 15 / 30 / 45 / 60 min) in the Read card. Verified: new offscreen
+      `tools/test_read_fade.py` (level off->1.0, mid-ramp ~0.5 keeps reading, end->0.0 stops; combo
+      present; threads stable); all 31 offline tests; selftest; drive_check (0 issues).
 - [x] **Read mode: jump-to-chapter navigation**: `booktext.chapter_marks` existed but was never used;
       surfaced it as real navigation. New pure `bookreader.chapters(book)` -> `[(sentence_index, title)]`
       (heading paragraphs mapped through paragraph starts); `win_read.book_chapters`/`jump_to_chapter`

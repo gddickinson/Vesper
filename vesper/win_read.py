@@ -35,6 +35,8 @@ class _ReadMixin:
         self._read_speed = 1.0
         self._read_long = True
         self._read_along = True
+        self._read_fade_min = 0.0       # opt-in Read sleep fade (minutes); 0 = off
+        self._read_fade_t0 = 0.0        # monotonic mark when the fade was armed/started
         self._read_theme = getattr(self, "_read_theme", "Night")
         self.read_pane.set_theme(self._read_theme)
         center = QSplitter(Qt.Orientation.Vertical)
@@ -132,6 +134,32 @@ class _ReadMixin:
         from breathsim import store
         store.save_settings({"reading_theme": name})
 
+    def set_read_fade(self, minutes):
+        """Opt-in Read sleep fade: gently quieten the narration and stop after N
+        minutes (0 = off), so you can fall asleep to a book in the Read screen.
+        Uses its own monotonic clock (Read often runs without the breath session),
+        and defaults off each launch like the Sleep timer."""
+        import time
+        self._read_fade_min = max(0.0, float(minutes))
+        self._read_fade_t0 = time.monotonic()
+        if self._read_fade_min > 0:
+            self.status.showMessage(
+                f"Reading will fade out and stop after {int(self._read_fade_min)} "
+                "min.", 4000)
+        else:
+            self.status.showMessage("Reading sleep fade off.", 3000)
+
+    def _read_level(self):
+        """Narration level 0..1 for the reader, following the opt-in sleep fade
+        (1.0 when the fade is off or not reading)."""
+        if self._read_fade_min <= 0 or not self._reading:
+            return 1.0
+        import time
+        from . import sleeptimer
+        gain, _done = sleeptimer.fade_gain(
+            self._read_fade_min, time.monotonic() - self._read_fade_t0)
+        return max(0.0, min(1.0, gain))
+
     # --- narration playback ------------------------------------------------
     def toggle_reading(self):
         self.stop_reading() if self._reading else self.start_reading()
@@ -149,11 +177,13 @@ class _ReadMixin:
         self._reading = True
         self._reader_busy = True
         self._read_idx = start
+        import time
+        self._read_fade_t0 = time.monotonic()       # (re)start the sleep-fade clock
         self.narrator.speed = self._read_speed
         self.narrator.pause_scale = 1.0
         self._cast = (self.build_cast(book)         # dramatized cast (or None)
                       if getattr(self, "_dramatize", False) else None)
-        self.narrator.start(units, lambda: 1.0, None, self._on_read_unit)
+        self.narrator.start(units, self._read_level, None, self._on_read_unit)
         self.read_pane.set_playing(True)
         self._read_timer.start()
 
@@ -168,8 +198,16 @@ class _ReadMixin:
             self.cast_annotate(unit)
 
     def _read_follow(self):
-        if self._reading:
-            self.read_pane.highlight(self._read_idx)
+        if not self._reading:
+            return
+        self.read_pane.highlight(self._read_idx)
+        if self._read_fade_min > 0:                  # opt-in sleep fade: stop at the end
+            import time
+            from . import sleeptimer
+            _g, done = sleeptimer.fade_gain(
+                self._read_fade_min, time.monotonic() - self._read_fade_t0)
+            if done:
+                self.stop_reading()
 
     def stop_reading(self):
         if not self._reading:

@@ -71,6 +71,16 @@ class _ReadCardMixin:
         lp.toggled.connect(self.win.set_reading_pauses)
         body.addWidget(lp)
 
+        from . import sleeptimer
+        body.addWidget(muted("Sleep fade  (fall asleep to the book)"))
+        sf = combo([lbl for lbl, _m in sleeptimer.OPTIONS],
+                   sleeptimer.label_for(getattr(self.win, "_read_fade_min", 0)),
+                   self._on_read_fade)
+        sf.setToolTip("Gently quieten the reading and stop after a set time, so "
+                      "you can drift off mid-chapter.")
+        self._w["read_fade"] = sf
+        body.addWidget(sf)
+
         from .picker import PickerButton
         cur = self.win.narrator.voice or narration.best_voice(self.win.speech)
         vc = PickerButton(cur, lambda: narration.voice_groups(self.win.speech),
@@ -107,6 +117,13 @@ class _ReadCardMixin:
             ch.setEnabled(bool(self.win.book_chapters()))
         except RuntimeError:
             pass            # widget was destroyed by a workspace rebuild
+
+    def _on_read_fade(self, label):
+        from . import sleeptimer
+        for lbl, m in sleeptimer.OPTIONS:
+            if lbl == label:
+                self.win.set_read_fade(m)
+                return
 
     def _choose_chapter(self):
         """Searchable chapter picker -> jump the reader to the chosen chapter."""
