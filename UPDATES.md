@@ -23,6 +23,40 @@ Guardrails (every round):
 - Append a one-line note to `SESSION_LOG.md`; update the matching todo task; reschedule.
 - When the focus list empties, append 3–5 new researched items + tasks, then do one.
 
+## Research notes — cast narration / dramatized books + more characters (user-requested 2026-06-25)
+The user asked to (1) **add more characters + costumes**, and (2) let **multiple characters act out the
+different voices in a book** -- the LLM can pre-read the book to work out which characters to cast, when
+each speaks, *how* they speak (delivery/emotion), what costumes/props they wear, and which background
+sounds to play and when. Ground the rounds in these:
+- **Reuse what exists**: `vesper/characters.py` + `char_*` (15 2D characters), `char_costume.py` (12
+  costumes drawn over the head), `char_voice` (per-character narration voices), `narration.Narrator.
+  set_voice` (voice switching mid-stream), `books`/`bookreader` (the sentence/paragraph stream),
+  `sound_cues` (text->ambience), `story_char` (storyteller picks a character per scene), the face mood
+  (`_mood_target` / `emotion_for_text`). Most of the machinery is already here.
+- **The new core = a "book script"**: an annotation over a Book's sentences -> per-segment
+  ``{speaker, voice, emotion, character, costume, prop, sound}``. TWO producers, both honouring the
+  safety rules: (a) a **pure OFFLINE heuristic** (the safe default) -- detect quoted dialogue + "...,
+  said Alice" attribution, map each recurring speaker deterministically to a distinct narration voice +
+  2D character/costume, annotate ambience via `sound_cues`; works with no LLM. (b) an **OPT-IN LLM
+  "director"** -- pre-reads the book in chunks and returns a richer cast (characters with voice traits,
+  a suggested 2D character + costume + prop, emotions) + a per-passage speaker/emotion/sound map;
+  treated as **untrusted** (validated against the existing character/costume/voice/ambience registries,
+  clamped, fail-closed) and **saved once per book**.
+- **Dramatized player**: on each unit, switch the narration voice to the speaker's voice, swap the 2D
+  character + costume + prop, set the face mood from the emotion, and trigger the cued background sound.
+  **Sleep-gentle by default** (quiet voice variation so it still lulls), with a "more expressive" option
+  for the daytime Reader.
+- **Safety**: the LLM director is OPT-IN only (no backend -> the heuristic is used); all LLM output is
+  validated against existing registries + clamped + never executed; no new network beyond the existing
+  opt-in LLM; everything degrades to the plain single-voice narrator.
+- **Round plan**: CAST-1 = more characters + costumes/**props** (the direct ask; sleep-friendly adds
+  like Nightcap / Sleep Mask + held props Book/Lantern/Candle/Teacup the cast needs). CAST-2 =
+  `breathsim/bookcast.py` heuristic (pure dialogue/attribution detection -> a Script; offline-tested).
+  CAST-3 = the **Dramatized** playback toggle (Reader + Sleep) wiring voice/character/costume/prop/mood/
+  sound per segment. CAST-4 = `breathsim/llm_cast.py` opt-in LLM director (validated cast, saved per
+  book, heuristic fallback). CAST-5 = polish (props rendering, smoother crossfades, per-book cast
+  memory, a who's-who cast list). Interleave with the Stories cadence (every ~3rd round).
+
 ## Research notes (evidence-based — ground each round in these)
 - **Slow breathing ~6 breaths/min (0.1 Hz)** maximizes HRV via the baroreflex
   (resonance/coherence breathing); a **longer exhale** drives vagal/parasympathetic
