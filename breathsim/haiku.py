@@ -98,6 +98,13 @@ def _compose(rng, season, tanka=False):
     return lines
 
 
+def compose(rng=None, season=None, tanka=False):
+    """Public: compose one haiku (or tanka) for *season* (random if None).
+    Reused by the haibun storyteller to crystallise a wandering passage."""
+    rng = rng or random.Random()
+    return _compose(rng, season or rng.choice(SEASONS), tanka)
+
+
 def units(rng=None, guidance=True):
     """Endlessly recite drifting haiku (and the occasional tanka), wandering
     slowly through the four seasons, with breath-length pauses and a longer rest

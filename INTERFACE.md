@@ -307,7 +307,9 @@ kept as `ALIAS`) + **`poetry_world`** (3 more **"Pure Poetry: <tradition>"** ses
 `poetry.recite` -- **Haiku & Tanka** (Japanese), **Tang Nature** (Chinese), **Persian**
 ghazal/rubaiyat; all original verse written *in the spirit of* each tradition) + **`haiku`**
 (**"Drifting Haiku"** -- a season-aware grammar that endlessly composes original haiku/tanka
-from per-season image banks, drifting through the year) - all Sleep storyteller options via
+from per-season image banks, drifting through the year; exposes `compose()`) + **`haibun`**
+(**"A Wandering Haibun"** -- Basho-style wandering prose, reusing the `stories` scene vocab,
+crystallised every few lines by a `haiku.compose` poem) - all Sleep storyteller options via
 `stories.extra_names()`; the shuffle is a stream of random neutral nouns),
 **`sound_cues`** (text→ambience), **`story_db`** (SQLite record of every
 story; `build`/`connect`/`search`/`lectures_in`/`lines_of`/`stats`; CLI

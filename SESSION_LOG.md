@@ -2253,6 +2253,21 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Poetry round — haibun storyteller ("A Wandering Haibun")
+Third item of the storytelling & poetry batch, and the direct answer to "weave poetry through
+stories". New `breathsim/haibun.py`: a *haibun* (Basho's prose-plus-haiku travel form). A slow,
+first-person, present-tense **wandering prose passage** -- assembled from the SAME themed scene
+vocabulary the procedural stories use (`stories._SHARED` + `stories.SCENES` pools, via
+`stories._Pick`, with a small a/an fixup) -- is **crystallised every few lines by a season
+haiku** from the new `haiku.compose()` public helper, then a soft closing line eases the walk
+on, endlessly. No destination; a gentle plotless wander toward sleep, prose breathing out into a
+single still image and back. Original; deterministic with an injected seed; bed "Wind in Pines".
+Surfaced as the Sleep option "A Wandering Haibun" via `stories.extra_names`/`ambience_for`/
+`story_units` (haibun imports stories at module top; stories imports haibun lazily in-function,
+so no circular import). Verified: dispatch through `stories.story_units`, prose (kind="story")
+and haiku (kind="poem") interleave, ASCII, same-seed determinism, a/an agreement; selftest
+passes; both-faces drive 0 issues. Files < 500 lines; secret scan clean.
+
 ## Poetry round — procedural haiku/tanka generator ("Drifting Haiku")
 Second item of the storytelling & poetry batch. New `breathsim/haiku.py`: a small season-aware
 grammar that assembles endless gentle verse. Per-season image banks (an opening image, a middle

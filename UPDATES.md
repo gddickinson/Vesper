@@ -293,9 +293,13 @@ in these notes:
       announced softly. Original fragments (no copyright); deterministic with an injected seed;
       bed "Night Crickets". Wired via `stories.extra_names`/`ambience_for`/`story_units`.
       Verified: dispatch + ambience resolve + ASCII + determinism; selftest + both-faces drive.
-- [ ] **Haibun storyteller** — weave poem *through* story: a slow wandering prose passage
-      (reuse the scene vocab) punctuated every few lines by a haiku from the generator. New
-      Sleep option ("A Wandering Haibun"); directly answers "weave poetry through stories."
+- [x] **Haibun storyteller** (`breathsim/haibun.py`, "A Wandering Haibun") — weaves poem
+      *through* story, in the spirit of Basho: a slow first-person wandering prose passage
+      (assembled from the same `stories` scene vocabulary, with an a/an fixup) is crystallised
+      every few lines by a season haiku from `haiku.compose`, then a soft closing line eases
+      the walk on, forever. Original; deterministic with an injected seed; bed "Wind in Pines".
+      Wired via `stories.extra_names`/`ambience_for`/`story_units`. Verified: dispatch +
+      prose/haiku interleave + ASCII + determinism + a/an; selftest + both-faces drive.
 - [ ] **Lecture branch: Ways of Knowing** (epistemology + science, 4) — e.g. *How We Know the
       Stars* (parallax / the cosmic distance ladder / humility), *The Art of Doubt* (the
       scientific method as gentle inquiry), *The Map and the Territory* (models vs. reality),
