@@ -379,15 +379,21 @@ pipeline (narration, pacing, sleep-timer fade, ambience) is reusable. Ground the
   ASCII-fold smart quotes/dashes for the synth; keep paragraph breaks for natural pauses.
 - **Safety**: the downloader is **opt-in** (network only on an explicit user action), rate-limited,
   public-domain only; uploads stay local; everything degrades to "absent" with no network.
-- **Round plan** (one per loop, Stories cadence still applies): (1) **`breathsim/books.py` core** —
-  Book model + pure sentence/paragraph tokenizer + PG boilerplate strip + local library at
-  `~/.breathsim/books` + a books table; offline tests on a fixture. (2) **Narrate a book** — a
-  `BookReader` yielding sentence units, dispatched through `stories.story_units`; **resume by sentence
-  index**; fade-out timer wired. (3) **Reader mode / reading presets** (non-sleep) — steady pace,
-  optional on-screen scrolling text, no breath-gating/dimming. (4) **On-demand downloader** — Gutendex
-  search + mirror fetch (opt-in, rate-limited, progress) + Library browser with per-book progress.
-  (5) **User upload** — import `.txt` then `.epub`. (6) **Polish** — "continue your book" launch hint,
-  per-book voice/preset memory, optional LLM "previously…" recap on resume.
+- **Decisions (user, 2026-06-24)**: build the **reader mode FIRST** (before the sleep-narration
+  slice); the reader view offers **both** scrolling read-along text **and** audio-only, as a
+  **toggle**; the downloader covers **all three** sources — **Project Gutenberg + Standard Ebooks +
+  user uploads**.
+- **Round plan** (reordered per the decisions; one per loop, Stories cadence still applies):
+  (1) **`breathsim/books.py` core** — Book model + pure sentence/paragraph tokenizer + PG/Standard-
+  Ebooks boilerplate strip + local library at `~/.breathsim/books` + a books table; offline tests on a
+  fixture. (2) **Reader mode / reading presets** (non-sleep, FIRST per the user) — steady pace, a
+  **text↔audio toggle** (scrolling read-along OR audio-only), no breath-gating/dimming; a `BookReader`
+  yielding sentence units dispatched through `stories.story_units`. (3) **Sleep narration of a book** —
+  the same `BookReader` under the Sleep wind-down; **resume by sentence index**; fade-out timer wired.
+  (4) **On-demand downloader** — Gutendex search + PG mirror fetch **and** Standard Ebooks (opt-in,
+  rate-limited, progress) + Library browser with per-book progress. (5) **User upload** — import `.txt`
+  then `.epub`. (6) **Polish** — "continue your book" launch hint, per-book voice/preset memory,
+  optional LLM "previously…" recap on resume.
 - [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
       conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
       of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The
