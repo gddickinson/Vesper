@@ -73,12 +73,37 @@ class _ReadMixin:
         self.read_pane.hide()
 
     def set_reading_book(self, bid):
-        from breathsim import books
+        from breathsim import books, bookreader
         self._read_bid = bid
         book = books.load(bid) if bid else None
         self._read_idx = books.position(bid) if bid else 0
         pct = books.percent_read(bid) if bid else 0
+        self._read_chapters = bookreader.chapters(book) if book else []
         self.read_pane.set_book(book, self._read_idx, pct)
+        panel = getattr(self, "panel", None)
+        if panel is not None and hasattr(panel, "refresh_read_chapters"):
+            panel.refresh_read_chapters()
+
+    def book_chapters(self):
+        """Detected chapters of the book loaded in Read mode (may be []):
+        ``[(sentence_index, title), ...]``. Computed once per book load."""
+        return list(getattr(self, "_read_chapters", []))
+
+    def jump_to_chapter(self, sentence_index):
+        """Move the reader to a chapter's first sentence (persisting the resume
+        position). If currently narrating, restart from there; otherwise just
+        move the read-along highlight + scroll."""
+        if not self._read_bid:
+            return
+        from breathsim import books
+        i = max(0, int(sentence_index))
+        books.set_position(self._read_bid, i)
+        self._read_idx = i
+        if self._reading:
+            self.stop_reading()
+            self.start_reading()
+        else:
+            self.read_pane.highlight(i)
 
     def set_read_along(self, on):
         self._read_along = bool(on)

@@ -155,6 +155,14 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Read mode: jump-to-chapter navigation**: `booktext.chapter_marks` existed but was never used;
+      surfaced it as real navigation. New pure `bookreader.chapters(book)` -> `[(sentence_index, title)]`
+      (heading paragraphs mapped through paragraph starts); `win_read.book_chapters`/`jump_to_chapter`
+      (persist resume; restart the narrator if mid-read, else move the read-along highlight); a "Jump to
+      a chapter…" button in the Read card opens the searchable `picker.choose` popup (current chapter
+      pre-selected), enabled per-book via a `refresh_read_chapters` hook. Verified: extended
+      `tools/test_bookreader.py` + new offscreen `tools/test_read_chapters.py` (enable/disable, jump
+      paused/while-reading, threads stable); all 30 offline tests; selftest; drive_check (0 issues).
 - [x] **Books: library management + a diagnostic, integrity-checked downloader** (user-requested; four
       linked complaints fixed together). (1) *Downloaded books never showed in the Read picker* -- the
       dialog rebuilt only the Sleep workspace; `booklib._refresh_app` now rebuilds the current workspace

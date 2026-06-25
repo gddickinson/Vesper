@@ -466,7 +466,13 @@ library** at `~/.breathsim/books` (`save`/`load`/`list_books`/`delete`/**`disk_b
 **`update_meta`** (rename in place) + a self-contained
 `_index.json`/`_progress.json`) with a per-book **resume** `position`/`set_position`/`clear_position`.
 And **`bookreader`** — `units(book, start, line_pause, para_pause)` / `resume_units(book)` yield one
-narrator unit per sentence (longer pause at paragraph ends; the `sentence` index drives resume).
+narrator unit per sentence (longer pause at paragraph ends; the `sentence` index drives resume) +
+**`chapters(book)`** → `[(sentence_index, title)]` (maps `booktext.chapter_marks` through the book's
+paragraph starts) for **jump-to-chapter** navigation. In Read mode, `win_read.set_reading_book`
+caches the book's chapters, `book_chapters()`/`jump_to_chapter(sentence_index)` expose + act on them
+(persisting the resume position; restarting the narrator if mid-read), and the Read card's "Jump to a
+chapter…" button (`sections_read._choose_chapter`, enabled via `refresh_read_chapters`) opens the
+searchable `picker.choose` chapter list.
 Offline-tested (`tools/test_books.py`, `tools/test_bookreader.py`). The non-sleep Reader UI is
 `vesper/reader.py` (Books menu). A library book is ALSO a **Sleep storyteller option** ("Book:
 <title>"): `stories.book_names()`/`book_id_for()` + a `BOOK_PREFIX` dispatch in `story_units`/

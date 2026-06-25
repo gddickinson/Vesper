@@ -38,3 +38,26 @@ def resume_units(book, **kw):
     if pos >= book.sentence_count():        # finished last time -> start over
         pos = 0
     return units(book, start=pos, **kw)
+
+
+def chapters(book):
+    """Return ``[(sentence_index, title), ...]`` -- the flat sentence index at
+    which each detected chapter/heading begins, for **jump-to** navigation.
+
+    Built from :func:`breathsim.booktext.chapter_marks` (heading-like paragraphs:
+    'CHAPTER IV', 'BOOK II', a lone roman numeral...) mapped through the book's
+    paragraph starts. Best-effort and may be empty (e.g. a heading-less text);
+    duplicate start positions are collapsed and titles trimmed for display."""
+    from . import booktext
+    if book is None:
+        return []
+    starts = book.paragraph_starts()
+    out, seen = [], set()
+    for pidx, title in booktext.chapter_marks(book.paragraphs):
+        if 0 <= pidx < len(starts):
+            si = starts[pidx]
+            if si in seen:
+                continue
+            seen.add(si)
+            out.append((si, (title or "").strip()[:60]))
+    return out[:1000]

@@ -3273,6 +3273,27 @@ live search+download of a real book (1,697 sentences, ~3.6 h, 170 KB, boilerplat
 rename/delete, report) + extended `test_booksource.py` (Outcome paths, integrity refusal, 404/403/429
 + retry, no-network); all 29 offline tests green; selftest + drive_check (0 issues); every file < 500.
 
+## Read mode: jump-to-chapter navigation
+`booktext.chapter_marks` (heading detection: 'CHAPTER IV', 'BOOK II', a lone roman numeral...) had
+existed since the audiobook core but was **never wired into the app** -- a long novel could only be
+read straight through or scrubbed by guesswork. Surfaced it as real navigation. New pure
+`bookreader.chapters(book)` maps each heading paragraph through the book's `paragraph_starts()` to a
+flat **sentence index**, returning `[(sentence_index, title), ...]` (duplicate starts collapsed, titles
+trimmed, empty for a heading-less text, `None`-safe). `win_read.set_reading_book` now caches the loaded
+book's chapters once; `book_chapters()` exposes them and `jump_to_chapter(sentence_index)` moves the
+reader there -- persisting the resume position and, if currently narrating, stopping + restarting the
+narrator from that chapter (otherwise just moving the read-along highlight + scroll via
+`read_pane.highlight`). The Read workspace card gains a **"Jump to a chapter…"** button that opens the
+existing searchable `picker.choose` popup (a "Chapters" group, the current chapter pre-selected, type to
+filter) -- reusing the same chooser the long voice/story lists use. The button enables/disables with the
+book: `_card_read` checks `book_chapters()` at build, and `set_reading_book` calls a new
+`refresh_read_chapters` panel hook so the state is right whichever order the card builds vs. the book
+loads (and it no-ops safely on a stale widget after a workspace rebuild). Verified: extended
+`tools/test_bookreader.py` (chapters ascending + paragraph-aligned; heading-less + None -> []) + new
+offscreen `tools/test_read_chapters.py` (button enable/disable, jump-while-paused moves+persists+
+highlights, jump-while-reading restarts, threads stable 2->2); all 30 offline tests green; selftest +
+drive_check (0 issues); every file < 500 (`bookreader` 63, `win_read` 185, `sections_read` 124).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

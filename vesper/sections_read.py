@@ -34,6 +34,14 @@ class _ReadCardMixin:
         add.clicked.connect(lambda: self._add_novel())
         body.addWidget(add)
 
+        ch = QPushButton("Jump to a chapter…")
+        ch.setToolTip("Open a searchable list of the book's chapters and jump to "
+                      "one (your place is saved).")
+        ch.clicked.connect(lambda: self._choose_chapter())
+        ch.setEnabled(bool(self.win.book_chapters()))
+        self._w["read_chapters"] = ch
+        body.addWidget(ch)
+
         ra = QCheckBox("Show read-along text")
         ra.setChecked(getattr(self.win, "_read_along", True))
         ra.setToolTip("Scroll the text and highlight each sentence as it reads.")
@@ -85,3 +93,32 @@ class _ReadCardMixin:
         i = bk.currentIndex() if bk else -1
         if 0 <= i < len(ids):
             self.win.set_reading_book(ids[i])
+        ch = self._w.get("read_chapters")
+        if ch is not None:
+            ch.setEnabled(bool(self.win.book_chapters()))
+
+    def refresh_read_chapters(self):
+        """Re-evaluate the Chapters button's enabled state when the book changes
+        (the card may have been built before a book was loaded)."""
+        ch = self._w.get("read_chapters")
+        if ch is None:
+            return
+        try:
+            ch.setEnabled(bool(self.win.book_chapters()))
+        except RuntimeError:
+            pass            # widget was destroyed by a workspace rebuild
+
+    def _choose_chapter(self):
+        """Searchable chapter picker -> jump the reader to the chosen chapter."""
+        from .picker import choose
+        chs = self.win.book_chapters()
+        if not chs:
+            return
+        items = [(si, (f"{n}.  {title}" if title else f"Section {n}"))
+                 for n, (si, title) in enumerate(chs, 1)]
+        here = getattr(self.win, "_read_idx", 0)
+        cur = max((si for si, _ in chs if si <= here), default=None)
+        pick = choose(self.win, "Jump to a chapter", [("Chapters", items)],
+                      current=cur, placeholder="Search chapters…")
+        if pick is not None:
+            self.win.jump_to_chapter(pick)

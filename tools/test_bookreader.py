@@ -52,7 +52,25 @@ def main():
     assert [u["sentence"] for u in res2] == list(range(6))
     print("ok: resume_units honours saved position (and restarts when finished)")
 
-    print("PASS: bookreader -- units, pauses, start index, resume (offline)")
+    # chapters(): heading paragraphs -> (sentence_index, title), for jump-to nav
+    novel = books.from_text(
+        "CHAPTER I\n\nAlpha one. Alpha two.\n\n"
+        "CHAPTER II\n\nBeta one. Beta two. Beta three.\n\n"
+        "CHAPTER III\n\nGamma one.", "A Novel", source="upload")
+    chs = bookreader.chapters(novel)
+    assert [t for _, t in chs] == ["CHAPTER I", "CHAPTER II", "CHAPTER III"], chs
+    idxs = [i for i, _ in chs]
+    assert idxs == sorted(idxs) and len(set(idxs)) == 3, chs   # ascending, unique
+    # each chapter index marks a real paragraph start in the flat sentence list
+    pstarts = set(novel.paragraph_starts())
+    assert all(i in pstarts for i in idxs), (idxs, pstarts)
+    # a heading-less book yields no chapters; None is safe
+    assert bookreader.chapters(books.from_text("Just prose. No headings here.",
+                                               "Flat", source="upload")) == []
+    assert bookreader.chapters(None) == []
+    print(f"ok: chapters() -> {len(chs)} jump targets, ascending + paragraph-aligned")
+
+    print("PASS: bookreader -- units, pauses, start index, resume, chapters (offline)")
     return 0
 
 
