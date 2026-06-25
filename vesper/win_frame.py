@@ -69,12 +69,12 @@ class _FrameMixin:
                "bpm": (60.0 / self.controller.pattern.cycle
                        if self.controller.pattern.cycle > 0 else 0.0)}
         if self.viz.scene_name() == "pitch":
-            pc = self.pitch_context(self.controller.elapsed()) or {}
+            pc = self.pitch_context(self.pitch_clock()) or {}
             sung, clar = (self.tuner.latest() if (self.tuner and self.tuner.available)
                           else (0.0, 0.0))
             tgt = pc.get("target")
             intune = False
-            if running and tgt and sung > 0 and clar > 0.5:
+            if tgt and sung > 0 and clar > 0.5:        # score whenever singing a target
                 intune = abs(1200.0 * math.log2(sung / tgt)) < 30.0
                 self._sing_tot += 1
                 self._sing_in += 1 if intune else 0

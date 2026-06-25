@@ -2987,6 +2987,20 @@ parallel subagents, independently validated (7x12, pure ASCII, every section sle
 branches**); story DB rebuilt (297k words); offline tests (19) green; drive_check 0 issues,
 threads stable; all files < 500 lines.
 
+## Fix: Sing pitch-trainer exercise selector (only "Hold note" worked)
+User report: changing the exercise from "Hold note" to a scale/arpeggio did nothing -- the target
+just sat on one note. Root cause: the trainer fed `vocaltrainer.target_at` the value of
+`controller.elapsed()`, which is the *breathing-session* clock and stays frozen at 0 until you press
+play. At t=0 every spec (hold or scale) returns step[0] = the base note, so all exercises looked
+identical and never scrolled. Fix: drive the exercise from the always-advancing animation clock --
+new `pitch_clock()` = `_anim_t - _pitch_t0`, with `_pitch_t0` anchored in `show_pitch_guide` (so a
+new exercise starts cleanly at its first note). `win_frame` now passes `self.pitch_clock()` to
+`pitch_context`, so a scale scrolls as a standalone warm-up whether or not a breathing session is
+playing; the in-tune scoring gate was relaxed from `running` to "singing a target" to match. New
+regression test `tools/test_pitch_trainer.py` (scale advances 261.6->329.6 Hz with no session,
+8 distinct targets while idle, Hold note stays put, switching exercise re-anchors to the tonic).
+selftest + drive_check (0 issues) + all 21 offline tests green.
+
 ## Scene: "Drifting" — slow cloud-band twilight sky
 Added a new calming visualization, `vesper/scene_drift.py` (105 lines, its own module so scenes.py
 stays small; registered at the foot of scenes.py and listed automatically by View > Scene). Soft,

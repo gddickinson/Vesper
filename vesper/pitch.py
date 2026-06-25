@@ -23,10 +23,20 @@ class _PitchMixin:
 
     def show_pitch_guide(self, spec):
         self._pitch_spec = spec
+        # Anchor the exercise clock to *now* (the always-advancing animation time),
+        # so a scale/arpeggio scrolls from its first note whether or not a breathing
+        # session is playing -- the trainer is a standalone warm-up. (Previously it
+        # read controller.elapsed(), which is frozen until you press play, so every
+        # exercise sat on its base note and looked identical to "Hold note".)
+        self._pitch_t0 = getattr(self, "_anim_t", 0.0)
         self._sing_in = self._sing_tot = 0       # reset the % in-tune score
         self.set_tuner(True)
         self.viz.set_scene("pitch")
         self.set_view("scene")
+
+    def pitch_clock(self):
+        """Seconds since the current exercise began (always advancing)."""
+        return getattr(self, "_anim_t", 0.0) - getattr(self, "_pitch_t0", 0.0)
 
     def hide_pitch_guide(self):
         self._pitch_spec = None
