@@ -44,6 +44,39 @@ def open_library(win):
     return dlg
 
 
+def import_book_dialog(win):
+    """Pick a local .txt/.epub and import it into the library (stays on this
+    device). Refreshes the Reader / Sleep picker / Books count on success."""
+    from PySide6.QtWidgets import QFileDialog, QMessageBox
+    from breathsim import bookimport
+    path, _ = QFileDialog.getOpenFileName(
+        win, "Import a book", "",
+        "Books (*.txt *.epub);;Text (*.txt);;EPUB (*.epub)")
+    if not path:
+        return None
+    bid = bookimport.import_file(path)
+    if not bid:
+        QMessageBox.information(win, "Import a book",
+                               "Could not read that file. Try a plain .txt or a "
+                               "standard .epub.")
+        return None
+    _refresh_app(win)
+    win.status.showMessage("Imported. Find it in the Reader and the Sleep story "
+                           "picker.", 5000)
+    return bid
+
+
+def _refresh_app(win):
+    """Surface a newly added book in the menus + the Sleep story picker."""
+    try:
+        if hasattr(win, "rebuild_menu"):
+            win.rebuild_menu()
+        if getattr(win, "current_mode", None) == "Sleep":
+            win.panel.build_workspace("Sleep")
+    except Exception:
+        pass
+
+
 class _LibraryDialog(QDialog):
     def __init__(self, win):
         super().__init__(win)
@@ -84,6 +117,10 @@ class _LibraryDialog(QDialog):
         self.dl_btn.setEnabled(False)
         self.dl_btn.clicked.connect(self._download)
         v.addWidget(self.dl_btn)
+
+        imp = QPushButton("Import a file (.txt / .epub) from this device…")
+        imp.clicked.connect(self._import)
+        v.addWidget(imp)
 
         v.addWidget(muted("Your library"))
         self.library = QListWidget()
@@ -190,6 +227,10 @@ class _LibraryDialog(QDialog):
                 self.win.panel.build_workspace("Sleep")
         except Exception:
             pass
+
+    def _import(self):
+        if import_book_dialog(self.win):
+            self._refresh_library()
 
     def _sync_buttons(self):
         self.dl_btn.setEnabled(self.results.currentItem() is not None)

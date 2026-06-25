@@ -451,6 +451,15 @@ pipeline (narration, pacing, sleep-timer fade, ambience) is reusable. Ground the
   (injected fetch, zero sockets). selftest + both-faces drive (0 issues) + thread-stable offscreen
   open/close + dialog PNG; all 11 offline tests pass with no network. (SE is EPUB-only -> arrives with
   the importer in R5.) (Next R5: user upload .txt then .epub.)
+- [x] **R5 done — import your own .txt / .epub** (local, untrusted-safe; also unlocks Standard
+  Ebooks): pure `breathsim/bookimport.py` (`import_txt`/`import_epub`/`import_file` -- defensive
+  decode; stdlib zipfile+xml.etree EPUB parse via the OPF spine + an XHTML tag-stripper; **zip-bomb
+  guards**: per-entry + total + entry-count caps; non-XHTML ignored; fail-closed, never executes) and
+  a GUI hook in `vesper/booklib.py` (Books ▸ "Import a book (file)..." + an Import button in the
+  dialog) that refreshes the Reader + Sleep picker on success. Offline test `tools/test_bookimport.py`
+  (in-memory epub + txt, odd encodings, path dispatch, zip-bomb + junk refused). selftest + both-faces
+  drive (0 issues) + a thread-stable offscreen Sleep session (imported epub in the picker) + dialog
+  PNG; all 12 offline tests pass with no network. (Next R6: polish.)
 - [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
       conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
       of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The

@@ -2253,6 +2253,28 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Audiobooks round 5 — import your own .txt / .epub (local, untrusted-safe)
+You can now bring your OWN books -- and this also unlocks Standard Ebooks (EPUB). New pure
+`breathsim/bookimport.py` (no Qt, no network): `import_txt` (bytes or path; hard size cap; defensive
+decode -- UTF-8, then Latin-1, then UTF-8 with replacement), `import_epub` (stdlib `zipfile` +
+`xml.etree`: read META-INF/container.xml -> the OPF, pull dc:title/dc:creator + the spine reading
+order, strip XHTML tags to plain text, fall back to every xhtml in name order if the spine is
+unreadable), and `import_file` (dispatch by extension). All file bytes are **untrusted**: per-entry
+read cap (10 MB), total-read cap (40 MB), entry-count cap (4000), non-XHTML entries ignored, every
+path catches its own errors and returns None (never raises), nothing executed, everything saved
+LOCAL via `books.save`. GUI: `vesper/booklib.py` gains `import_book_dialog` (a QFileDialog for
+.txt/.epub) wired to a new Books menu action "Import a book (file)..." AND an "Import a file..."
+button inside the Find & manage dialog; on success it refreshes the menus + Sleep picker so the book
+appears in the Reader + Sleep story list immediately. Offline test `tools/test_bookimport.py` builds
+a tiny in-memory .epub (mimetype + container.xml + content.opf + one XHTML chapter) + .txt blobs and
+asserts: epub title/author/sentences parsed, txt + odd-encoding import, path dispatch + filename
+title, and a too-many-entries archive + junk are refused -- all with no Qt/network. Verified: that
+test + the 11 other offline tests pass with NO network; selftest (148 voices, 209 lectures);
+both-faces drive (0 issues, threads stable); a ~60-tick offscreen Sleep session where an imported
+epub appears in the Sleep picker (zero thread leak); rendered + eyeballed the dialog PNG (Import
+button + the imported book in the library). Files: bookimport 184, booklib 237 -- all < 500. (Next
+R6: polish -- continue-your-book launch hint, per-book voice/preset memory, optional LLM recap.)
+
 ## Stories round — new branch "Weathers of the World" (4 lectures)
 A Stories lecture-branch round (cadence due -- 3 rounds since The Polar Worlds). Added a 41st branch
 on the moods of the sky via 4 parallel content subagents: `lectures_monsoon.py` (The Monsoon, Soft

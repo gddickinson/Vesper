@@ -409,7 +409,12 @@ public-domain **downloader** -- pure `parse_gutendex`/`text_to_book` + networked
 (Project Gutenberg via the open Gutendex API, NO key; network only on an explicit call, UA + timeout +
 size cap + rate limit, fail-closed); `vesper/booklib.py` is its **Find & manage books** dialog (Books
 menu: off-thread search/download + a delete-able library list). Offline-tested with an injected fetch
-(`tools/test_booksource.py`, zero sockets). User upload (.txt/.epub) lands in the next round.
+(`tools/test_booksource.py`, zero sockets). **`bookimport`** imports the user's OWN files (no network):
+`import_txt`/`import_epub`/`import_file` -- defensive decode, stdlib zipfile+xml.etree EPUB parse (OPF
+spine + tag-strip) with **zip-bomb guards** (per-entry/total/entry-count caps), fail-closed, saved
+LOCAL; the GUI hook is `booklib.import_book_dialog` (Books ▸ "Import a book (file)..." + a button in
+the dialog). Offline-tested (`tools/test_bookimport.py`, in-memory epub/txt). This also unlocks
+Standard Ebooks (EPUB).
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

@@ -107,6 +107,8 @@ def _books(win, m):
     m.addAction("Read a book…").triggered.connect(lambda: reader.open_reader(win))
     m.addAction("Find & manage books…").triggered.connect(
         lambda: booklib.open_library(win))
+    m.addAction("Import a book (file)…").triggered.connect(
+        lambda: booklib.import_book_dialog(win))
     from breathsim import books
     n = len(books.list_books())
     info = m.addAction(f"In your library: {n}" if n else "Library is empty")
