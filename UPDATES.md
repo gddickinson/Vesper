@@ -399,6 +399,16 @@ in these notes:
       Standard 7x12, fact-free section 1, all sleep-closing; ambiences Soft Rainstorm / Forest Wind /
       Distant Thunder / Ocean Waves. Registered as a 41st branch. **209 lectures / 41 branches**; DB
       rebuilt; selftest + both-faces drive (0 issues); all 11 offline tests pass.
+- [x] **Lecture branch: The Microscopic World** (4) — *A Drop of Pond Water* (a whole tiny ecosystem
+      in one drop: drifting algae, the soft amoeba, gliding paramecia, rotifers and water fleas),
+      *Diatoms* (microscopic algae that build jewel-like glass shells in endless patterns, drifting in
+      billions, settling into pale drifts over ages), *The Water Bear* (the tardigrade -- a plump
+      moss-dweller that survives by SLEEPING: curls into a barrel for years through any hardship, wakes
+      unharmed; a perfect sleep theme), *Pollen* (the golden dust of flowers, each grain a sculpted
+      jewel, drifting on wind and bees to make next year's meadow). Standard 7x12, fact-free section 1,
+      all sleep-closing; ambiences Mountain Stream / Ocean Waves / Forest Wind / Gentle Rain. Registered
+      as a 42nd branch. **213 lectures / 42 branches**; DB rebuilt; selftest + both-faces drive (0
+      issues); all 14 offline tests pass.
 - [x] **LLM in the GUI — opt-in API-key Settings dialog** (`vesper/llm_settings.py`, Help ▸ "AI
       Assistant (optional)…") — the safe gateway that finally exposes the (already-built) LLM stack,
       strictly opt-in + fail-closed. The ONE place a key is typed: **password-masked**, never shown

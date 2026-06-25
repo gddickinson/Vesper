@@ -68,6 +68,8 @@ from . import lectures_antarctica, lectures_arctic  # The Polar Worlds
 from . import lectures_icebergs, lectures_tundra
 from . import lectures_fog, lectures_monsoon  # Weathers of the World
 from . import lectures_thunderstorm, lectures_tradewinds
+from . import lectures_diatoms, lectures_pollen  # The Microscopic World
+from . import lectures_pondwater, lectures_tardigrade
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -213,6 +215,8 @@ _CATALOG = [
                           lectures_icebergs, lectures_tundra]),
     ("Weathers of the World", [lectures_monsoon, lectures_fog,
                                lectures_thunderstorm, lectures_tradewinds]),
+    ("The Microscopic World", [lectures_pondwater, lectures_diatoms,
+                               lectures_tardigrade, lectures_pollen]),
 ]
 
 LECTURES = {}

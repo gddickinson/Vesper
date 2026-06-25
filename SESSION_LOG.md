@@ -2253,6 +2253,25 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Stories round — new branch "The Microscopic World" (4 lectures)
+A Stories lecture-branch round (cadence due -- 3 CAST rounds since Weathers of the World). Added a
+42nd branch on the hidden world too small to see, via 4 parallel content subagents:
+`lectures_pondwater.py` (A Drop of Pond Water, Mountain Stream -- a whole tiny ecosystem in one drop:
+drifting green algae, the soft amoeba, gliding paramecia, rotifers and water fleas), `lectures_diatoms.py`
+(Diatoms, Ocean Waves -- microscopic algae that build jewel-like glass shells in endless patterns,
+drifting in their billions, settling into pale drifts over ages), `lectures_tardigrade.py` (The Water
+Bear, Forest Wind -- the tiny plump moss-dweller that survives by SLEEPING: it curls into a barrel and
+rests for years through any hardship, waking unharmed when the water returns -- a perfect sleep theme),
+`lectures_pollen.py` (Pollen, Gentle Rain -- the golden dust of flowers, each grain a sculpted jewel,
+drifting on warm wind and bees to make next year's meadow; no allergy mention). Each a 7x12
+second-person sleep-lecture: fact-free settling section 1, every section sleep-closing, ASCII-only;
+distinct NAMEs/modules, ambiences resolve to real GROUP_NATURE voices. Registered in
+`lectures._CATALOG`. **213 lectures / 42 branches**; story DB rebuilt (285,120 words). Verified
+independently (7x12 / endings / ASCII / importable), end-to-end narration (102 units each, ambience
+resolves), selftest (213/42), both-faces drive (0 issues, threads stable), all 14 offline tests still
+pass. README/CLAUDE bumped 209/41 -> 213/42; all four files 105 lines. (Next: the cast thread resumes
+at CAST-3 -- the dramatized playback toggle.)
+
 ## CAST round 2 — bookcast.py: who-speaks-each-line heuristic (pure, offline)
 The foundation for dramatized reading: a PURE `breathsim/bookcast.py` (no LLM, no network, no Qt) that
 turns a `books.Book` into a **cast Script**. `script(book, pool=None)` decides a **speaker** per
