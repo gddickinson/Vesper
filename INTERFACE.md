@@ -366,10 +366,10 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 ## Vendored core — `breathsim/` (in this project)
 The whole audio/logic/story core lives here, gui-free (the Tk GUI is not vendored):
 `controller`, `engine`, `speech`, `narration` (Kokoro/say + lip-sync `amp`),
-`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 200+ across
-43 branches incl. The Great Voyages (The Wayfinders · The Treasure Fleet · The First Voyage
-Around the World · The Endurance) + The Microscopic World + Weathers of the World + The Polar
-Worlds + Voyages & Journeys; Cosmos incl. Comets · Nebulae · Saturn's Rings) + **`shuffle`** (the **Cognitive Shuffle** sleep-onset aid) + **`hypnosis`** (a **Sleep
+`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 220+ across
+44 branches incl. The Inner Planets (Mercury · Venus · Mars · Earth from Space) + The Great
+Voyages + The Microscopic World + Weathers of the World + The Polar Worlds; Cosmos incl. Comets ·
+Nebulae · Saturn's Rings; The Moons of the Giants) + **`shuffle`** (the **Cognitive Shuffle** sleep-onset aid) + **`hypnosis`** (a **Sleep
 Hypnosis** guided session: induction -> deepening countdown -> suggestions -> drift; exposes
 reusable `induction`/`drift_tail`) + **`hypnosis_topics`** (6 **themed self-help** hypnosis
 sessions reusing that arc with a different permissive suggestion block -- Letting Go of Stress

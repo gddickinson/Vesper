@@ -313,6 +313,21 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       Sessions menu ("One good thing…" + "Bedtime gratitude" toggle), a kind "Good things noted: N"
       line in Stats, and settings persistence. Verified: `tools/test_gratitude.py` + offscreen GUI
       smoke (menus present, threads stable) + selftest + drive_check.
+- [x] **Stories (next branch)** — **The Inner Planets** (4): *Mercury* (smallest, airless,
+      closest to the Sun; ancient craters + Caloris Basin; the slow 3:2 spin so a day lasts months;
+      a large iron heart; the near-perihelion double sunrise; polar-shadow water ice; Messenger),
+      *Venus* (the morning/evening star; a near-twin under a golden mirror-cloud veil; slow backward
+      spin with a day longer than its year; Ishtar/Aphrodite Terra; Galileo's phases; Magellan radar
+      — kept soft, no hellish-heat dwelling), *Mars* (rust-red desert; Phobos & Deimos; Olympus Mons
+      + Valles Marineris; thin butterscotch sky and cool-blue sunsets; seasonal polar caps; ancient
+      riverbeds; the patient Curiosity/Perseverance rovers), and *Earth from Space* (the tender
+      closer — the blue marble, the apple-peel-thin atmosphere, day into night with city lights and
+      auroras, the overview effect, the Moon, the Voyager pale blue dot + Carl Sagan, ending in
+      belonging, held safe on the turning world). Each = 7×12 second-person present sleep-closing
+      ASCII lines; ambiences Brown Noise / Soft Rainstorm / Forest Wind / Ocean Waves. Drafted via
+      four parallel writers, validated (7×12, pure ASCII, every section sleepward), registered in
+      `lectures._CATALOG`. Verified: **selftest 221 lectures / 44 branches**; story DB rebuilt (297k
+      words); all 19 offline tests; drive_check 0 issues.
 - [x] **Stories (next branch)** — **The Great Voyages** (4): *The Wayfinders* (Polynesian
       star-path navigation — the star compass of rising/setting stars, reading the deep swells
       in the hull, seabirds and lagoon-lit clouds as land signs, the Hawaii/Aotearoa/Rapa Nui

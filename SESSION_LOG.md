@@ -2965,6 +2965,28 @@ closes, no alarming language), assembled + registered in `lectures._CATALOG`. Ve
 passes (**217 lectures across 43 branches**); story DB rebuilt (291k words); offline tests (18)
 green; drive_check 0 issues, threads stable; all files < 500 lines.
 
+## Stories round — new branch "The Inner Planets" (4 lectures)
+Added a 44th lecture branch, **The Inner Planets**, a gentle counterpart to the existing outer-
+moons branch: *Mercury* (the smallest, airless world closest to the Sun; its ancient cratered
+face and Caloris Basin; the slow 3:2 spin so a day lasts months; a small world with a large iron
+heart; the near-perihelion "double sunrise"; water ice hiding in the permanent shadow of polar
+craters; Messenger's mapping), *Venus* (the brilliant morning and evening star; a near-twin
+wrapped in a smooth golden veil of mirror-bright cloud; its slow backward turn with a day longer
+than its year; the highlands Ishtar Terra and Aphrodite Terra; Galileo's phases; Magellan's radar
+mapping -- kept soft, no hellish-heat dwelling), *Mars* (the rust-red desert; the moons Phobos and
+Deimos; Olympus Mons and Valles Marineris; the thin butterscotch sky and the lovely cool-blue
+sunsets; seasonal polar ice caps; ancient dry riverbeds; the patient Curiosity and Perseverance
+rovers), and *Earth from Space* (the tender closer: the blue marble; the apple-peel-thin
+atmosphere; day sweeping into night with city lights and auroras; the astronauts' overview effect;
+the Moon's company; the Voyager pale blue dot and Carl Sagan's "everyone you have ever known" --
+ending in deep belonging, held safe on the turning world). Each = the standard 7 sections x 12
+second-person present-tense sentences, accurate astronomy kept gentle, every section easing toward
+sleep; ambiences Brown Noise / Soft Rainstorm / Forest Wind / Ocean Waves. Drafted via four
+parallel subagents, independently validated (7x12, pure ASCII, every section sleepward), assembled
++ registered in `lectures._CATALOG`. Verified: selftest passes (**221 lectures across 44
+branches**); story DB rebuilt (297k words); offline tests (19) green; drive_check 0 issues,
+threads stable; all files < 500 lines.
+
 ## Optional spoken-name greeting (off by default)
 A small, warm personalisation: if the listener sets a name, the storyteller opens a Sleep
 session with one soft, time-aware line ("Good evening, Alex. Let's settle in and unwind.")

@@ -72,6 +72,8 @@ from . import lectures_diatoms, lectures_pollen  # The Microscopic World
 from . import lectures_pondwater, lectures_tardigrade
 from . import lectures_circumnav, lectures_endurance  # The Great Voyages
 from . import lectures_treasurefleet, lectures_wayfinders
+from . import lectures_earthspace, lectures_mars  # The Inner Planets
+from . import lectures_mercury, lectures_venus
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -221,6 +223,8 @@ _CATALOG = [
                                lectures_tardigrade, lectures_pollen]),
     ("The Great Voyages", [lectures_wayfinders, lectures_treasurefleet,
                            lectures_circumnav, lectures_endurance]),
+    ("The Inner Planets", [lectures_mercury, lectures_venus,
+                           lectures_mars, lectures_earthspace]),
 ]
 
 LECTURES = {}
