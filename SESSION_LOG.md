@@ -2941,6 +2941,30 @@ clamps/caps/malformed-safe) + an offscreen GUI smoke (toggle persists, menus car
 action + toggle, threads stable) + selftest (213 lectures / 42 branches) + drive_check
 (issues=0); all 18 offline tests green; every file < 500 lines.
 
+## Stories round — new branch "The Great Voyages" (4 lectures)
+Added a 43rd lecture branch, **The Great Voyages**, four real exploration stories told gently
+toward sleep: *The Wayfinders* (Pacific/Polynesian wayfinding without instruments — the star
+compass of rising and setting stars, feeling the deep swells in the hull, seabirds and the
+green underlight of lagoon clouds as signs of unseen land, the vast Hawaii / Aotearoa / Rapa
+Nui triangle, knowledge kept in chant, and the modern Hokule'a revival with Mau Piailug and
+Nainoa Thompson), *The Treasure Fleet* (Zheng He's early-1400s Ming voyages — the towering
+treasure ships, the monsoon winds breathing the fleet across the Indian Ocean to Calicut,
+Hormuz and Malindi, the floating compass and watertight bulkheads, the giraffe brought home and
+welcomed as a qilin), *The First Voyage Around the World* (1519-1522 — the patient search for
+the strait at the foot of the Americas, naming the calm Pacific, the long quiet star-steered
+crossing, Elcano bringing the lone ship Victoria home after three years, and the gently folded
+missing day), and *The Endurance* (Shackleton 1914-1916, framed entirely on patience,
+stillness and togetherness — the ship held calm in the Weddell Sea ice, the long starlit polar
+night under the southern lights, warm lamplit routines and the dozing dogs, every one of the
+crew home safe, and the wreck found upright and beautifully preserved on the quiet seafloor in
+2022). Each = the standard 7 sections x 12 second-person present-tense sentences, accurate but
+gentle (no peril dwelt on, the harder histories softened to their calm and their safe
+homecomings), every section easing toward sleep; ambiences Ocean Waves / Soft Rainstorm / Whale
+Song. Drafted via four parallel subagents, independently validated (7x12, pure ASCII, sleepward
+closes, no alarming language), assembled + registered in `lectures._CATALOG`. Verified: selftest
+passes (**217 lectures across 43 branches**); story DB rebuilt (291k words); offline tests (18)
+green; drive_check 0 issues, threads stable; all files < 500 lines.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

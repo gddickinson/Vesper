@@ -313,6 +313,23 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       Sessions menu ("One good thing…" + "Bedtime gratitude" toggle), a kind "Good things noted: N"
       line in Stats, and settings persistence. Verified: `tools/test_gratitude.py` + offscreen GUI
       smoke (menus present, threads stable) + selftest + drive_check.
+- [x] **Stories (next branch)** — **The Great Voyages** (4): *The Wayfinders* (Polynesian
+      star-path navigation — the star compass of rising/setting stars, reading the deep swells
+      in the hull, seabirds and lagoon-lit clouds as land signs, the Hawaii/Aotearoa/Rapa Nui
+      triangle, chant-kept knowledge, the Hokule'a revival with Mau Piailug & Nainoa Thompson),
+      *The Treasure Fleet* (Zheng He's early-1400s Ming voyages — the great treasure ships, the
+      monsoon breathing the fleet to Calicut, Hormuz and Malindi, watertight bulkheads + floating
+      compass, the giraffe welcomed home as a qilin), *The First Voyage Around the World*
+      (1519-1522 — the patient search for the strait, naming the calm Pacific, the long quiet
+      crossing, Elcano bringing the Victoria home, the gently-folded missing day), and *The
+      Endurance* (Shackleton 1914-1916, told entirely as patience/stillness/togetherness — the
+      ship held calm in the Weddell ice, the long starlit polar night with the southern lights,
+      warm lamplit routines, **every crewman home safe**, and the wreck found upright and at
+      peace in 2022). Each = the standard 7 sections x 12 second-person present-tense sleep-closing
+      lines, accurate science/history kept gentle (no peril dwelt on); ambiences Ocean Waves /
+      Soft Rainstorm / Whale Song. Drafted via four parallel writers, validated (7x12, pure ASCII,
+      sleepward closes), registered in `lectures._CATALOG`. Verified: **selftest 217 lectures /
+      43 branches**; story DB rebuilt (291k words); all 18 offline tests; drive_check 0 issues.
 - [x] **Stories (next branch)** — **The Moons of the Giants** (4): *Io, the Volcano Moon*
       (tidal heating, Galileo 1610, Loki Patera, Voyager's plume / Linda Morabito), *Europa,
       the Ocean Moon* (smooth ice shell, lineae, the hidden global ocean), *Titan, the Veiled
