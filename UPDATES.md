@@ -242,6 +242,69 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       Whale Song / Gentle Rain / Singing Bowl. Registered as a 36th branch. **189 lectures /
       36 branches**; DB rebuilt (255,791 words); selftest + both-faces drive (0 issues).
 
+### Research notes — storytelling craft & world poetry (user-requested, 2026-06-24)
+The storyteller has grown large (189 lectures + procedural scenes + poetry + hypnosis +
+shuffle). The user asked to (a) **deepen storytelling craft** for sleep, and (b) **weave
+poetry, philosophy and scientific thinking / epistemology** through stories, with **pure
+poetry sessions**, drawing on world poetic systems **especially Japan**. Ground future rounds
+in these notes:
+- **Sleep storytelling is *inverted* dramatic structure.** No tension, stakes, or
+  cliffhangers; the craft is *de-escalation* — a "descending" arc that dissolves. Techniques:
+  slow sensory immersion (narrative transportation crowds out rumination), meandering /
+  low-stakes digression (Sleep-With-Me style boredom-adjacency), refrains + rhythmic
+  repetition (lullaby cadence, rule of three), diminishing detail / "zoom out and fade" toward
+  the end, cozy safe settings (hygge), spatial wandering ("a slow walk through a place"),
+  embedded breath invitations (already done as interludes).
+- **Kishotenketsu** (ki-sho-ten-ketsu): the East-Asian 4-movement structure with **no
+  conflict** — introduction, development, a gentle *turn* (a shift of view, not a clash),
+  reconciliation. Ideal for calm narrative sleep tales; adopt as a story shape.
+- **Japanese poetic forms**: *haiku* (5-7-5, a season word *kigo*, a cutting *kireji*, one
+  image); *tanka/waka* (5-7-5-7-7, a pivot); *renga/renku* (endless linked verse); ***haibun***
+  (gentle prose + haiku — Basho's travel sketches — the natural way to *weave* poem through
+  story). Aesthetics to carry as mood + philosophy: *mono no aware* (tender transience),
+  *wabi-sabi* (beauty in impermanence/imperfection), *yugen* (subtle depth), *ma* (eloquent
+  pause / negative space — pairs with narration silences).
+- **Other traditions**: Chinese Tang nature poems (Wang Wei, Li Bai — moon, mountains,
+  rivers, solitude); Persian *ghazal* (couplets with a lulling *radif* refrain) + *rubaiyat*
+  (Khayyam quatrains on transience); Korean *sijo*; Sanskrit *doha*; English nocturne /
+  villanelle (refrains) / lullaby cadence.
+- **Philosophy & epistemology, gently**: write so wisdom *soothes*, never lectures. Stoic
+  night-counsel (Marcus Aurelius's Meditations were literally written at night), Taoist *wu
+  wei* / the watercourse way, Buddhist impermanence, Epicurean *ataraxia*, Heraclitus's river.
+  Epistemology as comfort: how we come to know (observation, doubt, models vs. reality,
+  instruments extending the senses), and the *peace* of uncertainty ("we don't know, and that
+  is a soft and roomy thing"). Always honest, wonder-over-mastery.
+
+### Researched batch — storytelling & poetry (user-requested; do these next, top-down)
+- [ ] **Pure poetry sessions across cultures** — expand the `poetry` storyteller from 8 English
+      nocturnes into **selectable traditions** (a `poems/` set or `poetry_*.py`): Japanese
+      (haiku + tanka sequences), Chinese Tang nature, Persian ghazal/rubaiyat, English
+      nocturne. Each a "Pure Poetry: <tradition>" Sleep option via `stories.extra_names`, recited
+      slowly with long *ma* pauses + a fitting bed. Honest attributions; original or
+      public-domain/paraphrased verse only. Keep files < 500 lines.
+- [ ] **Procedural haiku/tanka generator** (`breathsim/haiku.py`) — a small grammar/template
+      engine that assembles gentle, season-aware (kigo) haiku and tanka from curated image
+      fragments, endless + deterministically seeded, syllable-respecting, with long pauses. A
+      real generative tool; surfaced as an endless "Drifting Haiku" Sleep session.
+- [ ] **Haibun storyteller** — weave poem *through* story: a slow wandering prose passage
+      (reuse the scene vocab) punctuated every few lines by a haiku from the generator. New
+      Sleep option ("A Wandering Haibun"); directly answers "weave poetry through stories."
+- [ ] **Lecture branch: Ways of Knowing** (epistemology + science, 4) — e.g. *How We Know the
+      Stars* (parallax / the cosmic distance ladder / humility), *The Art of Doubt* (the
+      scientific method as gentle inquiry), *The Map and the Territory* (models vs. reality),
+      *What the Eye Cannot See* (instruments extending the senses). Wonder-led, sleep-closing.
+- [ ] **Lecture branch: Quiet Philosophies** (4) — Stoic night-counsel (Marcus Aurelius),
+      Taoism (the watercourse way / wu wei), mono no aware & wabi-sabi (Japanese aesthetics of
+      transience), Epicurean tranquility. Practical, soothing, never preachy; close to sleep.
+- [ ] **Kishotenketsu sleep-tales** (`breathsim/tales.py`) — a few authored conflict-free
+      4-movement micro-tales (intro -> development -> a soft turn of view -> dissolve), as a
+      new gentle *narrative* class (distinct from the factual lectures). Endless-safe tail.
+- [ ] **Story-craft polish for the procedural scenes** — apply the descending-structure
+      toolkit to `stories.py` scenes (Rainy Cottage etc.): gentle **refrains**, "rule of three"
+      cadence, a slow **zoom-out-and-fade** as the session deepens, richer sensory layering, and
+      occasional **contemplative interludes** (a mono-no-aware noticing / a Taoist image / a
+      Stoic night-thought) alongside the existing breath/body-scan interludes.
+
 ### Researched batch — audio & synthesis
 - [x] **Generative ambient pad** (user-requested "cosmic music"): new `breathsim/cosmic.py`
       + `breathsim/reverb.py` — a generative engine (Eno/Reich coprime-phasing pads,
