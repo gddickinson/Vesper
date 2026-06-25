@@ -15,6 +15,14 @@ from PySide6.QtWidgets import (QHBoxLayout, QLabel, QPushButton, QTextEdit,
 
 from . import theme
 
+# Reading-comfort themes for the text pane: (page bg, ink, highlight bg, highlight ink).
+THEMES = {
+    "Night": ("#0f1117", "#cdd2da", theme.ACCENT, "#0b0d12"),   # dark, default
+    "Sepia": ("#efe5d0", "#43381f", "#caa45a", "#2a2412"),      # warm paper
+    "Day":   ("#e9ecef", "#1b1f24", "#7fb4d8", "#11161b"),      # light room
+}
+THEME_NAMES = list(THEMES)
+
 
 class ReadAlongPane(QWidget):
     def __init__(self, win):
@@ -53,7 +61,21 @@ class ReadAlongPane(QWidget):
         self.text.setReadOnly(True)
         self.text.setMinimumHeight(160)
         v.addWidget(self.text, 1)
+        self._hl_bg, self._hl_fg = theme.ACCENT, "#0b0d12"
+        self.set_theme("Night")
         self._apply_font()
+
+    def set_theme(self, name):
+        """Recolour the reading page (Night / Sepia / Day) + the highlight."""
+        bg, ink, hl_bg, hl_fg = THEMES.get(name, THEMES["Night"])
+        self._theme = name if name in THEMES else "Night"
+        self._hl_bg, self._hl_fg = hl_bg, hl_fg
+        self.text.setStyleSheet(
+            f"QTextEdit {{ background:{bg}; color:{ink}; border:none; "
+            f"selection-background-color:{hl_bg}; padding:6px; }}")
+        cur, self._last_hl = self._last_hl, -1      # force re-highlight in the new colours
+        if 0 <= cur < len(self._ranges):
+            self.highlight(cur)
 
     def bump_font(self, d):
         self._font_pt = max(10, min(30, self._font_pt + d))
@@ -103,8 +125,8 @@ class ReadAlongPane(QWidget):
         cur.setPosition(a)
         cur.setPosition(b, QTextCursor.MoveMode.KeepAnchor)
         sel.cursor = cur
-        sel.format.setBackground(QColor(theme.ACCENT))
-        sel.format.setForeground(QColor(theme.BG))
+        sel.format.setBackground(QColor(self._hl_bg))
+        sel.format.setForeground(QColor(self._hl_fg))
         self.text.setExtraSelections([sel])
         scroll = QTextCursor(self.text.document())
         scroll.setPosition(a)

@@ -35,6 +35,8 @@ class _ReadMixin:
         self._read_speed = 1.0
         self._read_long = True
         self._read_along = True
+        self._read_theme = getattr(self, "_read_theme", "Night")
+        self.read_pane.set_theme(self._read_theme)
         center = QSplitter(Qt.Orientation.Vertical)
         center.addWidget(self.stack)
         center.addWidget(self.read_pane)
@@ -97,6 +99,13 @@ class _ReadMixin:
         if self._reading:                           # re-apply the voice live
             self.stop_reading()
             self.start_reading()
+
+    def set_reading_theme(self, name):
+        """Reading-comfort page theme (Night / Sepia / Day); persisted."""
+        self._read_theme = name
+        self.read_pane.set_theme(name)
+        from breathsim import store
+        store.save_settings({"reading_theme": name})
 
     # --- narration playback ------------------------------------------------
     def toggle_reading(self):

@@ -47,6 +47,13 @@ class _ReadCardMixin:
         self._w["read_btn"] = rb
         body.addWidget(rb)
 
+        from .read_pane import THEME_NAMES
+        body.addWidget(muted("Reading theme"))
+        th = combo(THEME_NAMES, getattr(self.win, "_read_theme", "Night"),
+                   self.win.set_reading_theme)
+        th.setToolTip("Night (dark), Sepia (warm paper) or Day (light).")
+        body.addWidget(th)
+
         s = LabeledSlider("Reading speed", 0.6, 1.3,
                           getattr(self.win, "_read_speed", 1.0), decimals=2,
                           suffix="x", on_change=self.win.set_reading_speed)

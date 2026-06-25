@@ -155,6 +155,13 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Read mode: Night / Sepia / Day reading themes** (reading comfort): the read-along page can be
+      Night (dark default), Sepia (warm cream/brown paper) or Day (light). `read_pane.THEMES` +
+      `set_theme` recolour the `QTextEdit` and the per-theme sentence highlight (re-highlighting the
+      current line so it stays legible on each page); `win_read.set_reading_theme` (+ persist
+      `reading_theme`), `win_settings` restore, and a "Reading theme" combo in the Read card. Verified:
+      3 PNGs eyeballed (sepia + day legible), `tools/test_reading_theme.py`, offscreen smoke, selftest,
+      drive_check; all 27 offline tests.
 - [x] **Searchable picker popup for long selectors** (user-requested): investigated all selectors;
       the long ones (Sleep story ~250 items, breath voice in/out 148, narration voice ~50) now open a
       reusable searchable grouped dialog instead of a giant combo. `vesper/picker.py` (`choose()` =

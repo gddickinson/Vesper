@@ -341,7 +341,10 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   (no breath-gating; `win._reading` guards `_apply_speech_pace`), persists the resume position per
   sentence, and (read-along) highlights + scrolls the current sentence via a GUI-thread QTimer.
 - **read_pane.py** + **win_read.py** + **sections_read.py** — the dedicated **Read mode** (7th in
-  the mode bar). The central area wraps the face/scene stack and `read_pane.ReadAlongPane` in a
+  the mode bar). `read_pane.THEMES` + `ReadAlongPane.set_theme` give the page three reading-comfort
+  themes (**Night** dark default / **Sepia** warm paper / **Day** light), recolouring the text +
+  per-theme highlight; driven by `win_read.set_reading_theme` (persisted `reading_theme`) + a
+  "Reading theme" combo in the Read card. Test: `tools/test_reading_theme.py`. The central area wraps the face/scene stack and `read_pane.ReadAlongPane` in a
   **vertical splitter**, so Read shows a face/scene **and** a scrolling read-along pane that
   highlights + auto-scrolls the narrated sentence (slim header: title, "sentence N of M", A-/A+
   font, play/pause). `win_read._ReadMixin` owns `_build_center` (assembles the whole central

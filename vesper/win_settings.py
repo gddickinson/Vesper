@@ -29,6 +29,8 @@ class _SettingsMixin:
         self._gratitude_on = bool(s.get("gratitude", False))   # opt-in bedtime gratitude
         self._worry_on = bool(s.get("worry_parking", False))   # opt-in 'park your worries'
         self._always_warm = bool(s.get("always_warm", False))  # low-blue warm screen (a11y)
+        self._read_theme = s.get("reading_theme", "Night")     # Read pane: Night/Sepia/Day
+        self.read_pane.set_theme(self._read_theme)
         from . import greeting                                  # optional spoken greeting
         self._listener_name = greeting.sanitize_name(s.get("listener_name", ""))
         self.set_calm_visuals(bool(s.get("calm_visuals", False)))   # reduce-motion (a11y)

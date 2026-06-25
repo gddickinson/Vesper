@@ -3027,6 +3027,22 @@ ASCII, every section sleepward, an alarm-word scan clean), registered in `lectur
 Verified: selftest passes (**233 lectures across 47 branches**); story DB rebuilt (315k words);
 offline tests (25) green; drive_check 0 issues; all files < 500 lines.
 
+## Read mode: Night / Sepia / Day reading themes
+Reading-comfort themes for the read-along pane, the classic e-reader choice: **Night** (the default
+dark page, easiest in a dark room), **Sepia** (a warm cream page with dark-brown ink) and **Day** (a
+light page with near-black ink, for bright rooms). `read_pane.THEMES` maps each name to (page bg,
+ink, highlight bg, highlight ink); `ReadAlongPane.set_theme` restyles the `QTextEdit` stylesheet and
+stores per-theme highlight colours, then re-highlights the current sentence so the narrated line
+stays legible on every page (e.g. a warm tan highlight on sepia, soft blue on day). `highlight()`
+now reads `_hl_bg`/`_hl_fg` instead of fixed accents. Wired: `win_read.set_reading_theme` (+ persist
+`reading_theme`), a `_read_theme` default applied in `_build_center`, `win_settings` restore (applied
+to the pane), and a "Reading theme" combo in the Read card. The header chrome stays the app dark
+theme, framing the warm/light page nicely. Verified: rendered all three pages to PNG and eyeballed
+them (sepia + day legible, highlight readable on each); new `tools/test_reading_theme.py` (THEMES
+shape, set_theme recolours page + highlight, switching re-highlights, unknown -> Night fallback) +
+an offscreen smoke (3 themes apply + persist, threads stable) + selftest + drive_check (0 issues);
+all 27 offline tests green; every file < 500 lines.
+
 ## Accessibility: "Always warm (low-blue) screen" toggle
 A gentle eye-comfort / melatonin-friendly option (off by default, persisted): holds a subtle warm
 amber wash on the view at any time, regardless of clock or mode, reducing blue light in the
