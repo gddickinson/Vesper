@@ -35,6 +35,7 @@ class _SettingsMixin:
         self._listener_name = greeting.sanitize_name(s.get("listener_name", ""))
         self.set_calm_visuals(bool(s.get("calm_visuals", False)))   # reduce-motion (a11y)
         self.set_mono_audio(bool(s.get("mono_audio", False)))       # mono downmix (a11y)
+        self._captions = bool(s.get("captions", False))             # narration captions (a11y)
         self._onboarded = bool(s.get("onboarded", False))      # first-run welcome shown?
         self._spatial = bool(s.get("spatial", True))           # ambience stereo width
         self.engine.set_spatial(self._spatial)
@@ -87,6 +88,7 @@ class _SettingsMixin:
                              "listener_name": getattr(self, "_listener_name", ""),
                              "calm_visuals": getattr(self, "_calm_visuals", False),
                              "mono_audio": getattr(self, "_mono_audio", False),
+                             "captions": getattr(self, "_captions", False),
                              "onboarded": getattr(self, "_onboarded", False),
                              "spatial": getattr(self, "_spatial", True),
                              "font_scale": getattr(self, "_font_scale", 1.0),

@@ -8,6 +8,7 @@ an antialiased QPainter to the scene. The MainWindow drives whichever of the fac
 """
 from __future__ import annotations
 
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QPainter
 from PySide6.QtWidgets import QWidget
 
@@ -27,6 +28,7 @@ class VizWidget(QWidget):
         self._hg = None                           # hourglass timer state (or None)
         self._hg_rect = None
         self._hg_click_cb = None
+        self._caption = []                        # a11y: wrapped narration caption lines
         self._ctx = {"running": False, "volume": 0.5, "airflow": 0.0,
                      "phase": "inhale", "cycle_frac": 0.0, "remaining": 0.0,
                      "label": "Ready", "t": 0.0, "prog": None}
@@ -49,6 +51,12 @@ class VizWidget(QWidget):
         """state = dict(frac, t, running, spin) to show the timer, or None to hide."""
         self._hg = state
         self.update()
+
+    def set_caption(self, lines):
+        """Accessibility: show the current spoken line as on-screen text (a list of
+        wrapped caption rows), or [] to clear. Drawn as a calm overlay at the foot
+        of whatever scene is showing, so it works the same for every scene."""
+        self._caption = list(lines or [])
 
     def mousePressEvent(self, ev):
         pos = ev.position()
@@ -97,5 +105,38 @@ class VizWidget(QWidget):
             self._weather.draw(p, w, h, self._ctx.get("t", 0.0),
                                self._ctx.get("volume", 0.5))   # optional weather layer
         face_bg.warm_overlay(p, w, h, self._warm)     # Sleep wind-down warmth
+        if self._caption:                             # a11y narration captions overlay
+            self._draw_caption(p, w, h)
         self._hg_rect = hourglass.draw_corner(p, w, h, self._hg)
         p.end()
+
+    def _draw_caption(self, p, w, h):
+        """Draw the wrapped narration caption as soft centred text on a faint
+        rounded panel at the foot of the scene -- readable but low-contrast so it
+        stays restful in a dark room."""
+        from PySide6.QtCore import QRectF
+        from PySide6.QtGui import QColor, QFont
+        lines = self._caption[:3]
+        size = max(13, min(22, int(h * 0.030)))
+        f = QFont("Helvetica Neue", size)
+        p.setFont(f)
+        fm = p.fontMetrics()
+        lh = fm.height() + 4
+        block_h = lh * len(lines)
+        bottom = h - max(24, int(h * 0.06))
+        top = bottom - block_h
+        tw = max((fm.horizontalAdvance(ln) for ln in lines), default=0)
+        pad = 18
+        panel = QRectF((w - tw) / 2 - pad, top - pad / 2,
+                       tw + 2 * pad, block_h + pad)
+        bg = QColor(theme.BG)
+        bg.setAlphaF(0.45)
+        p.setPen(Qt.PenStyle.NoPen)
+        p.setBrush(bg)
+        p.drawRoundedRect(panel, 10, 10)
+        p.setPen(QColor(theme.TEXT))
+        y = top
+        for ln in lines:
+            lw = fm.horizontalAdvance(ln)
+            p.drawText(int((w - lw) / 2), int(y + fm.ascent()), ln)
+            y += lh

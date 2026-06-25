@@ -321,6 +321,8 @@ def _view(win, m):
             win.set_calm_visuals)
     _toggle(m, "Mono audio (single-sided hearing)", getattr(win, "_mono_audio", False),
             win.set_mono_audio)
+    _toggle(m, "Narration captions (on-screen text)", getattr(win, "_captions", False),
+            win.set_captions)
     _toggle(m, "Breathing count cue", getattr(win, "_coach", False),
             win.set_breath_coach)
     _toggle(m, "Settle-in lead-in", getattr(win, "_intro_on", True),

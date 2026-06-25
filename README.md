@@ -83,9 +83,10 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   gentle, opt-in bedtime notes — a **gratitude** "one good thing" and a **park-your-worries**
   tomorrow's-list, both shown to shorten sleep onset.
 - **Accessible &amp; tidy** — global **UI text-size**, a **calm-visuals (reduce-motion)**
-  toggle, a **mono-audio** downmix for single-sided hearing, an **always-warm low-blue
-  screen** for evening eye comfort, drag-and-drop file loading, and a **searchable
-  chooser** for the long lists (200+ stories, 150 voices).
+  toggle, a **mono-audio** downmix for single-sided hearing, **narration captions**
+  (the spoken line shown on-screen for deaf / hard-of-hearing listeners), an
+  **always-warm low-blue screen** for evening eye comfort, drag-and-drop file loading,
+  and a **searchable chooser** for the long lists (200+ stories, 150 voices).
 - **Per-mode visual scenes** — a breathing **orb** (motes, exhale rings, a coherence halo
   near 6 bpm), a starry **night**, a moonlit **sea**, tone-reactive **ripples**, warm
   rising **lanterns** and a hushed **snowfall** (low-blue sleep beds), an on-screen

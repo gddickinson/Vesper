@@ -238,6 +238,15 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   `window.set_mono_audio` -> `engine.set_mono` collapses the final output to ``(L+R)/2``
   on both channels (read lock-free in the audio callback after `soft_clip` + master gain),
   persisted `mono_audio`, off by default. Offline test: `tools/test_mono_audio.py`.
+  A third a11y toggle, **Narration captions**, also lives beside them: `VizWidget.
+  set_caption(lines)` draws the current spoken line as a soft centred panel at the foot of
+  any scene, so deaf / hard-of-hearing listeners can read the storyteller / lecture /
+  guided-session narration. `win_frame` feeds it each frame from the full `_story_line`
+  (the small scene subtitle is truncated) via the pure **`captions.wrap`** word-wrap/elide
+  helper; `window.set_captions` (View menu toggle, persisted `captions`, off by default)
+  clears it when off. Offline test: `tools/test_captions.py`.
+- **captions.py** — pure, Qt-free `wrap(text, width=42, max_lines=3)` -> a few centred
+  caption rows, eliding gracefully so the on-screen caption stays a calm fixed size.
 - **hourglass.py** — the session **countdown timer** painter: `draw(p, rect, frac, t,
   running, spin)` renders a glass hourglass whose top bulb empties / bottom heap fills
   as `frac` (elapsed fraction) goes 0→1, with a falling sand stream; `spin` rotates it

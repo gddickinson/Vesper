@@ -3595,6 +3595,29 @@ lectures across 53 branches** (was 253/52) with all the shape + ASCII + sentence
 the SQLite story DB rebuilt (`python -m breathsim.story_db` -> 257 lectures, 53 branches, 21,897 lines);
 all 41 offline tests; drive_check 0 issues; each module 105 < 500.
 
+## Accessibility: Narration captions (on-screen spoken text)
+Added a third accessibility toggle beside Calm visuals and Mono audio: **Narration captions**. With so
+much of the app now spoken -- the bedtime storyteller, the 257 lectures, and the guided sessions
+(Hypnosis / Autogenic / Loving-Kindness / NSDR / Body-Scan / Cognitive Shuffle) -- a deaf or
+hard-of-hearing user had no way to follow along, and the small scene "subtitle" was truncated to ~42
+characters. The new toggle shows the **full current spoken line as on-screen text** over the scene.
+New pure `vesper/captions.py` provides `wrap(text, width=42, max_lines=3)`, which word-wraps a sentence
+into at most three centred rows and elides gracefully so the caption stays a calm fixed size.
+`VizWidget` gained `set_caption(lines)` + a `_draw_caption` that paints the rows on a soft, low-contrast
+rounded panel at the foot of **whatever** scene is showing (so it works uniformly for every scene, with
+no per-scene edits), drawn after the warm Sleep overlay so it stays legible as the screen dims. The
+frame loop (`win_frame`) feeds it the full untruncated `_story_line` each frame when captions are on and
+a line is being spoken, and clears it otherwise. Wired exactly like the other a11y toggles:
+`window._captions` (default off), `app_actions.set_captions` (sets the flag, clears the overlay when off,
+persists), a `menus` View-menu checkable ("Narration captions (on-screen text)"), and restore/persist of
+the `captions` key in `win_settings`. Verified: new `tools/test_captions.py` -- the pure `wrap` helper
+(word-wraps, caps at max_lines, elides overflow with an ellipsis), the toggle round-trips + persists, a
+Sleep narration line gets wrapped onto the viz scene, and it clears when turned off -- plus an offscreen
+GUI smoke (the View menu builds with the new item, threads stable 2->2) and a PNG render of the night
+scene with a caption, eyeballed (a readable, restful caption panel). All 42 offline tests; selftest;
+drive_check 0 issues; `viz.py` 142 and `captions.py` 44, both < 500. (Scope note: captions render on the
+**scene** view; the talking-head face view is a separate paint path and could gain captions later.)
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

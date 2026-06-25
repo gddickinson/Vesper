@@ -217,6 +217,11 @@ class _FrameMixin:
         self._react_face(state, running)       # reactive style/glow (when toggled on)
         if self._view == "scene":
             self.viz.update_state(self._scene_ctx(state, running, prog))
+            if getattr(self, "_captions", False) and running and self._story_line:
+                from . import captions                # a11y: full spoken line on screen
+                self.viz.set_caption(captions.wrap(self._story_line))
+            else:
+                self.viz.set_caption([])
         else:
             breath, mo = self._face_inputs(state, running, amp)
             self.face.set_state(breath, self._anim_t, prog or 0.0,

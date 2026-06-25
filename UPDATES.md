@@ -155,6 +155,19 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Accessibility: Narration captions (on-screen spoken text)** -- a View-menu a11y toggle
+      (beside Calm visuals / Mono audio) that shows the **current spoken line as on-screen text** over
+      the scene during narration, so deaf / hard-of-hearing listeners can follow the storyteller,
+      lectures and guided sessions (the existing scene subtitle is truncated to ~42 chars). New pure
+      `vesper/captions.py` (`wrap()` word-wraps a sentence into <=3 centred rows, eliding gracefully);
+      `VizWidget.set_caption(lines)` paints them on a soft low-contrast rounded panel at the foot of
+      **any** scene (uniform, scene-independent); `win_frame` feeds it the full `_story_line` each frame
+      when on. Wired like the other a11y toggles: `window._captions`, `app_actions.set_captions`,
+      a `menus` View toggle, persisted `captions` (off by default; clears immediately when off).
+      Verified: new `tools/test_captions.py` (wrap word-wraps/caps/elides; toggle round-trips + persists;
+      a Sleep narration line is wrapped onto the scene; clears when off) + offscreen GUI smoke (menu item
+      present, threads stable) + a PNG eyeballed (legible caption panel under the night scene); all 42
+      offline tests; selftest; drive_check 0 issues; `viz.py` 142 / `captions.py` 44 < 500.
 - [x] **Stories: "How the World Sleeps" lecture branch (4)** -- a new lecture branch that is itself
       about sleep, perfectly on-theme for a bedtime app: the real, wonder-filled science of how animals
       rest. **How Dolphins Sleep** (unihemispheric slow-wave sleep -- half the brain at a time, one eye
