@@ -9,9 +9,8 @@ from __future__ import annotations
 
 import math
 
-from PySide6.QtCore import Qt, QTimer
-from PySide6.QtWidgets import (QApplication, QMainWindow, QSplitter,
-                               QStackedWidget)
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QApplication, QMainWindow
 
 from breathsim import choir, modes, narration, personas, sound_cues, stories
 from breathsim import story_db
@@ -34,6 +33,7 @@ from .win_consts import FPS
 from .cast import _CastMixin
 from .win_dnd import _DnDMixin
 from .win_frame import _FrameMixin
+from .win_read import _ReadMixin
 from .win_settings import _SettingsMixin
 from .win_story import _StoryMixin
 
@@ -44,7 +44,8 @@ _MODE_BG = {"Meditate": "Gradient", "Breathwork": "Aurora", "Chant": "Nebula",
 
 
 class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
-                 _StoryMixin, _FrameMixin, _DnDMixin, _SettingsMixin, QMainWindow):
+                 _StoryMixin, _FrameMixin, _DnDMixin, _ReadMixin, _SettingsMixin,
+                 QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Vesper")
@@ -147,20 +148,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         self.viz = VizWidget()
         self.face._hg_click_cb = self._flip_hourglass    # tap the timer to flip it
         self.viz._hg_click_cb = self._flip_hourglass
-        self.stack = QStackedWidget()
-        self.stack.addWidget(self.face)            # index 0
-        self.stack.addWidget(self.viz)             # index 1
         self.panel = ControlPanel(self)
-        split = QSplitter(Qt.Orientation.Horizontal)   # user-resizable panel width
-        split.addWidget(self.stack)
-        split.addWidget(self.panel)
-        split.setStretchFactor(0, 1)               # the visualization takes the slack
-        split.setStretchFactor(1, 0)
-        split.setCollapsible(0, False)
-        split.setCollapsible(1, False)
-        split.setChildrenCollapsible(False)
-        split.setSizes([800, 400])
-        self.setCentralWidget(split)
+        self._build_center()      # face/scene stack + read-along pane | panel (win_read)
         self.status = self.statusBar()
         menus.build(self)
         shortcuts.bind(self)
@@ -335,6 +324,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         m = modes.get(name)
         if not m:
             return
+        if getattr(self, "current_mode", None) == "Read" and name != "Read":
+            self.leave_read()                       # stop reading + hide the pane
         self._applying_mode = True
         self.controller.change_pattern(preset_by_name(m.pattern) or DEFAULT_PATTERN)
         self.engine.set_persona(personas.get(m.persona))
@@ -373,6 +364,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         self.current_mode = name
         self._applying_mode = False
         self.panel.reflect_mode(name)
+        if name == "Read":                          # show the read-along pane + a book
+            self.enter_read()
         self.status.showMessage(m.description, 4000)
 
     def set_pattern(self, name):

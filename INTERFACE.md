@@ -323,6 +323,18 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   presets; narrates a `books.Book` via `bookreader.units` through the shared Narrator at a steady pace
   (no breath-gating; `win._reading` guards `_apply_speech_pace`), persists the resume position per
   sentence, and (read-along) highlights + scrolls the current sentence via a GUI-thread QTimer.
+- **read_pane.py** + **win_read.py** + **sections_read.py** — the dedicated **Read mode** (7th in
+  the mode bar). The central area wraps the face/scene stack and `read_pane.ReadAlongPane` in a
+  **vertical splitter**, so Read shows a face/scene **and** a scrolling read-along pane that
+  highlights + auto-scrolls the narrated sentence (slim header: title, "sentence N of M", A-/A+
+  font, play/pause). `win_read._ReadMixin` owns `_build_center` (assembles the whole central
+  widget, kept out of window.py), `enter_read`/`leave_read`, `start_reading`/`stop_reading`/
+  `toggle_reading` (narrate `bookreader` units via the Narrator + dramatized cast, persisting the
+  per-book resume), a follow timer, and `set_read_along`/`set_reading_speed`/`set_reading_pauses`/
+  `set_reading_voice`. `sections_read._ReadCardMixin._card_read` is the Reading control card (book
+  picker · add-a-novel · read-along · start/pause · speed · pauses · narration voice). Reading is
+  narration-first; breathing visuals (the Start button) and a sleep fade (Sleep mode) are opt-in.
+  Coexists with the Reader dialog + the Sleep novel option. Offline test: `tools/test_read_mode.py`.
 - **llm_story_action.py** — the Sleep **"Generate a bedtime story (AI)"** action (a button on the
   story card). `can_generate` gates on `llm_story.available()` (disabled + hinted with no backend);
   `make_story(topic, complete=None)` generates + registers one AI story (Qt-free, off-thread safe);

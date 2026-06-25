@@ -1,0 +1,113 @@
+"""The central **read-along pane** for Read mode (and any in-app reading).
+
+A scrolling text view that shows a book and highlights + auto-scrolls the
+sentence currently being narrated. It sits *below* the face/scene in the central
+vertical splitter, so Read mode keeps the visualization and adds the text. Hidden
+unless reading with read-along on. The narration itself is driven by
+``win_read._ReadMixin``; this is just the view plus a slim header (title,
+progress, play/pause, font size).
+"""
+from __future__ import annotations
+
+from PySide6.QtGui import QColor, QTextCursor
+from PySide6.QtWidgets import (QHBoxLayout, QLabel, QPushButton, QTextEdit,
+                               QVBoxLayout, QWidget)
+
+from . import theme
+
+
+class ReadAlongPane(QWidget):
+    def __init__(self, win):
+        super().__init__()
+        self.win = win
+        self._ranges = []                       # per-sentence (start, end) offsets
+        self._book = None
+        self._last_hl = -1
+        self._font_pt = 15
+        v = QVBoxLayout(self)
+        v.setContentsMargins(12, 6, 12, 10)
+        hdr = QHBoxLayout()
+        self.title = QLabel("Read")
+        self.title.setObjectName("title")
+        self.prog = QLabel("")
+        self.prog.setObjectName("muted")
+        am = QPushButton("A-")
+        ap = QPushButton("A+")
+        am.setMaximumWidth(40)
+        ap.setMaximumWidth(40)
+        am.setToolTip("Smaller reading text")
+        ap.setToolTip("Larger reading text")
+        am.clicked.connect(lambda: self.bump_font(-1))
+        ap.clicked.connect(lambda: self.bump_font(1))
+        self.play = QPushButton("Read")
+        self.play.setObjectName("accent")
+        self.play.setToolTip("Start or pause the narration")
+        self.play.clicked.connect(lambda: self.win.toggle_reading())
+        hdr.addWidget(self.title, 1)
+        hdr.addWidget(self.prog)
+        hdr.addWidget(am)
+        hdr.addWidget(ap)
+        hdr.addWidget(self.play)
+        v.addLayout(hdr)
+        self.text = QTextEdit()
+        self.text.setReadOnly(True)
+        self.text.setMinimumHeight(160)
+        v.addWidget(self.text, 1)
+        self._apply_font()
+
+    def bump_font(self, d):
+        self._font_pt = max(10, min(30, self._font_pt + d))
+        self._apply_font()
+
+    def _apply_font(self):
+        f = self.text.font()
+        f.setPointSize(self._font_pt)
+        self.text.setFont(f)
+
+    def set_playing(self, on):
+        self.play.setText("Pause" if on else "Read")
+
+    def set_book(self, book, pos=0, percent=0):
+        """Render the book's text, keep per-sentence char ranges, jump to pos."""
+        self._book = book
+        self._ranges = []
+        self._last_hl = -1
+        if not book:
+            self.title.setText("Read")
+            self.prog.setText("")
+            self.text.clear()
+            return
+        sents = book.sentences()
+        starts = set(book.paragraph_starts())
+        text = ""
+        for idx, s in enumerate(sents):
+            if idx in starts and idx != 0:
+                text += "\n\n"                  # keep paragraph breaks readable
+            a = len(text)
+            text += s + " "
+            self._ranges.append((a, a + len(s)))
+        self.text.setPlainText(text)
+        self.title.setText(book.title)
+        self.prog.setText(f"{percent}% read" if percent else f"{len(sents)} sentences")
+        if pos:
+            self.highlight(pos)
+
+    def highlight(self, i):
+        """Highlight + scroll to sentence i (call on the GUI thread)."""
+        if i == self._last_hl or not (0 <= i < len(self._ranges)):
+            return
+        self._last_hl = i
+        a, b = self._ranges[i]
+        sel = QTextEdit.ExtraSelection()
+        cur = QTextCursor(self.text.document())
+        cur.setPosition(a)
+        cur.setPosition(b, QTextCursor.MoveMode.KeepAnchor)
+        sel.cursor = cur
+        sel.format.setBackground(QColor(theme.ACCENT))
+        sel.format.setForeground(QColor(theme.BG))
+        self.text.setExtraSelections([sel])
+        scroll = QTextCursor(self.text.document())
+        scroll.setPosition(a)
+        self.text.setTextCursor(scroll)
+        self.text.ensureCursorVisible()
+        self.prog.setText(f"sentence {i + 1} of {len(self._ranges)}")

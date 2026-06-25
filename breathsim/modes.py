@@ -49,6 +49,9 @@ MODES = [
          ambience="Soft Rainstorm", effect="Heartbeat (slow)", cue_style="Off",
          volume=0.6, session=1200,
          sleep=(1200, "Calming 4-6 (Long Exhale)", "Extended 7-11")),
+    Mode("Read", "Read or be read to - a novel narrated with read-along text.",
+         "Coherent 5.5 (Resonance)", "Deep Calm", scene="drift",
+         cue_style="Off", volume=0.7),
 ]
 
 DEFAULT = "Meditate"

@@ -2987,6 +2987,33 @@ parallel subagents, independently validated (7x12, pure ASCII, every section sle
 branches**); story DB rebuilt (297k words); offline tests (19) green; drive_check 0 issues,
 threads stable; all files < 500 lines.
 
+## Read mode — a dedicated in-app reading screen (user-requested)
+The user asked for book narration to have "its own window," able to show faces or scenes like the
+other modes but with read-along text, reading-focused by default with sleep-style options opt-in.
+Built it as a new first-class **Read mode** (7th in the mode bar), not a separate OS window:
+- **Central layout** now wraps the face/scene `QStackedWidget` and a new read-along pane in a
+  **vertical splitter** (`win_read._build_center`, moved out of window.py to keep it slim). In Read
+  mode the pane shows *below* the visualization, so you keep the face/scene **and** the text.
+- **`vesper/read_pane.py`** — `ReadAlongPane`: a scrolling text view that highlights + auto-scrolls
+  the sentence being narrated, with a slim header (title, "sentence N of M", A-/A+ font size, a
+  play/pause button) reusing the dialog's highlight logic.
+- **`vesper/win_read.py`** — `_ReadMixin`: `enter_read`/`leave_read` (show/hide pane, load the
+  in-progress or first library book), `start_reading`/`stop_reading`/`toggle_reading` (narrate
+  `bookreader` units through the shared Narrator + dramatized cast, persisting the per-book resume),
+  a GUI-thread follow timer that highlights the current sentence, `set_read_along` (text ↔
+  audio-only), `set_reading_speed`/`set_reading_pauses`/`set_reading_voice`.
+- **`vesper/sections_read.py`** — `_ReadCardMixin._card_read`: the Reading control card (book
+  picker, add-a-novel, read-along toggle, start/pause, speed, paragraph pauses, narration-voice
+  picker) + a hint that breathing visuals (the left Start) and a sleep fade (Sleep mode) are opt-in.
+- **Wiring**: a `Read` `Mode` (scene "drift", calm); `workspaces["Read"] = read + soundscape +
+  voice`; `apply_mode` calls `enter_read`/`leave_read`. Reading is narration-first; breathing is
+  never forced. Coexists with the Reader dialog (Books menu) and the Sleep novel option, reusing
+  books/bookreader/narration/cast + resume. Verified: rendered a PNG and eyeballed it (scene on top,
+  highlighted read-along below, full control card); `tools/test_read_mode.py` (mode present, pane
+  shows + loads a book, start/stop drives the narrator + resume + highlight, audio-only toggle,
+  leaving hides + stops, threads stable) + selftest + drive_check (0 issues); all 23 offline tests
+  green; every file < 500 lines (window.py 488; central-layout construction moved to win_read).
+
 ## Novels in the Sleep window + tooltips + drag-and-drop loading (user-requested)
 Three connected UX wins for reading novels at bedtime. (1) **Novel as a bedtime read**: the Sleep
 "Bedtime story" picker now groups library books under a clear "— Your novels —" header, with a

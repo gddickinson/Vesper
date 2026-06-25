@@ -17,6 +17,7 @@ from breathsim import modes
 
 from . import workspaces
 from .sections import _SectionsMixin
+from .sections_read import _ReadCardMixin
 from .widgets import muted
 
 # One-line purpose for each mode, shown on hover over the mode buttons.
@@ -30,7 +31,7 @@ _MODE_TIPS = {
 }
 
 
-class ControlPanel(_SectionsMixin, QWidget):
+class ControlPanel(_ReadCardMixin, _SectionsMixin, QWidget):
     def __init__(self, win):
         super().__init__()
         self.win = win

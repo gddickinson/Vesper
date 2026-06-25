@@ -16,6 +16,7 @@ WORKSPACES = {
     "Sing":       {"cards": ["pitch", "voice", "choir", "naturalness"]},
     "Relax":      {"cards": ["soundscape", "pattern", "voice"]},
     "Sleep":      {"cards": ["story", "winddown", "soundscape"]},
+    "Read":       {"cards": ["read", "soundscape", "voice"]},
 }
 
 _DEFAULT = {"cards": ["pattern", "voice", "cues"]}

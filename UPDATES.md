@@ -155,6 +155,17 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Read mode — a dedicated in-app reading screen** (user-requested): book narration as a
+      first-class 7th mode (not a separate OS window). The central area wraps the face/scene stack and
+      a new `read_pane.ReadAlongPane` in a vertical splitter, so Read shows a face/scene AND a
+      scrolling read-along pane that highlights + auto-scrolls the narrated sentence (header: title,
+      progress, A-/A+, play/pause). `win_read._ReadMixin` (enter/leave, start/stop/toggle reading via
+      bookreader+Narrator+cast+resume, follow timer, read-along/speed/pauses/voice; `_build_center`
+      moved here to keep window.py slim); `sections_read._ReadCardMixin._card_read` (the Reading
+      control card); a `Read` Mode (scene "drift") + workspace. Reading-first by default; breathing
+      visuals (Start) and a sleep fade (Sleep mode) are opt-in. Coexists with the Reader dialog + the
+      Sleep novel. Verified: PNG eyeballed, `tools/test_read_mode.py`, selftest, drive_check (0 issues),
+      all 23 offline tests; files < 500 (window.py 488).
 - [x] **Scene: "Drifting" — slow cloud-band twilight sky** (Relax/Sleep): soft, low-contrast
       grey-violet cloud puffs drift slowly across a dusk gradient (deep indigo -> mauve horizon)
       with a faint breathing moon glow and a hint of stars peeking through; the sky brightens
