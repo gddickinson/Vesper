@@ -3007,6 +3007,22 @@ independently validated (7x12, pure ASCII, every section sleepward), registered 
 `lectures._CATALOG`. Verified: selftest passes (**229 lectures across 46 branches**); story DB
 rebuilt (309k words); offline tests (23) green; drive_check 0 issues; all files < 500 lines.
 
+## Bedtime "park your worries" / tomorrow's-list offload (Sleep, opt-in)
+A second gentle, evidence-based bedtime note alongside gratitude: writing a brief to-do / worry list
+just before bed measurably shortens sleep-onset latency (Scullin et al. 2018) -- setting tomorrow's
+concerns down lets the mind stop rehearsing them. **Off by default**; when on, offered once at the
+start of a Sleep session (and any time from Sessions), never scored, kept on-device. Mirrors the
+gratitude plumbing: `store.log_worry` / `worry_entries` / `worry_count` / `worry_last_date` (cap 200,
+1000-char clamp since this is a list, malformed-safe, separate "worries" key from gratitude); new
+`vesper/worries.py` (`should_offer` pure gate, `ask_worries` a multi-line `QPlainTextEdit` Keep/Skip
+dialog -> `store.log_worry`, `maybe_offer_bedtime` Sleep-only + once-per-run, off by default). Wired
+into `window.toggle_transport` (fresh start, beside `gratitude`/`mood`), `app_actions.set_worry_parking`
+/ `worries_now`, Sessions menu ("Park your worries…" action + "Bedtime worry-parking" toggle), a kind
+"Worries set down: N" line in Stats, and settings round-trip. Verified: `tools/test_worries.py` (store
+helpers + should_offer, clamps/caps/malformed-safe, independent from gratitude) + an offscreen GUI
+smoke (toggle persists, menus carry the action + toggle, gates by mode/once-per-run, threads stable)
++ selftest + drive_check (0 issues); all 25 offline tests green; every file < 500 lines.
+
 ## UX: a searchable picker popup for the long selectors (user-requested)
 Investigated every selector. Most are fine as combos (patterns 22, ambience 21, personas 14,
 programs 11, choir 8) or hierarchical native menus. The genuinely **long** ones were bad UX: the

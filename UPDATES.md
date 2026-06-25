@@ -183,12 +183,17 @@ Set with the user after the realistic-chanting round. Tick as completed.
       its foot); reads the virtual `t` so the drift auto-eases under Calm visuals. View ▸ Scene
       lists it automatically. Verified: rendered PNG eyeballed (calm + on-theme), drive_check
       (scenes=10, 0 issues), selftest, all 20 offline tests.
-- [ ] **Bedtime "park your worries" / tomorrow's-list offload** (efficacy, opt-in, off by
+- [x] **Bedtime "park your worries" / tomorrow's-list offload** (efficacy, opt-in, off by
       default): a brief constructive-worry / to-do brain-dump before sleep measurably shortens
-      sleep-onset latency (Scullin et al. 2018). Mirror the gratitude plumbing exactly
-      (`store.log_worry`/entries/count + `vesper/worries.py` should_offer/ask/maybe_offer_bedtime
-      + Sessions menu + Stats line), distinct purpose from gratitude (offload vs savor). Pure
-      tests like `test_gratitude.py`.
+      sleep-onset latency (Scullin et al. 2018). Mirrored the gratitude plumbing: `store.log_worry`
+      / `worry_entries` / `worry_count` / `worry_last_date` (cap 200, 1000-char clamp, malformed-safe,
+      separate "worries" key); `vesper/worries.py` (`should_offer` pure gate · `ask_worries` a
+      multi-line `QPlainTextEdit` Keep/Skip dialog · `maybe_offer_bedtime`, Sleep-only + once-per-run,
+      off by default). Wired into `window.toggle_transport` (fresh start), `app_actions.set_worry_parking`
+      / `worries_now`, Sessions menu ("Park your worries…" + a "Bedtime worry-parking" toggle), a
+      "Worries set down: N" line in Stats, and settings persistence. Distinct from gratitude (offload
+      vs savor). Verified: `tools/test_worries.py` + offscreen GUI smoke (toggle persists, menus
+      present, gates, threads stable) + selftest + drive_check; all 25 offline tests green.
 - [ ] **Accessibility: "Always warm (low-blue) screen" toggle**: hold the warm amber wash on
       regardless of clock, for evening eye comfort / melatonin-friendliness (persisted, off by
       default; composes with the Sleep wind-down warmth). Verify offscreen render + persistence.

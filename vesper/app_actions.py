@@ -313,6 +313,17 @@ class _ActionsMixin:
         from . import gratitude
         gratitude.ask_gratitude(self)
 
+    def set_worry_parking(self, on):
+        """Toggle the opt-in bedtime 'park your worries' prompt (persisted)."""
+        self._worry_on = bool(on)
+        from breathsim import store
+        store.save_settings({"worry_parking": self._worry_on})
+
+    def worries_now(self):
+        """Offer the worry-parking note on demand (any time, any mode)."""
+        from . import worries
+        worries.ask_worries(self)
+
     def set_listener_name(self, name):
         """Set (and persist) the optional spoken-greeting name. Sanitised to a
         short plain-ASCII first name; '' = off. Returns the stored value."""

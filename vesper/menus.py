@@ -100,6 +100,8 @@ def _sessions(win, m):
     m.addSeparator()
     m.addAction("One good thing (gratitude)…").triggered.connect(
         lambda: win.gratitude_now())
+    m.addAction("Park your worries…").triggered.connect(
+        lambda: win.worries_now())
     m.addAction("Greet me by name…").triggered.connect(
         lambda: win.ask_listener_name())
 
@@ -225,6 +227,8 @@ def _sound(win, m):
             win.set_mood_checkins)
     _toggle(m, "Bedtime gratitude (one good thing)",
             getattr(win, "_gratitude_on", False), win.set_gratitude)
+    _toggle(m, "Bedtime worry-parking (tomorrow's list)",
+            getattr(win, "_worry_on", False), win.set_worry_parking)
     m.addSeparator()
     inst = m.addMenu("Ambience & instruments")           # all sound beds in one place
     _sub_list(inst, "Cosmic Music", voices.names(voices.GROUP_MUSIC), win.set_ambience)

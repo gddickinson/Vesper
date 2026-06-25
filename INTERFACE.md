@@ -314,6 +314,13 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   `win_settings` (`gratitude`); a "Good things noted: N" line shows in Stats. Backed by
   `store.log_gratitude` / `gratitude_entries` / `gratitude_count` / `gratitude_last_date`
   (cap 200, 280-char clamp, malformed-safe). Offline test: `tools/test_gratitude.py`.
+- **worries.py** — the optional **bedtime "park your worries"** / tomorrow's-list note (Sessions ▸
+  "Park your worries…" + a "Bedtime worry-parking" toggle; off by default). Evidence: a brief to-do
+  brain-dump before bed shortens sleep onset (Scullin 2018). `should_offer` (pure gate),
+  `ask_worries(win)` (a multi-line `QPlainTextEdit` Keep/Skip dialog → `store.log_worry`),
+  `maybe_offer_bedtime` (Sleep-only, once-per-run, off by default). Backed by `store.log_worry` /
+  `worry_entries` / `worry_count` / `worry_last_date` (cap 200, 1000-char clamp, separate "worries"
+  key, malformed-safe); a "Worries set down: N" line shows in Stats. Offline test: `tools/test_worries.py`.
 - **greeting.py** — the optional **spoken greeting by name** (Sessions ▸ "Greet me by name…";
   off by default). Pure helpers: `sanitize_name` (NFKD ASCII-fold → letters/space/`-`/`'`, 24-char
   cap, `''` = off), `greeting_line(name, hour)` (one soft, time-aware line; `None` without a name),

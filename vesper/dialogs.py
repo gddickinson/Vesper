@@ -43,6 +43,9 @@ def open_stats(win):
     gcount = store.gratitude_count(h)                # gentle 'one good thing' tally
     if gcount:
         v.addWidget(QLabel(f"Good things noted: {gcount}"))
+    wcount = store.worry_count(h)                    # 'park your worries' tally
+    if wcount:
+        v.addWidget(QLabel(f"Worries set down: {wcount}"))
     from . import stats_heatmap                      # streak + calendar heatmap
     v.addWidget(stats_heatmap.build(win))
     row = QHBoxLayout()
