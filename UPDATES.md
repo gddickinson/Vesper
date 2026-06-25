@@ -155,6 +155,17 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Sleep aid: Loving-Kindness (Metta) guided session** (evidence-based meditation/sleep efficacy;
+      missing beside Autogenic / NSDR / Body-Scan / Hypnosis): new `breathsim/lovingkindness.py` offers
+      the four classic metta wishes -- *may you be safe / happy / healthy / live with ease* -- in
+      widening circles (yourself -> someone you love -> a neutral person -> someone difficult -> all
+      beings everywhere), then hands off to the shared `hypnosis.drift_tail` into sleep (a warm Singing
+      Bowl bed). The slow, repeated good wishes are the point: warmth practised on purpose, linked in
+      the research to calmer mood and easier settling. Yields ordinary storyteller units; wired into
+      `stories.extra_names` / `ambience_for` / `story_units` so it shows in the Sleep storyteller picker
+      (no GUI changes). Verified: new `tools/test_lovingkindness.py` (four wishes + the five widening
+      circles; guidance flag; endless drift; dispatch wired) + offscreen GUI smoke (in the picker, Sleep
+      builds, threads stable); all 41 offline tests; selftest; drive_check 0 issues; module 107 < 500.
 - [x] **Sleep aid: Autogenic Training guided session** (evidence-based sleep efficacy; was missing
       beside NSDR / Body-Scan / Hypnosis): new `breathsim/autogenic.py` walks Schultz's six standard
       exercises -- heaviness, warmth, calm heartbeat, easy breathing, warm belly, cool brow -- with the

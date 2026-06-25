@@ -3554,6 +3554,26 @@ breaths; runs endlessly into the sleep drift; wired into `extra_names`/`ambience
 an offscreen GUI smoke (it shows in the storyteller options, Sleep workspace builds, threads stable
 2->2); all 40 offline tests; selftest; drive_check 0 issues; `autogenic.py` 104 < 500.
 
+## Sleep aid: Loving-Kindness (Metta) guided session
+Added another classic, evidence-based practice missing beside Autogenic / NSDR / Body-Scan & PMR /
+Hypnosis: **Loving-Kindness (Metta)**. New `breathsim/lovingkindness.py` is a spoken guided meditation
+that offers the **four classic wishes** -- *may you be safe / happy / healthy / live with ease* -- in
+**widening circles**: first to **yourself**, then to **someone you love**, to a **neutral person** you
+barely know, gently to **someone difficult** (only if it feels easy), and finally to **all beings
+everywhere** -- then hands off to the shared endless soft sleep drift (`hypnosis.drift_tail`). The slow,
+repeated good wishes are the whole point: warmth practised on purpose, which the research links to
+calmer mood, more positive feeling and an easier settling at night. Second-person, present-tense,
+gentle; a warm, resonant `Singing Bowl` heart-centred bed. It yields the ordinary storyteller narrator
+units (`{text, pause, phase, kind}`) with a `guidance` flag that keeps a few breath-paced breaths near
+the start. Wired into the `stories` dispatcher with three tiny edits (`extra_names` / `ambience_for` /
+`story_units`), so it appears automatically in the **Sleep storyteller** picker alongside Autogenic,
+Hypnosis and the Cognitive Shuffle -- no GUI changes. Pure + offline-testable. Verified: new
+`tools/test_lovingkindness.py` (well-formed units covering the four wishes + the five widening circles;
+the `guidance` flag adds/removes the breath-paced breaths; runs endlessly into the sleep drift; wired
+into `extra_names`/`ambience_for`/`story_units`) + an offscreen GUI smoke (it shows in the storyteller
+options, Sleep workspace builds, threads stable 2->2); all 41 offline tests; selftest; drive_check 0
+issues; `lovingkindness.py` 107 < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

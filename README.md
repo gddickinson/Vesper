@@ -76,7 +76,8 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   makes chant and song sound like they're in a real room.
 - **Evidence-based calm** — resonance breathing near **~6 breaths/min**, longer exhales,
   **4-7-8 / box / physiological-sigh** patterns; guided **Body-Scan &amp; PMR**, **NSDR /
-  Yoga Nidra**, **Autogenic Training** (heaviness · warmth · calm), a one-tap
+  Yoga Nidra**, **Autogenic Training** (heaviness · warmth · calm),
+  **Loving-Kindness (Metta)** (good wishes in widening circles), a one-tap
   **Physiological-Sigh reset**; a warm, low-blue **Sleep
   wind-down** that dims the screen on a melatonin-friendly curve; pink / brown noise; and
   gentle, opt-in bedtime notes — a **gratitude** "one good thing" and a **park-your-worries**

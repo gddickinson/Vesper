@@ -442,7 +442,10 @@ Weathers of the World; Cosmos incl. Comets · Nebulae · Saturn's Rings) + **`sh
 Hypnosis** guided session: induction -> deepening countdown -> suggestions -> drift; exposes
 reusable `induction`/`drift_tail`) + **`autogenic`** (an **Autogenic Training** session: Schultz's
 six standard exercises -- heaviness · warmth · calm heart · calm breath · warm belly · cool brow --
-then `hypnosis.drift_tail` into sleep) + **`hypnosis_topics`** (6 **themed self-help** hypnosis
+then `hypnosis.drift_tail` into sleep) + **`lovingkindness`** (a **Loving-Kindness (Metta)** session:
+the four classic wishes -- safe · happy · healthy · at ease -- offered in widening circles, self ->
+a loved one -> a neutral person -> a difficult one -> all beings, then `hypnosis.drift_tail` into
+sleep; Singing Bowl bed) + **`hypnosis_topics`** (6 **themed self-help** hypnosis
 sessions reusing that arc with a different permissive suggestion block -- Letting Go of Stress
 / Quiet Confidence / Calm Focus / Letting Go of Worry / Deep Self-Acceptance / Peaceful
 Gratitude, all winding down to sleep) +
