@@ -135,6 +135,9 @@ class _CastMixin:
         unit["voice"] = plan["voice"]                  # honoured per line by the narrator
         self._cast_char_pending = plan["character"]
         self._cast_mood = plan["mood"]
+        vc = cast["voices"].get(seg.get("speaker", "Narrator"))   # speaker's costume
+        self._cast_costume_pending = (vc.get("costume", "None") if vc
+                                      else getattr(self, "_costume", "None"))
         if getattr(self, "_cast_expressive", False) and seg.get("sound"):
             self._sfx_target = seg["sound"]            # gentle bed follow (expressive)
             self._sfx_idle = 0
@@ -150,6 +153,10 @@ class _CastMixin:
             if want != self.face.character():
                 self.face.set_character(want)
                 self._cast_active = True
+            co = getattr(self, "_cast_costume_pending", None)   # speaker's costume
+            if co is not None and co != self.face.costume():
+                self.face.set_costume(co)
+                self._cast_active = True
         m = getattr(self, "_cast_mood", None)
         if m:
             self._mood_target = m
@@ -157,4 +164,98 @@ class _CastMixin:
     def _restore_cast_character(self):
         if getattr(self, "_cast_active", False):
             self.face.set_character(getattr(self, "_character", "Cat"))
+            self.face.set_costume(getattr(self, "_costume", "None"))
             self._cast_active = False
+
+
+def cast_summary(book, character_names):
+    """Pure: who's-who for *book* -- ``[{speaker, character, costume, source}]`` in
+    cast order, preferring a saved (LLM-refined) cast. No Qt."""
+    from breathsim import bookcast, llm_cast
+    sc = bookcast.script(book, pool=list(character_names))
+    saved = None
+    try:
+        saved = llm_cast.load_cast(book.id)
+    except Exception:
+        saved = None
+    allowed = set(character_names)
+    rows = []
+    for sp in sc.get("speakers", []):
+        info = (saved.get(sp) if isinstance(saved, dict) else None) or sc["cast"].get(sp, {})
+        ch = info.get("character")
+        if ch not in allowed:
+            ch = sc["cast"][sp]["character"]
+        rows.append({"speaker": sp, "character": ch,
+                     "costume": info.get("costume", "None"),
+                     "source": "AI director" if saved else "auto"})
+    return rows
+
+
+def open_who_dialog(win):
+    """A small 'Who's in this book' dialog: pick a library book and see its cast
+    (speaker -> character + costume + source), with a Re-cast button that clears
+    any saved cast so the director re-runs next time. Reads only -- no network."""
+    from PySide6.QtCore import Qt
+    from PySide6.QtWidgets import (QDialog, QLabel, QPushButton, QVBoxLayout)
+    from breathsim import books, llm_cast
+    from . import characters, theme, widgets
+
+    dlg = QDialog(win)
+    dlg.setWindowTitle("Who's in this book")
+    dlg.setStyleSheet(win.styleSheet() or theme.STYLESHEET)
+    dlg.setMinimumWidth(440)
+    v = QVBoxLayout(dlg)
+    t = widgets.muted("Who's in this book")
+    t.setObjectName("title")
+    v.addWidget(t)
+    lib = books.list_books()
+    ids = [b.get("id") for b in lib]
+    combo = widgets.combo([b.get("title", "Untitled") for b in lib] or ["(no books)"],
+                          current=(lib[0]["title"] if lib else None))
+    v.addWidget(widgets.muted("Book"))
+    v.addWidget(combo)
+    body = QLabel("")
+    body.setWordWrap(True)
+    v.addWidget(body)
+    note = widgets.muted("Turn on Dramatized (cast voices) to hear the cast read it.")
+    v.addWidget(note)
+
+    def show(_=None):
+        i = combo.currentIndex()
+        bk = books.load(ids[i]) if (lib and 0 <= i < len(ids)) else None
+        if not bk:
+            body.setText("No books in your library yet.")
+            return
+        rows = cast_summary(bk, characters.names())
+        if not rows:
+            body.setText(f"{bk.title}: no spoken dialogue detected -- it reads in a "
+                         "single calm voice.")
+            return
+        src = rows[0]["source"]
+        lines = [f"  {r['speaker']}  ->  {r['character']}"
+                 + (f"  (+ {r['costume']})" if r["costume"] not in ("None", "") else "")
+                 for r in rows]
+        body.setText(f"{bk.title}  ({src} casting)\n\n" + "\n".join(lines))
+
+    def recast():
+        i = combo.currentIndex()
+        if lib and 0 <= i < len(ids):
+            llm_cast.delete_cast(ids[i])
+            note.setText("Cleared -- it will be re-cast next time you read it "
+                         "dramatized (AI director if a key is set).")
+            show()
+
+    combo.currentIndexChanged.connect(show)
+    rc = QPushButton("Re-cast this book")
+    rc.clicked.connect(recast)
+    v.addWidget(rc)
+    close = QPushButton("Close")
+    close.clicked.connect(dlg.accept)
+    v.addWidget(close, alignment=Qt.AlignmentFlag.AlignRight)
+    if lib:
+        show()
+    else:
+        body.setText("No books in your library yet.")
+        rc.setEnabled(False)
+    win._who_dialog = dlg
+    dlg.exec()

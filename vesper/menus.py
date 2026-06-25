@@ -114,6 +114,9 @@ def _books(win, m):
             win.set_dramatized)
     _toggle(m, "Expressive cast (daytime reading)",
             getattr(win, "_cast_expressive", False), win.set_cast_expressive)
+    from . import cast as cast_mod
+    m.addAction("Who's in this book…").triggered.connect(
+        lambda: cast_mod.open_who_dialog(win))
     from breathsim import books
     n = len(books.list_books())
     info = m.addAction(f"In your library: {n}" if n else "Library is empty")

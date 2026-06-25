@@ -86,6 +86,16 @@ sounds to play and when. Ground the rounds in these:
   cast is saved (opt-in; default-safe). Offline test `tools/test_llm_cast.py` (stubbed completer).
   selftest + both-faces drive (0 issues) + an offscreen drive honouring a saved LLM cast (zero leak);
   all 16 offline tests pass. (Next CAST-5: polish -- costumes, crossfades, who's-who.)
+- [x] **CAST-5 done — dramatized polish; CAST THREAD COMPLETE**: (1) per-speaker **costume** rendering
+  (`cast.apply_cast_tick` sets the visible `face.set_costume` to the speaker's costume; restored with
+  the character on end); (2) a **"Who's in this book..."** dialog (Books menu) via pure
+  `cast.cast_summary` (speaker -> character + costume + source heuristic/AI), with a **Re-cast** button
+  (`llm_cast.delete_cast`). Offline test `tools/test_cast_summary.py`. selftest + both-faces drive (0
+  issues) + an offscreen dramatized drive (3 character+costume combos, zero leak) + dramatized-face &
+  who's-who PNGs; all 17 offline tests pass. **The cast/dramatized-books thread is COMPLETE (CAST-1..
+  CAST-5)** -- more characters/costumes, a who-speaks Script, dramatized playback (voice+character+
+  costume+mood+sound), an opt-in validated LLM director, and a who's-who + re-cast UI; all opt-in,
+  sleep-gentle, offline-degrading. Loop returns to normal top-down improvements next.
 
 ## Research notes (evidence-based — ground each round in these)
 - **Slow breathing ~6 breaths/min (0.1 Hz)** maximizes HRV via the baroreflex

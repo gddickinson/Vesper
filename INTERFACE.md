@@ -429,6 +429,9 @@ pure `segment_plan` offline-tested (`tools/test_cast_plan.py`). **`llm_cast`** i
 pre-reads a capped sample, clamps the model's cast to the registries, falls back to the heuristic, and
 caches once per book (`~/.breathsim/casts.json`); `cast.build_cast` prefers the saved cast and runs the
 director off-thread only when Dramatized is on AND a backend exists (`tools/test_llm_cast.py`, stubbed).
+Dramatized playback also swaps the **costume** per speaker; `cast.cast_summary` + Books ▸ "Who's in this
+book…" show the cast (speaker -> character + costume + source) with a **Re-cast** button
+(`tools/test_cast_summary.py`). The cast/dramatized-books thread is complete (CAST-1..CAST-5).
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

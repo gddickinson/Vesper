@@ -2253,6 +2253,28 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## CAST round 5 — dramatized polish (per-speaker costumes + who's-who) -- thread COMPLETE
+The final cast round; the dramatized-books feature is now end-to-end. (1) **Per-speaker costumes**:
+the cast already carries a costume per speaker (heuristic "None"; the LLM director may assign one), so
+`cast.cast_annotate` now stashes the speaker's costume and `apply_cast_tick` sets the visible
+**face costume** (visual only, via `face.set_costume`) alongside the character swap -- and
+`_restore_cast_character` puts the user's character AND costume back when the book/toggle ends. Narrator
+lines wear the user's own costume. (2) A **"Who's in this book..."** dialog (Books menu): a pure
+`cast.cast_summary(book, character_names)` (no Qt) lists each speaker -> assigned character (+ costume)
+and the **casting source** ("AI director" when a saved LLM cast exists, else "auto"), preferring the
+saved cast; the dialog has a book picker and a **"Re-cast this book"** button that clears the saved
+cast (`llm_cast.delete_cast`) so the director re-runs next time. Offline test
+`tools/test_cast_summary.py` (auto rows, saved-cast preference + label, delete -> auto, plain book ->
+none). Verified: that test + the 16 other offline tests (17/17); selftest (213 lectures); both-faces
+drive (0 issues, threads stable); an offscreen dramatized drive showing **three distinct
+character+costume combos** (Alice->Sheep+Nightcap, Bob->Bear+Crown, Narrator->the user's Cat) restoring
+cleanly with **zero thread leak**; rendered + eyeballed the dramatized face (Sheep in a Nightcap) + the
+who's-who dialog PNGs. Files: cast 261, menus 383 -- all < 500. **THE CAST/DRAMATIZED-BOOKS THREAD IS
+COMPLETE (CAST-1..CAST-5)**: more characters + costumes; a heuristic who-speaks cast Script; dramatized
+playback (per-line voice + character + costume + mood + sound); an opt-in, validated, fail-closed LLM
+director that pre-reads the book; and a who's-who + re-cast UI -- all opt-in, sleep-gentle, offline-
+degrading. The loop now returns to the normal top-down improvements (Stories every ~3rd round).
+
 ## CAST round 4 — opt-in LLM cast director (validated, fail-closed)
 When (and only when) a backend is configured, an LLM now **directs the cast** -- it pre-reads the book
 and picks fitting characters/costumes for each speaker. New `breathsim/llm_cast.py` (pure-ish, no
