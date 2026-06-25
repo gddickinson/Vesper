@@ -310,9 +310,16 @@ in these notes:
       Standard 7x12, fact-free section 1, all sleep-closing; ambiences Singing Bowl / Gentle
       Rain / Wind in Pines / Night Crickets. **193 lectures / 37 branches**; DB rebuilt; selftest
       + both-faces drive (0 issues).
-- [ ] **Lecture branch: Quiet Philosophies** (4) — Stoic night-counsel (Marcus Aurelius),
-      Taoism (the watercourse way / wu wei), mono no aware & wabi-sabi (Japanese aesthetics of
-      transience), Epicurean tranquility. Practical, soothing, never preachy; close to sleep.
+- [x] **Lecture branch: Quiet Philosophies** (4) — *The Stoic Night* (in the spirit of Marcus
+      Aurelius's night-notes: letting go of what is not yours, the view from above, the calm
+      inner citadel), *The Watercourse Way* (Taoism / Lao Tzu: wu wei, water as the soft
+      teacher, the low quiet place, letting the muddy water settle clear), *The Beauty of
+      Passing Things* (mono no aware + wabi-sabi + kintsugi: impermanence and imperfection as
+      beautiful), *The Garden of Tranquility* (Epicurean ataraxia: simple pleasures already
+      near, wanting little, the quiet friendship of the garden). Standard 7x12, fact-free
+      section 1, all sleep-closing, paraphrased + softly attributed (no verbatim quotes);
+      ambiences Singing Bowl / Mountain Stream / Gentle Rain / Wind in Pines. **197 lectures /
+      38 branches**; DB rebuilt; selftest + both-faces drive (0 issues).
 - [ ] **Kishotenketsu sleep-tales** (`breathsim/tales.py`) — a few authored conflict-free
       4-movement micro-tales (intro -> development -> a soft turn of view -> dissolve), as a
       new gentle *narrative* class (distinct from the factual lectures). Endless-safe tail.

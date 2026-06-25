@@ -2253,6 +2253,24 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Lecture round — new branch "Quiet Philosophies" (4 lectures)
+Fifth item of the storytelling & poetry batch -- weaving philosophy gently. Added a 38th lecture
+branch, **Quiet Philosophies**: *The Stoic Night* (in the spirit of Marcus Aurelius's private
+night-notes -- some things are not yours to hold, the "view from above", each day complete, the
+calm inner citadel), *The Watercourse Way* (Taoism / Lao Tzu -- wu wei / effortless unfolding,
+water the soft teacher that wears stone and finds the low quiet place, the uncarved simplicity,
+letting muddy water settle clear), *The Beauty of Passing Things* (mono no aware + wabi-sabi +
+kintsugi -- impermanence and worn imperfection as beautiful, "you do not have to be unbroken to
+be beautiful"), *The Garden of Tranquility* (Epicurean ataraxia -- the simple pleasures already
+near, fears larger in the mind than the world, wanting little is to be rich, the quiet friendship
+of the garden). Each = the standard 7x12 second-person present-tense sentences, soothing +
+practical + never preachy, paraphrased and softly attributed (no verbatim quotes), every section
+sleep-closing; ambiences Singing Bowl / Mountain Stream / Gentle Rain / Wind in Pines. Drafted via
+four parallel subagents (all returned clean nested 7x12), assembled with a validating builder
+(7x12 / ASCII / end-punct / section-1 fact-free incl. no philosophy names in section 1) and
+registered in `lectures._CATALOG`. Verified: selftest (**197 lectures / 38 branches**); DB rebuilt
+(16,857 lines / 264,745 words); both-faces drive 0 issues. Files < 500 lines; secret scan clean.
+
 ## Lecture round — new branch "Ways of Knowing" (epistemology, 4 lectures)
 Fourth item of the storytelling & poetry batch -- weaving philosophy/epistemology + science
 gently. Added a 37th lecture branch, **Ways of Knowing**: *How We Know the Stars* (parallax,
