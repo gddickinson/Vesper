@@ -100,6 +100,8 @@ def _sessions(win, m):
     m.addSeparator()
     m.addAction("One good thing (gratitude)…").triggered.connect(
         lambda: win.gratitude_now())
+    m.addAction("Greet me by name…").triggered.connect(
+        lambda: win.ask_listener_name())
 
 
 def _books(win, m):

@@ -169,6 +169,13 @@ class _StoryMixin:
         self._last_logged_section = start - 1          # so the first new section logs
         units = stories.story_units(self._story_scene, guidance=True,
                                     start_section=start)
+        name = getattr(self, "_listener_name", "")     # optional greeting by name
+        if name and not getattr(self, "_greeted_session", False):
+            from . import clocktheme, greeting
+            line = greeting.greeting_line(name, clocktheme.now_hour())
+            if line:
+                self._greeted_session = True
+                units = greeting.prepend(line, units)
         self.narrator.start(units, self._story_level, self._story_timing,
                             self._on_story_unit)
         self._apply_story_character()                   # the teller looks the part

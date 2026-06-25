@@ -1138,7 +1138,19 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
       (`xtts_tts.py` + `xtts_worker.py`, persistent subprocess in a separate venv;
       `narration` lists its voices, routes per-voice, degrades to Kokoro/`say`).
       Faster-than-real-time on MPS; non-commercial CPML; see `docs/XTTS.md`. Done.
-- [ ] **Optional spoken name**: greet/settle the listener by name (off by default).
+- [x] **Optional spoken name**: greet/settle the listener by name (off by default). New
+      `vesper/greeting.py` (pure + tested): `sanitize_name` (NFKD ASCII-fold → letters/space/`-`/`'`
+      only, 24-char cap, `''` = off), `greeting_line(name, hour)` (one soft, time-aware line —
+      morning/afternoon/evening/night, `None` without a name), and `prepend(line, units)` (a lazy
+      generator that yields a `kind:"greeting"` unit, then the story stream). Wired into
+      `win_story._start_story` so the storyteller speaks the greeting **once** at a fresh session
+      start (guarded by `_greeted_session`, reset in `toggle_transport`; never repeated on a
+      mid-session voice/scene change), plus `app_actions.set_listener_name`/`ask_listener_name`, a
+      Sessions menu action ("Greet me by name…"), and settings round-trip. The name is the user's
+      own, kept on-device, sanitised before it is ever spoken/shown. Verified: `tools/test_greeting.py`
+      (sanitize/greeting_line/prepend) + offscreen GUI smoke (sets + persists the name, greeting
+      injected once then not repeated, none when empty, menu present, threads stable across 45 ticks)
+      + selftest + drive_check; all 19 offline tests green.
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)

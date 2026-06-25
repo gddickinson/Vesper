@@ -76,6 +76,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         self._cast_expressive = False      # wider variation (sound follow) for the Reader
         self._cast = None                  # the live cast script (or None)
         self._gratitude_on = False         # opt-in bedtime 'one good thing' (set in restore)
+        self._listener_name = ""           # optional spoken-greeting name ('' = off)
+        self._greeted_session = False      # greeted by name yet this session?
         self.tuner = None                   # lazy mic pitch monitor (Sing/Chant)
         self._pitch_spec = None
         self._bell_interval = 0.0           # mindfulness bell interval (minutes)
@@ -410,6 +412,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
             self._sleep_timer_done = False
             self._closing_msg = None                  # retire the previous "well done" line
             self._mood_after_done = False
+            self._greeted_session = False            # allow one greeting-by-name this session
             from . import gratitude, mood
             mood.maybe_check_in(self, "before")      # only on a fresh start
             gratitude.maybe_offer_bedtime(self)      # opt-in 'one good thing' (Sleep)

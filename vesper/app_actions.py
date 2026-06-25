@@ -313,6 +313,20 @@ class _ActionsMixin:
         from . import gratitude
         gratitude.ask_gratitude(self)
 
+    def set_listener_name(self, name):
+        """Set (and persist) the optional spoken-greeting name. Sanitised to a
+        short plain-ASCII first name; '' = off. Returns the stored value."""
+        from . import greeting
+        self._listener_name = greeting.sanitize_name(name)
+        from breathsim import store
+        store.save_settings({"listener_name": self._listener_name})
+        return self._listener_name
+
+    def ask_listener_name(self):
+        """Open the little 'greet me by name' dialog (Sessions menu)."""
+        from . import greeting
+        greeting.ask_name(self)
+
     # --- mindfulness bell / retention timer -------------------------------
     def set_bell_interval(self, minutes):
         self._bell_interval = float(minutes)

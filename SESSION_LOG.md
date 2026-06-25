@@ -2965,6 +2965,25 @@ closes, no alarming language), assembled + registered in `lectures._CATALOG`. Ve
 passes (**217 lectures across 43 branches**); story DB rebuilt (291k words); offline tests (18)
 green; drive_check 0 issues, threads stable; all files < 500 lines.
 
+## Optional spoken-name greeting (off by default)
+A small, warm personalisation: if the listener sets a name, the storyteller opens a Sleep
+session with one soft, time-aware line ("Good evening, Alex. Let's settle in and unwind.")
+before the tale, spoken by the same narrator. New `vesper/greeting.py` (< 160 lines, pure
+helpers + a tiny dialog): `sanitize_name` (NFKD ASCII-fold to letters/space/hyphen/apostrophe,
+24-char cap, empty = off, so a name is always safe for the speech engines and the subtitle),
+`greeting_line(name, hour)` (morning/afternoon/evening/night variants; None without a name) and
+`prepend(line, units)` (a lazy generator that yields a `kind:"greeting"` unit then the story
+stream). Hooked into `win_story._start_story`: when a name is set and the session hasn't greeted
+yet (`_greeted_session`, reset on a fresh `toggle_transport` start), the greeting unit is
+prepended to the narrator stream — said **once** per fresh session, never repeated on a
+mid-session voice/scene change. Plus `app_actions.set_listener_name`/`ask_listener_name`, a
+Sessions menu action ("Greet me by name…"), defaults in `window.__init__`, and persistence in
+`win_settings`. Off by default (empty name), the name stays on this device. Verified:
+`tools/test_greeting.py` (sanitize + greeting_line + prepend, incl. ASCII/length/empty edges) +
+an offscreen GUI smoke (name sets + persists; greeting injected once then not repeated; none when
+empty; menu present; threads stable 2->2 across 45 ticks) + selftest + drive_check (0 issues);
+all 19 offline tests green; every file < 500 lines.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

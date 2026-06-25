@@ -27,6 +27,8 @@ class _SettingsMixin:
         self._clock_light = bool(s.get("clock_light", True))   # time-of-day warmth
         self._mood_on = bool(s.get("mood_checkins", False))    # opt-in mood check-ins
         self._gratitude_on = bool(s.get("gratitude", False))   # opt-in bedtime gratitude
+        from . import greeting                                  # optional spoken greeting
+        self._listener_name = greeting.sanitize_name(s.get("listener_name", ""))
         self._onboarded = bool(s.get("onboarded", False))      # first-run welcome shown?
         self._spatial = bool(s.get("spatial", True))           # ambience stereo width
         self.engine.set_spatial(self._spatial)
@@ -74,6 +76,7 @@ class _SettingsMixin:
                              "clock_light": self._clock_light,
                              "mood_checkins": self._mood_on,
                              "gratitude": getattr(self, "_gratitude_on", False),
+                             "listener_name": getattr(self, "_listener_name", ""),
                              "onboarded": getattr(self, "_onboarded", False),
                              "spatial": getattr(self, "_spatial", True),
                              "font_scale": getattr(self, "_font_scale", 1.0),

@@ -294,6 +294,13 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   `win_settings` (`gratitude`); a "Good things noted: N" line shows in Stats. Backed by
   `store.log_gratitude` / `gratitude_entries` / `gratitude_count` / `gratitude_last_date`
   (cap 200, 280-char clamp, malformed-safe). Offline test: `tools/test_gratitude.py`.
+- **greeting.py** — the optional **spoken greeting by name** (Sessions ▸ "Greet me by name…";
+  off by default). Pure helpers: `sanitize_name` (NFKD ASCII-fold → letters/space/`-`/`'`, 24-char
+  cap, `''` = off), `greeting_line(name, hour)` (one soft, time-aware line; `None` without a name),
+  `prepend(line, units)` (lazy generator: a `kind:"greeting"` unit then the story stream) + the
+  little `ask_name` Save/Clear dialog. `win_story._start_story` prepends the greeting **once** per
+  fresh session (guarded by `_greeted_session`); `app_actions.set_listener_name`/`ask_listener_name`
+  set it; persisted via `win_settings` (`listener_name`). Offline test: `tools/test_greeting.py`.
 - **llm_settings.py** — **`open_llm_settings`** (Help ▸ "AI Assistant (optional)…"): the
   opt-in, fail-closed gateway to the LLM stack. A **password-masked** key field with three
   honest storage choices (session-only / OS keychain / chmod-600 file), a **Forget** button,
