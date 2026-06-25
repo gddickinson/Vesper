@@ -441,6 +441,16 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       Sessions menu ("One good thing…" + "Bedtime gratitude" toggle), a kind "Good things noted: N"
       line in Stats, and settings persistence. Verified: `tools/test_gratitude.py` + offscreen GUI
       smoke (menus present, threads stable) + selftest + drive_check.
+- [x] **Stories (next branch)** — **Great Canyons** (4): *The Grand Canyon* (Arizona; the Colorado's
+      mile-deep staircase of rock down to the ~2-billion-year-old Vishnu Schist) [Wind in Pines], *The
+      Verdon Gorge* (the turquoise river + limestone cliffs of Provence, "the Grand Canyon of Europe")
+      [Mountain Stream], *The Fish River Canyon* (Namibia, vast, ancient, one of the darkest skies on
+      Earth) [Night Crickets], and *The Yarlung Tsangpo Canyon* (Tibet, by some measures the deepest;
+      the river round Namcha Barwa, forest to glaciers) [Forest Wind]. Each = 7x12 second-person present
+      sleep-closing ASCII lines, the immense scale framed as awe + deep-time calm (no vertigo/peril).
+      Four parallel writers; validated (7x12, ASCII, sleepward; flags were "fall asleep" + reassurance);
+      registered in `lectures._CATALOG`. Verified: **selftest 249 lectures / 51 branches**; story DB
+      rebuilt (336k words); all 35 offline tests; drive_check 0 issues; README counts bumped.
 - [x] **Stories (next branch)** — **The Standing Stones** (4): *Stonehenge* (the circle on Salisbury
       Plain; bluestones carried ~150 mi from Wales; the solstice alignment) [Forest Wind], *The Stones
       of Carnac* (thousands of menhirs in long rows in Brittany, older than the pyramids) [Ocean Waves],

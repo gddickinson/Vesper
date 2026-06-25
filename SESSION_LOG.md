@@ -3418,6 +3418,25 @@ renders with distinct L/R, `set_mono(True)` makes the two channels bit-identical
 toggling back restores stereo; at the GUI level the View toggle round-trips through the window, drives
 the engine and persists. All 35 offline tests; selftest; drive_check (0 issues); `engine.py` 498 < 500.
 
+## Stories round — new branch "Great Canyons" (4 lectures)
+A 51st lecture branch, **Great Canyons** -- the great gorges the world's rivers have carved, four across
+four continents (and four distinct ambiences), joining the "Great X" landscape family (Mountains /
+Rivers / Lakes / Forests) without overlap: *The Grand Canyon* (Arizona; the Colorado patiently cutting
+a mile-deep staircase of coloured rock down to the ~2-billion-year-old Vishnu Schist; the immense
+hush of the rim) [Wind in Pines], *The Verdon Gorge* ("the Grand Canyon of Europe", Provence; the
+turquoise Verdon between pale limestone cliffs, lavender + thyme on the clifftops, the calm lake at
+its foot) [Mountain Stream], *The Fish River Canyon* (Namibia, one of the largest + oldest; the river
+shrunk to still green pools far below, warm ochre rock, one of the darkest skies on Earth) [Night
+Crickets], and *The Yarlung Tsangpo Canyon* (Tibet, by some measures the deepest; the river bending
+round the snow-giant Namcha Barwa, rising from near-tropical forest to glaciers, mist + prayer flags)
+[Forest Wind]. Each = the standard 7 sections x 12 second-person present-tense sentences, all easing
+toward sleep, the immense scale framed as awe + deep-time calm (never vertigo/peril -- you rest safely
+at the rim). Drafted via four parallel subagents, validated (7x12, pure ASCII, sleepward; the only
+alarm-scan flags were "fall asleep" / "cliffs that fall away" / a reassurance line "not a height to
+fear but a soft cradle"); registered in `lectures._CATALOG`. Verified: selftest passes (**249 lectures
+across 51 branches**); story DB rebuilt (336,503 words); all 35 offline tests; drive_check 0 issues;
+every file < 500 (each lecture 105).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
