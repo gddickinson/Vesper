@@ -430,6 +430,16 @@ pipeline (narration, pacing, sleep-timer fade, ambience) is reusable. Ground the
   `tools/test_book_story.py`; selftest + both-faces drive (0 issues) + a thread-stable offscreen Sleep
   session (book listed, armed, calm ambience); all 10 offline tests pass. (Next R4: downloader +
   Library browser.)
+- [x] **R4 done — on-demand downloader + Library browser** (the first networked round, opt-in):
+  `breathsim/booksource.py` (pure `parse_gutendex`/`text_to_book` + networked `search`/`download`
+  reaching Project Gutenberg via the open **Gutendex** API -- NO key) and `vesper/booklib.py` (Books ▸
+  "Find & manage books..." -- search -> results -> **Download** off-thread -> local library + Reader +
+  Sleep picker; a Your-library list with Delete). SAFETY: network ONLY on an explicit Search/Download;
+  public-domain only; descriptive UA + timeout + 6 MB cap + >=1 s rate limit; fail-closed (no net ->
+  []/None, never raises); untrusted bytes parsed as text only. Offline test `tools/test_booksource.py`
+  (injected fetch, zero sockets). selftest + both-faces drive (0 issues) + thread-stable offscreen
+  open/close + dialog PNG; all 11 offline tests pass with no network. (SE is EPUB-only -> arrives with
+  the importer in R5.) (Next R5: user upload .txt then .epub.)
 - [x] **Kishotenketsu sleep-tales** (`breathsim/tales.py`, "Quiet Tales") — 6 authored,
       conflict-free 4-movement micro-tales (ki intro -> sho development -> **ten** a soft turn
       of view, never a clash -> ketsu reconciliation/dissolve into sleep): The Lamplighter, The

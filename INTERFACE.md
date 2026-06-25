@@ -404,8 +404,12 @@ Offline-tested (`tools/test_books.py`, `tools/test_bookreader.py`). The non-slee
 `vesper/reader.py` (Books menu). A library book is ALSO a **Sleep storyteller option** ("Book:
 <title>"): `stories.book_names()`/`book_id_for()` + a `BOOK_PREFIX` dispatch in `story_units`/
 `ambience_for` narrate it through the ordinary Sleep path (so it rides the wind-down + sleep-timer
-fade-out) and resume by sentence (`tools/test_book_story.py`). The on-demand downloader + import land
-in later rounds.
+fade-out) and resume by sentence (`tools/test_book_story.py`). **`booksource`** is the on-demand
+public-domain **downloader** -- pure `parse_gutendex`/`text_to_book` + networked `search`/`download`
+(Project Gutenberg via the open Gutendex API, NO key; network only on an explicit call, UA + timeout +
+size cap + rate limit, fail-closed); `vesper/booklib.py` is its **Find & manage books** dialog (Books
+menu: off-thread search/download + a delete-able library list). Offline-tested with an injected fetch
+(`tools/test_booksource.py`, zero sockets). User upload (.txt/.epub) lands in the next round.
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

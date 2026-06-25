@@ -103,8 +103,10 @@ def _books(win, m):
     """The audiobook / novels feature. The Reader narrates a public-domain or
     user-supplied book at a steady reading pace, with read-along text. Importing
     and downloading books arrive in later rounds."""
-    from . import reader
+    from . import booklib, reader
     m.addAction("Read a book…").triggered.connect(lambda: reader.open_reader(win))
+    m.addAction("Find & manage books…").triggered.connect(
+        lambda: booklib.open_library(win))
     from breathsim import books
     n = len(books.list_books())
     info = m.addAction(f"In your library: {n}" if n else "Library is empty")

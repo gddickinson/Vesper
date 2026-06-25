@@ -2253,6 +2253,28 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## Audiobooks round 4 — on-demand downloader + Library browser (first networked round)
+The first networked round, and the most cautious. New `breathsim/booksource.py` (pure/networked
+split): `parse_gutendex` + `text_to_book` are pure (offline-tested); `search`/`download` reach the
+**open public-domain catalog** (Project Gutenberg via the **Gutendex** JSON API -- NO API key, ever),
+**only when CALLED** by an explicit user action. Safety: a descriptive **User-Agent**, a short
+**timeout**, a 6 MB **size cap**, a >=1 s **rate limit**, results **capped**; every network path is
+wrapped so no internet -> **[] / None**, never a raise; downloaded bytes are **untrusted** (decoded
+defensively, only ever parsed into a local Book, never executed/written outside the library).
+`search`/`download` accept an injectable *fetch* so tests exercise the whole path with **zero
+sockets**. New `vesper/booklib.py` -- a **Find & manage books** dialog (Books ▸ "Find & manage
+books..."): a search box -> results list -> **Download** (off-thread daemon + queued signal, like
+llm_story_action) -> the book is saved locally and appears in the Reader + the Sleep picker; plus a
+**Your library** list with Delete. Opening it does nothing on the network. (Standard Ebooks is
+EPUB-only, so its download arrives with the EPUB importer in R5; this round is Gutenberg plain text.)
+Offline test `tools/test_booksource.py` feeds canned Gutendex JSON + a canned PG text blob through
+parsing + an injected fetch (UTF-8 URL preferred, boilerplate stripped, Book saved, empty-body
+rejected, network-failure -> []/None) with no socket. Verified: that test + the 10 other offline tests
+pass with NO network; selftest (148 voices, 205 lectures); both-faces drive (0 issues, threads
+stable); a ~60-tick offscreen open/close of the dialog (results populated via injected parse, two
+seeded local books) with **zero thread leak**; rendered + eyeballed the dialog PNG. Files: booksource
+129, booklib 193 -- all < 500. (Next R5: user upload .txt then .epub -- which also unlocks SE.)
+
 ## Audiobooks round 3 — a book under the Sleep wind-down
 A library book can now be chosen as a **Sleep storyteller option** and falls asleep with you. In
 `stories.py`: a `BOOK_PREFIX` ("Book: ") + `BOOK_AMBIENCE` ("Soft Rainstorm"), `book_names()` (lists
