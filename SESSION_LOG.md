@@ -3384,6 +3384,24 @@ No core changes -- pure reuse of `bookreader.chapters` + `picker.choose`. Verifi
 persists + highlights; jump-while-reading restarts; a heading-less book disables the button; threads
 stable 2->2); all 33 offline tests green; selftest + drive_check (0 issues); `reader.py` 240 < 500.
 
+## Scene: "Lanterns" -- warm lights rising in the dark (sleep)
+A new visualization scene tuned for sleep onset, and deliberately the *warmest, lowest-blue* of the
+set: warm amber paper-lanterns drift slowly **up** through a near-black sky (warming to a deep ember
+glow at the horizon), each flickering a little out of step, over a faint far layer of tiny embers; the
+lanterns swell and brighten gently on the inhale, so the screen keeps a calm breath cue without any
+cool/blue light -- a good pairing with the warm Sleep dimming and the always-warm screen. New
+`vesper/scene_lanterns.py` (95 lines) follows the established scene contract (a class with `name` +
+`draw(p, w, h, c)`, reusing `scenes._overlay`/`_qc`, reading the virtual `t` so the drift auto-eases
+under Calm visuals), registered at the bottom of `scenes.py` (`_CLASSES["lanterns"]` +
+`AMBIENT.append`), so it appears automatically in **View > Scene** (`win.set_scene("lanterns")`) with no
+menu changes. Deterministic (seeded lantern params + anim-time motion, nothing spawned per frame).
+Verified: new offscreen `tools/test_lanterns_scene.py` -- registered/selectable; the running render
+paints clear warm amber light **and zero bright-blue pixels** (the melatonin-friendly property); the
+idle ("Ready") render is safe; it actually animates over time; saves a preview PNG (eyeballed: soft
+amber lanterns with halos + bright inner points rising on a dark ember sky, the breath overlay
+centered). All 34 offline tests; selftest; **drive_check renders 11 scenes** (was 10), 0 issues; files
+< 500 (`scene_lanterns` 95, `scenes` 475).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

@@ -155,6 +155,15 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Scene: "Lanterns" -- warm lights rising in the dark** (sleep efficacy; the warmest, lowest-blue
+      scene): warm amber paper-lanterns drift slowly up a near-black sky (warming to an ember glow at
+      the horizon), flickering out of step over a faint ember layer, swelling/brightening on the inhale
+      -- a calm breath cue with no cool/blue light, pairing with the Sleep dimming. New
+      `vesper/scene_lanterns.py` follows the scene contract (`name` + `draw`, reuses `_overlay`/`_qc`,
+      reads the virtual `t` so it auto-eases under Calm visuals); registered in `scenes._CLASSES`/`AMBIENT`
+      so it auto-appears in **View > Scene**. Verified: new offscreen `tools/test_lanterns_scene.py`
+      (registered/selectable; warm light + zero bright-blue pixels; idle render safe; animates; preview
+      PNG eyeballed); all 34 offline tests; selftest; **drive_check now renders 11 scenes**, 0 issues.
 - [x] **Reader dialog: jump-to-chapter navigation** (GUI polish; feature parity across reading
       surfaces): mirrored the Read-mode chapter jump into the standalone book Reader (`reader.py`). A
       "Jump to a chapter…" button under the book picker opens the same searchable `picker.choose` popup,

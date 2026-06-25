@@ -80,9 +80,10 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   toggle, an **always-warm low-blue screen** for evening eye comfort, drag-and-drop file
   loading, and a **searchable chooser** for the long lists (200+ stories, 149 voices).
 - **Per-mode visual scenes** — a breathing **orb** (motes, exhale rings, a coherence halo
-  near 6 bpm), a starry **night**, a moonlit **sea**, tone-reactive **ripples**, an
-  on-screen **pitch trainer**, and themed animated **backdrops** (stars, embers, rain,
-  forest, a quiet city…) that crossfade to match the story.
+  near 6 bpm), a starry **night**, a moonlit **sea**, tone-reactive **ripples**, warm
+  rising **lanterns** (a low-blue sleep bed), an on-screen **pitch trainer**, and themed
+  animated **backdrops** (stars, embers, rain, forest, a quiet city…) that crossfade to
+  match the story.
 - **Real tools** — pitch trainer, mindfulness bell, breath-hold (retention) timer, mala /
   japa counter, an **hourglass session timer** you flip to reset, a full **Voice Editor**
   (live wave + spectrum), **Pattern Editor**, **Presets Manager**, a layer **Mixer**,

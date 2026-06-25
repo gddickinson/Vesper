@@ -459,6 +459,9 @@ AMBIENT.append("candle")
 from .scene_drift import DriftScene  # noqa: E402
 _CLASSES["drift"] = DriftScene
 AMBIENT.append("drift")
+from .scene_lanterns import LanternsScene  # noqa: E402
+_CLASSES["lanterns"] = LanternsScene
+AMBIENT.append("lanterns")
 
 
 def make(name):

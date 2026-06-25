@@ -198,12 +198,16 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   crests, layered swells) and `FireplaceScene` (hearth glow + swaying flame tongues +
   rising embers), a shared text overlay, and `make(name)`/`names()`. Larger scenes
   live in their own modules and self-register at the foot of this file:
-  `scene_rain` (rain-on-window), `scene_aurora`, `scene_mandala`, `scene_candle` and
-  `scene_drift`.
+  `scene_rain` (rain-on-window), `scene_aurora`, `scene_mandala`, `scene_candle`,
+  `scene_drift` and `scene_lanterns`.
 - **scene_drift.py** — `DriftScene`: a calm "Drifting" sleep/relax sky — soft, low-contrast
   grey-violet cloud puffs ease slowly across a dusk gradient with a faint breathing moon and a
   hint of stars; brightens gently on the inhale. Reads the virtual `t`, so its drift auto-eases
   under Calm visuals.
+- **scene_lanterns.py** — `LanternsScene`: a deliberately **low-blue, low-motion** sleep bed —
+  warm amber paper-lanterns drift slowly **up** through a near-black sky (warming to a deep ember
+  glow at the horizon), each flickering out of step, with a faint far layer of embers; they swell
+  and brighten on the inhale. Reads the virtual `t`, so it auto-eases under Calm visuals.
 - **scene_candle.py** — `CandleScene`: a single warm candle flame in the dark to rest
   the gaze on (*trataka* focused-attention practice) — a pale wax body, the pool of
   light it casts, an ambient glow that **breathes with you**, and a layered teardrop
