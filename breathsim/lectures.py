@@ -90,6 +90,8 @@ from . import lectures_fishriver, lectures_grandcanyon  # Great Canyons
 from . import lectures_tsangpo, lectures_verdon
 from . import lectures_brahms, lectures_japaneselullaby  # Lullabies of the World
 from . import lectures_russianlullaby, lectures_suogan
+from . import lectures_dolphinsleep, lectures_birdsonwing  # How the World Sleeps
+from . import lectures_bearsleep, lectures_beesleep
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -257,6 +259,8 @@ _CATALOG = [
                        lectures_fishriver, lectures_tsangpo]),
     ("Lullabies of the World", [lectures_brahms, lectures_suogan,
                                 lectures_russianlullaby, lectures_japaneselullaby]),
+    ("How the World Sleeps", [lectures_dolphinsleep, lectures_birdsonwing,
+                              lectures_bearsleep, lectures_beesleep]),
 ]
 
 LECTURES = {}

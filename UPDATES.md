@@ -155,6 +155,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Stories: "How the World Sleeps" lecture branch (4)** -- a new lecture branch that is itself
+      about sleep, perfectly on-theme for a bedtime app: the real, wonder-filled science of how animals
+      rest. **How Dolphins Sleep** (unihemispheric slow-wave sleep -- half the brain at a time, one eye
+      open, switching sides; Whale Song bed) · **Sleeping on the Wing** (swifts aloft for months,
+      frigatebird EEG microsleeps on the thermals; Forest Wind) · **The Bear's Long Sleep**
+      (hibernation: torpor, a heartbeat down to ~8 bpm, midwinter cubs in the den; Wind in Pines) ·
+      **The Sleeping Hive** (honeybees do sleep -- Kaiser's observation, drooping antennae, foragers at
+      the cool edge, sleep firming the waggle dance; Summer Porch). Each is the standard 7 sections x 12
+      second-person present-tense lines, settling in at section 1 and drifting to sleep at section 7,
+      every line ASCII and closing toward rest. Written with four parallel subagents; registered in
+      `lectures._CATALOG` (`lectures_dolphinsleep` / `lectures_birdsonwing` / `lectures_bearsleep` /
+      `lectures_beesleep`). Verified: selftest (now **257 lectures across 53 branches**, all section
+      shapes + ASCII + sentence-ending lint pass); story DB rebuilt (257 lectures); all 41 offline
+      tests; drive_check 0 issues; each module 105 < 500.
 - [x] **Sleep aid: Loving-Kindness (Metta) guided session** (evidence-based meditation/sleep efficacy;
       missing beside Autogenic / NSDR / Body-Scan / Hypnosis): new `breathsim/lovingkindness.py` offers
       the four classic metta wishes -- *may you be safe / happy / healthy / live with ease* -- in

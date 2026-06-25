@@ -3574,6 +3574,27 @@ into `extra_names`/`ambience_for`/`story_units`) + an offscreen GUI smoke (it sh
 options, Sleep workspace builds, threads stable 2->2); all 41 offline tests; selftest; drive_check 0
 issues; `lovingkindness.py` 107 < 500.
 
+## Stories: "How the World Sleeps" lecture branch
+Added a new bedtime-lecture branch that is *itself* about sleep -- a natural fit for a sleep app: the
+real, wonder-filled science of how animals rest. Four lectures: **How Dolphins Sleep** (unihemispheric
+slow-wave sleep -- half the brain sleeps at a time, the opposite eye stays open, sides swapping every
+couple of hours, "logging" near the surface while still breathing and watching; `Whale Song` bed),
+**Sleeping on the Wing** (common swifts aloft for up to ten months, and the Rattenborg frigatebird
+EEG-logger study showing brief in-flight microsleeps while circling up on thermals; `Forest Wind`),
+**The Bear's Long Sleep** (hibernation: autumn fattening, denning, torpor with the heartbeat dropping
+toward ~8 bpm and a breath every 45 seconds, a rousable not-frozen sleep, midwinter cubs born tiny in
+the den; `Wind in Pines`), and **The Sleeping Hive** (honeybees really do sleep -- Walter Kaiser's
+1980s observation, drooping antennae and folding legs, older foragers resting at the cool hive edge,
+and sleep firming up the waggle dance; `Summer Porch`). Each module is the standard `NAME` / `AMBIENCE`
+/ `SECTIONS` shape -- exactly 7 sections of 12 second-person present-tense lines, section 1 settling the
+listener in and section 7 drifting them to sleep, every line ASCII and ending in `.`/`?`/`!`. Written
+with **four parallel subagents**, each self-verifying its section/ASCII/punctuation shape, then wired
+into `lectures._CATALOG` (`lectures_dolphinsleep` / `lectures_birdsonwing` / `lectures_bearsleep` /
+`lectures_beesleep`) under the branch **"How the World Sleeps"**. Verified: selftest now checks **257
+lectures across 53 branches** (was 253/52) with all the shape + ASCII + sentence-ending lints passing;
+the SQLite story DB rebuilt (`python -m breathsim.story_db` -> 257 lectures, 53 branches, 21,897 lines);
+all 41 offline tests; drive_check 0 issues; each module 105 < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
