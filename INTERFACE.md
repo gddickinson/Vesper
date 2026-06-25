@@ -74,6 +74,14 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   Characters carry an `xtts` voice (`char_voice`) used when installed, falling back to
   their Kokoro/say hints. Users add the engine themselves via `tools/setup_xtts.py`
   (Sound ▸ "High-quality voices (XTTS)…"). Setup + licence: `docs/XTTS.md`.
+- **llm.py** + **llm_keys.py** — optional **LLM provider** (foundation; not yet wired into
+  the UI). Auto-selects **Claude** when an Anthropic key resolves (`llm_keys.resolve`: env →
+  OS keychain → chmod-600 `~/.breathsim/llm.json` → session-only) else **Ollama** (local,
+  **opt-in** via `enable_ollama` — no network unless asked) else a **null** provider
+  (`available()` False). API: `available`/`backend_name`/`status`/`complete`/`chat` (Claude
+  over urllib, no SDK dep). **Key-safe:** the key is fetched lazily and never stored on a
+  provider, never logged (errors `_sanitize`d), never committed/shipped; `mask()` shows only
+  the last 4. No network at import. Offline safety test: `tools/test_llm.py`.
 - **story_char.py** — maps a story scene / lecture to a fitting cartoon character
   (`char_for_scene`: sea→Penguin, night→Owl, forest→Bear, …, default Owl). Opt-in
   **Face ▸ "Character follows the story"** (persisted): when on and the cartoon face is

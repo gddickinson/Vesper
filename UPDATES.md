@@ -392,13 +392,19 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
   memory, never persisted); (e) **none** -> fall back to Ollama, else the feature is hidden.
 - A small Settings dialog picks the method, pastes a **masked** key, **tests** the connection,
   and **clears** it. The key is the user's own; docs say so and that it is never shipped.
-- [ ] **LLM provider module** (`breathsim/llm.py` + `llm_keys.py` for the key store) —
-      **auto-selecting** backend: Claude (only when a key is resolved via env / keychain /
-      chmod-600 file / session, in that order) else **Ollama** (local fallback) else null;
-      `available()`, `complete(prompt, **opts)`, `chat(messages, tools=None)`; offline +
-      graceful-absent + mockable; opt-in + persisted. Honors ALL key-security requirements
-      above. Mirrors narration/XTTS plumbing. Add a unit test asserting no key is ever written
-      to a tracked path and that the key never appears in `str()`/logs.
+- [x] **LLM provider module** (`breathsim/llm.py` + `breathsim/llm_keys.py`) — **auto-selecting**
+      backend: Claude when a key resolves (env -> keychain via `keyring` -> chmod-600
+      `~/.breathsim/llm.json` -> session-only, in that order) else **Ollama** (local fallback,
+      **off by default / opt-in** so there is no network unless the user opts in) else a null
+      provider (`available()` False; `complete`/`chat` raise `LLMUnavailable`). API:
+      `available()`, `backend_name()`, `status()` (safe -- backend + key *source*, never the
+      key), `complete(prompt, ...)`, `chat(messages, tools=...)`. The key is fetched lazily via
+      `llm_keys.resolve()` and **never stored on a provider object** (cannot leak via repr),
+      never logged (errors sanitised), never committed/shipped. NO network at import or in
+      tests. Unit test `tools/test_llm.py` (passes with no key + no Ollama): null backend when
+      empty; a `set_session` key resolves but is never written to disk nor shown in `status()`;
+      `mask()` hides all but the last 4; the chmod-600 file store round-trips + `clear()` wipes
+      it. Verified: import (no network), the unit test, selftest + both-faces drive; files <500.
 - [ ] **LLM story generation** — generate a sleep story/lecture to the schema (or free /
       indefinite length, streamed passage-by-passage), validate via the lint, preview + narrate,
       and **save liked ones to the library** (store). Labelled AI-written; framed atmospheric.

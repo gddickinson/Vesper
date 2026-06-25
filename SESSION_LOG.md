@@ -2253,6 +2253,29 @@ fights an open dropdown (`view().isVisible()`) or a slider being dragged
 (Owl→Damien Black, Cat→Daisy Studious); a menu ambience change reflects in the Relax
 combo; selftest passes; menu audit 428/0; both-faces drive clean, thread-stable.
 
+## LLM round 1 — provider + key store (safety-critical foundation)
+First item of the LLM batch. Added `breathsim/llm_keys.py` (the API-key store) and
+`breathsim/llm.py` (the auto-selecting provider). **Backend selection** (re-evaluated each call):
+**Claude** when a key resolves, resolving env `ANTHROPIC_API_KEY` -> OS keychain (`keyring`, if
+installed) -> chmod-600 `~/.breathsim/llm.json` -> session-only (in memory); else **Ollama** as
+a *local* fallback that is **off by default and opt-in** (`enable_ollama` -- "no network unless
+the user opts in"); else a **null** provider (`available()` False, `complete`/`chat` raise
+`LLMUnavailable`). Public API: `available`/`backend_name`/`status`/`complete`/`chat`; Claude via
+a urllib POST (no SDK dep), Ollama via its local HTTP API.
+**Key security:** the key is fetched lazily via `llm_keys.resolve()` and **never stored on a
+provider object** (so it cannot leak through a `__repr__`); never logged (errors run through
+`_sanitize`, which replaces any live key with its mask); `status()` returns the *source*
+('env'/'keychain'/'file'/'session') and never the key; `mask()` shows only the last 4 chars;
+`set_file` writes chmod 600; `clear()` wipes session + file + keychain. **No network at import or
+in tests.** New `tools/test_llm.py` (passes with no key + no Ollama; the fixture token is
+deliberately not key-shaped so the secret scan stays clean) asserts: null backend when empty; a
+session key resolves but is never written to disk nor shown in `status()`; mask hides all but the
+last 4; the chmod-600 file store round-trips and `clear()` removes it. The provider is NOT yet
+wired into the UI (later rounds: story-gen, structured content, the quiet helper, gated plugins);
+the app works fully without it. Verified: clean import (available False, no network); the unit
+test; selftest passes; both-faces drive 0 issues; files < 500 (llm 158 / llm_keys 154); secret
+scan clean.
+
 ## Storytelling round — scene-craft polish (descending structure)
 Seventh and final item of the storytelling & poetry batch. Applied the sleep-storytelling
 "descending structure" toolkit to the **procedural scene generator** in `breathsim/stories.py`
