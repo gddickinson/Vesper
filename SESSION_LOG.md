@@ -3502,6 +3502,23 @@ faithfully reproduce a whole 100k-word novel (context limits + the risk of abrid
 so the deterministic strip is safer and free; the opt-in LLM stays for *generating* short bedtime
 content, not rewriting downloaded books.
 
+## Stories round — new branch "Lullabies of the World" (4 lectures)
+A 52nd lecture branch, **Lullabies of the World** -- the most on-theme branch yet for a bedtime app:
+four of the world's beloved cradle songs, across four cultures (and four ambiences), each woven with
+real gentle history + a touch of science (the universal slow rocking tempo near a resting heartbeat,
+why a low loved voice soothes a child the same in every land): *Brahms' Lullaby* (the "Wiegenlied",
+1868; Brahms's tender gift to Bertha Faber, with a private second melody hidden under the tune -- a
+song nested in a song; the rocking 3/4 time) [Gentle Rain], *Suo Gan* (the old Welsh cradle song of a
+"land of song", passed down by mothers, "sleep my baby on my bosom") [Forest Wind], *The Cossack
+Lullaby* (Russia; Lermontov's tender 1840 poem, the soft "Bayu Bayushki Bayu" refrain, a mother by the
+warm hearth, the calm Terek under the stars -- kept entirely warm, no war/grief) [Campfire], and *The
+Edo Lullaby* (Japan; the old "Edo Komoriuta", "nennen korori yo", the calm pentatonic melody, a furin
+chime in the warm night) [Wind Chimes]. Each = the standard 7 sections x 12 second-person present-tense
+sentences, all easing toward sleep. Drafted via four parallel subagents, validated (7x12, pure ASCII,
+sleepward; the only alarm-scan flag was "polished by tenderness alone"); registered in
+`lectures._CATALOG`. Verified: selftest passes (**253 lectures across 52 branches**); story DB rebuilt
+(341,150 words); all 38 offline tests; drive_check 0 issues; every file < 500 (each lecture 105).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

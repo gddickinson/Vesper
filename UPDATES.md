@@ -467,6 +467,15 @@ Grounded in the research notes above; calming, honest, self-contained. Do one pe
       Sessions menu ("One good thing…" + "Bedtime gratitude" toggle), a kind "Good things noted: N"
       line in Stats, and settings persistence. Verified: `tools/test_gratitude.py` + offscreen GUI
       smoke (menus present, threads stable) + selftest + drive_check.
+- [x] **Stories (next branch)** — **Lullabies of the World** (4): *Brahms' Lullaby* (the 1868
+      "Wiegenlied"; Brahms's gift to Bertha Faber, a hidden second melody under the tune) [Gentle Rain],
+      *Suo Gan* (the old Welsh cradle song) [Forest Wind], *The Cossack Lullaby* (Russia; Lermontov's
+      "Bayu Bayushki Bayu", a mother by the hearth -- kept entirely warm) [Campfire], and *The Edo
+      Lullaby* (Japan; "nennen korori yo", the calm pentatonic melody, a furin chime) [Wind Chimes].
+      Each weaves real gentle history + the universal science of the slow rocking lullaby tempo. 7x12
+      second-person present sleep-closing ASCII lines. Four parallel writers; validated; registered in
+      `lectures._CATALOG`. Verified: **selftest 253 lectures / 52 branches**; story DB rebuilt (341k
+      words); all 38 offline tests; drive_check 0 issues; README counts bumped.
 - [x] **Stories (next branch)** — **Great Canyons** (4): *The Grand Canyon* (Arizona; the Colorado's
       mile-deep staircase of rock down to the ~2-billion-year-old Vishnu Schist) [Wind in Pines], *The
       Verdon Gorge* (the turquoise river + limestone cliffs of Provence, "the Grand Canyon of Europe")
