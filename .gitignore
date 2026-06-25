@@ -20,3 +20,22 @@ data/*.db
 # Exported audio / screenshots produced by the app
 /exports/
 *.wav
+
+# Secrets / API keys -- NEVER commit. The Anthropic key is the user's own and is
+# stored only in env / OS keychain / a chmod-600 ~/.breathsim file / session memory.
+.env
+.env.*
+*.env
+secrets/
+*secret*
+*.key
+*.pem
+*_key.json
+**/llm.json
+**/llm_keys*.json
+*api*key*
+.anthropic
+.claude_key
+
+# LLM-generated, user-installed plugins are local + experimental -- never committed.
+/plugins/

@@ -334,13 +334,35 @@ guardrails for the rounds below:
 
 ### Researched batch — LLM (DECIDED 2026-06-24 — do AFTER the storytelling & poetry batch)
 User decisions: **sequence** = finish the storytelling & poetry batch first, then this; **backend**
-= **auto-select** (prefer Claude when an API key is present, else local **Ollama**, else hide the
-feature); **scope** = declarative content **and** an experimental **sandboxed code-plugin** path
-(last item, gated/opt-in). Do these top-down once poetry is complete.
-- [ ] **LLM provider module** (`breathsim/llm.py`) — **auto-selecting** backend: Claude (when an
-      `ANTHROPIC_API_KEY` is set) else Ollama (local) else null; `available()`,
-      `complete(prompt, **opts)`, `chat(messages, tools=None)`; offline + graceful-absent +
-      mockable; opt-in + persisted. Mirrors narration/XTTS plumbing.
+= **auto-select** (prefer Claude when an API key is present, else local **Ollama** as the
+fallback, else hide the feature); **scope** = declarative content **and** an *optional*
+experimental **sandboxed code-plugin** path for advanced users who accept the extra risk
+(off by default). Do these top-down once poetry is complete.
+
+**SAFETY FIRST (user: "I want everything to be as safe as possible"):** at every design
+choice prefer the safest option; default OFF; least privilege; no network unless the user opts
+in; never auto-execute generated code; treat all model output as untrusted (validate before
+use); fail closed. A pre-commit secret scan must pass before any LLM-round commit (no `sk-ant-`,
+no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
+
+**KEY-SECURITY REQUIREMENTS (mandatory, from the user):**
+- The Anthropic API key must **NEVER** be committed to git or shipped in any distribution.
+  No key literal anywhere in the repo; `.gitignore` the user config (`~/.breathsim/*`) and any
+  local secrets; never bundle a key in packaging; never print/log the key (mask in all UI/logs).
+- **Users choose how to provide it (or not):** (a) `ANTHROPIC_API_KEY` env var (app stores
+  nothing); (b) OS **keychain** via `keyring` if installed (most secure; optional dep); (c) a
+  local file `~/.breathsim/llm.json` written **chmod 600**, opt-in, with a clear "stored in
+  plaintext on this device" warning; (d) **session-only** (typed into a masked dialog, kept in
+  memory, never persisted); (e) **none** -> fall back to Ollama, else the feature is hidden.
+- A small Settings dialog picks the method, pastes a **masked** key, **tests** the connection,
+  and **clears** it. The key is the user's own; docs say so and that it is never shipped.
+- [ ] **LLM provider module** (`breathsim/llm.py` + `llm_keys.py` for the key store) —
+      **auto-selecting** backend: Claude (only when a key is resolved via env / keychain /
+      chmod-600 file / session, in that order) else **Ollama** (local fallback) else null;
+      `available()`, `complete(prompt, **opts)`, `chat(messages, tools=None)`; offline +
+      graceful-absent + mockable; opt-in + persisted. Honors ALL key-security requirements
+      above. Mirrors narration/XTTS plumbing. Add a unit test asserting no key is ever written
+      to a tracked path and that the key never appears in `str()`/logs.
 - [ ] **LLM story generation** — generate a sleep story/lecture to the schema (or free /
       indefinite length, streamed passage-by-passage), validate via the lint, preview + narrate,
       and **save liked ones to the library** (store). Labelled AI-written; framed atmospheric.
@@ -350,10 +372,12 @@ feature); **scope** = declarative content **and** an experimental **sandboxed co
 - [ ] **Quiet helper assistant** — a bounded app-help + setup assistant that drives the app via
       a **whitelist of app actions** (apply mode / set pattern / start story) through tool-calls,
       optionally **voiced through the face**; calm tone; no medical advice; easy to dismiss.
-- [ ] **(Experimental, gated) Sandboxed plugin generation** — IN SCOPE per user. LLM writes a
-      plugin to `plugins/`, **bug-tested in an isolated subprocess** (the selftest/drive harness)
-      before it can load, explicit opt-in, never auto-run; restricted imports; the generate ->
-      test -> fix loop runs out-of-process. Marked Experimental in the UI.
+- [ ] **(Optional, advanced, experimental) Sandboxed plugin generation** — **off by default**;
+      gated behind an explicit "Advanced / Experimental" opt-in with a **risk acknowledgement**
+      (for users happy to accept the additional risk). LLM writes a plugin to `plugins/`,
+      **bug-tested in an isolated subprocess** (the selftest/drive harness) before it can load,
+      explicit opt-in, never auto-run; restricted imports; the generate -> test -> fix loop runs
+      out-of-process. Clearly labelled Experimental + risk-bearing in the UI and docs.
 
 ### Researched batch — audio & synthesis
 - [x] **Generative ambient pad** (user-requested "cosmic music"): new `breathsim/cosmic.py`
