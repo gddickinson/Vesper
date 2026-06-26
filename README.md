@@ -12,10 +12,10 @@ required.</p>
 Vesper paces your breath with a soft animated visualization and real-time synthesised
 sound. It spans seven activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep ·
 Read** — each with its own purpose-built control panel, visual scene and soundscape. At its
-centre is a talking-head **avatar** (a 3D head, or one of **26 hand-drawn cartoon
+centre is a talking-head **avatar** (a 3D head, or one of **36 hand-drawn cartoon
 characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **337
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
-<!-- counts: 337 lectures / 73 branches · 150 voices · 66 phrases · 7 modes · 26 characters · 28 costumes -->
+<!-- counts: 337 lectures / 73 branches · 150 voices · 66 phrases · 7 modes · 36 characters · 28 costumes -->
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
@@ -32,8 +32,9 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   narrator and shifts expression with the mood of the words. A **cyberpunk face-style**
   system (starry eyes, Tron/circuit grids that follow the head, translucent / dot-matrix
   renders) can react to the story, breath and chant. Or switch to the **2D cast**.
-- **26 cartoon characters + costumes** — Cat, Penguin, Dog, Owl, Fox, Chicken, Bunny,
-  Bear, Panda, Frog, Duckling, Hedgehog, Mouse, Sheep, Sloth, Koala, Red Panda, Snowman,
+- **36 cartoon characters + costumes** — Cat, Penguin, Dog, Owl, Fox, Chicken, Bunny,
+  Bear, Panda, Frog, Duckling, Hedgehog, Mouse, Rat, Sheep, Sloth, Koala, Red Panda,
+  **Lion, Tiger, Elephant, Giraffe, Rhino, Pig, Cow, Monkey, Deer**, Snowman,
   **Luna** (a moon showing tonight's real phase), **Robot** and a soft round **Bot**, a
   mint **Alien** + a one-eyed purple **Martian**, Woman, Man and a
   talking **Skull** (hollow ember-lit sockets + a jaw that lip-syncs the narration, for spooky tales),

@@ -72,6 +72,23 @@ _THEMES = [
     ("Cat", ("cottage", "home", "hearth", "fire", "cafe", "candle", "blanket",
              "quilt", "lamp", "lantern", "kitchen", "bread", "oven", "bake",
              "warm", "purr")),
+    # more animals, caught by their own names. Kept specific, with ``=exact`` where a
+    # plain prefix would over-fire (=rat so "rather" stays put, =pig so "pigeon"
+    # does, =cow so "coward" does, =ape so "aperture" does, =stag so "stage" does).
+    # Placed after the nature narrators above (which keep their domains) and before
+    # the night-sky Owl.
+    ("Lion", ("lion", "=pride", "veldt", "leonine")),
+    ("Tiger", ("tiger", "tigress", "stripe", "bengal")),
+    ("Elephant", ("elephant", "tusk", "ivory", "pachyderm", "mammoth")),
+    ("Giraffe", ("giraffe", "acacia")),
+    ("Rhino", ("rhino",)),
+    ("Monkey", ("monkey", "chimp", "gorilla", "baboon", "primate", "banana",
+                "=ape", "=apes")),
+    ("Deer", ("deer", "=stag", "=stags", "fawn", "antler", "reindeer", "venison")),
+    ("Pig", ("=pig", "=pigs", "piglet", "swine", "=hog", "=hogs", "=boar",
+             "=boars", "=sty")),
+    ("Cow", ("=cow", "=cows", "cattle", "calf", "dairy", "udder", "heifer")),
+    ("Rat", ("=rat", "=rats", "rodent", "sewer", "scurry")),
     # the moon herself narrates the moon's own tales (before Owl, who keeps the
     # wider night sky -- stars, constellations, planets, the cosmos)
     ("Luna", ("moon", "lunar", "luna", "crescent", "eclipse")),

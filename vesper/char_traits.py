@@ -54,6 +54,18 @@ TRAITS = {
     "Martian": {"energy": 1.1, "tail": 0.0, "blink": 1.0, "twitch": 1.1,
                 "swivel": 1.2},                # cheerful, lively little visitor
     "Skull": {"blink": 2.2, "yawn": 1.4, "energy": 0.85, "tail": 0.0, "swivel": 1.1},
+    # new animals: each moves with its own personality
+    "Rat": {"tail": 1.5, "twitch": 1.8, "blink": 0.75, "energy": 1.2},
+    "Lion": {"tail": 1.2, "energy": 0.9, "yawn": 0.8, "swivel": 0.9},
+    "Tiger": {"tail": 1.5, "energy": 1.0, "twitch": 1.1, "swivel": 1.0},
+    "Elephant": {"energy": 0.8, "tail": 0.5, "twitch": 1.2, "yawn": 0.7,
+                 "swivel": 0.8},               # big, slow, ears flap
+    "Giraffe": {"energy": 0.8, "tail": 0.6, "blink": 1.1, "swivel": 0.9, "yawn": 0.8},
+    "Rhino": {"energy": 0.75, "tail": 0.4, "blink": 1.3, "swivel": 0.8, "yawn": 0.8},
+    "Pig": {"tail": 1.3, "twitch": 1.3, "energy": 1.05, "blink": 0.9},
+    "Cow": {"energy": 0.8, "tail": 0.6, "twitch": 1.1, "yawn": 0.7, "swivel": 0.85},
+    "Monkey": {"energy": 1.25, "twitch": 1.3, "swivel": 1.3, "blink": 0.9, "tail": 1.2},
+    "Deer": {"energy": 0.85, "twitch": 1.4, "blink": 1.0, "swivel": 1.1, "tail": 0.5},
 }
 
 

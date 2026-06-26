@@ -183,13 +183,18 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
     + lolling tongue) · Owl · Fox · Chicken (an occasional **head-peck** bob) · Bunny (a quick
     **nose-twitch** that rides the ear signal) · Bear ·
     Panda · Frog (a **throat-sac** that puffs out on the in-breath) · Duckling · Hedgehog ·
-    Mouse · Sheep · **Sloth** (`char_sloth.py` -- a
+    Mouse · **Rat** (a pointier, longer-faced cousin of the mouse) · Sheep · **Sloth** (`char_sloth.py` -- a
     slow, sleepy, perpetually-smiling sloth with the signature dark eye patches: the
     perfect sleep-app mascot, slow-voiced + charming when nodding off) · **Koala**
     (`char_koala.py` -- a soft grey koala with big fuzzy round ears and the signature
     spoon nose + **ear-perk**; sleeps ~20 h/day, so the ideal companion) · **Red Panda**
     (`char_redpanda.py` -- russet fur, white face-mask + tear-marks, a bushy ringed
-    tail) · **Snowman** (`char_snowman.py` -- two stacked snowballs, coal eyes + button
+    tail) · **Lion** (a full scalloped mane) · **Tiger** (soft black stripes + a white
+    muzzle) · **Elephant** (big fan ears + a curling trunk + tusks) · **Giraffe**
+    (ossicones + neck patches) · **Rhino** (a nose horn) · **Pig** (flat snout + a curly
+    tail) · **Cow** (asymmetric patches + small horns) · **Monkey** (a heart-shaped face
+    patch + big side ears) · **Deer** (tall ears + little antlers + fawn spots) ·
+    **Snowman** (`char_snowman.py` -- two stacked snowballs, coal eyes + button
     smile, a carrot nose, twig arms, a red scarf + knit cap, with soft snowflakes
     drifting around him -- the wintry companion for snow scenes/stories) · **Luna**
     (`char_luna.py` -- a serene sleeping moon whose terminator shadow shows **tonight's

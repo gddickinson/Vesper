@@ -4731,6 +4731,27 @@ with a false-hit trap block (train / window / starts / surface / spine / season 
 while real rain/wind/galaxies words still cue); `tools/test_story_bg.py` green through the shared
 matcher; selftest; all 49 offline tests; drive_check 0 issues.
 
+## Characters: +10 animals (Lion, Tiger, Elephant, Giraffe, Rhino, Pig, Cow, Monkey, Deer, Rat)
+User asked for "more animal characters, such as giraffe, rat, rhino... another ten or so". Added ten
+new `char_<name>.py` (each subclasses `char_base.Character`, ~97-137 lines, returns `B.Head`, uses the
+shared `B.cute_eyes` so eyes stay consistent): **Lion** (scalloped mane ring), **Tiger** (white muzzle
++ 7 black stripes), **Elephant** (fan ears + curling trunk + tusks), **Giraffe** (ossicones + neck
+patches, `top=cy-R*1.65`), **Rhino** (nose horn), **Pig** (flat snout + curly tail), **Cow** (asymmetric
+patch + horns + ears), **Monkey** (heart face-patch + side ears), **Deer** (antlers + fawn spots) and
+**Rat** (pointier, longer-faced cousin of the Mouse). Each drafted by a parallel subagent (read
+`char_base.py` + `char_mouse.py` as the template, wrote one file, PNG-verified its own render);
+centrally QA'd via a contact-sheet PNG (all recognizable). Registered in `characters.py` (now **36**),
+each with a `char_voice.CharVoice` (hue + rate + greeting + persona + XTTS speaker) and a
+`char_traits.TRAITS` motion-signature dict. Also wired the storyteller character-follow: added ten
+`story_char._THEMES` entries caught by their own names, kept conflict-free with `=exact` guards where a
+prefix would over-fire (`=rat` so "rather" stays put, `=pig` so "pigeon", `=cow` so "coward", `=ape` so
+"aperture", `=stag` so "stage"); placed after the nature narrators (which keep their domains) and before
+the night-sky Owl, so a lion/tiger/elephant tale picks that animal while a "dozing" or "meadow" tale
+still defers to the sleepy Sloth / pastoral Sheep -- good for a sleep app. README + INTERFACE counts
+26 -> 36 + cast lists. Verified: `tools/test_story_char.py` (picks + false-fire guards) + all **75**
+offline tests pass per-process; selftest (150 voices, 66 phrases, 337 lectures/73 branches);
+drive_check 0 issues. (Library books are user data, not committed.)
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
