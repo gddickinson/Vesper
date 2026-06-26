@@ -3985,6 +3985,18 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Regression test: cycle all 7 modes (the primary navigation)
+A quality/verification round. Mode switching (Meditate / Breathwork / Chant / Sing / Relax / Sleep /
+Read) is the app's primary navigation, and `apply_mode` does a lot each time (rebuilds the whole
+side-panel workspace, swaps pattern/voices/ambience/effect/choir/scene/persona, stops the narrator,
+enters/leaves the Read pane) but had no dedicated regression test. Added `tools/test_mode_cycle.py`:
+build the MainWindow offscreen, cycle all 7 modes 3x (ticking after each), then 6 rapid Read<->Sleep
+flips (the heaviest transitions, both touching the narrator), asserting no exception, the workspace
+rebuilds (current_mode updates, panel survives), and threads stay bounded (no leak). Passes clean today
+(threads base=2 -> worst=2), confirming the primary nav is solid and locking it against a future
+stale-ref / thread-leak regression. No code change needed. Verified: selftest; all 59 offline tests;
+drive_check 0 issues.
+
 ## Storyteller picks the Sloth for sleepy/slow tales
 A small follow-up to last round's Sloth. It was only manually selectable, but the storyteller
 auto-picks a fitting character per scene (`story_char.char_for_scene`, the "Character follows the

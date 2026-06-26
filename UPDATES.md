@@ -155,6 +155,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Regression test: cycle all 7 modes (the primary navigation)** -- a quality/verification round.
+      Selecting a mode (Meditate / Breathwork / Chant / Sing / Relax / Sleep / Read) is how users
+      navigate the whole app, and `apply_mode` does a LOT each time -- rebuilds the entire side-panel
+      workspace, swaps the pattern / voices / ambience / effect / choir / scene / persona, stops the
+      narrator, and enters or leaves the Read pane -- yet it had **no dedicated regression test** (prime
+      territory for a stale-widget-ref or thread-leak regression). Added `tools/test_mode_cycle.py`:
+      construct the `MainWindow` offscreen, cycle **all 7 modes three times** (ticking after each
+      switch), then do **six rapid Read<->Sleep flips** (the heaviest transitions -- Read enter/leave +
+      Sleep storyteller arming, both touching the narrator), asserting no exception, that the workspace
+      rebuilds (`current_mode` updates, panel survives), and that the **thread count stays bounded** (no
+      leak from repeated narrator stop/start + rebuilds). It passes clean today (threads base=2 ->
+      worst=2), so the primary nav is confirmed solid -- and a future stale-ref / thread-leak regression
+      there will now fail a test instead of shipping. Verified: selftest; all **59** offline tests;
+      drive_check 0 issues.
 - [x] **Storyteller picks the Sloth for sleepy/slow tales** -- a small follow-up to last round's Sloth:
       it was only manually selectable, but the storyteller auto-picks a fitting character per scene
       (`story_char.char_for_scene`, the "Character follows the story" toggle), and a sloth is the *ideal*
