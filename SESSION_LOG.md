@@ -3780,6 +3780,25 @@ empty/unknown -> the default Owl; Skull/Woman/Man never auto-assigned); a distri
 270 lecture+scene names (12 distinct characters now appear, Owl still leads as the default night
 narrator -- fitting); selftest; all 47 offline tests; drive_check 0 issues.
 
+## Sleep aid: "A Safe and Peaceful Place" guided-imagery session
+Pivoted from the recent face/character work back to sleep **efficacy**, filling a real gap among the
+guided sessions: **guided imagery** (the "safe place" / "special place" visualisation). It is a
+classic, evidence-based relaxation tool and is genuinely distinct from what already exists -- the body
+relaxation of Autogenic Training / Body-Scan / PMR, the breath of NSDR, and the warmth of
+Loving-Kindness -- because here the listener actively **builds a peaceful place and rests inside it**,
+engaging one sense at a time. New `breathsim/safeplace.py`: NAME = "A Safe and Peaceful Place",
+AMBIENCE = **Forest Wind** (a soft, open, place-neutral bed so it doesn't fight the imagined scene),
+`units(rng, guidance)` yields the arc -- settle -> let a place form (no right choice, don't strain to
+see it) -> **see** -> **hear** -> **feel** (warmth + what supports you) -> **smell + belong** (safe,
+no worry can follow you in) -> rest (with a return-anytime anchor) -> the shared endless
+`hypnosis.drift_tail`. Wired into `stories.extra_names` / `ambience_for` / `story_units` exactly like
+Loving-Kindness, so it shows in the Sleep storyteller picker's **Self-help & poetry** group. Verified:
+new `tools/test_safeplace.py` (well-formed units; builds a place + all four senses; the safety
+framing; guidance flag adds/removes the breath cues; endless drift; ambience registered; dispatch
+wired); selftest; all 48 offline tests; drive_check 0 issues; an offscreen GUI smoke (the session is
+in the picker group, selectable, ticks with threads stable 1->2). README/INTERFACE updated.
+`safeplace.py` 103 < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

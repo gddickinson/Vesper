@@ -155,6 +155,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Sleep aid: "A Safe and Peaceful Place" guided-imagery session** -- a classic, evidence-based
+      relaxation technique that was a genuine gap among the guided sessions: build and inhabit an
+      imagined peaceful place, engaging **one sense at a time** (what you see, hear, feel, smell
+      there), settle into belonging where no worry can follow, then drift. Distinct from the *body*
+      relaxation of Autogenic / Body-Scan / PMR, the *breath* of NSDR, and the *warmth* of
+      Loving-Kindness -- here the listener **builds a place and rests inside it** (guided imagery is
+      well-supported for easing anxiety + sleep onset). New `breathsim/safeplace.py` (NAME, AMBIENCE
+      = the open, place-neutral **Forest Wind** bed, `units(rng, guidance)` -> narrator units, ending
+      in the shared `hypnosis.drift_tail`); wired into `stories.extra_names` / `ambience_for` /
+      `story_units`, so it appears in the Sleep storyteller picker's **Self-help & poetry** group.
+      Verified: new `tools/test_safeplace.py` (well-formed units; builds a place + the four senses; the
+      safety framing; guidance flag; endless drift; registered ambience; dispatch); selftest; all 48
+      offline tests; drive_check 0 issues; an offscreen GUI smoke (in the picker, selected + ticked,
+      threads stable). `safeplace.py` 103 < 500.
 - [x] **Storyteller character-follow uses the full cast** -- the opt-in "Character follows the story"
       map (`story_char`) only reached **8** of the now-**18** characters, so most of the cast never
       got to look the part. Enriched `_THEMES` so **15** are reachable -- new themes for **Sheep**

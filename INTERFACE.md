@@ -481,7 +481,10 @@ six standard exercises -- heaviness · warmth · calm heart · calm breath · wa
 then `hypnosis.drift_tail` into sleep) + **`lovingkindness`** (a **Loving-Kindness (Metta)** session:
 the four classic wishes -- safe · happy · healthy · at ease -- offered in widening circles, self ->
 a loved one -> a neutral person -> a difficult one -> all beings, then `hypnosis.drift_tail` into
-sleep; Singing Bowl bed) + **`hypnosis_topics`** (6 **themed self-help** hypnosis
+sleep; Singing Bowl bed) + **`safeplace`** (a **guided-imagery** session -- "A Safe and Peaceful
+Place": let a peaceful place form, then move through what you **see / hear / feel / smell** there,
+settle into belonging where no worry can follow, then `hypnosis.drift_tail` into sleep; Forest Wind
+bed) + **`hypnosis_topics`** (6 **themed self-help** hypnosis
 sessions reusing that arc with a different permissive suggestion block -- Letting Go of Stress
 / Quiet Confidence / Calm Focus / Letting Go of Worry / Deep Self-Acceptance / Peaceful
 Gratitude, all winding down to sleep) +

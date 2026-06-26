@@ -135,8 +135,9 @@ def extra_names():
     """Special non-templated storyteller generators (Cognitive Shuffle, Sleep
     Hypnosis + themed self-help hypnosis sessions, Poetry)."""
     from . import (autogenic, haibun, haiku, hypnosis, hypnosis_topics,
-                   lovingkindness, poetry, poetry_world, shuffle, tales)
-    return ([shuffle.NAME, hypnosis.NAME, autogenic.NAME, lovingkindness.NAME]
+                   lovingkindness, poetry, poetry_world, safeplace, shuffle, tales)
+    return ([shuffle.NAME, hypnosis.NAME, autogenic.NAME, lovingkindness.NAME,
+             safeplace.NAME]
             + hypnosis_topics.names()
             + [poetry.NAME] + poetry_world.names()
             + [haiku.NAME, haibun.NAME, tales.NAME])
@@ -159,7 +160,7 @@ def ambience_for(name):
     if isinstance(name, str) and name.startswith(BOOK_PREFIX):
         return BOOK_AMBIENCE
     from . import (autogenic, hypnosis, hypnosis_topics, lovingkindness, poetry,
-                   poetry_world, shuffle)
+                   poetry_world, safeplace, shuffle)
     if name == shuffle.NAME:
         return shuffle.AMBIENCE
     if name == hypnosis.NAME:
@@ -168,6 +169,8 @@ def ambience_for(name):
         return autogenic.AMBIENCE
     if name == lovingkindness.NAME:
         return lovingkindness.AMBIENCE
+    if name == safeplace.NAME:
+        return safeplace.AMBIENCE
     if hypnosis_topics.has(name):
         return hypnosis_topics.ambience(name)
     if name in (poetry.NAME, poetry.ALIAS):
@@ -313,7 +316,7 @@ def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
             yield from bookreader.resume_units(book)
         return
     from . import (autogenic, hypnosis, hypnosis_topics, lovingkindness, poetry,
-                   poetry_world, shuffle)
+                   poetry_world, safeplace, shuffle)
     if scene_name == shuffle.NAME:
         yield from shuffle.units(rng, guidance)
         return
@@ -325,6 +328,9 @@ def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
         return
     if scene_name == lovingkindness.NAME:
         yield from lovingkindness.units(rng, guidance)
+        return
+    if scene_name == safeplace.NAME:
+        yield from safeplace.units(rng, guidance)
         return
     if hypnosis_topics.has(scene_name):
         yield from hypnosis_topics.units(scene_name, rng, guidance)
