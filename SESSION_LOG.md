@@ -4002,6 +4002,25 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Characters: 2 new animals + per-character motion traits (user-requested)
+The user asked for "more animals and more features tailored for each character type." Delivered both.
+(1) Two new sleepy companions: a soft grey **Koala** (char_koala.py -- big fuzzy round ears, pink inner
+fluff, the signature dark spoon nose; sleeps ~20 h/day) and a russet **Red Panda** (char_redpanda.py --
+white face-mask + rusty tear-marks, pointed white-edged ears, a bushy ringed tail curled at the side),
+each registered in characters._CHARS (cast 19 -> 21) + char_voice.VOICES; both eyeballed via PNG (both
+read clearly + cute). (2) A per-character **motion-signature** system: AnimState was character-agnostic --
+every animal blinked / yawned / swished on the same timers -- so added `AnimState.set_traits` honouring
+tail / blink / yawn / twitch / swivel / energy multipliers (applied at the existing gesture points) and a
+central **char_traits.py** map giving every character a fitting signature (owl: blinks rarely + swivels;
+cat / dog / fox / red panda: swishy tails; bunny / mouse: twitchy ears; sloth / koala / bear / panda:
+yawn often + move slowly; robot / skull: rare mechanical blinks). face.set_character pushes the active
+character's traits into its AnimState; default Cat traits set at construction. New tools/test_char_traits.py
+proves the multipliers flow through (tail swish 5x, blink events 172 vs 39, ear activity 9x), that defaults
+are a no-op, and that all 21 characters have valid traits (keeps the map in sync with the cast); the
+existing cast smoke covers the two new animals. Verified: those tests + all 63 others (65/65); selftest
+(309/66); drive_check 0 issues; every file < 500 lines (char_anim 253, face 391, koala 72, redpanda 86,
+char_traits 52).
+
 ## Regression test: Stats practice insights (incl. corrupt-history safety)
 A quality/lock round. breathsim/insights.py builds the Stats dialog's gentle summaries (total time, average
 sit, busiest weekday, time-of-day, week-over-week, this-month, longest streak, breathing pace) -- pure and

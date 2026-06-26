@@ -15,10 +15,12 @@ from .char_fox import Fox
 from .char_frog import Frog
 from .char_hedgehog import Hedgehog
 from .char_human import Man, Woman
+from .char_koala import Koala
 from .char_mouse import Mouse
 from .char_owl import Owl
 from .char_panda import Panda
 from .char_penguin import Penguin
+from .char_redpanda import RedPanda
 from .char_robot import Robot
 from .char_sheep import Sheep
 from .char_skull import Skull
@@ -26,7 +28,7 @@ from .char_sloth import Sloth
 
 _CHARS = [Cat(), Penguin(), Dog(), Owl(), Fox(), Chicken(), Bunny(), Bear(),
           Panda(), Frog(), Duckling(), Hedgehog(), Mouse(), Sheep(), Sloth(),
-          Robot(), Woman(), Man(), Skull()]
+          Koala(), RedPanda(), Robot(), Woman(), Man(), Skull()]
 CHARACTERS = {c.name: c for c in _CHARS}
 DEFAULT = "Cat"
 

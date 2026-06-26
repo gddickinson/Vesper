@@ -31,7 +31,8 @@ try:                                              # the 3D head is optional
 except Exception:                                 # no faceView -> 2D cartoon-cat fallback
     _HAVE_FACEVIEW = False
 
-from . import captions, char_anim, characters, face_bg, face_gpu, hourglass, theme
+from . import (captions, char_anim, char_traits, characters, face_bg, face_gpu,
+               hourglass, theme)
 
 # faceView's Claude avatar: the ICT head, xray (glowing cyan) style, "young"
 # identity — exactly what the characters file names as default Claude.
@@ -73,6 +74,7 @@ class FaceWidget(QWidget):
         self._char_hue = None                    # character's signature eye/aura glow
         self._costume = "None"                   # optional costume overlay
         self._anim = char_anim.AnimState()       # shared character animation engine
+        self._anim.set_traits(char_traits.get("Cat"))   # per-character motion style
         self._anim_cur = None                    # latest Anim snapshot
         self._anim_last_t = None
         self._cat_state = dict(vol=0.5, t=0.0, mouth=0.0, eye_open=1.0,
@@ -128,6 +130,7 @@ class FaceWidget(QWidget):
         from . import char_voice
         self._char_name = name if name in characters.CHARACTERS else "Cat"
         self._char_hue = char_voice.get(self._char_name).hue
+        self._anim.set_traits(char_traits.get(self._char_name))   # adopt its motion
         self.update()
 
     def character(self):

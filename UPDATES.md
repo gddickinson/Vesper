@@ -155,6 +155,18 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **More animals + per-character motion traits** (user-requested) -- (1) two new sleepy companions,
+      a soft grey **Koala** (big fuzzy ears + spoon nose; sleeps ~20 h/day) and a russet **Red Panda**
+      (white face-mask, tear-marks, bushy ringed tail), each a `char_<name>.py` + registry + voice profile
+      (cast 19 -> 21); both eyeballed via PNG. (2) A per-character **motion-signature** system: the shared
+      `AnimState` was character-agnostic (every animal blinked / yawned / swished identically), so added
+      `AnimState.set_traits` honouring tail / blink / yawn / twitch / swivel / energy multipliers and a
+      central **char_traits.py** giving every character a fitting signature (owl blinks rarely + swivels;
+      cat / dog / fox swishy-tailed; rabbit / mouse twitchy; sloth / koala / bear yawny + slow); the face
+      pushes the active character's traits into its AnimState on `set_character`. New
+      `tools/test_char_traits.py` proves the multipliers flow through (tail 5x, blinks 172 vs 39, ear
+      activity 9x) and that all 21 characters have valid traits; the cast smoke covers the new animals.
+      Verified: those tests + all 63 others (65/65); selftest; drive_check 0 issues; all files < 500 lines.
 - [x] **Number keys 1-7 jump straight to a mode** -- a keyboard / accessibility follow-up to the
       screen-reader labels. The mode bar is the primary navigation, but a keyboard-only user could only
       reach it by tabbing through the panel or opening the Modes menu. Bound digit keys (1 = Meditate ...

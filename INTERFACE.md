@@ -161,6 +161,11 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
     — folded back into the same mouth / blink / bob / squash / tilt
     / gaze fields (via the `_oneshot` scheduler) so *every* character performs them
     with no per-character drawing code; reduce-motion (`calm`) softens + spaces them.
+    **`set_traits`** gives each character a *motion signature* (tail / blink / yawn /
+    twitch / swivel / energy multipliers from **char_traits.py**) so an owl blinks
+    rarely + swivels, a cat/dog/fox is swishy-tailed, a rabbit/mouse twitches, and a
+    sloth/koala/bear yawns often + moves slowly — the face pushes the active
+    character's traits into its `AnimState`.
   - **char_base.py** — shared kit: colour helpers, breath `aura`, big **cute glossy
     eyes** (blink / gaze / pupil dilation / happy squint / catchlight), `blush`,
     `head_box` framing, and the `Character` base + `Head` anchor (so a costume fits
@@ -169,7 +174,11 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
     `Head`): **Cat** (default) · Penguin · Dog · Owl · Fox · Chicken · Bunny · Bear ·
     Panda · Frog · Duckling · Hedgehog · Mouse · Sheep · **Sloth** (`char_sloth.py` -- a
     slow, sleepy, perpetually-smiling sloth with the signature dark eye patches: the
-    perfect sleep-app mascot, slow-voiced + charming when nodding off) · **Robot**
+    perfect sleep-app mascot, slow-voiced + charming when nodding off) · **Koala**
+    (`char_koala.py` -- a soft grey koala with big fuzzy round ears and the signature
+    spoon nose; sleeps ~20 h/day, so the ideal companion) · **Red Panda**
+    (`char_redpanda.py` -- russet fur, white face-mask + tear-marks, a bushy ringed
+    tail) · **Robot**
     (brushed-metal head, glowing eyes,
     pulsing antenna, LED mouth, chest core) · Woman · Man (chibi humans) · **Skull**
     (`char_skull.py` — a gentle storybook **talking skull** for spooky / folklore

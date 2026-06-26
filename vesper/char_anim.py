@@ -55,6 +55,7 @@ class AnimState:
         self._rng = rng or random.Random()
         r = self._rng.random
         self.t = 0.0
+        self.traits = {}         # per-character motion signature (see set_traits)
         self._tail = r() * 6.2831
         self._sway = r() * 6.2831
         self._bobph = r() * 6.2831
@@ -84,6 +85,19 @@ class AnimState:
         self._settle_t0 = None
         self._next_settle = 36.0 + r() * 40.0
         self._settle_dir = 1.0
+
+    def set_traits(self, traits):
+        """Give this character a motion *signature* -- a small dict of multipliers
+        (default 1.0 each) so every animal moves a little differently with no
+        per-character drawing code: ``tail`` (swish width), ``blink`` (interval --
+        an owl blinks rarely), ``yawn`` (interval -- a sloth yawns often),
+        ``twitch`` (ear/nose perk rate + size -- a rabbit twitches a lot),
+        ``swivel`` (head-cock size -- an owl swivels) and ``energy`` (overall
+        liveliness / tail speed)."""
+        self.traits = dict(traits or {})
+
+    def _tr(self, key):
+        return float(self.traits.get(key, 1.0))
 
     def _gesture(self, t0, dur):
         """0->1->0 bump over *dur* s since *t0*, or None when finished."""
@@ -133,9 +147,10 @@ class AnimState:
         self.bristle += (target - self.bristle) * (0.25 if target > self.bristle
                                                    else 0.05)
 
-        # tail swishes continually, faster + wider when livelier
-        self._tail += dt * (1.1 + 3.0 * excite)
-        tail = math.sin(self._tail) * (0.16 + 0.55 * excite)
+        # tail swishes continually, faster + wider when livelier (and per the
+        # character's energy / tail signature)
+        self._tail += dt * (1.1 + 3.0 * excite) * self._tr("energy")
+        tail = math.sin(self._tail) * (0.16 + 0.55 * excite) * self._tr("tail")
 
         # gentle idle sway + breathing bob/squash
         sway = math.sin(t * 0.45 + self._sway) * (0.018 + 0.03 * excite)
@@ -148,8 +163,9 @@ class AnimState:
         eg = self._gesture(self._ear_t0, 0.5)
         if eg is None and self._ear_t0 is not None:
             self._ear_t0 = None
-            self._next_ear = t + 2.5 + self._rng.random() * 5.0
-        ear = max(eg or 0.0, 0.4 * excite)
+            twitch = max(0.3, self._tr("twitch"))      # twitchier -> sooner + bigger
+            self._next_ear = t + (2.5 + self._rng.random() * 5.0) / twitch
+        ear = max((eg or 0.0) * self._tr("twitch"), 0.4 * excite)
 
         # blink: from eye_open, plus an occasional spontaneous extra blink
         eye_open = _clamp(float(st.get("eye_open", 1.0)), 0.04, 1.0)
@@ -157,8 +173,8 @@ class AnimState:
             self._blink_t0 = t
         bg = self._gesture(self._blink_t0, 0.18)
         if bg is None and self._blink_t0 is not None:
-            self._blink_t0 = None
-            self._next_blink = t + 3.0 + self._rng.random() * 5.0
+            self._blink_t0 = None              # rarer blinkers wait longer (owl)
+            self._next_blink = t + (3.0 + self._rng.random() * 5.0) * self._tr("blink")
         blink = max(1.0 - eye_open, bg or 0.0)
 
         # --- rarer drowsy gestures (reduce-motion 'calm' softens + spaces them) --
@@ -167,7 +183,9 @@ class AnimState:
         slow = 1.0 + 1.8 * calm
 
         # yawn: slow wide mouth that holds open while the eyes squeeze toward shut
-        yg = self._oneshot("_yawn_t0", "_next_yawn", 2.3, 22.0, 48.0, slow)
+        # (sleepy types -- sloth, koala, bear -- yawn more often)
+        yg = self._oneshot("_yawn_t0", "_next_yawn", 2.3, 22.0, 48.0,
+                           slow * self._tr("yawn"))
         yawn = min(1.0, 1.5 * yg)                      # plateau across the middle
 
         # stretch: a luxurious lengthen of the body + a small upward lift
@@ -179,7 +197,7 @@ class AnimState:
             self._cock_dir = 1.0 if self._rng.random() < 0.5 else -1.0
         cg = self._oneshot("_cock_t0", "_next_cock", 1.4, 15.0, 37.0, slow,
                            on_start=_pick_cock)
-        cock = cg * self._cock_dir * 0.22 * amp
+        cock = cg * self._cock_dir * 0.22 * amp * self._tr("swivel")   # owl swivels
 
         # look-around: a brief gaze peek to a fresh point, then ease back
         def _pick_look():
