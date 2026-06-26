@@ -495,8 +495,9 @@ audio callback contains any fault as silence + logs it once), `speech`,
 `narration` (Kokoro/say + lip-sync `amp`; a
 generation token + per-thread-local player process mean a voice/scene change
 never lets an outgoing narrator cut off the incoming one),
-`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 297 across
-63 branches incl. Castles & Keeps (Neuschwanstein · Himeji · Edinburgh · Mont-Saint-Michel) +
+`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 301 across
+64 branches incl. Pilgrim Paths (Camino de Santiago · Shikoku · Kumano Kodo · Via Francigena) +
+Castles & Keeps (Neuschwanstein · Himeji · Edinburgh · Mont-Saint-Michel) +
 Cheeses of the World (Cheddar · Brie · Parmesan · Roquefort) +
 Sacred Spaces (Hagia Sophia · Borobudur · Angkor Wat · The Golden Temple) +
 Waterfalls of the World (Niagara · Victoria · Angel · Iguazu) +

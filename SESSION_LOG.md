@@ -3901,6 +3901,23 @@ the correct backdrop or None; every theme + scene base is a registered `face_bg`
 real-lecture sanity sweep (Diwali still cues Embers x13, City x7, etc. -- no regression); selftest;
 all 50 offline tests; drive_check 0 issues.
 
+## Stories: "Pilgrim Paths" lecture branch (4)
+A Stories round (every ~3rd). New branch **Pilgrim Paths** -- The Camino de Santiago, The Shikoku
+Pilgrimage, The Kumano Kodo, The Via Francigena -- great pilgrimage walking-routes whose defining
+quality (the slow, meditative rhythm of walking and resting) is uniquely sleep-appropriate, and
+distinct from Ancient Roads & Walls (infrastructure), Voyages & Journeys (modes of travel) and Sacred
+Spaces (the buildings). Each module `lectures_{camino,shikoku,kumano,viafrancigena}.py` is data-only
+(NAME + AMBIENCE + 7x12 second-person ASCII SECTIONS): fact-free settle-in, gentle accurate description
+(the Camino's scallop-shell waymarks and rise-walk-rest rhythm; Shikoku's white-clad henro + osettai +
+closing the circle; Kumano Kodo's moss-paved cedar trails and day's-end onsen; the Via Francigena's
+Sigeric stages and golden Tuscan hills), sleep-drift close, each likening the slow walking rhythm to the
+breath, faiths kept gentle/inclusive. Ambiences Wind in Pines / Singing Bowl / Forest Wind / Gentle Rain
+(all registered). Four parallel subagents wrote the modules, each self-verifying 7x12/ASCII/punctuation;
+then registered in `lectures._CATALOG`. Verified: selftest **301 lectures across 64 branches** (the
+collection passes 300); lint (7x12, section 1 fact-free, all sections sleep-close, ambience resolves, no
+collisions); all four dispatch through `stories.story_units`; all 59 offline tests; drive_check 0
+issues; story DB rebuilt (25,593 lines / 413,502 words). README/INTERFACE counts 297->301 / 63->64.
+
 ## Stories: "Castles & Keeps" lecture branch (4)
 A Stories round (every ~3rd). New branch **Castles & Keeps** -- Neuschwanstein, Himeji Castle,
 Edinburgh Castle, Mont-Saint-Michel -- great castles/strongholds framed gently by setting + quiet

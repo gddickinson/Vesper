@@ -112,6 +112,8 @@ from . import lectures_cheddar, lectures_brie  # Cheeses of the World
 from . import lectures_parmesan, lectures_roquefort
 from . import lectures_neuschwanstein, lectures_himeji  # Castles & Keeps
 from . import lectures_edinburghcastle, lectures_montsaintmichel
+from . import lectures_camino, lectures_shikoku  # Pilgrim Paths
+from . import lectures_kumano, lectures_viafrancigena
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -301,6 +303,8 @@ _CATALOG = [
                               lectures_parmesan, lectures_roquefort]),
     ("Castles & Keeps", [lectures_neuschwanstein, lectures_himeji,
                          lectures_edinburghcastle, lectures_montsaintmichel]),
+    ("Pilgrim Paths", [lectures_camino, lectures_shikoku,
+                       lectures_kumano, lectures_viafrancigena]),
 ]
 
 LECTURES = {}

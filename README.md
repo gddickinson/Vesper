@@ -13,9 +13,9 @@ Vesper paces your breath with a soft animated visualization and real-time synthe
 sound. It spans seven activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep ·
 Read** — each with its own purpose-built control panel, visual scene and soundscape. At its
 centre is a talking-head **avatar** (a 3D head, or one of **19 hand-drawn cartoon
-characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **297
+characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **301
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
-<!-- counts: 297 lectures / 63 branches · 150 voices · 66 phrases · 7 modes · 19 characters -->
+<!-- counts: 301 lectures / 64 branches · 150 voices · 66 phrases · 7 modes · 19 characters -->
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
@@ -47,7 +47,7 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   crickets, a distant night surf, a warm summer porch…) plus synthesised **bells & gongs, drums, winds & organs, environmental FX**
   and a **cosmic generative-music** engine sonifying real planetary + pulsar data. Nothing
   to download.
-- **The bedtime storyteller** — **297 authored sleep-lectures across 63 branches** (the
+- **The bedtime storyteller** — **301 authored sleep-lectures across 64 branches** (the
   Cosmos, the Inner Planets &amp; the Dwarf Planets, Earth &amp; Sea, the Living World, the
   Human Body, Histories, Materials &amp; Making, Ideas &amp; Wonders, Myth &amp; Legend, the
   Polar Worlds, Weathers of the World, the Microscopic World, the Great Voyages, Grasslands

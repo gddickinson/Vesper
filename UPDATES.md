@@ -1883,6 +1883,24 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Pilgrim Paths** (4): The Camino de Santiago · The Shikoku Pilgrimage · The Kumano
+      Kodo · The Via Francigena -- great pilgrimage walking-routes, whose defining quality (the slow,
+      meditative rhythm of walking and resting) is uniquely sleep-appropriate, and distinct from Ancient
+      Roads & Walls (infrastructure), Voyages & Journeys (modes of travel) and Sacred Spaces (the
+      buildings). Globally spread: NW Spain, two very different Japanese walks (an 88-temple island loop
+      vs a misty cedar-forest mountain trail), and a Canterbury-to-Rome road across Europe. Added
+      `lectures_{camino,shikoku,kumano,viafrancigena}.py` (7x12 lines, fact-free section 1, accurate
+      gentle description -- the Camino's scallop-shell waymarks + rise-walk-rest rhythm as moving
+      meditation; Shikoku's white-clad henro with the staff as Kobo Daishi's companion + the osettai
+      custom + closing the circle; Kumano Kodo's thousand-year moss-paved cedar trails + day's-end onsen;
+      the Via Francigena's Sigeric stages + the golden hills of Tuscany), ASCII, every section
+      sleep-closing, each likening the slow walking rhythm to the breath, faiths kept gentle/inclusive.
+      Ambiences Wind in Pines / Singing Bowl / Forest Wind / Gentle Rain (all registered). Distinct
+      NAMEs/modules. New branch in `_CATALOG` -> **301 lectures / 64 branches** (the collection passes
+      300); story DB rebuilt (25,593 lines / 413,502 words). Done: selftest (301/64); lint -- each 7x12,
+      section 1 fact-free (no digits), all 7 sections sleep-close, ASCII-only, ambience resolves to a
+      real voice, no NAME/module collisions; all four dispatch through `stories.story_units`; all 59
+      offline tests; drive_check 0 issues.
 - [x] **New branch — Castles & Keeps** (4): Neuschwanstein · Himeji Castle · Edinburgh Castle ·
       Mont-Saint-Michel -- great castles and strongholds, evocative and calming when framed by their
       settings + quiet history (NOT battles -- kept gentle throughout, like Sacred Spaces). Globally and
