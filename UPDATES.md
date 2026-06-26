@@ -155,6 +155,21 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Luna -- a Moon companion that shows tonight's real moon phase** (user-requested
+      "intriguing + delightful" character+feature). A new **Luna** character: a serene sleeping moon (soft
+      seas, a warm glow, twinkling stars, a closed-eyes content face) whose terminator shadow is drawn from
+      a new pure module **`breathsim/moonphase.py`** -- so the crescent / gibbous you see matches the moon
+      in the real sky tonight, and tracks the waxing / waning direction. The "intrigue" is real-world
+      astronomy (a synodic-month model: phase_fraction / illumination / waxing / phase_name), the delight is
+      a cute moon narrator. Registered (cast 22 -> 23) + a serene voice + still/slow traits; and the
+      storyteller now auto-picks **Luna** for moon / lunar / eclipse tales (placed before the Owl, who keeps
+      the wider night sky -- stars, constellations, planets). New `tools/test_moonphase.py` (principal
+      phases land on the right days, illumination 0->1 new->full, waxing flips at full, today is sane);
+      story_char + cast smoke + traits tests all cover Luna. PNG-eyeballed at a waxing crescent + a waning
+      gibbous -- both read clearly, the sleepy face always visible over the shadow. Verified: those tests +
+      all others (67/67); selftest; drive_check 0 issues; files < 100 lines.
+      [Plan menu also weighed: a Sandman + dream-dust particle, a Tortoise + ultra-slow pace, a Seasons
+      auto-theme -- noted for future rounds.]
 - [x] **Storyteller picks the Snowman for snowy/wintry tales** -- completes the snow theme (the Snowman
       character + Winter's Hush lectures + Winter Cabin scene). `story_char.char_for_scene` now routes
       snow / frost / ice / winter content to the **Snowman** (like the Sloth for sleep): a new theme placed

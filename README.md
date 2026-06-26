@@ -15,7 +15,7 @@ Read** — each with its own purpose-built control panel, visual scene and sound
 centre is a talking-head **avatar** (a 3D head, or one of **19 hand-drawn cartoon
 characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **301
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
-<!-- counts: 321 lectures / 69 branches · 150 voices · 66 phrases · 7 modes · 22 characters -->
+<!-- counts: 321 lectures / 69 branches · 150 voices · 66 phrases · 7 modes · 23 characters -->
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end

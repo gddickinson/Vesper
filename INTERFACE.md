@@ -123,7 +123,7 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   Primary guarantees: opt-in + process isolation + no in-process exec. Offline test:
   `tools/test_llm_plugin.py`.
 - **story_char.py** — maps a story scene / lecture to a fitting cartoon character
-  (`char_for_scene`: sea→Penguin · **snow/frost/ice→Snowman** · shepherd/lullaby→Sheep · sleep/slow→Sloth ·
+  (`char_for_scene`: sea→Penguin · **snow/frost/ice→Snowman** · **moon/lunar→Luna** · shepherd/lullaby→Sheep · sleep/slow→Sloth ·
   dawn→Chicken · train/
   machine→Robot · journey→Dog · small→Mouse · forest→Bear · cosy→Cat · night→Owl …,
   default Owl -- so the sleepy **Sloth** narrates the "How the World Sleeps" branch + the
@@ -185,7 +185,9 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
     (`char_redpanda.py` -- russet fur, white face-mask + tear-marks, a bushy ringed
     tail) · **Snowman** (`char_snowman.py` -- two stacked snowballs, coal eyes + button
     smile, a carrot nose, twig arms, a red scarf + knit cap, with soft snowflakes
-    drifting around him -- the wintry companion for snow scenes/stories) · **Robot**
+    drifting around him -- the wintry companion for snow scenes/stories) · **Luna**
+    (`char_luna.py` -- a serene sleeping moon whose terminator shadow shows **tonight's
+    real phase** from `breathsim.moonphase`; soft seas, a warm glow, twinkling stars) · **Robot**
     (brushed-metal head, glowing eyes,
     pulsing antenna, LED mouth, chest core) · Woman · Man (chibi humans) · **Skull**
     (`char_skull.py` — a gentle storybook **talking skull** for spooky / folklore

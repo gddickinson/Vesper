@@ -44,6 +44,8 @@ TRAITS = {
     # the odd ones out
     "Snowman": {"energy": 0.5, "tail": 0.0, "blink": 1.7, "twitch": 0.5,
                 "swivel": 0.6, "yawn": 1.6},   # a snowman holds very still
+    "Luna": {"energy": 0.5, "tail": 0.0, "blink": 2.0, "twitch": 0.3,
+             "swivel": 0.7, "yawn": 1.3},      # the moon drifts, serene and slow
     "Robot": {"blink": 1.6, "yawn": 2.5, "energy": 0.9, "twitch": 0.6, "tail": 0.0},
     "Skull": {"blink": 2.2, "yawn": 1.4, "energy": 0.85, "tail": 0.0, "swivel": 1.1},
 }

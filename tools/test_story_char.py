@@ -30,7 +30,7 @@ def main():
     # the map now reaches a broad spread of the cast (not just the original 8)
     assert len(names) >= 14, ("character-follow should use most of the cast", len(names))
     for newcomer in ("Sheep", "Chicken", "Robot", "Mouse", "Dog", "Hedgehog",
-                     "Panda", "Sloth", "Snowman"):
+                     "Panda", "Sloth", "Snowman", "Luna"):
         assert newcomer in names, ("newer cast member unused: " + newcomer)
     print("ok: %d distinct characters reachable (incl. the newer cast)" % len(names))
 
@@ -56,6 +56,14 @@ def main():
     assert story_char.char_for_scene("The Black Forest") == "Bear"     # woodland kept
     assert story_char.char_for_scene("Riverside") == "Duckling"        # lake/river kept
     print("ok: the Snowman gets snow/frost/ice without stealing sea/forest/river")
+
+    # Luna (the moon) narrates the moon's own tales, before the Owl's wider sky
+    for lunar in ("The Moon", "Lunar Calendars", "The Moons of the Giants",
+                  "A crescent moon"):
+        assert story_char.char_for_scene(lunar) == "Luna", (lunar, "-> Luna")
+    assert story_char.char_for_scene("The Constellations") == "Owl"     # wider sky kept
+    assert story_char.char_for_scene("Milky Way Myths") == "Owl"
+    print("ok: Luna gets the moon's tales without stealing the wider night sky")
 
     # representative scenes / lecture names map to a fitting character
     cases = {

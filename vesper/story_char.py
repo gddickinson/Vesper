@@ -53,7 +53,10 @@ _THEMES = [
     ("Cat", ("cottage", "home", "hearth", "fire", "cafe", "candle", "blanket",
              "quilt", "lamp", "lantern", "kitchen", "bread", "oven", "bake",
              "warm", "purr")),
-    ("Owl", ("night", "star", "sky", "moon", "cosmos", "galaxy", "planet",
+    # the moon herself narrates the moon's own tales (before Owl, who keeps the
+    # wider night sky -- stars, constellations, planets, the cosmos)
+    ("Luna", ("moon", "lunar", "luna", "crescent", "eclipse")),
+    ("Owl", ("night", "star", "sky", "cosmos", "galaxy", "planet",
              "constellation", "comet", "nebula", "owl", "midnight", "library",
              "philosoph", "wisdom")),
 ]

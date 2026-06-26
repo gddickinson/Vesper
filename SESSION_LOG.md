@@ -4048,6 +4048,27 @@ ASCII; eyeballed the Frozen Lake's fact-free intro + sleep close. Verified: self
 offline tests; drive_check 0 issues. Together with the Snowman + Winter Cabin, this completes the
 three-part user request (more character quirks + a snowman + snow scenes + snow stories).
 
+## Luna -- a Moon companion that shows tonight's real moon phase (user-requested)
+The user asked what new characters/themes + paired features could make the app more intriguing + delightful,
+to plan and implement. Planned a short menu (Luna+moon-phase, a Sandman+dream-dust particle, a Tortoise+
+ultra-slow pace, a Seasons auto-theme) and built the most *intriguing* one: **Luna**, a moon companion whose
+crescent shows the **real phase tonight**. New pure module breathsim/moonphase.py (51 lines): a synodic-month
+model (SYNODIC=29.53d from a known 2000-01-06 new moon) -> phase_fraction / illumination (0 new .. 1 full,
+via (1-cos2πf)/2) / waxing / phase_name (eighth-bins with the 4 principal phases centred). New
+vesper/char_luna.py (99 lines): a pale-gold disc with soft seas, a warm halo, a sleeping face (closed content
+eyes + smile + blush), twinkling stars, and a soft terminator shadow -- a night-coloured disc offset by
+illumination*2R on the unlit side (waxing -> lit on the right), clipped to the moon via QPainterPath so it
+never darkens the sky, and the face drawn over it so even a new moon stays a cosy companion. Registered in
+characters._CHARS (cast 22 -> 23), char_voice (serene/dreamy) + char_traits (still, slow, rare blink); and
+story_char now maps moon/lunar/eclipse -> Luna, placed before the Owl (who keeps stars/constellations/
+planets/cosmos -- "moon" removed from Owl). New tools/test_moonphase.py (principal phases on the right days,
+illumination tracks the cycle, waxing flips at full, today's phase valid) + extended test_story_char (moon
+tales -> Luna, wider sky -> Owl). PNG-eyeballed at a waxing crescent (lit sliver right) + a waning gibbous
+(shadow creeping from the right) -- both clearly the right phase, face always visible. Verified: those tests
++ cast smoke (23 chars) + char-traits (Luna covered); selftest (321/69); all 67 offline tests; drive_check 0
+issues; every file < 100 lines. [The choir scout this round found it clean -- set_level isn't even reached by
+the GUI, which always full-rebuilds; no fix needed.]
+
 ## Storyteller picks the Snowman for snowy/wintry tales
 A cohesive follow-up that completes the snow theme (Snowman character + Winter's Hush lectures + Winter
 Cabin scene): when "Character follows the story" is on, the storyteller now auto-picks the **Snowman** for
