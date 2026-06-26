@@ -27,7 +27,7 @@ def _qc(hexstr, alpha=1.0):
     return c
 
 
-def _text(p, cx, cy, text, hexcol, size, bold=False, alpha=1.0):
+def _text(p, cx, cy, text, hexcol, size, bold=False, alpha=1.0, max_w=None):
     if not text:
         return
     p.setPen(_qc(hexcol, alpha))
@@ -36,23 +36,32 @@ def _text(p, cx, cy, text, hexcol, size, bold=False, alpha=1.0):
     p.setFont(f)
     fm = p.fontMetrics()
     tw = fm.horizontalAdvance(text)
+    if max_w and tw > max_w:                       # shrink to fit a narrow pane
+        size = max(9, int(size * max_w / tw))
+        f = QFont("Helvetica Neue", size)
+        f.setBold(bold)
+        p.setFont(f)
+        fm = p.fontMetrics()
+        tw = fm.horizontalAdvance(text)
     p.drawText(int(cx - tw / 2), int(cy + fm.ascent() / 2 - fm.descent() / 2), text)
 
 
 def _overlay(p, w, cx, label_y, count_y, hint_y, status_y, c, hue,
              show_count=True):
     running = c["running"]
+    # Widest a centred line may be without running off either edge of the pane.
+    mw = max(40.0, 2 * min(cx, w - cx) - 16)
     _text(p, cx, label_y, c["label"] if running else "Ready",
-          theme.blend(theme.TEXT, hue, 0.3), 26)
+          theme.blend(theme.TEXT, hue, 0.3), 26, max_w=mw)
     count = ""
     if show_count and running and c["remaining"] > 0.05:
         count = str(int(math.ceil(c["remaining"] - 1e-6)))
     if c.get("subtitle"):
         count = c["subtitle"]
     _text(p, cx, count_y, count, theme.TEXT, 30 if c.get("subtitle") else 52,
-          bold=not c.get("subtitle"))
-    _text(p, cx, hint_y, c.get("hint", ""), theme.MUTED, 13)
-    _text(p, cx, status_y, c.get("status", ""), theme.MUTED, 11)
+          bold=not c.get("subtitle"), max_w=mw)
+    _text(p, cx, hint_y, c.get("hint", ""), theme.MUTED, 13, max_w=mw)
+    _text(p, cx, status_y, c.get("status", ""), theme.MUTED, 11, max_w=mw)
 
 
 class OrbScene:

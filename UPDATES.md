@@ -155,6 +155,16 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Fix: scene overlay text clipped on a narrow pane** -- the breathing scenes draw a phase
+      label + the storyteller **subtitle** centred over the orb, but `scenes._text` used a fixed font
+      with no fit-to-width, so a long subtitle (the spoken story line, ~42 chars) ran straight off
+      both edges on a narrow scene pane (rendered + eyeballed -- only the middle of the line showed).
+      This is the clipping I flagged when the caption font-scale shipped. `_text` now takes a `max_w`
+      and shrinks the font to fit (floor 9 px); `_overlay` passes the centred line's available width
+      (`2*min(cx, w-cx) - 16`) to the label / subtitle / hint / status, and `scene_pitch` passes it to
+      its big text + subtitle. Verified: new `tools/test_scene_text_fit.py` (the uncapped line clips,
+      the capped one does not, and still draws); a before/after PNG eyeballed (full subtitle now fits);
+      selftest; all 46 offline tests; drive_check 0 issues. `scenes.py` 487 < 500.
 - [x] **Talking-Skull character (user-requested)** -- a gentle storybook **talking skull** for spooky
       / folklore tales, **opt-in** from the Character menu. Investigated faceView's `anatomy_skull`
       mode first: it exists but its mandible barely drops with `jaw_open` (measured + eyeballed), and

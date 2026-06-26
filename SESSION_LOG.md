@@ -3746,6 +3746,20 @@ registered in `lectures._CATALOG`. Verified: selftest now **265 lectures across 
 DB rebuilt (`python -m breathsim.story_db`: 265 / 55 / 357,371 words; .db gitignored); all 45 offline
 tests; drive_check 0 issues; tone spot-checked. README / INTERFACE counts 261->265 / 54->55.
 
+## Fix: scene overlay text clipped on a narrow pane (fit-to-width)
+A bug I flagged when the caption font-scale shipped: the breathing scenes draw a phase label + the
+storyteller **subtitle** centred over the orb via `scenes._text`, which set a fixed-size font and drew
+centred with NO fit-to-width -- so a long subtitle (the spoken story line, truncated to ~42 chars) ran
+straight off both edges of a narrow scene pane (rendered + eyeballed: only the middle of the line was
+visible). `_text` now takes an optional `max_w` and shrinks the font to fit (floor 9 px, the same
+trick the captions overlay uses); `_overlay` computes the centred line's available width
+(`2*min(cx, w-cx) - 16`) and passes it to the label / subtitle / hint / status, and `scene_pitch`
+passes it to its big status + subtitle. Pure-ish change, no behaviour change for text that already
+fits. Verified: new `tools/test_scene_text_fit.py` (renders `_text` in isolation on a blank canvas so
+scene stars/motes don't confound it -- the uncapped long line clips at the edges, the capped one does
+not and still draws); a before/after orb PNG eyeballed (the full subtitle now fits within the pane);
+selftest; all 46 offline tests; drive_check 0 issues. `scenes.py` 487 < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

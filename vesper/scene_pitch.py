@@ -119,6 +119,6 @@ class PitchScene:
         else:
             txt = "Sing…" if c["running"] else "Press Start, then sing"
             col = theme.MUTED
-        _text(p, w / 2, 26, txt, col, 22)
+        _text(p, w / 2, 26, txt, col, 22, max_w=w * 0.92)
         if c.get("subtitle"):
-            _text(p, w / 2, h - 44, c["subtitle"], theme.MUTED, 26)
+            _text(p, w / 2, h - 44, c["subtitle"], theme.MUTED, 26, max_w=w * 0.92)
