@@ -3901,6 +3901,25 @@ the correct backdrop or None; every theme + scene base is a registered `face_bg`
 real-lecture sanity sweep (Diwali still cues Embers x13, City x7, etc. -- no regression); selftest;
 all 50 offline tests; drive_check 0 issues.
 
+## Fix: sound_cues substring false-hits + dedup the matcher
+The audio twin of the previous round. The ambience-bed cue matcher
+(`sound_cues.cue_for_text`) still matched raw substrings, so a key lit a *longer unrelated word*:
+"rain" -> "t-rain", "wind" -> "window", "star" -> "start", "surf" -> "surface" -- a stray bed-switch
+under otherwise abstract lines. Switched it to the **same whole-word matching** the backdrop matcher
+now uses. Because both subsystems now want exactly this behaviour, **extracted one shared
+`sound_cues.match_themes(text, themes)`** helper: it lower-cases, splits words (`[a-z]+`), and a
+single-word trigger matches a word or its +s/+es plural while a space-containing trigger matches as a
+phrase. `cue_for_text` calls `match_themes(text, _CUES)`; `story_bg.bg_for_text` builds a
+triggers-first `_MATCH` view of its label-first `_THEMES` and calls the same helper -- one place to
+keep whole-word matching correct (DRY). Adjusted the few stem-keys that relied on the loose match to
+explicit inflections ("crackl" -> "crackle"/"crackling", "trickl" -> "trickle"/"trickling"; added
+"galaxies"); `next_bed` anti-thrash unchanged. Gotcha caught along the way: `_CUES` is
+`(triggers, label)` but `_THEMES` is `(label, triggers)` -- the shared loop unpacks triggers-first, so
+`story_bg` passes the converted `_MATCH`, not `_THEMES`. Verified: `tools/test_sound_cues.py` extended
+with a false-hit trap block (train / window / starts / surface / spine / season / currently -> None,
+while real rain/wind/galaxies words still cue); `tools/test_story_bg.py` green through the shared
+matcher; selftest; all 49 offline tests; drive_check 0 issues.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

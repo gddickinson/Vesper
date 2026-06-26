@@ -8,9 +8,7 @@ crossfades slowly and eases home over abstract passages, so it never startles.
 """
 from __future__ import annotations
 
-import re
-
-_WORD = re.compile(r"[a-z]+")
+from breathsim import sound_cues
 
 # (face_bg name, trigger words/phrases). Order matters -- first match wins, so the
 # more specific / evocative families come first. Single-word triggers match WHOLE
@@ -41,6 +39,10 @@ _THEMES = [
               "cottage", "village", "courtyard")),
 ]
 
+# (triggers, label) view for the shared matcher (which takes triggers-first, the
+# way `sound_cues._CUES` is ordered); `_THEMES` stays label-first for readability.
+_MATCH = [(triggers, name) for name, triggers in _THEMES]
+
 # Story scenes -> a calm base backdrop to ease home toward between cues.
 _SCENE_BASE = {
     "Rainy Cottage": "Rain",
@@ -55,21 +57,10 @@ DEFAULT_BASE = "Stars"
 
 def bg_for_text(text: str):
     """The backdrop best matching the imagery in *text*, or ``None`` if the line is
-    abstract (no clear scene). A single-word trigger matches a **whole word** (or its
-    simple +s/+es plural) so it never fires on a longer unrelated word ("star" not
-    "start", "tree" not "street"); a trigger containing a space matches as a phrase."""
-    if not text:
-        return None
-    low = str(text).lower()
-    words = set(_WORD.findall(low))
-    for name, triggers in _THEMES:
-        for t in triggers:
-            if " " in t:
-                if t in low:
-                    return name
-            elif t in words or (t + "s") in words or (t + "es") in words:
-                return name
-    return None
+    abstract (no clear scene). Uses the shared ``sound_cues.match_themes`` whole-word
+    matcher (so a single-word trigger never fires on a longer unrelated word -- "star"
+    not "start", "tree" not "street"; space-containing triggers match as a phrase)."""
+    return sound_cues.match_themes(text, _MATCH)
 
 
 def base_for_scene(scene) -> str:

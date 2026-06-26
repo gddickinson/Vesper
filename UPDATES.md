@@ -155,6 +155,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Fix: sound_cues substring false-hits + dedup the matcher** -- the *audio* twin of last
+      round's backdrop fix. The ambience-bed cue matcher (`sound_cues.cue_for_text`) still used raw
+      substring matching, so a key lit a *longer unrelated word*: "rain" fired on "t-**rain**" (Soft
+      Rainstorm), "wind" on "**wind**ow" (Forest Wind), "star" on "**star**t" (Brown Noise), "surf" on
+      "**surf**ace" (Ocean Waves) -- a stray bed-switch under perfectly abstract lines. Switched it to
+      the **same whole-word matching** the backdrop now uses, and -- since both subsystems do exactly
+      this -- **extracted one shared `sound_cues.match_themes(text, themes)`** helper that both
+      `cue_for_text` and `story_bg.bg_for_text` delegate to (DRY; one place to get whole-word matching
+      right). Adjusted the few stem-keys that depended on the loose match to explicit inflections
+      ("crackl"->"crackle/crackling", "trickl"->"trickle/trickling"; added "galaxies"). `next_bed`
+      anti-thrash is unchanged. Verified: `tools/test_sound_cues.py` extended with a false-hit trap
+      block (train / window / starts / surface / spine / season / currently all -> None, while the real
+      rain/wind/galaxies words still cue); `tools/test_story_bg.py` still green through the shared
+      matcher; selftest; all 49 offline tests; drive_check 0 issues.
 - [x] **Fix: story backdrop matcher fired on false substrings** -- a real, prominent bug. The
       backdrop-follows-the-words matcher (`story_bg.bg_for_text`) used raw substring matching, so a
       trigger lit a *longer unrelated word*: "star" fired on "start" / "stared" / "startle" (Stars

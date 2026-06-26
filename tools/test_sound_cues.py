@@ -51,6 +51,19 @@ def main():
         assert sound_cues.cue_for_text(none_line) is None, ("unexpected cue", none_line)
     print("ok: abstract lines + the 'warm light' trap return no cue")
 
+    # whole-word matching: a key must NOT fire inside a longer unrelated word
+    # (the old substring match wrongly hit all of these).
+    for trap in ("the train pulled slowly in", "she opened the window",
+                 "the story starts at dawn", "the smooth surface of the lake",
+                 "a chill ran down his spine", "the season was turning",
+                 "currently he was resting"):
+        assert sound_cues.cue_for_text(trap) is None, ("substring false hit", trap)
+    # ...while the real words still cue
+    assert sound_cues.cue_for_text("the rain falls") == "Soft Rainstorm"
+    assert sound_cues.cue_for_text("a warm wind in the pines") == "Forest Wind"
+    assert sound_cues.cue_for_text("the galaxies turn slowly") == "Brown Noise"
+    print("ok: whole-word matching kills train/window/starts/surface/spine false hits")
+
     # anti-thrash: a bed->bed switch must be confirmed over two cueing lines, so a
     # single stray image never flips the ambience back and forth.
     base = "Forest Wind"

@@ -8,9 +8,14 @@ GROUP_NATURE voices, so this works with no downloaded assets. Pure + testable.
 """
 from __future__ import annotations
 
+import re
+
+_WORD = re.compile(r"[a-z]+")
+
 # (keywords, ambient voice). First match wins; ordered most- to least-specific.
-# Keys are matched as substrings of the lowercased line, chosen to avoid common
-# false hits (no bare "sea"/"room"/"season").
+# Single-word keys match a WHOLE word (or its simple +s/+es plural), so a key never
+# fires on a longer unrelated word ("rain" not "train", "wind" not "window", "star"
+# not "start", "surf" not "surface"); keys containing a space match as a phrase.
 _CUES = [
     (("thunder", "storm", "lightning", "tempest"), "Distant Thunder"),
     (("purr", "purring", "a cat", "the cat", "kitten", "tabby", "whiskers"),
@@ -20,8 +25,8 @@ _CUES = [
       "singing bowl", "gong", "chimes", "a chime", "tolling"), "Singing Bowl"),
     (("cricket", "fireflies", "firefly", "summer night", "night insects",
       "chirp"), "Night Crickets"),
-    (("campfire", "bonfire", "fireplace", "fireside", "hearth", "crackl",
-      "the flames", "candlelight", "candle flame", "glowing coals",
+    (("campfire", "bonfire", "fireplace", "fireside", "hearth", "crackle",
+      "crackling", "the flames", "candlelight", "candle flame", "glowing coals",
       "lantern", "diya", "oil lamp", "the lamps", "paper lantern",
       "festival of light"), "Campfire"),
     (("on the roof", "against the window", "against the pane", "under the eaves",
@@ -30,31 +35,45 @@ _CUES = [
      "Ocean Waves"),
     (("rain", "drizzle", "downpour", "rainfall"), "Soft Rainstorm"),
     (("river", "stream", "brook", "creek", "waterfall", "current of water",
-      "meltwater", "rapids", "babbling", "trickl", "dripping", "drip of",
-      "fountain", "spring water"), "Mountain Stream"),
+      "meltwater", "rapids", "babbling", "trickle", "trickling", "dripping",
+      "drip of", "fountain", "spring water"), "Mountain Stream"),
     (("birdsong", "dawn chorus", "the birds", "sparrow", "a robin", "a wren",
       "nightingale", "wind", "breeze", "forest", "meadow", "rustle", "leaves",
       "branches", "in the grass", "pine"), "Forest Wind"),
     (("cafe", "coffee house", "teahouse", "kettle", "the cup", "a cup",
       "murmur of voices", "lamplit"), "Cafe Murmur"),
-    (("star", "galaxy", "cosmos", "the cosmos", "outer space", "the void",
-      "abyss", "deep ocean", "the deep sea", "night sky", "the heavens",
-      "interstellar"), "Brown Noise"),
+    (("star", "galaxy", "galaxies", "cosmos", "the cosmos", "outer space",
+      "the void", "abyss", "deep ocean", "the deep sea", "night sky",
+      "the heavens", "interstellar"), "Brown Noise"),
     (("snow", "glacier", "the ice", "icy", "frozen", "hush", "stillness",
       "silence"), "Pink Noise"),
 ]
 
 
-def cue_for_text(text):
-    """Return an ambient voice name matching the imagery in *text*, or None."""
+def match_themes(text, themes):
+    """First label in *themes* (a list of ``(triggers, label)``) whose imagery
+    appears in *text*, else ``None``. A single-word trigger matches a **whole word**
+    (or its simple +s/+es plural), so it never fires on a longer unrelated word
+    ("rain" not "train"); a trigger containing a space matches as a phrase
+    (substring). Shared by ``cue_for_text`` (ambience beds) and the GUI's
+    ``story_bg.bg_for_text`` (backdrops), so both match imagery the same way."""
     if not text:
         return None
-    t = str(text).lower()
-    for keys, voice in _CUES:
-        for k in keys:
-            if k in t:
-                return voice
+    low = str(text).lower()
+    words = set(_WORD.findall(low))
+    for triggers, label in themes:
+        for t in triggers:
+            if " " in t:
+                if t in low:
+                    return label
+            elif t in words or (t + "s") in words or (t + "es") in words:
+                return label
     return None
+
+
+def cue_for_text(text):
+    """Return an ambient voice name matching the imagery in *text*, or None."""
+    return match_themes(text, _CUES)
 
 
 def next_bed(current, base, cue, pending):

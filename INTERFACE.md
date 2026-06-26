@@ -138,10 +138,12 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   storyteller drives it via `win_story._apply_story_bg` (Sound ▸ "Backdrop follows the
   story", persisted); the per-line backdrop choice goes through the **same
   `sound_cues.next_bed` anti-thrash** the ambience bed uses, so the backdrop doesn't
-  flip-flop on alternating imagery. `bg_for_text` matches single-word triggers as
-  **whole words** (+ simple plural), so it never mis-fires on a longer unrelated word
-  ("star" not "start", "tree" not "street"); space-containing triggers match as a
-  phrase. Pure + testable (`tools/test_story_bg.py`).
+  flip-flop on alternating imagery. `bg_for_text` delegates to the **shared
+  `sound_cues.match_themes`** matcher, so backdrop and ambience match imagery
+  identically: single-word triggers match as **whole words** (+ simple plural), so it
+  never mis-fires on a longer unrelated word ("star" not "start", "tree" not
+  "street"); space-containing triggers match as a phrase. Pure + testable
+  (`tools/test_story_bg.py`).
 - **2D character cast** — the QPainter face shown when faceView is missing or the
   user picks **Sound ▸ Cartoon cat face** (then **Character** / **Costume** submenus,
   persisted). A small framework, all driven by the same per-frame state as the 3D
@@ -506,7 +508,8 @@ from per-season image banks, drifting through the year; exposes `compose()`) + *
 crystallised every few lines by a `haiku.compose` poem) + **`tales`** (**"Quiet Tales"** -- 6
 conflict-free **kishotenketsu** 4-movement micro-tales, a gentle narrative class) - all Sleep
 storyteller options via `stories.extra_names()`; the shuffle is a stream of random neutral nouns),
-**`sound_cues`** (text→ambience), **`story_db`** (SQLite record of every
+**`sound_cues`** (text→ambience; the `match_themes` whole-word matcher is
+shared with the GUI's `story_bg`), **`story_db`** (SQLite record of every
 story; `build`/`connect`/`search`/`lectures_in`/`lines_of`/`stats`; CLI
 `python -m breathsim.story_db`), `kokoro_tts`, `voices`, `patterns`, `modes`,
 `personas`, `choir`, `session` (SessionDirector), `programs`, `phrases`, `store`,
