@@ -136,7 +136,9 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   (`bg_for_text`) + a calm base per story scene (`base_for_scene`), mirroring
   `breathsim.sound_cues` so the picture and soundscape follow the words together. The
   storyteller drives it via `win_story._apply_story_bg` (Sound ▸ "Backdrop follows the
-  story", persisted). Pure + testable.
+  story", persisted); the per-line backdrop choice goes through the **same
+  `sound_cues.next_bed` anti-thrash** the ambience bed uses, so the backdrop doesn't
+  flip-flop on alternating imagery. Pure + testable.
 - **2D character cast** — the QPainter face shown when faceView is missing or the
   user picks **Sound ▸ Cartoon cat face** (then **Character** / **Costume** submenus,
   persisted). A small framework, all driven by the same per-frame state as the 3D

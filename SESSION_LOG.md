@@ -3849,6 +3849,20 @@ pending); an in-app integration check (5 alternating fire/water lines -> the bed
 **0 switches**, where the old code would have flipped it 4 times); selftest; all 49 offline tests;
 drive_check 0 issues. `sound_cues.py` 78 < 500.
 
+## Anti-thrash the story backdrop too (reuse next_bed)
+Completing last round's fix on the visual side. The themed **backdrop** that follows the words
+(`story_bg`: Rain / Forest / City / Embers / Stars) was set in `_on_story_unit` with the *same*
+per-line immediate switch the ambience bed had -- `self._story_bg_target = bg` -- so alternating
+imagery made the backdrop crossfade back and forth, which is more jarring on screen than the audio
+thrash was. Reused the generic, already-tested `sound_cues.next_bed` hysteresis for the backdrop (a
+first image blooms in from the scene base, but a backdrop->backdrop switch must recur over two cueing
+lines), adding a `_bg_pending` slot -- no code duplicated, just lightly generalised `next_bed`'s
+docstring since it now serves both the bed and the backdrop. The abstract-line drift-home (idle >= 4)
+is unchanged. Verified: an in-app integration check (5 alternating rain/forest lines -> the backdrop
+holds **Rain** with **0 switches**, where the old code would have flipped it 4 times); the existing
+`tools/test_sound_cues.py` `next_bed` unit tests already cover the shared logic; selftest; all 49
+offline tests; drive_check 0 issues.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

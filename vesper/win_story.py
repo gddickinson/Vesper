@@ -18,6 +18,7 @@ class _StoryMixin:
             self._story_bg_base = story_bg.base_for_scene(self._story_scene)
             self._story_bg_target = self._story_bg_base    # picture follows the tale
             self._bg_idle = 0
+            self._bg_pending = None                        # backdrop switch hysteresis
         else:
             self._restore_user_character()                 # story cleared
         if self.controller.running:
@@ -227,13 +228,19 @@ class _StoryMixin:
                 self._sfx_target = self._base_ambience   # drift home over abstract lines
         from . import story_bg                  # the backdrop follows the words too
         bg = story_bg.bg_for_text(text)
+        bg_base = getattr(self, "_story_bg_base", "Stars")
         if bg:
-            self._story_bg_target = bg
             self._bg_idle = 0
+            # same confirm-a-switch anti-thrash as the ambience bed, so the
+            # backdrop doesn't flip-flop on alternating imagery.
+            self._story_bg_target, self._bg_pending = sound_cues.next_bed(
+                getattr(self, "_story_bg_target", bg_base), bg_base, bg,
+                getattr(self, "_bg_pending", None))
         else:
             self._bg_idle = getattr(self, "_bg_idle", 0) + 1
+            self._bg_pending = None
             if self._bg_idle >= 4:             # ease home to the scene base
-                self._story_bg_target = getattr(self, "_story_bg_base", "Stars")
+                self._story_bg_target = bg_base
         self._mood_target = emotion_for_text(text)
 
     def set_ambience_rotate(self, on):

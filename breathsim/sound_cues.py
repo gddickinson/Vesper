@@ -58,10 +58,12 @@ def cue_for_text(text):
 
 
 def next_bed(current, base, cue, pending):
-    """Decide the ambience bed after a narrated line, with anti-thrash hysteresis.
+    """Pick the next text-following target after a narrated line, with anti-thrash
+    hysteresis. Shared by the **ambience bed** (a nature voice) and the **story
+    backdrop** (a named background) -- the logic is the same for both.
 
-    *current* = the bed in use (the cued voice or the story's *base*), *cue* = the
-    imagery bed this line calls for (or ``None``), *pending* = a candidate bed left
+    *current* = the target in use (the cued one or the story's *base*), *cue* = the
+    target this line's imagery calls for (or ``None``), *pending* = a candidate left
     over from the previous line. Returns ``(new_current, new_pending)``.
 
     A first cue **blooms in** from the base immediately (nice), but switching from

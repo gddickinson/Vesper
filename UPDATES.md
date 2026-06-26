@@ -155,6 +155,17 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Anti-thrash the story backdrop too** -- the same fix, now for the *visual* side. Last round's
+      anti-thrash only covered the ambience bed, but `_on_story_unit` set the themed **backdrop**
+      (`_story_bg_target` = Rain / Forest / City / Embers / Stars) with the identical per-line
+      immediate switch -- so on alternating imagery the backdrop crossfaded back and forth, which is
+      *more* jarring on screen than the audio was. Reused the generic, already-tested
+      `sound_cues.next_bed` hysteresis for the backdrop (a first image blooms in from the scene base,
+      but a backdrop->backdrop switch must recur over two cueing lines) with a `_bg_pending` slot -- no
+      code duplicated; just lightly generalised the helper's docstring (it now serves the bed *and*
+      the backdrop). Verified: an in-app integration check (5 alternating rain/forest lines -> the
+      backdrop holds **Rain** with **0 switches**, was 4); the existing `tools/test_sound_cues.py`
+      `next_bed` unit tests (the shared logic); selftest; all 49 offline tests; drive_check 0 issues.
 - [x] **Anti-thrash: confirm an ambience bed-switch over two cueing lines** -- a robustness/calmness
       fix found while extending the cues. `_on_story_unit` set the bed `_sfx_target = cue` on *every*
       cueing line, so when imagery alternates (a "fire" line, then a "stream" line, then "fire"
