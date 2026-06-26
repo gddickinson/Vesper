@@ -3642,6 +3642,24 @@ mouth/gaze); `selftest.py` (150 voices / 257 lectures / 53 branches); all 43 off
 `_tick`s, threads stable 1->2); and Cat **yawn** + **head-cock** pose PNGs rendered + eyeballed (clear
 shut-eye wide-mouth yawn; head tilted with the big cute eyes). `char_anim.py` 217 < 500.
 
+## Stories: "Festivals of Light" lecture branch (4)
+The Stories cadence (a new lecture branch every ~3rd round) came due, so added a new branch on a
+theme distinct from all 53 prior ones: how people the world over light the darkness. Four lectures,
+each a `breathsim/lectures_<topic>.py` module of the standard shape (NAME, AMBIENCE = a registered
+voice, SECTIONS = 7 sections x 12 second-person present-tense ASCII lines, settling in at section 1
+and drifting to sleep at section 7, every line closing toward rest): **Diwali, the Festival of Lamps**
+(clay diyas, Rama's homecoming, Lakshmi, rangoli, one flame passed lamp to lamp; Campfire) ·
+**The Lantern Festival** (Yuanxiao, the first full moon, silk/paper lanterns, riddles, tangyuan, sky
+and river lanterns; Wind Chimes) · **Saint Lucia's Day of Light** (Luciadagen, the darkest northern
+dawn, a crown of candles, the procession, saffron buns; Wind in Pines) · **Obon and the Floating
+Lanterns** (mukaebi fires, Bon Odori, toro nagashi -- a river of soft gold lanterns let go with love,
+tender not sad; Mountain Stream). Written with four parallel subagents; validated programmatically
+(7x12, ASCII, punctuation, registered ambience) then registered in `lectures._CATALOG`. Verified:
+selftest now reports **261 lectures across 54 branches**; story DB rebuilt
+(`python -m breathsim.story_db`: 261 lectures / 54 branches / 351,668 words; the .db is gitignored);
+all 43 offline tests pass; `drive_check` 0 issues; tone spot-checked (Obon stays tender, every branch
+closes on "goodnight, rest well"). README / INTERFACE counts bumped 257->261 lectures, 53->54 branches.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

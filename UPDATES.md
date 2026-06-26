@@ -182,6 +182,23 @@ Set with the user after the realistic-chanting round. Tick as completed.
       a Sleep narration line is wrapped onto the scene; clears when off) + offscreen GUI smoke (menu item
       present, threads stable) + a PNG eyeballed (legible caption panel under the night scene); all 42
       offline tests; selftest; drive_check 0 issues; `viz.py` 142 / `captions.py` 44 < 500.
+- [x] **Stories: "Festivals of Light" lecture branch (4)** -- a new branch of warm, nocturnal,
+      culturally rich lectures on how people light the darkness, distinct from all 53 prior branches:
+      **Diwali, the Festival of Lamps** (rows of clay diyas welcomed into the darkest new-moon night,
+      Rama's homecoming, Lakshmi, rangoli, one flame passed lamp to lamp so light multiplies; Campfire
+      bed) · **The Lantern Festival** (Yuanxiao, the year's first full moon answered by a thousand silk
+      and paper lanterns, riddles on the slips, soft round tangyuan, sky and river lanterns carrying
+      wishes off; Wind Chimes) · **Saint Lucia's Day of Light** (Luciadagen, the 13th of December at the
+      darkest northern dawn, a crown of candles, the slow procession and song, saffron buns -- the
+      promise that the longest night turns; Wind in Pines) · **Obon and the Floating Lanterns** (the
+      Japanese summer lantern festival, mukaebi welcoming fires, Bon Odori, and toro nagashi -- a slow
+      river of soft gold lanterns let go with love; Mountain Stream). Each is the standard 7 sections x
+      12 second-person present-tense ASCII lines, settling in at section 1 and drifting to sleep at
+      section 7. Written with four parallel subagents; registered in `lectures._CATALOG`
+      (`lectures_diwali` / `lectures_lanternfestival` / `lectures_stlucia` / `lectures_obon`). Verified:
+      selftest (now **261 lectures across 54 branches**, all shape/ASCII/punctuation checks pass); story
+      DB rebuilt (261 lectures / 54 branches / 351,668 words); all 43 offline tests; drive_check 0
+      issues; tone spot-checked (Obon tender not sad; every branch closes on "goodnight, rest well").
 - [x] **Stories: "How the World Sleeps" lecture branch (4)** -- a new lecture branch that is itself
       about sleep, perfectly on-theme for a bedtime app: the real, wonder-filled science of how animals
       rest. **How Dolphins Sleep** (unihemispheric slow-wave sleep -- half the brain at a time, one eye
