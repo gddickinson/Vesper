@@ -3967,6 +3967,20 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Character: a sleepy Sloth (the perfect sleep-app mascot)
+An enhancement round (the user has consistently enjoyed the character cast). Added the single most
+on-theme missing member: a slow, dreamy, perpetually-smiling **sloth** -- whose defining traits
+(slowness + dozing) make it ideal for a sleep app, and which is especially charming performing the
+drowsy gestures (yawn/nod-off/sigh/settle from #251/#273). `vesper/char_sloth.py` (subclass
+`char_base.Character`): pale grey-tan fur, the signature dark eye patches, big sleepy cute eyes, a small
+nose, the content sloth smile, tucked ears and long hugging arms; breathes/animates via the shared kit.
+Registered in `characters._CHARS` (cast 18 -> 19) and `char_voice.VOICES` (slow 0.80 rate + dreamy
+persona). New `tools/test_characters.py` -- a whole-cast render test the codebase lacked: every
+character draws across 5 anim states without error, paints a non-blank frame, returns a valid Head, and
+has a voice profile; the Sloth is slow and a PNG is eyeballed (clean). Also tidied the INTERFACE cast
+list (was missing Mouse/Sheep). Verified: selftest; all 58 offline tests; drive_check 0 issues.
+README/INTERFACE character count 18 -> 19.
+
 ## Reverb: two new sacred spaces + a regression test
 A robustness round that became a small enhancement. Swept the audio-effects path not covered by
 `selftest`'s per-voice loop -- the master-bus reverb, the cosmic generative-music engine, the choir --

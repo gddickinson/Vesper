@@ -125,7 +125,7 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 - **story_char.py** — maps a story scene / lecture to a fitting cartoon character
   (`char_for_scene`: sea→Penguin · shepherd/lullaby→Sheep · dawn→Chicken · train/
   machine→Robot · journey→Dog · small→Mouse · forest→Bear · cosy→Cat · night→Owl …,
-  default Owl). Covers **15 of the 18** characters (Skull/Woman/Man stay manual
+  default Owl). Covers most of the **19** characters (Skull/Woman/Man stay manual
   picks); triggers match a **word prefix** so stems work (`hibernat`→"hibernation")
   without false hits inside other words (`rain` must not match "t-rain"). Opt-in
   **Face ▸ "Character follows the story"** (persisted): when on and the cartoon face is
@@ -166,7 +166,10 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
     any character).
   - **char_<name>.py** — one file per character (all subclass `Character`, return a
     `Head`): **Cat** (default) · Penguin · Dog · Owl · Fox · Chicken · Bunny · Bear ·
-    Panda · Frog · Duckling · Hedgehog · **Robot** (brushed-metal head, glowing eyes,
+    Panda · Frog · Duckling · Hedgehog · Mouse · Sheep · **Sloth** (`char_sloth.py` -- a
+    slow, sleepy, perpetually-smiling sloth with the signature dark eye patches: the
+    perfect sleep-app mascot, slow-voiced + charming when nodding off) · **Robot**
+    (brushed-metal head, glowing eyes,
     pulsing antenna, LED mouth, chest core) · Woman · Man (chibi humans) · **Skull**
     (`char_skull.py` — a gentle storybook **talking skull** for spooky / folklore
     tales: domed cranium with sutures, hollow sockets with a faint **ember glow**, a

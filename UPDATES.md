@@ -155,6 +155,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Character: a sleepy Sloth (the perfect sleep-app mascot)** -- a new member of the 2D character
+      cast (the user has consistently enjoyed the characters), and the single most on-theme one missing:
+      a slow, dreamy, perpetually-smiling **sloth**, whose defining traits -- slowness and dozing -- make
+      it ideal for a sleep app, and which is especially charming performing the drowsy gestures
+      (yawn/nod-off/sigh/settle). `vesper/char_sloth.py` (subclass `char_base.Character`): pale grey-tan
+      fur, the **signature dark eye patches**, big sleepy cute eyes, a small soft nose, the content sloth
+      smile, small tucked ears and long arms hugging close; breathes + animates like every character via
+      the shared kit. Registered in `characters._CHARS` (cast 18 -> **19**) and `char_voice.VOICES` (a
+      slow **0.80** rate + dreamy persona, so it speaks unhurried when the storyteller uses it). New
+      `tools/test_characters.py` -- a **whole-cast render test** the codebase lacked: every character
+      draws into a QPainter across 5 animation states (idle/breathing/yawning/blinking/tilted) without
+      error, paints a non-blank frame, returns a valid `Head` anchor, and has a voice profile; plus the
+      Sloth is slow and a PNG is eyeballed (clean: round masked face, sleepy eyes, content smile, hugging
+      arms). Verified: selftest; all 58 offline tests; drive_check 0 issues.
 - [x] **Reverb: two new sacred spaces + a regression test** -- a robustness round that became a small
       enhancement. First swept the un-`selftest`ed audio-effects path (the master-bus reverb, the cosmic
       generative-music engine, the choir): all sound -- the reverb clamps comb feedback to `min(0.94,

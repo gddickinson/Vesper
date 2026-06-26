@@ -12,10 +12,10 @@ required.</p>
 Vesper paces your breath with a soft animated visualization and real-time synthesised
 sound. It spans seven activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep ·
 Read** — each with its own purpose-built control panel, visual scene and soundscape. At its
-centre is a talking-head **avatar** (a 3D head, or one of **18 hand-drawn cartoon
+centre is a talking-head **avatar** (a 3D head, or one of **19 hand-drawn cartoon
 characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **293
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
-<!-- counts: 293 lectures / 62 branches · 150 voices · 66 phrases · 7 modes · 18 characters -->
+<!-- counts: 293 lectures / 62 branches · 150 voices · 66 phrases · 7 modes · 19 characters -->
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
