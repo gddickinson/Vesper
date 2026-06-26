@@ -3901,6 +3901,22 @@ the correct backdrop or None; every theme + scene base is a registered `face_bg`
 real-lecture sanity sweep (Diwali still cues Embers x13, City x7, etc. -- no regression); selftest;
 all 50 offline tests; drive_check 0 issues.
 
+## Stories: "The Old Waterways" lecture branch (4)
+A Stories round (every ~3rd). New branch **The Old Waterways** -- The Roman Aqueduct, The Qanat, The
+Stepwell, The Watermill -- ancient ways of moving and reaching water, kept distinct from Great
+Rivers/Lakes (natural water) and Famous Bridges / Ancient Roads & Walls (structures). Each module
+`lectures_{aqueduct,qanat,stepwell,watermill}.py` is data-only (NAME + AMBIENCE + SECTIONS = 7x12
+second-person present-tense ASCII lines): section 1 a fact-free settle-in, sections 2-6 gentle
+accurate engineering/history (gravity-fed aqueduct channels and tiered arches; the Persian qanat's
+underground tunnel and line of shafts; the Indian stepwell's descending stone steps to cool water; the
+watermill's wheel keeping time with the stream), section 7 drifting to sleep, each likening the slow
+steady flow to the breath. Ambiences Mountain Stream / Pink Noise / Singing Bowl / Gentle Rain (all
+registered). Four parallel subagents wrote the modules, each self-verifying 7x12/ASCII/punctuation;
+then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across 59 branches**; lint
+(7x12, section 1 fact-free, all sections sleep-close, ambience resolves, no collisions); all four
+dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
+(23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
+
 ## Fix: an outgoing narrator silenced the incoming one
 A robustness round (runtime bug-hunt over the unattended-sleep paths; reproduced before fixing). The
 bedtime storyteller speaks one line per background thread, each shelling out to a player process

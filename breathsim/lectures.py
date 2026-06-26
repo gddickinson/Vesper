@@ -102,6 +102,8 @@ from . import lectures_calligraphy, lectures_origami  # The Mindful Arts
 from . import lectures_bonsai, lectures_ikebana
 from . import lectures_nightingale, lectures_blackbird  # Songbirds
 from . import lectures_skylark, lectures_wren
+from . import lectures_aqueduct, lectures_qanat  # The Old Waterways
+from . import lectures_stepwell, lectures_watermill
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -281,6 +283,8 @@ _CATALOG = [
                           lectures_bonsai, lectures_ikebana]),
     ("Songbirds", [lectures_nightingale, lectures_blackbird,
                    lectures_skylark, lectures_wren]),
+    ("The Old Waterways", [lectures_aqueduct, lectures_qanat,
+                           lectures_stepwell, lectures_watermill]),
 ]
 
 LECTURES = {}

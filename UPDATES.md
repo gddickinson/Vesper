@@ -1746,6 +1746,25 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — The Old Waterways** (4): The Roman Aqueduct · The Qanat · The Stepwell · The
+      Watermill -- ancient ways of moving and reaching water, distinct from Great Rivers/Lakes (natural)
+      and Famous Bridges / Ancient Roads & Walls (structures). Added `lectures_{aqueduct,qanat,stepwell,
+      watermill}.py` (7x12 lines each, fact-free section 1, accurate engineering/history woven gently --
+      the Roman aqueduct's gravity-fed channel on a slight steady gradient, mostly underground, crossing
+      valleys on tiered arches (Pont du Gard), water flowing day and night with no engine; the Persian
+      qanat/kariz, a gently sloping underground tunnel from a mother well carrying cool groundwater
+      across deserts, its line of vertical shafts looking from above like a row of small craters; the
+      Indian stepwell (baoli/vav) reached by descending long stone steps to the water, cool and shaded,
+      an upside-down temple of carved tiers, the water rising and falling with the seasons; the watermill
+      turning grain to flour from the steady push of a stream via mill race and sluice, undershot and
+      overshot wheels keeping time with the river), ASCII, every section sleep-closing, each likening the
+      slow steady flow to the breath. Ambiences Mountain Stream / Pink Noise / Singing Bowl / Gentle Rain
+      (all registered). Distinct NAMEs/modules. New branch in `_CATALOG` -> **281 lectures / 59
+      branches**; story DB rebuilt (23,913 lines / 381,436 words). Done: selftest (281/59); lint -- each
+      lecture 7x12, section 1 fact-free (no digits), all 7 sections sleep-close, ASCII-only, ambience
+      resolves to a real GROUP_NATURE voice, no NAME/module collisions; all four dispatch through
+      `stories.story_units` (< 400 units, >= 84 lecture lines); all 52 offline tests; drive_check 0
+      issues.
 - [x] **New branch — Songbirds** (4): The Nightingale · The Blackbird · The Skylark · The Wren -- a
       branch about birdsong itself, distinct from the existing "Birds of Myth" (cultural) and "The
       Migrating Birds" (one Living-World lecture). Added `lectures_{nightingale,blackbird,skylark,

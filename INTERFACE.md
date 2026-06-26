@@ -475,8 +475,9 @@ The whole audio/logic/story core lives here, gui-free (the Tk GUI is not vendore
 `controller`, `engine`, `speech`, `narration` (Kokoro/say + lip-sync `amp`; a
 generation token + per-thread-local player process mean a voice/scene change
 never lets an outgoing narrator cut off the incoming one),
-`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 277 across
-58 branches incl. Songbirds (The Nightingale · The Blackbird · The Skylark · The Wren) +
+`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 281 across
+59 branches incl. The Old Waterways (The Roman Aqueduct · The Qanat · The Stepwell · The
+Watermill) + Songbirds (The Nightingale · The Blackbird · The Skylark · The Wren) +
 a small-worlds trilogy — The Inner Planets (Mercury · Venus · Mars · Earth
 from Space) + The Dwarf Planets (Pluto · Ceres · Eris · Haumea) + The Moons of the Giants — plus
 landscapes Grasslands of the World (Serengeti · Steppe · Prairie · Pampas) + Wetlands & Marshes
