@@ -1912,6 +1912,15 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — The Mapmaker's World** (4): The First Maps · Charts of the Sea · The Shape of the
+      World · The View from Above -- the quiet history of cartography, from a clay tablet you could cover
+      with your hand to the whole blue earth seen from space. A coherent arc (the urge to map -> finding
+      the way at sea by rhumb line and chronometer -> folding the round world onto flat paper, Eratosthenes
+      to Mercator -> rising above it, Nadar's balloon to the Blue Marble), each lecture distinct from the
+      travel branches (Voyages, Great Voyages, Pilgrim Paths) because the subject is the *map*, not the
+      journey. The final lecture closes the branch by letting "the small blue world turn on without you."
+      305 lectures / 65 branches. Written by 4 parallel subagents; lint-checked (7x12, ASCII, no digits,
+      every line ends .?!), DB rebuilt, gauntlet green.
 - [x] **New branch — Pilgrim Paths** (4): The Camino de Santiago · The Shikoku Pilgrimage · The Kumano
       Kodo · The Via Francigena -- great pilgrimage walking-routes, whose defining quality (the slow,
       meditative rhythm of walking and resting) is uniquely sleep-appropriate, and distinct from Ancient

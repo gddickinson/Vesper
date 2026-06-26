@@ -4002,6 +4002,20 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Stories: "The Mapmaker's World" lecture branch (4)
+A Stories round (every ~3rd). New cartography branch -- The First Maps, Charts of the Sea, The Shape of
+the World, The View from Above -- the quiet history of mapping, written by 4 parallel subagents to the
+house format (7 sections x 12 second-person present-tense ASCII sentences; fact-free settle-in section
+1 with no numerals; sleep-drift section 7). A deliberate arc: the urge to map (Babylonian clay tablet,
+Polynesian stick charts, songlines) -> finding the way at sea (portolan charts, rhumb lines, the compass,
+dead reckoning, Harrison's chronometer) -> the round earth on flat paper (Eratosthenes' shadow, Ptolemy's
+grid, Mercator) -> the view from above (Nadar's balloon, Earthrise, the Blue Marble), closing the branch
+on "the small blue world turn on without you." Distinct from the travel branches -- the subject is the
+map, not the journey. Ambiences: Singing Bowl / Ocean Waves / Wind Chimes / Brown Noise. Registered in
+lectures._CATALOG; story DB rebuilt (305 lectures / 65 branches, ~420k words). Validated 7x12 + no-digit +
+ASCII + every line ends .?! across all 4 files; eyeballed section 1 (fact-free) and section 7 (sleep
+close). Verified: selftest (305 lectures / 65 branches); all 61 offline tests; drive_check 0 issues.
+
 ## Harden the multi-night courses against a bad saved day index
 A robustness round in the corrupt-store-JSON vein. `courses.apply_day(app, course, idx)` indexed
 `course.days[idx]` with no bounds check, and `start_course_day`'s guard (`day if day < total else
