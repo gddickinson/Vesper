@@ -100,6 +100,8 @@ from . import lectures_sundial, lectures_waterclock  # The Great Clocks
 from . import lectures_hourglass, lectures_pendulum
 from . import lectures_calligraphy, lectures_origami  # The Mindful Arts
 from . import lectures_bonsai, lectures_ikebana
+from . import lectures_nightingale, lectures_blackbird  # Songbirds
+from . import lectures_skylark, lectures_wren
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -277,6 +279,8 @@ _CATALOG = [
                           lectures_hourglass, lectures_pendulum]),
     ("The Mindful Arts", [lectures_calligraphy, lectures_origami,
                           lectures_bonsai, lectures_ikebana]),
+    ("Songbirds", [lectures_nightingale, lectures_blackbird,
+                   lectures_skylark, lectures_wren]),
 ]
 
 LECTURES = {}

@@ -3901,6 +3901,23 @@ the correct backdrop or None; every theme + scene base is a registered `face_bg`
 real-lecture sanity sweep (Diwali still cues Embers x13, City x7, etc. -- no regression); selftest;
 all 50 offline tests; drive_check 0 issues.
 
+## Stories: "Songbirds" lecture branch (4)
+A Stories round (every ~3rd). New branch **Songbirds** -- The Nightingale, The Blackbird, The
+Skylark, The Wren -- about birdsong itself, kept distinct from the existing "Birds of Myth"
+(cultural) and the single "The Migrating Birds" Living-World lecture. Each module
+`lectures_{nightingale,blackbird,skylark,wren}.py` is data-only (NAME + AMBIENCE + SECTIONS = 7x12
+second-person present-tense ASCII lines): section 1 a fact-free settle-in, sections 2-6 gentle,
+accurate natural history (the night-singing nightingale and its famous pause; the blackbird's mellow
+rooftop fluting at dawn and dusk; the skylark's vertical song-flight and silvery song from a speck;
+the tiny loud wren, its cocked tail, domed moss nests and cold-night huddling), section 7 drifting to
+sleep. No health claims. Ambiences Night Crickets / Forest Wind / Summer Porch / Gentle Rain (all
+registered). Written by four parallel subagents, each self-verifying 7x12/ASCII/punctuation before
+return; then registered in `lectures._CATALOG`. Verified: selftest **277 lectures across 58
+branches**; lint (7x12, section 1 fact-free, all sections sleep-close, ambience resolves, no
+collisions); all four dispatch through `stories.story_units` (103 units each, < 400); offscreen Sleep
+GUI smoke (`_on_story_unit` + `_tick`) thread-stable; all 49 offline tests; drive_check 0 issues;
+story DB rebuilt (23,577 lines / 374,946 words). README/INTERFACE counts 273->277 / 57->58.
+
 ## Fix: sound_cues substring false-hits + dedup the matcher
 The audio twin of the previous round. The ambience-bed cue matcher
 (`sound_cues.cue_for_text`) still matched raw substrings, so a key lit a *longer unrelated word*:

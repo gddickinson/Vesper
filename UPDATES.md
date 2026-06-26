@@ -1713,6 +1713,25 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Songbirds** (4): The Nightingale · The Blackbird · The Skylark · The Wren -- a
+      branch about birdsong itself, distinct from the existing "Birds of Myth" (cultural) and "The
+      Migrating Birds" (one Living-World lecture). Added `lectures_{nightingale,blackbird,skylark,
+      wren}.py` (7x12 lines each, fact-free section 1, accurate natural history woven gently --
+      the plain brown nightingale that sings through late-spring nights, its rich varied song with the
+      famous pause, hidden in thickets, an African migrant; the glossy black, yellow-eye-ringed
+      blackbird, a woodland thrush turned town bird, its mellow fluting rooftop song at dawn and dusk;
+      the streaky skylark's vertical song-flight, pouring a continuous silvery song from a speck too high
+      to see, then parachuting to its grass nest; the tiny round wren with its cocked tail, mouse-like in
+      the hedge, an astonishingly loud song, domed moss nests, the "cave dweller" name and cold-night
+      huddling), ASCII, every section sleep-closing, NO health claims. Distinct NAMEs/modules (no clash
+      with the existing "The Migrating Birds" or "The Owl"). Ambiences Night Crickets / Forest Wind /
+      Summer Porch / Gentle Rain (all registered nature voices). New branch in `_CATALOG` → **277
+      lectures / 58 branches**; story DB rebuilt (23,577 lines / 374,946 words). Done: selftest
+      (277/58); lint -- each lecture 7x12, section 1 fact-free (no digits), all 7 sections sleep-close,
+      ASCII-only, ambience resolves to a real GROUP_NATURE voice, no NAME/module collisions; all four
+      dispatch through `stories.story_units` (103 units = 84 lecture lines + interludes, < 400); offscreen
+      Sleep GUI smoke feeding a new lecture's units through `_on_story_unit` + `_tick`, thread-stable
+      (2->2); all 49 offline tests; drive_check 0 issues.
 - [x] **New branch — Great Libraries** (4): The Library of Ashurbanipal · The House of Wisdom · The
       Monastic Scriptorium · The Libraries of Timbuktu — added `lectures_{ashurbanipal,houseofwisdom,
       scriptorium,timbuktu}.py` (7x[13,12,13,12,12,13,13] lines, fact-free section 1, accurate history —
