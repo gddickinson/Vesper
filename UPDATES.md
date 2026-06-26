@@ -234,6 +234,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
       a Sleep narration line is wrapped onto the scene; clears when off) + offscreen GUI smoke (menu item
       present, threads stable) + a PNG eyeballed (legible caption panel under the night scene); all 42
       offline tests; selftest; drive_check 0 issues; `viz.py` 142 / `captions.py` 44 < 500.
+- [x] **Stories: "Keepers of the Night" lecture branch (4)** -- gentle nocturnal callings: someone
+      kind quietly tending the world while you sleep (deeply reassuring for a sleep app, distinct from
+      all 54 prior branches). **The Lamplighter** (the old gas-lamp lighter walking the dusk streets,
+      tucking the city into golden light lamp by lamp; Gentle Rain) · **The Night Baker** (the slow
+      patient rise of dough in a warm oven-lit kitchen through the small hours; Campfire) · **The
+      Shepherd's Night Watch** (a shepherd keeping the still, watchful presence over a sleeping flock
+      under the stars; Night Crickets) · **The Night Watchman** (the lantern-carrying watchman walking
+      the sleeping town, calling the hours -- "all is well"; Rain on a Roof). Each is the standard 7
+      sections x 12 second-person present-tense ASCII lines, settling in at section 1 and drifting to
+      sleep at section 7, the throughline being "the watch is kept, you can stop keeping your own and
+      rest." Written with four parallel subagents; validated (7x12 / ASCII / punctuation / registered
+      ambience) then registered in `lectures._CATALOG`. Verified: selftest (now **265 lectures across
+      55 branches**); story DB rebuilt (265 / 55 / 357,371 words); all 45 offline tests; drive_check 0
+      issues; tone spot-checked (settle-in + drift arcs, "you are watched over", every line soothing).
 - [x] **Stories: "Festivals of Light" lecture branch (4)** -- a new branch of warm, nocturnal,
       culturally rich lectures on how people light the darkness, distinct from all 53 prior branches:
       **Diwali, the Festival of Lamps** (rows of clay diyas welcomed into the darkest new-moon night,

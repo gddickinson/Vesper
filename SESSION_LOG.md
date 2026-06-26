@@ -3729,6 +3729,23 @@ in-app, 60 ticks, threads stable 1->2); closed / talking / in-app PNGs eyeballed
 at rest; clearly talking with a dark cavity + lower teeth when the jaw drops; breathing on the
 starfield in the real window). README 17->18 characters; INTERFACE char list + char_skull entry.
 
+## Stories: "Keepers of the Night" lecture branch (4)
+The Stories cadence came due again (4 FOCUS/user-requested rounds since Festivals of Light). Added a
+branch perfectly on-theme for a sleep app and distinct from all 54 prior ones: **gentle nocturnal
+callings** -- someone kind quietly keeping watch and tending the world while you (and a whole town)
+sleep. Four lectures, each the standard shape (NAME, AMBIENCE = a registered voice, 7 sections x 12
+second-person present-tense ASCII lines, settle-in at section 1, drift-to-sleep at section 7): **The
+Lamplighter** (gas-lamp lighter tucking the dusk city into golden light; Gentle Rain) · **The Night
+Baker** (the slow patient rise of dough in a warm oven through the small hours; Campfire) · **The
+Shepherd's Night Watch** (the still watchful presence over a sleeping flock under the stars; Night
+Crickets) · **The Night Watchman** (the lantern-carrying watchman calling the hours, "all is well",
+over a sleeping town; Rain on a Roof). The shared throughline -- "the watch is kept, so you can stop
+keeping your own and rest" -- is about as reassuring a bedtime message as there is. Written with four
+parallel subagents; validated programmatically (7x12, ASCII, punctuation, registered ambience) then
+registered in `lectures._CATALOG`. Verified: selftest now **265 lectures across 55 branches**; story
+DB rebuilt (`python -m breathsim.story_db`: 265 / 55 / 357,371 words; .db gitignored); all 45 offline
+tests; drive_check 0 issues; tone spot-checked. README / INTERFACE counts 261->265 / 54->55.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

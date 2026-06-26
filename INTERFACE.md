@@ -459,8 +459,8 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 ## Vendored core — `breathsim/` (in this project)
 The whole audio/logic/story core lives here, gui-free (the Tk GUI is not vendored):
 `controller`, `engine`, `speech`, `narration` (Kokoro/say + lip-sync `amp`),
-`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 261 across
-54 branches incl. a small-worlds trilogy — The Inner Planets (Mercury · Venus · Mars · Earth
+`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 265 across
+55 branches incl. a small-worlds trilogy — The Inner Planets (Mercury · Venus · Mars · Earth
 from Space) + The Dwarf Planets (Pluto · Ceres · Eris · Haumea) + The Moons of the Giants — plus
 landscapes Grasslands of the World (Serengeti · Steppe · Prairie · Pampas) + Wetlands & Marshes
 (Marsh · Cypress Swamp · Mangroves · Peat Bog) + The Night Garden (Moon Garden · Night-Scented
