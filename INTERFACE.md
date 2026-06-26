@@ -123,12 +123,17 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   Primary guarantees: opt-in + process isolation + no in-process exec. Offline test:
   `tools/test_llm_plugin.py`.
 - **story_char.py** — maps a story scene / lecture to a fitting cartoon character
-  (`char_for_scene`: sea→Penguin · **snow/frost/ice→Snowman** · **moon/lunar→Luna** · shepherd/lullaby→Sheep · sleep/slow→Sloth ·
-  dawn→Chicken · train/
+  **and a fitting costume** (`char_for_scene` + **`costume_for_scene`**: sea→Penguin ·
+  **snow/frost/ice→Snowman** · **moon/lunar→Luna** · **=mars→Martian** · **alien/ufo→Alien** ·
+  android/spacecraft→Bot · shepherd/lullaby→Sheep · sleep/slow→Sloth · dawn→Chicken · train/
   machine→Robot · journey→Dog · small→Mouse · forest→Bear · cosy→Cat · night→Owl …,
   default Owl -- so the sleepy **Sloth** narrates the "How the World Sleeps" branch + the
   Sleep Hypnosis sessions, the **Snowman** narrates the "Winter's Hush" snow lectures, and
-  **Luna** narrates the "Under the Moon" branch).
+  **Luna** narrates the "Under the Moon" branch). `costume_for_scene` then dresses the
+  pick to the tale — **bread/baking→Chef Hat, library/scholar→Graduation Cap, castle→Crown,
+  watchman→Police Cap, =space/astronaut→Space Helmet, treasure→Pirate Hat, firefighter→Fire
+  Helmet, doctor→Head Mirror** … (a `=`-prefixed trigger matches the whole word, so
+  "Sacred Spaces" is not space-helmeted and a "Marsh" is no Martian).
   Covers most of the cast (Skull/Woman/Man stay manual
   picks); triggers match a **word prefix** so stems work (`hibernat`→"hibernation")
   without false hits inside other words (`rain` must not match "t-rain"). Opt-in
@@ -190,16 +195,25 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
     (`char_luna.py` -- a serene sleeping moon whose terminator shadow shows **tonight's
     real phase** from `breathsim.moonphase`; soft seas, a warm glow, twinkling stars) · **Robot**
     (brushed-metal head, glowing eyes,
-    pulsing antenna, LED mouth, chest core) · Woman · Man (chibi humans) · **Skull**
+    pulsing antenna, LED mouth, chest core) · **Bot** (`char_bot.py` -- a soft, round
+    retro dome-bot with a glowing visor face, friendlier + rounder than the angular
+    Robot) · **Alien** (`char_alien.py` -- a mint teardrop-headed grey with big slanted
+    almond eyes + glowing antennae) · **Martian** (`char_martian.py` -- a cheerful
+    purple one-eyed cyclops with stubby antennae) · Woman · Man (chibi humans) · **Skull**
     (`char_skull.py` — a gentle storybook **talking skull** for spooky / folklore
     tales: domed cranium with sutures, hollow sockets with a faint **ember glow**, a
     nasal aperture, upper teeth, and an **articulated mandible** that hinges open with
     `anim.mouth` so it **lip-syncs the narration**; opt-in via the Character menu, with
     its own deep/slow/hollow voice). Each uses the shared kit (tail swish, ear twitch,
     body breathing, bristle, blush) with its own drawing + signature touches.
-  - **char_costume.py** — costume overlays positioned from the `Head` anchor (None,
-    Wizard/Party/Top Hat, Beanie, Crown, Halo, Headphones, Sunglasses, Flower, Scarf,
-    Bow Tie), with a faint cyber glow.
+  - **char_costume.py** — the costume registry: overlays positioned from the `Head`
+    anchor (None, Wizard/Witch/Pirate/Party/Top Hat, Beanie, Nightcap, Sleep Mask,
+    Earmuffs, Crown, Halo, Headphones, Sunglasses, Flower, Scarf, Bow Tie), with a faint
+    cyber glow. Two sibling modules merge into the same registry: **char_costume_jobs.py**
+    (profession headwear — Police Cap, Fire Helmet, Nurse Cap, Head Mirror, Chef Hat,
+    Hard Hat, Graduation Cap) and **char_costume_scifi.py** (Space Helmet — translucent
+    so the face shows through — Sci-fi Visor, Alien Antennae, Robot Aerial). 28 in all;
+    the menu + the story-follow read them all from `characters.costume_names()`.
   - **char_voice.py** — per-character **voice + personality** profiles (`CharVoice`:
     ordered TTS name/prefix `hints`, speaking `rate`, signature eye/aura `hue`,
     `greeting`, `persona`); `get(name)`, `pick_voice(hints, available)` (first

@@ -5,7 +5,9 @@ widget picks a character by name and an optional costume; both are user choices
 from __future__ import annotations
 
 from . import char_costume
+from .char_alien import Alien
 from .char_bear import Bear
+from .char_bot import Bot
 from .char_bunny import Bunny
 from .char_cat import Cat
 from .char_chicken import Chicken
@@ -17,6 +19,7 @@ from .char_hedgehog import Hedgehog
 from .char_human import Man, Woman
 from .char_koala import Koala
 from .char_luna import Luna
+from .char_martian import Martian
 from .char_mouse import Mouse
 from .char_owl import Owl
 from .char_panda import Panda
@@ -30,7 +33,8 @@ from .char_snowman import Snowman
 
 _CHARS = [Cat(), Penguin(), Dog(), Owl(), Fox(), Chicken(), Bunny(), Bear(),
           Panda(), Frog(), Duckling(), Hedgehog(), Mouse(), Sheep(), Sloth(),
-          Koala(), RedPanda(), Snowman(), Luna(), Robot(), Woman(), Man(), Skull()]
+          Koala(), RedPanda(), Snowman(), Luna(), Robot(), Bot(), Alien(),
+          Martian(), Woman(), Man(), Skull()]
 CHARACTERS = {c.name: c for c in _CHARS}
 DEFAULT = "Cat"
 

@@ -308,6 +308,13 @@ _COSTUMES = {
     "Sunglasses": _shades, "Flower": _flower, "Scarf": _scarf, "Bow Tie": _bowtie,
 }
 
+# Profession hats + sci-fi gear live in their own modules (one concept per file);
+# merge them into the single registry so the menu / story-follow see them all.
+from . import char_costume_jobs as _jobs       # noqa: E402
+from . import char_costume_scifi as _scifi      # noqa: E402
+_COSTUMES.update(_jobs.COSTUMES)
+_COSTUMES.update(_scifi.COSTUMES)
+
 
 def names():
     return list(_COSTUMES)

@@ -30,7 +30,8 @@ def main():
     # the map now reaches a broad spread of the cast (not just the original 8)
     assert len(names) >= 14, ("character-follow should use most of the cast", len(names))
     for newcomer in ("Sheep", "Chicken", "Robot", "Mouse", "Dog", "Hedgehog",
-                     "Panda", "Sloth", "Snowman", "Luna"):
+                     "Panda", "Sloth", "Snowman", "Luna", "Alien", "Martian",
+                     "Bot"):
         assert newcomer in names, ("newer cast member unused: " + newcomer)
     print("ok: %d distinct characters reachable (incl. the newer cast)" % len(names))
 
@@ -64,6 +65,18 @@ def main():
     assert story_char.char_for_scene("The Constellations") == "Owl"     # wider sky kept
     assert story_char.char_for_scene("Milky Way Myths") == "Owl"
     print("ok: Luna gets the moon's tales without stealing the wider night sky")
+
+    # the visitors from elsewhere: the cyclops Martian takes the red planet, the
+    # green Alien takes alien tales -- but =mars exact must spare the wetland Marsh
+    assert story_char.char_for_scene("Mars") == "Martian"
+    assert story_char.char_for_scene("A Martian Visitor") == "Martian"
+    assert story_char.char_for_scene("Marsh") != "Martian"          # =mars exact guard
+    assert story_char.char_for_scene("The Marshlands") != "Martian"
+    for ali in ("A friendly alien", "Tales of the Flying Saucer", "The UFO"):
+        assert story_char.char_for_scene(ali) == "Alien", (ali, "-> Alien")
+    assert story_char.char_for_scene("A Friendly Android") == "Bot"    # rounder bot
+    assert story_char.char_for_scene("The Great Train") == "Robot"     # Robot kept
+    print("ok: Martian/Alien/Bot reachable; =mars exact spares the marsh")
 
     # representative scenes / lecture names map to a fitting character
     cases = {

@@ -155,6 +155,18 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Costumes + new robots/aliens + story/theme integration** (user-requested). Added **11 costumes**
+      in two small modules merged into the one registry (17 -> 28): **professions** (Police Cap, Fire Helmet,
+      Nurse Cap, Head Mirror, Chef Hat, Hard Hat, Graduation Cap) and **sci-fi** (Space Helmet -- translucent
+      so the face shows -- Sci-fi Visor, Alien Antennae, Robot Aerial). Added **3 characters** (cast 23 -> 26):
+      a round friendly **Bot** (vs the angular Robot), a mint **Alien**, and a one-eyed purple **Martian** --
+      each with a voice + motion-traits profile. Then **integrated into stories**: `story_char.costume_for_scene`
+      + new character themes (with a `=exact` trigger so "Sacred Spaces" != space, "Marsh" != Mars) dress the
+      storyteller to the tale -- a cat in a **Chef Hat** for baking, the owl in a **Graduation Cap** for a
+      library, a **Crown** for a castle, a **Police Cap** for the Night Watchman, a **Space Helmet** for "Earth
+      from Space", the **Martian** narrating Mars -- wired into win_story (visual only, restored after). The
+      Costume menu + the book-cast director pick them all up automatically. New tools/test_costumes.py +
+      extended test_story_char. Verified: 68 offline tests; selftest 325/70; drive_check 0 issues.
 - [x] **Stories: "Under the Moon" lecture branch (4) -- narrated by Luna.** The every-third-round
       Stories item, riding the just-shipped Luna companion: a bedtime branch about our own Moon that the
       storyteller auto-routes to **Luna** (each title carries a moon/lunar word). Four fresh angles kept

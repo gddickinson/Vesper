@@ -12,10 +12,10 @@ required.</p>
 Vesper paces your breath with a soft animated visualization and real-time synthesised
 sound. It spans seven activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep ·
 Read** — each with its own purpose-built control panel, visual scene and soundscape. At its
-centre is a talking-head **avatar** (a 3D head, or one of **19 hand-drawn cartoon
-characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **301
+centre is a talking-head **avatar** (a 3D head, or one of **26 hand-drawn cartoon
+characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **325
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
-<!-- counts: 325 lectures / 70 branches · 150 voices · 66 phrases · 7 modes · 23 characters -->
+<!-- counts: 325 lectures / 70 branches · 150 voices · 66 phrases · 7 modes · 26 characters · 28 costumes -->
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
@@ -32,13 +32,17 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   narrator and shifts expression with the mood of the words. A **cyberpunk face-style**
   system (starry eyes, Tron/circuit grids that follow the head, translucent / dot-matrix
   renders) can react to the story, breath and chant. Or switch to the **2D cast**.
-- **18 cartoon characters + costumes** — Cat, Penguin, Dog, Owl, Fox, Chicken, Bunny,
-  Bear, Panda, Frog, Duckling, Hedgehog, **Mouse**, **Sheep**, **Robot**, Woman, Man and a
+- **26 cartoon characters + costumes** — Cat, Penguin, Dog, Owl, Fox, Chicken, Bunny,
+  Bear, Panda, Frog, Duckling, Hedgehog, Mouse, Sheep, Sloth, Koala, Red Panda, Snowman,
+  **Luna** (a moon showing tonight's real phase), **Robot** and a soft round **Bot**, a
+  mint **Alien** + a one-eyed purple **Martian**, Woman, Man and a
   talking **Skull** (hollow ember-lit sockets + a jaw that lip-syncs the narration, for spooky tales),
   each with breathing, blinks, tail-swishes, "hair-on-end" startles and drowsy
-  **yawns / stretches / nod-offs / head-cocks / look-arounds**, **17 costumes**
-  (incl. sleep-friendly Nightcap / Sleep Mask / Earmuffs), and its own narrator
-  **voice + personality**. The bedtime storyteller can even pick a fitting character per
+  **yawns / stretches / nod-offs / head-cocks / look-arounds**, **28 costumes**
+  (sleep-friendly Nightcap / Sleep Mask / Earmuffs, **profession hats** — police / fire /
+  nurse / doctor / chef / hard hat / graduation — and **sci-fi gear** — space helmet /
+  visor / antennae / aerial), and its own narrator
+  **voice + personality**. The bedtime storyteller can even pick a fitting character + costume per
   scene (a cosy bear for a hibernation tale, a wise owl for the night sky).
 - **Fully procedural sound** — **150 voices** synthesised in real time from noise, filters
   and a vocal-tract (formant) model: realistic breath timbres, human voice, vocal

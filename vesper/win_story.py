@@ -36,8 +36,10 @@ class _StoryMixin:
             self._apply_story_character()
 
     def _apply_story_character(self):
-        """When enabled and the cartoon face is shown, set the character to fit the
-        scene (without overwriting the user's saved pick)."""
+        """When enabled and the cartoon face is shown, set the character *and* a
+        fitting costume to match the scene (without overwriting the user's saved
+        pick) -- e.g. a cosy cat in a chef hat for a baking tale, the wise owl in a
+        mortarboard for a library, a space-helmeted face for a tale of orbit."""
         if not getattr(self, "_story_char_follow", False) or not self._story_scene:
             return
         if not self.face.uses_cat():                       # only the 2D face shows it
@@ -47,12 +49,23 @@ class _StoryMixin:
         if target and target != self.face.character():
             self.set_character(target, persist=False)
             self._story_char_active = True
+        costume = story_char.costume_for_scene(self._story_scene)   # visual only
+        if costume and costume != "None":
+            if costume != self.face.costume():
+                self.face.set_costume(costume)
+            self._story_costume_active = True
+        elif getattr(self, "_story_costume_active", False):
+            self.face.set_costume(getattr(self, "_costume", "None"))   # back to user's
+            self._story_costume_active = False
 
     def _restore_user_character(self):
-        """Put the user's chosen character back after a story-driven swap."""
+        """Put the user's chosen character + costume back after a story-driven swap."""
         if getattr(self, "_story_char_active", False):
             self.set_character(getattr(self, "_character", "Cat"), persist=False)
             self._story_char_active = False
+        if getattr(self, "_story_costume_active", False):
+            self.face.set_costume(getattr(self, "_costume", "None"))
+            self._story_costume_active = False
 
     def set_story_voice(self, v):
         self.narrator.set_voice(v)

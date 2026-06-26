@@ -47,6 +47,12 @@ TRAITS = {
     "Luna": {"energy": 0.5, "tail": 0.0, "blink": 2.0, "twitch": 0.3,
              "swivel": 0.7, "yawn": 1.3},      # the moon drifts, serene and slow
     "Robot": {"blink": 1.6, "yawn": 2.5, "energy": 0.9, "twitch": 0.6, "tail": 0.0},
+    "Bot": {"blink": 1.5, "yawn": 2.3, "energy": 0.92, "twitch": 0.7, "tail": 0.0,
+            "swivel": 0.9},                    # a round bot: calm, slightly springy
+    "Alien": {"energy": 0.85, "tail": 0.0, "blink": 1.1, "twitch": 0.8,
+              "swivel": 1.3},                  # curious, head-tilts to study you
+    "Martian": {"energy": 1.1, "tail": 0.0, "blink": 1.0, "twitch": 1.1,
+                "swivel": 1.2},                # cheerful, lively little visitor
     "Skull": {"blink": 2.2, "yawn": 1.4, "energy": 0.85, "tail": 0.0, "swivel": 1.1},
 }
 

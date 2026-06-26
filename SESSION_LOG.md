@@ -4031,6 +4031,35 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Costumes + new robots/aliens + story/theme integration (user-requested)
+The user asked for more costumes (space helmet, sci-fi items, professions -- police / fire / doctor / nurse /
+chef / construction) integrated into the stories/themes, plus more robots and aliens; then, "review stories
+and add matching characters and costume items". Delivered in three parts.
+(1) **11 new costumes**, split into two modules to keep each file small + one-concept: **char_costume_jobs.py**
+(Police Cap, Fire Helmet, Nurse Cap, Head Mirror -- the doctor's reflector, Chef Hat, Hard Hat, Graduation
+Cap) and **char_costume_scifi.py** (Space Helmet -- a *translucent* bubble dome so the face still shows --
+Sci-fi Visor, Alien Antennae, Robot Aerial). Both expose a `COSTUMES` dict that char_costume.py merges into
+the single `_COSTUMES` registry, so the Character>Costume menu + the book-cast director + the story-follow all
+see them with zero extra wiring (17 -> 28 costumes).
+(2) **3 new characters** (cast 23 -> 26): **Bot** (`char_bot.py`, a soft round dome-bot with a glowing visor
+face -- deliberately rounder/friendlier than the existing angular Robot), **Alien** (`char_alien.py`, a mint
+teardrop-headed grey with big slanted almond eyes + glowing antennae) and **Martian** (`char_martian.py`, a
+cheerful one-eyed purple cyclops). Each registered in characters.py + given a `char_voice` profile + a
+`char_traits` motion signature. Drawn by 4 parallel subagents to the char_base kit, then PNG-eyeballed (all
+three read clearly + distinctly) and the costumes eyeballed on varied head shapes (Cat / Owl ear-tufts / Bear
+/ Penguin) -- hats sit right, the space helmet stays see-through even over the Alien.
+(3) **Story/theme integration**: story_char gained a `costume_for_scene()` mapping + new character themes,
+and a `_matches()` helper supporting a `=word` *exact* trigger (so "Sacred Spaces" is NOT space-helmeted and a
+wetland "Marsh" is NOT a Martian). Now, with "Character follows the story" on, the storyteller dresses the
+narrator to the tale: bread/baking -> a cosy **Cat in a Chef Hat**, a library/scriptorium -> the **Owl in a
+Graduation Cap**, a castle -> Crown, the Night Watchman -> Police Cap, "Earth from Space" -> Space Helmet, the
+Treasure Fleet -> Pirate Hat; and the planet **Mars** is narrated by the **Martian**, alien tales by the
+**Alien**. Wired into win_story `_apply_story_character` / `_restore_user_character` (visual only, restores the
+user's own character + costume after). New **tools/test_costumes.py** (every costume draws over a Head; the
+Space Helmet stays translucent; the matcher only returns registered costumes, fires on themed scenes + does
+NOT false-fire) and extended test_story_char (Martian/Alien/Bot reachable, =mars spares the marsh). Verified:
+68 offline tests; selftest (325/70); drive_check 0 issues; all new files ~120-200 lines (< 500).
+
 ## Stories: "Under the Moon" lecture branch (4) -- narrated by Luna
 The every-third-round Stories item, chosen to ride the just-shipped Luna companion: a whole bedtime branch
 about our own Moon, which the storyteller now auto-routes to Luna (each title carries a moon/lunar word).
