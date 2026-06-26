@@ -155,6 +155,19 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Character actions: a contented sigh + a cosy nestle-down** -- two more gentle, sleep-appropriate
+      drowsy gestures for the 2D storyteller cast (honouring the earlier "add more character actions"
+      ask), on top of the existing yawn / stretch / nod-off / head-cock / look-around. A **sigh** opens
+      the mouth a little and softens the body for a soft exhale, *without* the yawn's eye-squeeze (so it
+      reads as a relaxed breath, not a tired one); a **settle** is a slow nestle-down -- the head sinks
+      and leans a touch and the body softens, like snuggling into the pillow and easing back. Both go
+      through the shared `char_anim._oneshot` scheduler and fold into the existing
+      bob/squash/tilt/mouth fields, so *every* character (cat, owl, fox, bunny, robot...) performs them
+      with **no per-character drawing code**, and reduce-motion (`calm`) softens + spaces them like the
+      others. Extended `tools/test_char_anim.py` (white-box onset counts prove both fire; a signature
+      check confirms the sigh opens the mouth with eyes still open, distinct from a yawn) and eyeballed a
+      rendered cat mid-sigh (clean pose: gentle open mouth, eyes open, slight lean). Verified: selftest
+      (281/59); all 53 offline tests (in-bounds over a 240s run unchanged); drive_check 0 issues.
 - [x] **Fix: a paint fault could hard-crash an overnight session** -- a reproduced structural risk
       found by a per-frame rendering bug-hunt. `VizWidget.paintEvent` / `FaceWidget.paintEvent` ran the
       scene draw inside a `try/except`, but the **overlays after it** (weather, warm Sleep dimming,

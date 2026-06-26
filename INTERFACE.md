@@ -154,8 +154,10 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
     (incl. spontaneous), a continuously **swishing tail**, **ear twitches**, and a
     **"hair on end" bristle** that spikes on excitement / a rare startle. On top it
     weaves rarer **drowsy gestures** — a slow contagious **yawn**, a luxurious
-    **stretch**, a sleepy **nod-off**, a curious **head-cock** and an idle
-    **look-around** — folded back into the same mouth / blink / bob / squash / tilt
+    **stretch**, a sleepy **nod-off**, a curious **head-cock**, an idle
+    **look-around**, a soft contented **sigh** (mouth opens a little, eyes stay open)
+    and a cosy **settle** (a nestle-down: the head sinks + leans, the body softens)
+    — folded back into the same mouth / blink / bob / squash / tilt
     / gaze fields (via the `_oneshot` scheduler) so *every* character performs them
     with no per-character drawing code; reduce-motion (`calm`) softens + spaces them.
   - **char_base.py** — shared kit: colour helpers, breath `aura`, big **cute glossy

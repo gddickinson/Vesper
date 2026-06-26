@@ -7,7 +7,8 @@ squash, slow idle sway, blinks (incl. spontaneous ones), a continuously swishing
 tail, occasional ear twitches, and a "hair on end" bristle that spikes on excitement
 / a rare startle and eases away.  On top of those it weaves a handful of rarer,
 drowsy **gestures** -- a slow contagious **yawn**, a luxurious **stretch**, a
-sleepy **nod-off**, a curious **head-cock** and an idle **look-around** -- folded
+sleepy **nod-off**, a curious **head-cock**, an idle **look-around**, a soft
+contented **sigh** and a cosy **settle** (a nestle-down into the pillow) -- folded
 back into the same mouth / blink / bob / squash / tilt / gaze fields so *every*
 character performs them with no per-character drawing code.  Centralising this here
 means every character moves with the same gentle, alive timing -- and new motions
@@ -78,6 +79,11 @@ class AnimState:
         self._look_t0 = None
         self._next_look = 11.0 + r() * 16.0
         self._look_dir = (0.0, 0.0)
+        self._sigh_t0 = None
+        self._next_sigh = 26.0 + r() * 30.0
+        self._settle_t0 = None
+        self._next_settle = 36.0 + r() * 40.0
+        self._settle_dir = 1.0
 
     def _gesture(self, t0, dur):
         """0->1->0 bump over *dur* s since *t0*, or None when finished."""
@@ -186,6 +192,17 @@ class AnimState:
         # nod-off: the head sinks slowly, then gently catches itself (dozing)
         nod = self._nod_off(t, slow) * amp
 
+        # sigh: a soft, contented exhale -- a small mouth open + a brief body
+        # settle, without the eye-squeeze of a yawn (a sleepy breath out)
+        sigh = self._oneshot("_sigh_t0", "_next_sigh", 1.5, 26.0, 52.0, slow) * amp
+
+        # settle: a slow nestle-down, like snuggling into the pillow and easing
+        # back -- the head sinks and leans a touch, the body softens
+        def _pick_settle():
+            self._settle_dir = 1.0 if self._rng.random() < 0.5 else -1.0
+        settle = self._oneshot("_settle_t0", "_next_settle", 2.4, 36.0, 64.0, slow,
+                               on_start=_pick_settle) * amp
+
         mouth_in = max(0.0, min(0.6, float(st.get("mouth", 0.0))))
         gx, gy = st.get("gaze", (0.0, 0.0))
         gaze = (max(-0.30, min(0.30, gx + self._look_dir[0] * lg)),
@@ -193,11 +210,12 @@ class AnimState:
 
         return Anim(
             t=t, breath=breath, excite=excite,
-            bob=bob + nod * 0.055 - stretch * 0.020,
-            sway=sway, squash=squash + stretch * 0.06,
-            tilt=float(st.get("tilt", 0.0)) + cock + nod * 0.05,
+            bob=bob + nod * 0.055 - stretch * 0.020 - settle * 0.040,
+            sway=sway, squash=squash + stretch * 0.06 + sigh * 0.045 + settle * 0.045,
+            tilt=(float(st.get("tilt", 0.0)) + cock + nod * 0.05
+                  + settle * self._settle_dir * 0.05),
             blink=_clamp(max(blink, 0.92 * yawn)), gaze=gaze,
-            mouth=max(mouth_in, 0.55 * yawn),
+            mouth=max(mouth_in, 0.55 * yawn, 0.30 * sigh),
             smile=_clamp(float(st.get("smile", 0.12))), tail=tail, ear=_clamp(ear),
             bristle=_clamp(self.bristle), hue=st.get("hue", "#86e6bf"))
 

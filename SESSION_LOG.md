@@ -3917,6 +3917,19 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Character actions: a contented sigh + a cosy nestle-down
+An enhancement round (varying from the recent robustness fixes; honours the earlier "add more
+character actions" request). Two more gentle, sleep-appropriate drowsy gestures for the shared 2D
+character engine (`char_anim.AnimState`): a **sigh** (a small mouth-open + body softening for a soft
+exhale, without the yawn's eye-squeeze, so it reads relaxed not tired) and a **settle** (a slow
+nestle-down: the head sinks + leans a touch, the body softens, like snuggling into a pillow). Both run
+through the existing `_oneshot` scheduler and fold into the bob/squash/tilt/mouth output fields, so
+every character performs them with no per-character drawing code; reduce-motion (`calm`) softens +
+spaces them. Extended `tools/test_char_anim.py` (white-box onset counts prove both fire; a signature
+check confirms the sigh opens the mouth with eyes open, distinct from the yawn) and eyeballed a
+rendered cat mid-sigh (clean pose). Verified: selftest (281/59); all 53 offline tests; drive_check 0
+issues.
+
 ## Fix: a paint fault could hard-crash an overnight session
 A robustness round (per-frame rendering bug-hunt; reproduced before fixing). `VizWidget.paintEvent`
 and `FaceWidget.paintEvent` drew the scene inside a `try/except`, but the overlays after it (weather,

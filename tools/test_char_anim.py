@@ -7,6 +7,8 @@ drowsy gestures actually fire and stay in-bounds:
   * a **head-cock** tilts the head to either side,
   * a **look-around** moves the gaze beyond the supplied baseline,
   * a **nod-off** dips the head,
+  * a contented **sigh** opens the mouth a little WITHOUT the yawn's eye-squeeze,
+  * a cosy **settle** (nestle-down) fires on its schedule,
   * the **reduce-motion** (`calm`) flag spaces the gestures out (fewer firings),
   * every Anim field is finite and within its documented clamp every frame.
 
@@ -86,6 +88,35 @@ def test_gestures_fire():
     print("ok: yawn / stretch / head-cock / look-around all fire and read right")
 
 
+def _count_onsets(attr, secs, seed=7):
+    """Count how many times a scheduled gesture timer (e.g. ``_sigh_t0``) fires
+    (None -> running transitions) over a long run -- white-box proof it triggers."""
+    a = char_anim.AnimState(rng=random.Random(seed))
+    dt, t, n, prev = 1.0 / 40.0, 0.0, 0, None
+    for _ in range(int(secs / dt)):
+        t += dt
+        a.step(dt, _state(t))
+        cur = getattr(a, attr)
+        if prev is None and cur is not None:
+            n += 1
+        prev = cur
+    return n
+
+
+def test_new_gestures_fire():
+    """The new drowsy gestures fire on their schedule, and the sigh reads
+    differently from the yawn (mouth opens but the eyes stay open)."""
+    assert _count_onsets("_sigh_t0", 300) >= 1, "sigh never fired"
+    assert _count_onsets("_settle_t0", 340) >= 1, "settle never fired"
+    # a contented sigh: a moderate mouth-open while the eyes are NOT squeezed
+    # shut -- a yawn that open (>0.2) always has blink >= ~0.30, so this is
+    # sigh-specific.
+    frames = _run(300, seed=7)
+    assert any(f.mouth > 0.2 and f.blink < 0.22 for f in frames), \
+        "no contented-sigh frame (mouth open with eyes still open)"
+    print("ok: sigh + settle fire; sigh opens the mouth with eyes open")
+
+
 def test_calm_spaces_gestures():
     """Reduce-motion lengthens the intervals: fewer yawn onsets in equal time."""
     secs = 320
@@ -108,6 +139,7 @@ def test_respects_inputs():
 def main():
     test_in_bounds()
     test_gestures_fire()
+    test_new_gestures_fire()
     test_calm_spaces_gestures()
     test_respects_inputs()
     print("PASS: character actions (char_anim)")
