@@ -272,6 +272,21 @@ Set with the user after the realistic-chanting round. Tick as completed.
       a Sleep narration line is wrapped onto the scene; clears when off) + offscreen GUI smoke (menu item
       present, threads stable) + a PNG eyeballed (legible caption panel under the night scene); all 42
       offline tests; selftest; drive_check 0 issues; `viz.py` 142 / `captions.py` 44 < 500.
+- [x] **Stories: "The Great Clocks" lecture branch (4)** -- timekeeping through the ages, a theme
+      whose slow, even rhythm is itself sleep-fitting (and distinct from all 55 prior branches). **The
+      Sundial** (shadow time -- the gnomon, "the one that knows", the slow creep of a shadow at the
+      pace of the turning Earth, and the dial resting at night; Summer Porch) · **The Water Clock**
+      (the clepsydra, "water thief" -- hours marked by a soft ceaseless trickle that keeps time
+      through the dark when the sun is gone; Mountain Stream) · **The Hourglass** (fine sand falling
+      grain by grain, prized at sea where a water clock could not be -- time you simply turn over and
+      let fall; Rain on a Roof) · **The Pendulum Clock** (Galileo's isochronism, Huygens 1656, the
+      even tick-tock as a gentle heartbeat of brass and wood swinging on through the night; Wind
+      Chimes). Each is the standard 7 sections x 12 second-person present-tense ASCII lines, settling
+      in at section 1 and drifting to sleep at section 7, the throughline being time passing softly,
+      uncounted, while you rest. Written with four parallel subagents; validated then registered in
+      `lectures._CATALOG`. Verified: selftest (now **269 lectures across 56 branches**); story DB
+      rebuilt (269 / 56 / 362,785 words); all 48 offline tests; drive_check 0 issues; tone
+      spot-checked (the pendulum's tick reads as a calm heartbeat, never tense).
 - [x] **Stories: "Keepers of the Night" lecture branch (4)** -- gentle nocturnal callings: someone
       kind quietly tending the world while you sleep (deeply reassuring for a sleep app, distinct from
       all 54 prior branches). **The Lamplighter** (the old gas-lamp lighter walking the dusk streets,

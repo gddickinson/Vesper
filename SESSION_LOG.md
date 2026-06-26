@@ -3799,6 +3799,24 @@ wired); selftest; all 48 offline tests; drive_check 0 issues; an offscreen GUI s
 in the picker group, selectable, ticks with threads stable 1->2). README/INTERFACE updated.
 `safeplace.py` 103 < 500.
 
+## Stories: "The Great Clocks" lecture branch (4)
+The Stories cadence came due again (3 FOCUS rounds since Keepers of the Night). Added a branch whose
+very subject -- the slow, even passing of time -- is inherently sleep-fitting, and distinct from all
+55 prior branches: **timekeeping through the ages**. Four lectures, the standard shape (7 sections x 12
+second-person present-tense ASCII lines, settle-in at section 1, drift-to-sleep at section 7): **The
+Sundial** (the gnomon, the shadow creeping at the pace of the turning Earth, the dial resting at
+night; Summer Porch) · **The Water Clock** (the clepsydra's soft ceaseless trickle keeping the hours
+through the dark; Mountain Stream) · **The Hourglass** (fine sand falling grain by grain, prized at
+sea, time you simply turn over and let fall; Rain on a Roof) · **The Pendulum Clock** (Galileo's
+isochronism, Huygens 1656, the even tick-tock as a gentle heartbeat of brass and wood; Wind Chimes).
+The throughline -- time slipping by softly and uncounted while you rest -- and the hourglass /
+pendulum especially make natural sleep metaphors. Written with four parallel subagents; validated
+programmatically (7x12, ASCII, punctuation, registered ambience) then registered in
+`lectures._CATALOG`. Verified: selftest now **269 lectures across 56 branches**; story DB rebuilt
+(`python -m breathsim.story_db`: 269 / 56 / 362,785 words; .db gitignored); all 48 offline tests;
+drive_check 0 issues; tone spot-checked (the pendulum tick stays a calm heartbeat, not tense).
+README / INTERFACE counts 265->269 / 55->56.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

@@ -96,6 +96,8 @@ from . import lectures_diwali, lectures_lanternfestival  # Festivals of Light
 from . import lectures_stlucia, lectures_obon
 from . import lectures_lamplighter, lectures_nightbaker  # Keepers of the Night
 from . import lectures_shepherdwatch, lectures_nightwatchman
+from . import lectures_sundial, lectures_waterclock  # The Great Clocks
+from . import lectures_hourglass, lectures_pendulum
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -269,6 +271,8 @@ _CATALOG = [
                             lectures_stlucia, lectures_obon]),
     ("Keepers of the Night", [lectures_lamplighter, lectures_nightbaker,
                               lectures_shepherdwatch, lectures_nightwatchman]),
+    ("The Great Clocks", [lectures_sundial, lectures_waterclock,
+                          lectures_hourglass, lectures_pendulum]),
 ]
 
 LECTURES = {}

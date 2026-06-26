@@ -13,9 +13,9 @@ Vesper paces your breath with a soft animated visualization and real-time synthe
 sound. It spans seven activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep ·
 Read** — each with its own purpose-built control panel, visual scene and soundscape. At its
 centre is a talking-head **avatar** (a 3D head, or one of **18 hand-drawn cartoon
-characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **265
+characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **269
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
-<!-- counts: 265 lectures / 55 branches · 150 voices · 66 phrases · 7 modes · 18 characters -->
+<!-- counts: 269 lectures / 56 branches · 150 voices · 66 phrases · 7 modes · 18 characters -->
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
@@ -47,11 +47,11 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   crickets, a distant night surf, a warm summer porch…) plus synthesised **bells & gongs, drums, winds & organs, environmental FX**
   and a **cosmic generative-music** engine sonifying real planetary + pulsar data. Nothing
   to download.
-- **The bedtime storyteller** — **265 authored sleep-lectures across 55 branches** (the
+- **The bedtime storyteller** — **269 authored sleep-lectures across 56 branches** (the
   Cosmos, the Inner Planets &amp; the Dwarf Planets, Earth &amp; Sea, the Living World, the
   Human Body, Histories, Materials &amp; Making, Ideas &amp; Wonders, Myth &amp; Legend, the
   Polar Worlds, Weathers of the World, the Microscopic World, the Great Voyages, Grasslands
-  of the World, Wetlands &amp; Marshes, the Night Garden, the Great Migrations, the Standing Stones, Great Canyons, Lullabies of the World, How the World Sleeps, Festivals of Light, Keepers of the Night, and many more), plus procedural bedtime stories,
+  of the World, Wetlands &amp; Marshes, the Night Garden, the Great Migrations, the Standing Stones, Great Canyons, Lullabies of the World, How the World Sleeps, Festivals of Light, Keepers of the Night, The Great Clocks, and many more), plus procedural bedtime stories,
   poetry nocturnes and a cognitive-shuffle sleep aid. Spoken by neural **Kokoro** TTS (or
   macOS `say`) — with the narration voices **grouped by language** (English, Spanish, French,
   Hindi, Italian, Japanese, Portuguese, Chinese) so you can pick a narrator in yours —
