@@ -4031,6 +4031,23 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Stories: "Under the Moon" lecture branch (4) -- narrated by Luna
+The every-third-round Stories item, chosen to ride the just-shipped Luna companion: a whole bedtime branch
+about our own Moon, which the storyteller now auto-routes to Luna (each title carries a moon/lunar word).
+Picked four angles that stay distinct from the existing "The Wandering Moon" (which already does the
+birth/Theia, tidal-locked far side, phases-as-borrowed-light, the maria, and the slow recession): The
+Hunter's Moon (the great low golden harvest-time full moon + the Moon Illusion + why the low moon glows
+amber); The Blood Moon (a total lunar eclipse -- Earth's shadow, the copper glow that is every sunrise and
+sunset at once, slow/silent/safe to watch); The Moon Rabbit (the face in the Moon and its tales -- the
+Jade Rabbit pounding herbs, the moon lady, the Man in the Moon, one quiet face become many companions);
+Footprints on the Moon (the human visit -- flour-fine dust, footprints that outlast wind and rain, the
+airless silence, the soft bounding walk, and Earthrise). Written by 4 parallel subagents to the house
+format (7x12 second-person present ASCII, fact-free no-digit settle-in section 1, sleep-drift section 7);
+I re-validated the 7x12 shape + line endings + no-digits + ASCII myself (subagents have miscounted before).
+Ambiences: Night Crickets / Wind in Pines / Singing Bowl / Brown Noise. Registered in lectures._CATALOG;
+confirmed all four route to Luna via story_char. Story DB rebuilt (325 lectures / 70 branches, ~447k words).
+Verified: selftest (325/70); all 67 offline tests; drive_check 0 issues; each file ~100 lines.
+
 ## Stories: "Winter's Hush" snow/winter lecture branch (4, user-requested)
 Part three of the snow request (the snow stories). New winter branch -- The First Snow, Frost, The Icicle,
 The Frozen Lake -- the quiet wonders of deep winter, chosen to stay distinct from Snowflakes (Small

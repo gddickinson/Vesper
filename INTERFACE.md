@@ -127,7 +127,8 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   dawn→Chicken · train/
   machine→Robot · journey→Dog · small→Mouse · forest→Bear · cosy→Cat · night→Owl …,
   default Owl -- so the sleepy **Sloth** narrates the "How the World Sleeps" branch + the
-  Sleep Hypnosis sessions, and the **Snowman** narrates the "Winter's Hush" snow lectures).
+  Sleep Hypnosis sessions, the **Snowman** narrates the "Winter's Hush" snow lectures, and
+  **Luna** narrates the "Under the Moon" branch).
   Covers most of the cast (Skull/Woman/Man stay manual
   picks); triggers match a **word prefix** so stems work (`hibernat`→"hibernation")
   without false hits inside other words (`rain` must not match "t-rain"). Opt-in
@@ -517,8 +518,8 @@ audio callback contains any fault as silence + logs it once), `speech`,
 `narration` (Kokoro/say + lip-sync `amp`; a
 generation token + per-thread-local player process mean a voice/scene change
 never lets an outgoing narrator cut off the incoming one),
-`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 321 across
-69 branches incl. Winter's Hush (The First Snow . Frost . The Icicle . The Frozen Lake) + The Play of Light (The Rainbow · Halos & Sun Dogs · Mirages ·
+`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 325 across
+70 branches incl. Under the Moon (The Hunter's Moon · The Blood Moon · The Moon Rabbit · Footprints on the Moon) + Winter's Hush (The First Snow . Frost . The Icicle . The Frozen Lake) + The Play of Light (The Rainbow · Halos & Sun Dogs · Mirages ·
 The Green Flash) +
 Bread & Baking (The First Bread · Sourdough · Breads of the
 World · The Hearth) +

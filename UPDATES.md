@@ -155,6 +155,18 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Stories: "Under the Moon" lecture branch (4) -- narrated by Luna.** The every-third-round
+      Stories item, riding the just-shipped Luna companion: a bedtime branch about our own Moon that the
+      storyteller auto-routes to **Luna** (each title carries a moon/lunar word). Four fresh angles kept
+      distinct from the existing "The Wandering Moon": **The Hunter's Moon** (the great low golden full
+      moon + the Moon Illusion + why the low moon glows amber), **The Blood Moon** (a total lunar eclipse,
+      lit copper by all of Earth's sunrises and sunsets at once), **The Moon Rabbit** (the face in the Moon
+      and its tales -- the Jade Rabbit, the moon lady, the Man in the Moon), and **Footprints on the Moon**
+      (the human visit -- the flour-fine dust, footprints that outlast wind and rain, the airless silence,
+      Earthrise). House 7x12 format (fact-free no-digit settle-in, sleep-drift close), written by 4 parallel
+      subagents and re-validated by hand. Ambiences Night Crickets / Wind in Pines / Singing Bowl / Brown
+      Noise. Story DB rebuilt (325 lectures / 70 branches). Verified: selftest (325/70); all 67 offline
+      tests; drive_check 0 issues; each file ~100 lines.
 - [x] **Luna -- a Moon companion that shows tonight's real moon phase** (user-requested
       "intriguing + delightful" character+feature). A new **Luna** character: a serene sleeping moon (soft
       seas, a warm glow, twinkling stars, a closed-eyes content face) whose terminator shadow is drawn from
