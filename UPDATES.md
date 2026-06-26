@@ -155,6 +155,22 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Fix: a corrupt user-data file crashed the launch** -- a real **launch-crash**, found by a
+      robustness bug-hunt and reproduced. The list-typed files in `~/.breathsim` (`patterns.json`,
+      `voices.json`, `presets.json`, `ai_stories.json`, `ai_mantras.json`, plus `favourites.json` /
+      `recent_picks.json`) are hand-editable and can be written partially or in a legacy shape. A
+      file that parses as a JSON **scalar / `null` / object** (not an array) slipped through `_read`
+      untouched, and `store.register_all()` -- called **unguarded** as the app's first init step --
+      did `for d in patterns_list()` and raised `TypeError: 'int'/'NoneType' object is not iterable`,
+      failing the whole launch (`echo 5 > ~/.breathsim/patterns.json` reproduces). The same files also
+      crashed save/delete/preset-load with `AttributeError: 'str' object has no attribute 'get'` when
+      shaped like an object. This carries the #152 history-hardening lesson over to the list files:
+      added a shared `store._read_list(name)` that degrades a non-list file to `[]` (the way the
+      dict-readers degrade to `{}`), and routed all seven list-readers through it. New
+      `tools/test_store_robust.py` writes 6 junk shapes under a throwaway `BREATHSIM_HOME` and asserts
+      every reader stays a list, `register_all` survives scalar/null/object, and save/delete/preset
+      recover (then a well-formed list still round-trips). Verified: the repro now prints "register_all
+      OK"; selftest (277/58); all 50 offline tests; drive_check 0 issues.
 - [x] **Fix: sound_cues substring false-hits + dedup the matcher** -- the *audio* twin of last
       round's backdrop fix. The ambience-bed cue matcher (`sound_cues.cue_for_text`) still used raw
       substring matching, so a key lit a *longer unrelated word*: "rain" fired on "t-**rain**" (Soft

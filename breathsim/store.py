@@ -28,6 +28,17 @@ def _read(name, default):
         return default
 
 
+def _read_list(name):
+    """Like :func:`_read` but guarantees a ``list``. A corrupt-but-valid file
+    holding a JSON object or scalar (a hand edit, or a partial/legacy write)
+    parses cleanly yet is not a list; without this guard every consumer that
+    iterates / ``.get()``s the result would crash -- ``register_all`` (called
+    unguarded at startup) would even fail the whole launch. Degrade to ``[]``,
+    the same way the dict-typed readers degrade to ``{}``."""
+    v = _read(name, [])
+    return v if isinstance(v, list) else []
+
+
 def _write(name, data) -> bool:
     try:
         os.makedirs(DIR, exist_ok=True)
@@ -47,7 +58,7 @@ def _pattern_from(d):
 # --- patterns --------------------------------------------------------------
 
 def patterns_list():
-    return _read("patterns.json", [])
+    return _read_list("patterns.json")
 
 
 def save_pattern(d):
@@ -65,7 +76,7 @@ def delete_pattern(name):
 # --- voices ----------------------------------------------------------------
 
 def voices_list():
-    return _read("voices.json", [])
+    return _read_list("voices.json")
 
 
 def save_voice(d):
@@ -82,7 +93,7 @@ def delete_voice(name):
 # --- AI-generated stories (saved to the library) ---------------------------
 
 def ai_stories_list():
-    return _read("ai_stories.json", [])
+    return _read_list("ai_stories.json")
 
 
 def save_ai_story(d):
@@ -97,7 +108,7 @@ def delete_ai_story(name):
 
 
 def ai_mantras_list():
-    return _read("ai_mantras.json", [])
+    return _read_list("ai_mantras.json")
 
 
 def save_ai_mantra(d):
@@ -114,7 +125,7 @@ def delete_ai_mantra(name):
 # --- presets ---------------------------------------------------------------
 
 def presets_list():
-    return _read("presets.json", [])
+    return _read_list("presets.json")
 
 
 def save_preset(d):
@@ -329,7 +340,7 @@ def reset_course(name):
 def favourites():
     """The starred voice names, de-duplicated, order preserved."""
     out = []
-    for f in _read("favourites.json", []):
+    for f in _read_list("favourites.json"):
         if isinstance(f, str) and f not in out:
             out.append(f)
     return out
@@ -352,7 +363,7 @@ def toggle_favourite(name):
 # --- recent "tonight's pick" lectures (avoid repeating two nights running) ---
 
 def recent_picks():
-    return [x for x in _read("recent_picks.json", []) if isinstance(x, str)]
+    return [x for x in _read_list("recent_picks.json") if isinstance(x, str)]
 
 
 def push_recent_pick(name, keep=5):

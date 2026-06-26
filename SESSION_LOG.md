@@ -3901,6 +3901,20 @@ the correct backdrop or None; every theme + scene base is a registered `face_bg`
 real-lecture sanity sweep (Diwali still cues Embers x13, City x7, etc. -- no regression); selftest;
 all 50 offline tests; drive_check 0 issues.
 
+## Fix: a corrupt user-data file crashed the launch
+A robustness round (found by a focused bug-hunt, reproduced before fixing). The list-typed user
+files in `~/.breathsim` are hand-editable; a file that parses as a JSON scalar / `null` / object
+instead of an array passed `_read` untouched. `store.register_all()` -- the app's first, **unguarded**
+init step -- iterated it and raised `TypeError: ... is not iterable`, failing the whole launch
+(`echo 5 > ~/.breathsim/patterns.json`); save/delete/preset-load crashed with `AttributeError` when a
+file was object-shaped. Carrying the #152 history-hardening lesson to the list files: a shared
+`store._read_list(name)` degrades a non-list file to `[]`, and all seven list-readers
+(`patterns_list` / `voices_list` / `presets_list` / `ai_stories_list` / `ai_mantras_list` /
+`favourites` / `recent_picks`) route through it. New `tools/test_store_robust.py` writes six junk
+shapes under a throwaway `BREATHSIM_HOME` and asserts the readers stay lists, `register_all` survives
+scalar/null/object, save/delete/preset recover, and a well-formed list still round-trips. Verified:
+repro now passes; selftest (277/58); all 50 offline tests; drive_check 0 issues.
+
 ## Stories: "Songbirds" lecture branch (4)
 A Stories round (every ~3rd). New branch **Songbirds** -- The Nightingale, The Blackbird, The
 Skylark, The Wren -- about birdsong itself, kept distinct from the existing "Birds of Myth"
