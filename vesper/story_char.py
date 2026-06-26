@@ -11,7 +11,7 @@ import re
 _WORD = re.compile(r"[a-z]+")
 
 # (character, trigger words). First match wins, so the more specific / leading
-# themes come first. Covers most of the 19-strong cast; Skull, Woman and Man are
+# themes come first. Covers most of the cast; Skull, Woman and Man are
 # left out on purpose -- they stay deliberate manual picks (the Skull especially).
 _THEMES = [
     # pastoral + sleep: the shepherd / lullaby tales -- lead so "night" can't grab them
@@ -23,6 +23,12 @@ _THEMES = [
     ("Penguin", ("sea", "ocean", "tide", "wave", "coast", "seaside", "surf",
                  "coral", "whale", "iceberg", "antarctic", "arctic", "polar",
                  "lighthouse", "harbour", "harbor")),
+    # the wintry narrator: snow / frost / ice phenomena. Placed after Penguin (which
+    # keeps the polar sea -- iceberg / arctic) and before Duckling (so "The Frozen
+    # Lake" follows "frozen" here, not "lake" there); Bear below keeps the woodland.
+    ("Snowman", ("snow", "winter", "wintr", "frost", "frozen", "freez", "freezing",
+                 "icicle", "icy", "ice", "blizzard", "snowman", "snowflake",
+                 "sleet", "flurr")),
     ("Duckling", ("river", "pond", "lake", "stream", "rain", "duck", "marsh",
                   "wetland", "canal")),
     ("Frog", ("swamp", "jungle", "rainforest", "lily", "bog", "mangrove")),
@@ -32,8 +38,8 @@ _THEMES = [
                   "leaves", "acorn", "moss")),
     ("Fox", ("garden", "hill", "field", "vine", "orchard", "spice", "tea",
              "coffee", "grass", "savanna")),
-    ("Bear", ("forest", "wood", "mountain", "cave", "winter", "hibernat",
-              "honey", "pine", "snow", "taiga", "den")),
+    ("Bear", ("forest", "wood", "mountain", "cave", "hibernat",
+              "honey", "pine", "taiga", "den")),       # snow/winter -> Snowman above
     ("Panda", ("bamboo", "panda", "jade")),
     ("Mouse", ("small", "tiny", "little", "micro", "miniature", "crumb",
                "grain", "pebble", "speck", "attic")),

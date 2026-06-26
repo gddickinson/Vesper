@@ -30,7 +30,7 @@ def main():
     # the map now reaches a broad spread of the cast (not just the original 8)
     assert len(names) >= 14, ("character-follow should use most of the cast", len(names))
     for newcomer in ("Sheep", "Chicken", "Robot", "Mouse", "Dog", "Hedgehog",
-                     "Panda", "Sloth"):
+                     "Panda", "Sloth", "Snowman"):
         assert newcomer in names, ("newer cast member unused: " + newcomer)
     print("ok: %d distinct characters reachable (incl. the newer cast)" % len(names))
 
@@ -43,6 +43,19 @@ def main():
     assert story_char.char_for_scene("The Black Forest") == "Bear"
     assert story_char.char_for_scene("The Constellations") == "Owl"
     print("ok: the Sloth gets the sleep/slow themes without stealing others")
+
+    # the Snowman narrates the snow / frost / ice themed content (the Winter's Hush
+    # branch + wintry scenes), but must not steal the polar sea or the woodland
+    for snowy in ("The First Snow", "Frost", "The Icicle", "The Frozen Lake",
+                  "Winter Cabin", "Snowfall", "A blizzard at midnight"):
+        assert story_char.char_for_scene(snowy) == "Snowman", (snowy, "-> Snowman")
+    assert story_char.char_for_scene("Icebergs") == "Penguin"      # polar sea, not snow
+    assert story_char.char_for_scene("The Arctic") == "Penguin"
+    assert story_char.char_for_scene("A Winter's Tale") == "Snowman"   # winter -> Snowman
+    assert story_char.char_for_scene("Hibernation") == "Bear"          # bear winter kept
+    assert story_char.char_for_scene("The Black Forest") == "Bear"     # woodland kept
+    assert story_char.char_for_scene("Riverside") == "Duckling"        # lake/river kept
+    print("ok: the Snowman gets snow/frost/ice without stealing sea/forest/river")
 
     # representative scenes / lecture names map to a fitting character
     cases = {

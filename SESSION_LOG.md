@@ -4048,6 +4048,21 @@ ASCII; eyeballed the Frozen Lake's fact-free intro + sleep close. Verified: self
 offline tests; drive_check 0 issues. Together with the Snowman + Winter Cabin, this completes the
 three-part user request (more character quirks + a snowman + snow scenes + snow stories).
 
+## Storyteller picks the Snowman for snowy/wintry tales
+A cohesive follow-up that completes the snow theme (Snowman character + Winter's Hush lectures + Winter
+Cabin scene): when "Character follows the story" is on, the storyteller now auto-picks the **Snowman** for
+snow/frost/ice/winter content, the way it picks the Sloth for sleep. Added a Snowman entry to
+story_char._THEMES, placed deliberately: AFTER Penguin (so the polar sea -- iceberg / arctic / antarctic --
+stays the Penguin) and BEFORE Duckling (so "The Frozen Lake" follows "frozen" here rather than "lake"
+there); and removed "snow"/"winter" from Bear, which keeps its woodland + hibernation identity (forest /
+cave / hibernat / honey / pine). Triggers: snow / winter / frost / frozen / freez / icicle / icy / ice /
+blizzard / snowman / snowflake / sleet / flurr. Extended tools/test_story_char.py with a Snowman block: the
+four Winter's Hush titles (The First Snow, Frost, The Icicle, The Frozen Lake) + Winter Cabin / Snowfall /
+a blizzard all map to Snowman, while Icebergs/The Arctic stay Penguin, The Black Forest + Hibernation stay
+Bear, and Riverside stays Duckling -- so the new theme steals nothing. Pure-data change. Verified: that
+test (17 distinct characters reachable now) + all 65 other offline tests (66/66); selftest (321/69);
+drive_check 0 issues.
+
 ## Scene: "Winter Cabin" -- a warm-lit cabin in the snow (user-requested snow scene)
 Part two of the snow request. A cosy Sleep/Relax scene, distinct from the existing bare Snowfall scene: a
 small log cabin with two warm amber windows nestled in deep snow under a starry winter night -- dark

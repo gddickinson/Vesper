@@ -155,6 +155,15 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Storyteller picks the Snowman for snowy/wintry tales** -- completes the snow theme (the Snowman
+      character + Winter's Hush lectures + Winter Cabin scene). `story_char.char_for_scene` now routes
+      snow / frost / ice / winter content to the **Snowman** (like the Sloth for sleep): a new theme placed
+      after Penguin (so the polar sea -- iceberg / arctic -- stays Penguin) and before Duckling (so "The
+      Frozen Lake" follows "frozen", not "lake"), and snow/winter removed from Bear (which keeps woodland +
+      hibernation). So with "Character follows the story" on, the new winter lectures get a Snowman narrator.
+      Extended tools/test_story_char.py: the Snowman gets the four Winter's Hush titles + wintry scenes, and
+      does NOT steal iceberg->Penguin, forest->Bear or lake->Duckling. Verified: that test (17 characters
+      reachable) + all 65 others (66/66); selftest; drive_check 0 issues. Pure-data change.
 - [x] **New snow scene: Winter Cabin** (user-requested snow scene). A cosy Sleep/Relax bed distinct from
       the bare Snowfall scene: a small log cabin with two warm amber windows nestled in deep snow under a
       starry winter night -- snow-tipped pines behind, a soft snow mound below, a gentle fall of flakes, and
