@@ -4031,6 +4031,25 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Snowman character + more bespoke character quirks (user-requested)
+First part of a three-part request (more character quirks + a snowman + snow scenes + snow stories). (1)
+A new **Snowman** character (char_snowman.py, 131 lines): two stacked snowballs, cute coal eyes (cute_eyes
+with a dark-slate iris, glow off) + a coal-button smile + coal buttons, a sideways carrot nose with ridge
+lines, twig arms with forks (a gentle sway), a red scarf with a swaying hanging end, a teal knit cap with a
+white pompom, and seven soft snowflakes drifting down around him (its signature, tying to the snow theme).
+Registered in characters._CHARS (cast 21 -> 22), char_voice.VOICES (icy hue, cool/calm/kindly, deep-warm
+voice hints) and char_traits.py (a snowman holds very still: energy 0.5, tail 0.0, blink 1.7, low twitch/
+swivel). (2) Bespoke drawn quirks for more existing characters, each off an existing anim signal: a
+**penguin waddle** (rocks side-to-side ~2.3deg about a low pivot near the feet, always-on), a **chicken
+head-peck** (the head group bobs down on an occasional `sin(t)**5` dip -- and removed a dead `wob * 0.0`
+that had silently disabled the comb wobble), and a **koala ear-perk** (the big fuzzy ears lift with a.ear;
+the panda already did). These join the frog throat-puff + bunny nose-twitch from before; the rest of the
+cast (cat/dog/fox/mouse/red-panda) already had tail/whisker/ear signatures. PNG-eyeballed: snowman is
+clearly a cute snowman; penguin intact with a gentle waddle-lean; chicken + koala fine. Verified: cast
+smoke renders all 22 across 5 states + voices; test_char_traits covers the Snowman's traits; all 66 offline
+tests; selftest (317/68); drive_check 0 issues; all files < 500 lines (snowman 131, chicken 102, penguin 95,
+koala 72). [Snow scene + snow stories follow in their own commits.]
+
 ## Scene: "Starlit Lake" -- stars + moon mirrored on still water (sleep/relax)
 A new ambient scene, diversifying off the recent test + character rounds with something fresh and visible.
 A calm dark lake at night: a soft seeded starfield + a low crescent moon (with halo) in the upper sky, and

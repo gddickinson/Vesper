@@ -24,8 +24,10 @@ class Penguin(B.Character):
         hue = a.hue
         p.setPen(B.NOPEN)
         p.save()
-        if a.tilt:
-            p.translate(cx, cy); p.rotate(a.tilt * 6.0); p.translate(-cx, -cy)
+        waddle = math.sin(a.t * 1.05) * 2.3                  # a gentle side-to-side waddle
+        p.translate(cx, cy + R * 1.9)                        # rock about the feet
+        p.rotate(a.tilt * 6.0 + waddle)
+        p.translate(-cx, -(cy + R * 1.9))
         B.aura(p, cx, cy + R * 0.4, R, hue, a.breath)
         bcy = cy + R * 1.05                                  # body centre
         bw = R * 1.55 * (0.96 + 0.08 * a.breath)

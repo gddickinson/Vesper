@@ -35,7 +35,7 @@ class Koala(B.Character):
         p.setBrush(B.qc(_FACE, 0.5))                          # paler chest
         p.drawEllipse(QPointF(cx, cy + R * 1.12), bw * 0.3, bh * 0.42)
         for s in (-1, 1):                                     # big fuzzy round ears
-            exx, eyy = cx + s * R * 0.92, cy - R * 0.62
+            exx, eyy = cx + s * R * 0.92, cy - R * 0.62 - a.ear * R * 0.1  # perk up
             p.setBrush(B.qc(_FUR_DK))
             p.drawEllipse(QPointF(exx, eyy), R * 0.58, R * 0.58)
             p.setBrush(B.qc(_EARFLUFF, 0.9))                  # inner-ear fluff

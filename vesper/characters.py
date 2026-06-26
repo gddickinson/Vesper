@@ -25,10 +25,11 @@ from .char_robot import Robot
 from .char_sheep import Sheep
 from .char_skull import Skull
 from .char_sloth import Sloth
+from .char_snowman import Snowman
 
 _CHARS = [Cat(), Penguin(), Dog(), Owl(), Fox(), Chicken(), Bunny(), Bear(),
           Panda(), Frog(), Duckling(), Hedgehog(), Mouse(), Sheep(), Sloth(),
-          Koala(), RedPanda(), Robot(), Woman(), Man(), Skull()]
+          Koala(), RedPanda(), Snowman(), Robot(), Woman(), Man(), Skull()]
 CHARACTERS = {c.name: c for c in _CHARS}
 DEFAULT = "Cat"
 

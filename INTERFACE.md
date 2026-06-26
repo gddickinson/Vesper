@@ -171,16 +171,19 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
     `head_box` framing, and the `Character` base + `Head` anchor (so a costume fits
     any character).
   - **char_<name>.py** — one file per character (all subclass `Character`, return a
-    `Head`): **Cat** (default) · Penguin · Dog (floppy ears + tail-wag + lolling tongue) ·
-    Owl · Fox · Chicken · Bunny (a quick **nose-twitch** that rides the ear signal) · Bear ·
+    `Head`): **Cat** (default) · Penguin (a gentle **waddle**) · Dog (floppy ears + tail-wag
+    + lolling tongue) · Owl · Fox · Chicken (an occasional **head-peck** bob) · Bunny (a quick
+    **nose-twitch** that rides the ear signal) · Bear ·
     Panda · Frog (a **throat-sac** that puffs out on the in-breath) · Duckling · Hedgehog ·
     Mouse · Sheep · **Sloth** (`char_sloth.py` -- a
     slow, sleepy, perpetually-smiling sloth with the signature dark eye patches: the
     perfect sleep-app mascot, slow-voiced + charming when nodding off) · **Koala**
     (`char_koala.py` -- a soft grey koala with big fuzzy round ears and the signature
-    spoon nose; sleeps ~20 h/day, so the ideal companion) · **Red Panda**
+    spoon nose + **ear-perk**; sleeps ~20 h/day, so the ideal companion) · **Red Panda**
     (`char_redpanda.py` -- russet fur, white face-mask + tear-marks, a bushy ringed
-    tail) · **Robot**
+    tail) · **Snowman** (`char_snowman.py` -- two stacked snowballs, coal eyes + button
+    smile, a carrot nose, twig arms, a red scarf + knit cap, with soft snowflakes
+    drifting around him -- the wintry companion for snow scenes/stories) · **Robot**
     (brushed-metal head, glowing eyes,
     pulsing antenna, LED mouth, chest core) · Woman · Man (chibi humans) · **Skull**
     (`char_skull.py` — a gentle storybook **talking skull** for spooky / folklore

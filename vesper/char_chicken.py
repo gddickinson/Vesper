@@ -45,14 +45,16 @@ class Chicken(B.Character):
         g.setColorAt(1.0, B.qc(_BODY_DK))
         p.setBrush(QBrush(g))
         p.drawEllipse(QPointF(cx, bcy), bw, bh)
-        gg = QRadialGradient(cx, cy - R * 0.2, R * 1.3)       # head
+        peck = R * 0.08 * max(0.0, math.sin(a.t * 1.1)) ** 5  # an occasional head-peck
+        hy = cy + peck
+        gg = QRadialGradient(cx, hy - R * 0.2, R * 1.3)       # head (bobs to peck)
         gg.setColorAt(0.0, B.qc("#ffffff")); gg.setColorAt(1.0, B.qc(_BODY))
         p.setBrush(QBrush(gg))
-        p.drawEllipse(QPointF(cx, cy), R * 0.98, R)
-        self._comb(p, cx, cy, R, a)
-        B.blush(p, cx, cy + R * 0.18, R, R * 0.56, amt=0.5 + 0.5 * a.smile)
-        B.cute_eyes(p, cx, cy - R * 0.04, R * 0.27, R * 0.4, a, iris=hue)
-        self._beak(p, cx, cy, R, a)
+        p.drawEllipse(QPointF(cx, hy), R * 0.98, R)
+        self._comb(p, cx, hy, R, a)
+        B.blush(p, cx, hy + R * 0.18, R, R * 0.56, amt=0.5 + 0.5 * a.smile)
+        B.cute_eyes(p, cx, hy - R * 0.04, R * 0.27, R * 0.4, a, iris=hue)
+        self._beak(p, cx, hy, R, a)
         p.restore()
         return B.Head(cx, cy, R, cy - R)
 
@@ -61,7 +63,7 @@ class Chicken(B.Character):
         p.setBrush(B.qc(_RED))
         for k in (-1, 0, 1):
             p.drawEllipse(QPointF(cx + k * R * 0.22, cy - R * 0.92 + abs(k) * R * 0.08),
-                          R * 0.16, R * (0.22 + 0.04 * (1 - abs(k))) + wob * 0.0)
+                          R * 0.16, R * (0.22 + 0.04 * (1 - abs(k))))
         # wattle under the beak
         for s in (-1, 1):
             p.drawEllipse(QPointF(cx + s * R * 0.08, cy + R * 0.5 + wob),

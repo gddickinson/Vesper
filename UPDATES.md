@@ -155,6 +155,17 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Snowman character + more bespoke character quirks** (user-requested). (1) A new **Snowman**
+      character (`char_snowman.py`): two stacked snowballs, cute coal eyes + a coal-button smile, a carrot
+      nose, twig arms, a red scarf with a swaying end, a teal knit cap with a pompom, and a few soft
+      snowflakes drifting down around him -- the wintry companion for the snow scenes/stories. Registered
+      in characters._CHARS (cast 21 -> 22) + char_voice (cool/kindly) + char_traits (holds very still:
+      low energy, no tail, rare blink). (2) Bespoke drawn quirks for more existing characters, each driven
+      by existing anim signals: a **penguin waddle** (gentle side-to-side rock about the feet), a **chicken
+      head-peck** bob (+ removed a dead `wob * 0.0` that disabled the comb wobble), and a **koala ear-perk**
+      (the big fuzzy ears lift on the twitch signal; the panda already perked). PNG-eyeballed (snowman +
+      penguin + chicken + koala all read clearly + cute). Verified: cast smoke renders all 22 across 5
+      states; char-traits test covers the Snowman; all 66 offline tests; selftest; drive_check 0 issues.
 - [x] **New scene: Starlit Lake** -- a serene Sleep/Relax visual (diversifying off the recent test +
       character rounds). A calm dark lake at night: a soft starfield and a low crescent moon in the upper
       sky, and below the horizon the still water mirrors them -- each star a fainter, gently-trembling
