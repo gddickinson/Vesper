@@ -203,6 +203,28 @@ slowly past the reeds and nothing at all was in a hurry there that warm afternoo
     assert "The next morning came grey" in spoken4, "the rest of the story is kept"
     print("ok: a headingless chapter 1 (first heading is CHAPTER II) starts at the story")
 
+    # a trailing printer's colophon (an all-caps imprint AFTER the story, as in some
+    # Pride & Prejudice editions) is cut -- the story's real last line is kept.
+    COLO = ("*** START OF THE PROJECT GUTENBERG EBOOK COLO ***\n\n"
+            "CHAPTER I\n\n"
+            "It was a calm and quiet night, and the river moved softly past the reeds "
+            "as the moon rose slowly over the hill and all the world lay still.\n\n"
+            "And so they were happy, and content, to the very end of their days.\n\n"
+            "CHISWICK PRESS:--CHARLES WHITTINGHAM AND CO. TOOKS COURT, CHANCERY LANE, LONDON.\n\n"
+            "*** END OF THE PROJECT GUTENBERG EBOOK COLO ***\n")
+    bk5 = books.from_text(COLO, "Colo", "X")
+    spoken5 = " ".join(u["text"] for u in bookreader.units(bk5))
+    assert spoken5.endswith("to the very end of their days."), spoken5[-60:]
+    assert "CHISWICK PRESS" not in spoken5, "a trailing printer's colophon leaked"
+    # the colophon guard is near-all-caps only: a normal closing sentence that just
+    # mentions 'the press.' must NOT be cut.
+    OKPRESS = COLO.replace(
+        "CHISWICK PRESS:--CHARLES WHITTINGHAM AND CO. TOOKS COURT, CHANCERY LANE, LONDON.",
+        "He had always valued, above most things, the freedom of the press.")
+    spoken6 = " ".join(u["text"] for u in bookreader.units(books.from_text(OKPRESS, "Ok", "X")))
+    assert spoken6.endswith("the freedom of the press."), spoken6[-50:]
+    print("ok: a trailing printer's colophon is cut; normal prose with 'press' is kept")
+
     print("PASS: booktext front-matter removal")
     return 0
 

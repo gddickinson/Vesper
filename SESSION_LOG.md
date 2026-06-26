@@ -4031,6 +4031,18 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Book cleaning: cut a trailing printer's colophon (autonomous follow-up)
+A skipped-verification check of the *ends* of the ten downloaded books (I'd only confirmed first lines)
+caught one tail leak: **Pride & Prejudice** narrated a trailing printer's imprint after the story --
+*'CHISWICK PRESS:--CHARLES WHITTINGHAM AND CO. TOOKS COURT, CHANCERY LANE, LONDON.'* (Sherlock's flagged
+"license" was a false alarm -- "married, by special license" is real story text). Added a tightly-guarded
+colophon cut to `booktext._drop_tail` (`_COLOPHON`): only a **near-all-caps** line (<=3 lowercase chars)
+in the **final few paragraphs** carrying a printer keyword (`PRESS:`, `PRINTED BY`, `PRINTERS`) is removed,
+so a normal closing sentence that merely mentions *'the freedom of the press.'* is kept. P&P now ends on
+*'...they were both ever sensible of the warmest gratitude...'*; the other nine endings are untouched. Re-
+segmented the P&P library copy. Test added to `test_booktext_clean` (colophon cut + the press false-positive
+guard). Verified: 74 offline tests; drive_check 0 issues; booktext.py 389 lines.
+
 ## Ten library books + book cleaning starts narration AT chapter 1 (user-requested)
 The user asked me to download ten books into their library, check each narrates correctly, fix bugs, and
 leave them. Downloaded ten beloved classics via the app's own Gutendex path (`booksource.search` +

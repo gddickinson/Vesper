@@ -366,14 +366,24 @@ def _drop_frontmatter(paras):
     return paras[i:]
 
 
+# A printer's imprint / colophon line that some editions print AFTER the story
+# ('CHISWICK PRESS:--CHARLES WHITTINGHAM AND CO. ...', 'PRINTED BY ...').
+_COLOPHON = re.compile(r"\b(press[:;,.]|printed (?:by|at|in)\b|printers?\b)", re.I)
+
+
 def _drop_tail(paras):
     """Cut trailing non-story matter -- a transcriber's note, footnotes section,
-    appendix or glossary that sits after the story but before the PG END band. Only
-    acts on an explicit marker in the LATTER part of the book, so it never truncates
-    the story itself."""
+    appendix or glossary that sits after the story but before the PG END band, plus
+    a trailing printer's **colophon**. Only acts on an explicit marker in the LATTER
+    part of the book (and the colophon only on a near-all-caps line in the final few
+    paragraphs), so it never truncates the story itself."""
     n = len(paras)
     for i in range(n):
         s = paras[i].strip()
         if i >= n * 0.55 and len(s) <= 60 and _TAIL.match(s):
+            return paras[:i]
+        # a printer's imprint at the very end: short, near-all-caps, printer keyword.
+        if (i >= n - 4 and 0 < len(s) <= 120 and _COLOPHON.search(s)
+                and sum(c.islower() for c in s) <= 3):
             return paras[:i]
     return paras
