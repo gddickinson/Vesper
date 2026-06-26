@@ -4031,6 +4031,19 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Scene: "Winter Cabin" -- a warm-lit cabin in the snow (user-requested snow scene)
+Part two of the snow request. A cosy Sleep/Relax scene, distinct from the existing bare Snowfall scene: a
+small log cabin with two warm amber windows nestled in deep snow under a starry winter night -- dark
+snow-tipped pines behind, a soft snow mound below, a gentle fall of flakes, and a thin ribbon of woodsmoke
+curling up and drifting from the chimney. The warm window-glow spills softly onto the snow and swells a
+touch on the inhale (a quiet breath cue, like the other scenes). Deterministic (seeded stars + flakes +
+anim-time motion, nothing per frame); reduce-motion eases the snow via the slowed t. New scene_wintercabin.py
+(136 lines, WinterCabin / id "cabin") following the scene_lake template, registered at the foot of scenes.py
+(scene count 14 -> 15; "Cabin" in View > Scene). Gotcha caught: QPainter.drawPolygon needs a QPolygonF, not
+loose QPointF args (the pines + roof) -- fixed. PNG-eyeballed: clearly a cosy winter cabin with glowing
+windows, chimney smoke and falling snow. Verified: all 66 offline tests; drive_check builds all 15 scenes,
+0 issues; file < 500 lines.
+
 ## Snowman character + more bespoke character quirks (user-requested)
 First part of a three-part request (more character quirks + a snowman + snow scenes + snow stories). (1)
 A new **Snowman** character (char_snowman.py, 131 lines): two stacked snowballs, cute coal eyes (cute_eyes

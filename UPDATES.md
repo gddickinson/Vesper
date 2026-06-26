@@ -155,6 +155,14 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **New snow scene: Winter Cabin** (user-requested snow scene). A cosy Sleep/Relax bed distinct from
+      the bare Snowfall scene: a small log cabin with two warm amber windows nestled in deep snow under a
+      starry winter night -- snow-tipped pines behind, a soft snow mound below, a gentle fall of flakes, and
+      a ribbon of woodsmoke curling from the chimney; the warm window-glow spills onto the snow and swells a
+      touch on the inhale (a quiet breath cue). Deterministic (seeded stars + flakes + anim-time motion);
+      reduce-motion eases the snow via the slowed `t`. New `scene_wintercabin.py` (136 lines) + registered
+      in scenes.py (scene count 14 -> 15, "Cabin" in View > Scene). PNG-eyeballed. Verified: all 66 offline
+      tests; drive_check builds all 15 scenes, 0 issues.
 - [x] **Snowman character + more bespoke character quirks** (user-requested). (1) A new **Snowman**
       character (`char_snowman.py`): two stacked snowballs, cute coal eyes + a coal-button smile, a carrot
       nose, twig arms, a red scarf with a swaying end, a teal knit cap with a pompom, and a few soft
