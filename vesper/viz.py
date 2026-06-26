@@ -18,6 +18,11 @@ class VizWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setMinimumSize(360, 360)
+        # Name the central visual for screen readers (the breath is conveyed
+        # audibly by the breath bed + optional spoken phase cues).
+        self.setAccessibleName("Breathing visualization")
+        self.setAccessibleDescription(
+            "An ambient visual that breathes in and out with the guided pace.")
         self._scene = scenes.make("orb")
         self._weather = scene_particles.ParticleLayer()   # optional weather overlay
         self._warm = 0.0                          # warm low-blue Sleep dimming

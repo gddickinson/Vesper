@@ -29,6 +29,7 @@ _MODE_TIPS = {
     "Sing": "Vocal warm-ups and a pitch trainer - sing the target line in tune.",
     "Relax": "Gentle soundscapes and soft visuals to unwind to.",
     "Sleep": "Bedtime stories or a narrated novel, wind-down pacing and dimming.",
+    "Read": "A calm reading screen - read along with a book, lecture or story.",
 }
 
 
@@ -60,6 +61,8 @@ class ControlPanel(_ReadCardMixin, _SectionsMixin, QWidget):
             b = QPushButton(name)
             b.setCheckable(True)
             b.setToolTip(_MODE_TIPS.get(name, ""))
+            b.setAccessibleName(f"{name} mode")          # for screen readers
+            b.setAccessibleDescription(_MODE_TIPS.get(name, ""))
             b.clicked.connect(lambda _=False, n=name: self.win.apply_mode(n))
             self.mode_group.addButton(b)
             self._mode_btns[name] = b
@@ -94,6 +97,8 @@ class ControlPanel(_ReadCardMixin, _SectionsMixin, QWidget):
             b = QPushButton(label)
             b.setCheckable(True)
             b.setToolTip(_vtips[key])
+            b.setAccessibleName(f"{label} view")
+            b.setAccessibleDescription(_vtips[key])
             b.clicked.connect(lambda _=False, k=key: self.win.set_view(k))
             vrow.addWidget(b)
             self._view_btns[key] = b
@@ -105,15 +110,23 @@ class ControlPanel(_ReadCardMixin, _SectionsMixin, QWidget):
         self.vol.setRange(0, 100)
         self.vol.setValue(int(win.user_volume * 100))
         self.vol.setToolTip("Master volume for everything you hear.")
+        # A bare slider announces only "slider, <value>" to a screen reader.
+        self.vol.setAccessibleName("Master volume")
+        self.vol.setAccessibleDescription("Master volume for everything you hear.")
         self.vol.valueChanged.connect(lambda x: self.win.set_volume(x / 100.0))
         v.addWidget(self.vol)
         row = QHBoxLayout()
         self.start_btn = QPushButton("Start")
         self.start_btn.setObjectName("accent")
         self.start_btn.setToolTip("Start or pause the session (Spacebar).")
+        # Leave the accessible name as the live button text (Start / Pause) so a
+        # screen reader announces the current state; describe what it does.
+        self.start_btn.setAccessibleDescription("Start or pause the session.")
         self.start_btn.clicked.connect(self.win.toggle_transport)
         reset = QPushButton("Reset")
         reset.setToolTip("Reset the session to the beginning (R).")
+        reset.setAccessibleName("Reset session")
+        reset.setAccessibleDescription("Reset the session to the beginning.")
         reset.clicked.connect(self.win.reset)
         row.addWidget(self.start_btn)
         row.addWidget(reset)

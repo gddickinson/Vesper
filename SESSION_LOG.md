@@ -4002,6 +4002,22 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## A11y: screen-reader labels on the primary controls
+An accessibility round. The app is audio-first -- ideal for blind / low-vision users -- but had zero
+`accessibleName` anywhere, and toolTips are hover-only (invisible to VoiceOver / NVDA). The bare
+master-volume QSlider announced only "slider, 70". Added `accessibleName` + `accessibleDescription` to
+every pinned control in controls.py: the mode-bar buttons ("<Mode> mode" + the purpose tip), the
+Face/Scene view toggle, the volume slider ("Master volume"), and the transport (Reset named explicitly;
+Start/Pause left nameless so its live text -- and thus state -- is what's announced, plus a description).
+Named the two central visuals in FaceWidget/VizWidget's own constructors ("Breathing face" / "Breathing
+visualization") rather than in window.py (which was at 495 lines -- adding there would have broken the
+500-line rule; the widget is also the right place to describe itself). The new test surfaced a pre-existing
+gap -- the Read mode button had no tooltip -- now fixed (added a _MODE_TIPS entry). New
+tools/test_a11y_labels.py builds the real window offscreen and asserts every primary control + both
+visuals expose a non-empty accessible name. Pure-additive metadata, no behaviour/visual change. Verified:
+that test + all 61 other offline tests (62/62); selftest (305/65); drive_check 0 issues; all touched files
+< 500 lines (window 495, controls 255, face 388, viz 138).
+
 ## Stories: "The Mapmaker's World" lecture branch (4)
 A Stories round (every ~3rd). New cartography branch -- The First Maps, Charts of the Sea, The Shape of
 the World, The View from Above -- the quiet history of mapping, written by 4 parallel subagents to the

@@ -155,6 +155,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Screen-reader labels on the primary controls** -- an accessibility round. The app is audio-first,
+      so blind and low-vision users (VoiceOver / NVDA) rely on it, yet there was **zero** `accessibleName`
+      anywhere and the toolTips are hover-only (invisible to assistive tech). The worst offender was the
+      **master-volume slider**, which a screen reader announced as a bare "slider, 70" with no label.
+      Added `accessibleName` + `accessibleDescription` to every pinned control -- the mode-bar buttons
+      ("<Mode> mode" + purpose), the Face/Scene view toggle, the volume slider ("Master volume"), and the
+      transport (Reset named; Start/Pause keeps its live text as the name so the state is announced, plus a
+      description) -- and named the two central visuals in their own widget constructors ("Breathing
+      face" / "Breathing visualization"), so they are not anonymous blanks (the breath itself is already
+      conveyed audibly by the breath bed + optional spoken phase cues). The new test also surfaced a small
+      pre-existing gap: the **Read** mode button had no tooltip at all, now given one. New
+      `tools/test_a11y_labels.py` builds the real window offscreen and asserts all of these expose non-empty
+      accessible names. Verified: that test + all 61 other offline tests (62/62); selftest; drive_check 0
+      issues. All files < 500 lines (labels live on the widgets, not in window.py).
 - [x] **Harden the multi-night courses against a bad saved day index** -- a robustness fix in the same
       vein as the corrupt-store-JSON hardening. `courses.apply_day(app, course, idx)` indexed
       `course.days[idx]` with **no bounds check**, and `start_course_day`'s guard

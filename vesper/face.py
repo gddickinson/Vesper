@@ -50,6 +50,9 @@ class FaceWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setMinimumSize(360, 360)
+        self.setAccessibleName("Breathing face")     # for screen readers
+        self.setAccessibleDescription(
+            "An animated face that breathes with you and speaks the words on screen.")
         # VESPER_FACE=cat starts on the 2D cat; =software forces the CPU ICT render.
         force = os.environ.get("VESPER_FACE",
                                os.environ.get("BSQT_FACE", "")).lower()
