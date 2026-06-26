@@ -367,17 +367,17 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         # restore the voice / ambience the user last chose in this mode (if any)
         from breathsim import store, voices
         pref = store.get_mode_pref(name)
-        pv = pref.get("voice")
+        pv, pa = pref.get("voice"), pref.get("ambience")
         if pv and voices.get_voice(pv):
             self.engine.set_voice_a(pv)
-        pa = pref.get("ambience")
         if pa and not self._story_scene and voices.get_voice(pa):
             self._set_base_ambience(pa)               # not during the Sleep storyteller
         self.current_mode = name
         self._applying_mode = False
         self.panel.reflect_mode(name)
-        if name == "Read":                          # show the read-along pane + a book
-            self.enter_read()
+        # Read shows the read-along pane + a book (and goes narrator-only); every
+        # other mode keeps its breath bed audible.
+        self.enter_read() if name == "Read" else self.set_bg_sounds(True)
         self.status.showMessage(m.description, 4000)
 
     def set_pattern(self, name):
@@ -465,20 +465,6 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         if getattr(self, "_intro_sched", None):       # tap to skip the settle-in lead-in
             self._intro_sched = []
         super().mousePressEvent(ev)
-
-    def set_quiet_hours(self, on):
-        """Toggle the late-night output-volume cap (persisted); applies at once."""
-        self._quiet_hours = bool(on)
-        self._cur_cap = -1.0                          # force a recompute
-        self._apply_quiet_cap()
-
-    def _apply_quiet_cap(self):
-        """Set the engine's output ceiling from the clock (1.0 when off/by day)."""
-        from . import clocktheme
-        cap = clocktheme.quiet_cap(clocktheme.now_hour()) if self._quiet_hours else 1.0
-        if abs(cap - self._cur_cap) > 1e-3:
-            self._cur_cap = cap
-            self.engine.set_volume_cap(cap)
 
     def closeEvent(self, ev):
         try:

@@ -472,9 +472,14 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   the novel narration in Read mode -- not just the read-pane button -- with a "no book loaded" hint
   for an empty library; called from `window.toggle_transport`), a follow timer, and
   `set_read_along`/`set_reading_speed`/`set_reading_pauses`/`set_reading_voice`. `sections_read._ReadCardMixin._card_read` is the Reading control card (book
-  picker · add-a-novel · read-along · start/pause · speed · pauses · narration voice). Reading is
-  narration-first; breathing visuals (the Start button) and a sleep fade (Sleep mode) are opt-in.
-  Coexists with the Reader dialog + the Sleep novel option. Offline test: `tools/test_read_mode.py`.
+  picker · add-a-novel · read-along · start/pause · speed · pauses · narration voice). Read is an
+  **audiobook player: narrator-only by default** -- `enter_read` calls `app_actions.set_bg_sounds(False)`
+  to silence the breath bed / ambience / effects (the breath VISUAL still animates) and reflect the
+  Sound > Background-sounds checkmarks; switching to any other mode restores them. It also reads at a
+  **normal awake pace** by default (`_read_long=False` -> short 250/750 ms sentence/paragraph gaps);
+  the "Longer pauses (sleep-friendly)" toggle restores the slow 700/1600 ms spacing. Breathing visuals
+  and a sleep fade (Sleep mode) stay opt-in. Tests: `tools/test_read_defaults.py`,
+  `tools/test_read_mode.py`. Coexists with the Reader dialog + the Sleep novel option.
 - **llm_story_action.py** — the Sleep **"Generate a bedtime story (AI)"** action (a button on the
   story card). `can_generate` gates on `llm_story.available()` (disabled + hinted with no backend);
   `make_story(topic, complete=None)` generates + registers one AI story (Qt-free, off-thread safe);

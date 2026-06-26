@@ -66,8 +66,10 @@ class _ReadCardMixin:
                           getattr(self.win, "_read_speed", 1.0), decimals=2,
                           suffix="x", on_change=self.win.set_reading_speed)
         body.addWidget(s)
-        lp = QCheckBox("Longer pauses between paragraphs")
-        lp.setChecked(getattr(self.win, "_read_long", True))
+        lp = QCheckBox("Longer pauses (slower, sleep-friendly)")
+        lp.setChecked(getattr(self.win, "_read_long", False))
+        lp.setToolTip("Off: normal awake-reading pace with short gaps. On: longer "
+                      "gaps between sentences and paragraphs, for drifting off.")
         lp.toggled.connect(self.win.set_reading_pauses)
         body.addWidget(lp)
 
@@ -92,9 +94,9 @@ class _ReadCardMixin:
         body.addWidget(vc)
         lbl = narration.engine_label(self.win.speech) or "no narration"
         body.addWidget(muted(f"Engine: {lbl}"))
-        body.addWidget(muted("Reading-focused by default. Press Start (left) to "
-                             "add breathing visuals; for a sleep fade-out, use "
-                             "Sleep mode."))
+        body.addWidget(muted("Narrator only by default -- no breathing or ambient "
+                             "sound. Add them from Sound > Background sounds; for a "
+                             "sleep fade-out, use Sleep mode."))
         return frame
 
     def _on_read_book(self, _t=None):

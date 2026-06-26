@@ -155,6 +155,14 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Read mode: narrator-only + normal pace by default** (user-requested). Read is an audiobook
+      player, so starting a session now plays **just the narrator** -- `enter_read` mutes the breath
+      bed / ambience / effects via a new `app_actions.set_bg_sounds` (reflecting the Sound-menu
+      checkmarks); the breath VISUAL still animates, and other modes restore the bed. Pacing now
+      defaults to a **normal awake pace** (`_read_long=False` -> 250/750 ms sentence/paragraph gaps,
+      was 700/1600); the "Longer pauses (sleep-friendly)" toggle restores the slow spacing. Moved
+      `set_quiet_hours`/`_apply_quiet_cap` into the app_actions mixin to keep window.py < 500 (488).
+      New `tools/test_read_defaults.py`; 74 offline tests + drive_check 0 issues.
 - [x] **Robust book cleaning for narration + a shipped sample book** (user-requested). Investigated the
       real Gutenberg *Wind in the Willows*: the narrator was reading the **table of contents**, the byline
       and the **chapter headings**. Root cause: a byline ending in a period fooled the front-matter scrub.

@@ -188,12 +188,16 @@ def _sound(win, m):
     mute.toggled.connect(win.set_muted)
     win._act_mute = mute
     bg = m.addMenu("Background sounds")
+    win._bg_acts = {}                       # slot -> QAction, so Read can reflect off
     for slot, label in (("primary", "Breathing"), ("ambience", "Ambience"),
                         ("effects", "Heartbeat & effects")):
         a = bg.addAction(label)
         a.setCheckable(True)
-        a.setChecked(True)
+        # Read mode is narrator-only: its breath/ambience/effects start muted.
+        a.setChecked(not (getattr(win, "current_mode", None) == "Read"
+                          and slot in ("primary", "ambience", "effects")))
         a.toggled.connect(lambda on, s=slot: win.toggle_layer(s, on))
+        win._bg_acts[slot] = a
     chime = m.addAction("Transition chime")
     chime.setCheckable(True)
     chime.setChecked(getattr(win.engine, "chime_enabled", True))

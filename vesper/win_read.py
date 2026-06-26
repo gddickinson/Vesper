@@ -33,7 +33,7 @@ class _ReadMixin:
         self._read_bid = None
         self._read_idx = 0
         self._read_speed = 1.0
-        self._read_long = True
+        self._read_long = False     # normal awake reading pace by default (sleep = longer)
         self._read_along = True
         self._read_fade_min = 0.0       # opt-in Read sleep fade (minutes); 0 = off
         self._read_fade_t0 = 0.0        # monotonic mark when the fade was armed/started
@@ -66,6 +66,10 @@ class _ReadMixin:
             lib = books.list_books()
             bid = (ip[0]["id"] if ip else (lib[0]["id"] if lib else None))
         self.set_reading_book(bid)
+        # Read is an audiobook player: default to the narrator alone -- silence the
+        # breath bed / ambience / effects (the breath VISUAL still animates). The
+        # user can switch them back on from Sound > Background sounds.
+        self.set_bg_sounds(False)
         if self._read_along:
             self.read_pane.show()
             self.center_split.setSizes([300, 500])  # favour the text while reading
@@ -189,7 +193,9 @@ class _ReadMixin:
         book = books.load(self._read_bid)
         if not book:
             return
-        lp, pp = (700, 1600) if self._read_long else (650, 900)
+        # Normal awake-reading pace by default (short, natural gaps); the "Longer
+        # pauses" toggle restores the slow, sleep-friendly spacing.
+        lp, pp = (700, 1600) if self._read_long else (250, 750)
         start = books.position(self._read_bid)
         total = len(book.sentences())
         if total and start >= total:                # finished, or a stale resume

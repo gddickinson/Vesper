@@ -107,8 +107,41 @@ class _ActionsMixin:
         store.save_settings({"space": name})
         self.status.showMessage(f"Space: {name}", 2500)
 
+    def set_quiet_hours(self, on):
+        """Toggle the late-night output-volume cap (persisted); applies at once."""
+        self._quiet_hours = bool(on)
+        self._cur_cap = -1.0                          # force a recompute
+        self._apply_quiet_cap()
+
+    def _apply_quiet_cap(self):
+        """Set the engine's output ceiling from the clock (1.0 when off/by day)."""
+        from . import clocktheme
+        cap = clocktheme.quiet_cap(clocktheme.now_hour()) if self._quiet_hours else 1.0
+        if abs(cap - self._cur_cap) > 1e-3:
+            self._cur_cap = cap
+            self.engine.set_volume_cap(cap)
+
     def toggle_layer(self, slot, on):
         self.engine.set_slot_muted(slot, not on)
+        self._reflect_bg_sound(slot, on)
+
+    def set_bg_sounds(self, on):
+        """Mute or restore the breath bed + ambience + effects together, and keep
+        the Sound > Background-sounds checkmarks honest. Read mode uses this to
+        default to **narrator only** (no breathing/ambience), while the breath
+        VISUAL keeps animating; the user can switch them back on from the menu."""
+        for slot in ("primary", "ambience", "effects"):
+            self.engine.set_slot_muted(slot, not on)
+            self._reflect_bg_sound(slot, on)
+
+    def _reflect_bg_sound(self, slot, on):
+        """Set a Background-sounds menu checkmark without re-firing its handler."""
+        from . import menus
+        act = menus.alive(getattr(self, "_bg_acts", {}).get(slot))
+        if act is not None:
+            act.blockSignals(True)
+            act.setChecked(bool(on))
+            act.blockSignals(False)
 
     # --- saved soundscapes (a light sound-only mix) -----------------------
     def save_soundscape(self, name):

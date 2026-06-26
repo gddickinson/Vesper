@@ -4031,6 +4031,23 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Read mode: narrator-only by default + a normal awake-reading pace (user-requested)
+The user, reading novels in Read mode, found two things off: starting a session gave the **breathing
+sound** under the narrator, and the narrator paused too long between sentences/paragraphs ("good for
+sleep, strange for awake reading"). Read is really an **audiobook player**, so: (1) `enter_read` now
+calls a new `app_actions.set_bg_sounds(False)` that mutes the **breath bed (primary) + ambience +
+effects** slots (and reflects the Sound > Background-sounds checkmarks via a stored `_bg_acts` map) so a
+Read session is **narrator only** -- the breath VISUAL still animates (the controller runs), it's just
+silent; switching to any other mode calls `set_bg_sounds(True)` to restore the bed. The user can turn
+breathing/ambience back on from the menu. (2) The default pace is now the **short** one --
+`_read_long=False`, so `start_reading` uses **250 ms** between sentences / **750 ms** at paragraph breaks
+(was 700/1600); the renamed "**Longer pauses (slower, sleep-friendly)**" toggle restores the slow
+spacing. window.py was already at 502 lines (over the 500 limit) and my +2 pushed it to 504, so I moved
+the self-contained `set_quiet_hours`/`_apply_quiet_cap` pair into the `app_actions` mixin (its natural
+home) and compressed apply_mode -- window.py is back to **488**. New `tools/test_read_defaults.py`
+asserts the three slots mute on enter (and the menu reflects it), the short pace tuple, the toggle, and
+that leaving Read restores the bed. Verified: 74 offline tests; drive_check 0 issues.
+
 ## Book cleaning: hardened against real TOC / illustration leaks (Alice, Tom Sawyer, Peter Pan)
 Follow-up to the previous round. The single-book (Wind in the Willows) validation missed two failure
 modes, surfaced by **stress-testing three more real Gutenberg books** (Alice #11, Tom Sawyer #74, Peter
