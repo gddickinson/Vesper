@@ -472,7 +472,9 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 
 ## Vendored core — `breathsim/` (in this project)
 The whole audio/logic/story core lives here, gui-free (the Tk GUI is not vendored):
-`controller`, `engine`, `speech`, `narration` (Kokoro/say + lip-sync `amp`),
+`controller`, `engine`, `speech`, `narration` (Kokoro/say + lip-sync `amp`; a
+generation token + per-thread-local player process mean a voice/scene change
+never lets an outgoing narrator cut off the incoming one),
 `stories` + the **lecture library** (`lectures` + `lectures_*.py`, 277 across
 58 branches incl. Songbirds (The Nightingale · The Blackbird · The Skylark · The Wren) +
 a small-worlds trilogy — The Inner Planets (Mercury · Venus · Mars · Earth

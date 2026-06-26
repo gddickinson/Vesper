@@ -336,15 +336,19 @@ class Narrator:
         txt = str(unit.get("text", "")).replace("[", "(").replace("]", ")")
         text = f"[[volm {vol:.2f}]] {txt} [[slnc {pause}]]"
         try:
-            self._proc = subprocess.Popen(
+            proc = subprocess.Popen(
                 [self.binary, "-v", voice, "-r", str(self._rate(lvl)), text],
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            self._proc = proc                     # main thread's stop() kills this
         except Exception:
             return
         self.amp = 0.4                            # approximate mouth while speaking
-        while self._proc and self._proc.poll() is None:
+        # Loop/terminate on the LOCAL proc, never the shared field: on a mid-line
+        # voice/scene change the new narrator overwrites self._proc, and this
+        # (outgoing) thread must not kill the incoming narrator's process.
+        while proc.poll() is None:
             if not self._active(tok):
-                self._terminate(self._proc)
+                self._terminate(proc)
                 break
             time.sleep(0.1)
         self.amp = 0.0
@@ -373,16 +377,19 @@ class Narrator:
         if not path:
             return self._wait(tok, self._pause_ms(unit, timing_fn))
         try:
-            self._proc = subprocess.Popen(["afplay", path],
-                                          stdout=subprocess.DEVNULL,
-                                          stderr=subprocess.DEVNULL)
+            proc = subprocess.Popen(["afplay", path],
+                                    stdout=subprocess.DEVNULL,
+                                    stderr=subprocess.DEVNULL)
+            self._proc = proc                     # main thread's stop() kills this
         except Exception:
             self._unlink(path)
             return self._wait(tok, self._pause_ms(unit, timing_fn))
         t0, i = time.time(), 0
-        while self._proc and self._proc.poll() is None:
+        # Loop/terminate on the LOCAL proc (see _speak_say): an outgoing thread
+        # must never terminate the incoming narrator's afplay process.
+        while proc.poll() is None:
             if not self._active(tok):
-                self._terminate(self._proc)
+                self._terminate(proc)
                 break
             now = time.time() - t0
             while i < len(env) and env[i][0] <= now:

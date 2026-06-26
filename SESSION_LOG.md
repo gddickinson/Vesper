@@ -3901,6 +3901,21 @@ the correct backdrop or None; every theme + scene base is a registered `face_bg`
 real-lecture sanity sweep (Diwali still cues Embers x13, City x7, etc. -- no regression); selftest;
 all 50 offline tests; drive_check 0 issues.
 
+## Fix: an outgoing narrator silenced the incoming one
+A robustness round (runtime bug-hunt over the unattended-sleep paths; reproduced before fixing). The
+bedtime storyteller speaks one line per background thread, each shelling out to a player process
+(`say`/`afplay`). The handle lived in a single shared field `Narrator._proc`; on a mid-line
+voice/scene change the new thread overwrote it and the still-looping **old** thread then terminated
+the **new** narrator's process, cutting the new narration's first line to silence. Fix: each thread
+loops/terminates on a **local** proc, never the shared field (which the main thread still uses for
+`stop()`/`start()`), so an outgoing thread can only stop its own audio -- applied to both
+`_speak_say` and `_speak_neural`. Also a one-line defensive guard in `session._update_program`
+against an empty-stages Program (latent `IndexError`, not reachable via the shipped flow). New
+`tools/test_narration_race.py` drives the race deterministically with fake processes (no audio) and
+pins that `_speak_say` terminates only its own process, never the successor's, and never
+force-terminates a naturally-finishing line. Verified: selftest (277/58); all 52 offline tests;
+drive_check 0 issues.
+
 ## Fix: a corrupt user-data file crashed the launch
 A robustness round (found by a focused bug-hunt, reproduced before fixing). The list-typed user
 files in `~/.breathsim` are hand-editable; a file that parses as a JSON scalar / `null` / object

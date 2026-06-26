@@ -155,6 +155,23 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Fix: an outgoing narrator silenced the incoming one** -- a real, reproduced **sleep-critical**
+      bug in the bedtime storyteller, found by a runtime bug-hunt over the unattended-sleep paths. Each
+      narrator thread shells out to a player process (macOS `say` / `afplay`), but the process handle
+      lived in a single **shared** field `narration.Narrator._proc`. On a mid-line voice/scene change
+      (`win_story.set_story_voice` / `set_story` -> `narrator.start()`), the new thread overwrote
+      `self._proc` with its own live process, and the still-looping **old** thread then read that field
+      and terminated the **new** narrator's process -- cutting the new narration's opening line to
+      silence and dropping its pause. Fix: each thread captures its process in a **local** and
+      loops/terminates on that, never the shared field (which the main thread still uses for
+      `stop()`/`start()`), so an outgoing thread can only ever stop its own audio. Applied to both
+      backends (`_speak_say`, `_speak_neural`). Also added a one-line defensive guard in
+      `session._update_program` (`if not self.program or not self.program.stages: return`) -- the
+      bug-hunt showed an empty-stages Program would `IndexError`; not reachable via the shipped
+      mode/program flow, but cheap insurance. New `tools/test_narration_race.py` drives the race
+      deterministically with fake processes (no audio) and asserts `_speak_say` terminates only its own
+      process, never the successor's, and never force-terminates a line that ends on its own. Verified:
+      selftest (277/58); all 52 offline tests; drive_check 0 issues.
 - [x] **Fix: a corrupt user-data file crashed the launch** -- a real **launch-crash**, found by a
       robustness bug-hunt and reproduced. The list-typed files in `~/.breathsim` (`patterns.json`,
       `voices.json`, `presets.json`, `ai_stories.json`, `ai_mantras.json`, plus `favourites.json` /

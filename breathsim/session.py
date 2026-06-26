@@ -191,6 +191,8 @@ class SessionDirector:
             eng.set_morph(self.manual)
 
     def _update_program(self, t):
+        if not self.program or not self.program.stages:   # defensive: empty program
+            return
         local = t - self.program_t0
         idx = 0
         for i, start in enumerate(self._starts):
