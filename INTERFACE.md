@@ -635,12 +635,17 @@ refs** (`[12]`) and Gutenberg `_italics_`; `_drop_frontmatter` drops the leading
 edition / table of contents / list of illustrations** (recognising a byline even when it ends in a
 period, e.g. *'Author of "The Golden Age," Etc.'*; an **edition/transcriber note** via `_EDITION_NOTE`,
 e.g. *'A Millennium Fulcrum Edition'*; and each **TOC entry** via `_TOC_ENTRY`, e.g. *'CHAPTER XX. Becky
-in a Dilemma...'*). The hard part is telling a real chapter heading from a contents *entry*: it uses a
-**look-ahead** -- `_is_structural_heading` only ends the scrub when the heading is **not** followed by
-another heading/entry (so a short *'CHAPTER XIX. Tom Tells the Truth'* sitting in the TOC no longer halts
-it mid-list), and once front matter has been seen, a remaining **short** line is treated as a stray
-**illustration caption** (*'Cat and Toys'*) rather than the story's first prose. It stops at the first
-chapter heading or **substantial** paragraph so a genuine preface survives; `_drop_tail` cuts a
+in a Dilemma...'*). For a **chaptered** book it then starts narration **at chapter 1** (`_first_chapter_index`
+finds the first *isolated* structural heading -- one NOT inside a contents run, where a run is detected via
+a `_TOC_LINE` look-ahead that knows dot-leaders + page numbers), so a long **editor's preface /
+introduction** (Saintsbury's before *Pride and Prejudice*), a **dedication** or a *'by the same author'*
+list are all dropped. `_heading_is_first` tells a real chapter 1 from a book whose **chapter 1 has no
+heading** (its first heading is *'CHAPTER II'*, like P&P): there it backs up over the story prose to the
+end of the front matter (`_is_frontmatter_line`) so the famous first line is kept, not skipped. A
+name-initial dateline (*'L. Frank Baum, Chicago, 1900'*) is kept from looking like a roman-numeral heading,
+*'STAVE'* counts as a chapter word (A Christmas Carol), and stray unpaired italic `_` are stripped. A text
+with **no chapter structure** keeps its first real prose (dropping only positively-identified
+title/edition/contents/plate lines); `_drop_tail` cuts a
 trailing **transcriber's note / appendix / glossary**; and a per-paragraph `_is_dropped_para` removes
 **scene dividers** (`* * *`), **footnote blocks** and stray TOC anywhere. **`is_heading`** (now also
 catches `I. THE RIVER BANK` + all-caps title lines, digit-free) and **`is_narratable`** keep chapter

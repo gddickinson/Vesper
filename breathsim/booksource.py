@@ -32,6 +32,7 @@ injectable *fetch* so tests exercise the whole path with zero sockets.
 from __future__ import annotations
 
 import json
+import re
 import time
 from dataclasses import dataclass
 
@@ -131,6 +132,15 @@ def _plain_text_url(formats):
     return cands[0][1]
 
 
+def _clean_title(t):
+    """Tidy a catalogue title for display: drop MARC subfield codes ('$b') and the
+    orphaned ' : '/' ; ' that preceded them, so 'Peter Pan : $b [Peter and Wendy]'
+    reads as 'Peter Pan [Peter and Wendy]'."""
+    t = re.sub(r"\s*\$[a-z]\b", "", t or "")            # MARC subfield codes
+    t = re.sub(r"\s*[:;]\s*(?=[\[(])", " ", t)          # orphaned ' : ' before a bracket
+    return re.sub(r"\s{2,}", " ", t).strip(" :;,.") or "Untitled"
+
+
 def parse_gutendex(data):
     """Parse a Gutendex JSON response (bytes or str) into result dicts ``{id,
     title, author, source, text_url, download_count, languages}``. Never raises;
@@ -151,7 +161,7 @@ def parse_gutendex(data):
             continue
         authors = r.get("authors") or []
         author = authors[0].get("name", "") if authors and isinstance(authors[0], dict) else ""
-        out.append({"id": r.get("id"), "title": (r.get("title") or "Untitled").strip(),
+        out.append({"id": r.get("id"), "title": _clean_title(r.get("title")),
                     "author": author, "source": "gutenberg", "text_url": url,
                     "download_count": r.get("download_count"),
                     "languages": r.get("languages") or []})

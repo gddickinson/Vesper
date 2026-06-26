@@ -155,6 +155,15 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Book cleaning starts narration AT chapter 1 + ten library books** (user-requested). Downloaded ten
+      classics (P&P, Sherlock, Christmas Carol, Oz, Treasure Island, Secret Garden, Anne of Green Gables,
+      Alice, Tom Sawyer, Peter Pan) and found the cleaner read **editor introductions / dedications /
+      contents lists / title pages** before the story. Reworked `_drop_frontmatter` to **start at chapter 1**
+      for a chaptered book (`_first_chapter_index` + a `_TOC_LINE` dot-leader/page-number look-ahead), with a
+      backup for a **headingless chapter 1** (P&P -- first heading is "CHAPTER II"), a guard so a name-initial
+      dateline ("L. Frank Baum, 1900") isn't a heading, "stave" as a chapter word (A Christmas Carol), and
+      stray italic `_` stripped. Tidied catalogue titles (`_clean_title` drops MARC "$b"). All 10 narrate the
+      story; tests extended; 74 offline tests + drive_check 0 issues.
 - [x] **Read mode: narrator-only + normal pace by default** (user-requested). Read is an audiobook
       player, so starting a session now plays **just the narrator** -- `enter_read` mutes the breath
       bed / ambience / effects via a new `app_actions.set_bg_sounds` (reflecting the Sound-menu

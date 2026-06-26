@@ -55,6 +55,13 @@ def main():
     assert r["source"] == "gutenberg"
     print("ok: Gutendex parsed; UTF-8 plain-text URL chosen; no-text book dropped")
 
+    # title tidy-up: MARC subfield codes ('$b') and orphaned ' : ' are removed
+    assert booksource._clean_title("Peter Pan : $b [Peter and Wendy]") == \
+        "Peter Pan [Peter and Wendy]"
+    assert booksource._clean_title("Plain Title") == "Plain Title"
+    assert booksource._clean_title("") == "Untitled"
+    print("ok: catalogue titles tidied ($b subfield + orphan colon removed)")
+
     # junk in -> [] (never raises)
     assert booksource.parse_gutendex(b"not json") == []
     assert booksource.parse_gutendex("{}") == []

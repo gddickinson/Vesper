@@ -147,9 +147,12 @@ def segment(text):
 # --- chapter detection (for navigation) ------------------------------------
 
 _HEADING = re.compile(
-    r"^(chapter|book|part|canto|act|scene|volume|letter)\b.{0,40}$"
+    r"^(chapter|book|part|canto|act|scene|volume|letter|stave|prologue|epilogue)\b.{0,40}$"
     r"|^[IVXLCDM]{1,8}\.?$|^\d{1,3}\.?$"
-    r"|^[IVXLCDM]{1,8}\.\s+\S.{0,44}$", re.I)       # "I. THE RIVER BANK"
+    # "I. THE RIVER BANK" / "1. The Old Sea-dog" -- a numeral + a comma/digit-free
+    # title (so a name-initial dateline like 'L. Frank Baum, Chicago, 1900' is NOT
+    # mistaken for a roman-numeral chapter heading).
+    r"|^(?:[IVXLCDM]{1,8}|\d{1,3})\.\s+[A-Za-z\"'(][^,\d\n]{0,45}$", re.I)
 # An all-caps title / running-head line ("THE RIVER BANK", "MR. BADGER").
 _HEADING_CAPS = re.compile(r"^[A-Z][A-Z0-9 ,.'\"&:;()/-]{1,46}$")
 
@@ -200,7 +203,7 @@ _TOC_HEAD = re.compile(
     re.I)
 # A run of 'CHAPTER <numeral>' references packed together == a table-of-contents
 # blob (real prose almost never lists three numbered chapters in one paragraph).
-_TOC_BLOB = re.compile(r"(?:chapter|book|part|canto|letter)\s+[ivxlcdm\d]+\b", re.I)
+_TOC_BLOB = re.compile(r"(?:chapter|book|part|canto|letter|stave)\s+[ivxlcdm\d]+\b", re.I)
 # A line of only punctuation / asterisks / dashes == a scene divider, not prose.
 _DIVIDER = re.compile(r"^[\s*._\-=~+#<>]+$")
 # A paragraph that begins a footnote block, e.g. '[1] ...' or '[12] ...'.
@@ -218,7 +221,11 @@ _BYLINE = re.compile(
 # (often with a long page-summary trailing). The body's real chapter heading is the
 # short structural form, caught by `_is_structural_heading` first, so this only
 # strips the contents list, never the chapter that starts the story.
-_TOC_ENTRY = re.compile(r"^(chapter|book|part|canto|letter|volume)\s+[ivxlcdm\d]+\b", re.I)
+_TOC_ENTRY = re.compile(r"^(chapter|book|part|canto|letter|volume|stave)\s+[ivxlcdm\d]+\b", re.I)
+# A table-of-contents / list-of-illustrations *line*: dot-leaders ('. . . .') or a
+# trailing page number ('The End 476', 'I. The Old Sea-dog ... 11'). Real prose
+# paragraphs don't end in a bare number or carry spaced-dot leaders.
+_TOC_LINE = re.compile(r"\.\s+\.\s+\.|\s\d{1,4}\s*$")
 # A digitiser / edition / transcriber note that some texts keep at the very front
 # (e.g. 'A Millennium Fulcrum Edition produced ... in the public domain ...').
 _EDITION_NOTE = re.compile(
@@ -227,11 +234,15 @@ _EDITION_NOTE = re.compile(
     r"|electronic (?:version|edition)|in the public domain)", re.I)
 
 
+_STRAY_US = re.compile(r"_(?=[A-Za-z])|(?<=[A-Za-z])_")   # a lone, unpaired italic _
+
+
 def _strip_markup(body):
     """Drop inline [Illustration]/[Sidenote] markers + footnote refs, and unwrap
     ``_italics_`` -- none of which should be spoken aloud."""
     body = _FOOTREF.sub("", _ILLUS.sub(" ", body or ""))
-    return _ITALIC.sub(r"\1", body)
+    body = _ITALIC.sub(r"\1", body)
+    return _STRAY_US.sub("", body)      # drop any leftover lone italic underscores
 
 
 def _is_structural_heading(s):
@@ -275,37 +286,79 @@ def is_narratable(sentence):
     return bool(s) and not is_heading(s) and not _DIVIDER.match(s)
 
 
+def _first_chapter_index(paras):
+    """Index of the first *isolated* structural chapter heading -- the start of the
+    story in a **chaptered** book -- or ``None`` if the text has no chapter
+    structure. A heading inside a contents *run* (each one followed by another
+    heading / TOC entry / page-numbered contents line) is skipped, so a table of
+    contents never counts; the real chapter heading is the first one followed by
+    something that is NOT itself a heading / contents line (the story prose)."""
+    n = len(paras)
+    for i in range(min(n, 400)):
+        if not _is_structural_heading(paras[i].strip()):
+            continue
+        nxt = paras[i + 1].strip() if i + 1 < n else ""
+        if (_is_structural_heading(nxt) or _TOC_ENTRY.match(nxt)
+                or _TOC_LINE.search(nxt)):
+            continue                            # part of a contents run -> not the start
+        return i
+    return None
+
+
+def _heading_is_first(s):
+    """True if a structural heading is the FIRST chapter -- 'CHAPTER I', 'I. ...',
+    '1. ...', 'PART ONE'. Used to tell a book whose chapter 1 carries a heading from
+    one whose chapter 1 has none (its first heading is 'CHAPTER II')."""
+    s = (s or "").strip().lower()
+    s = re.sub(r"^(chapter|book|part|canto|act|scene|volume|letter|stave)\s+", "", s)
+    m = re.match(r"([ivxlcdm]+|\d+|one|first)\b", s)
+    return (not m) or m.group(1) in ("i", "1", "one", "first")
+
+
+def _is_frontmatter_line(p):
+    """A positively-identified front-matter *boundary* line -- byline / edition / TOC
+    head / contents entry / a dot-leader or page-number plate line. Used to find
+    where the front matter ends when chapter 1 itself carries no heading. Kept strict
+    (no bare short-line / titlepage guess) so a stray bracket left by an illustration
+    inside the story doesn't look like a boundary and truncate chapter 1."""
+    s = (p or "").strip()
+    return bool(_TOC_HEAD.match(s) or _is_toc_blob(s) or _TOC_ENTRY.match(s)
+                or _EDITION_NOTE.search(s) or _BYLINE.match(s)
+                or (len(s) <= 70 and _TOC_LINE.search(s)))
+
+
 def _drop_frontmatter(paras):
-    """Drop a leading title page / table of contents / list of illustrations -- the
-    non-story matter Project Gutenberg keeps before the text -- **stopping at the
-    first chapter heading or the first real paragraph**, so the story (and any
-    genuine preface) is preserved. Conservative: it only removes positively
-    identified front-matter lines and never looks past the start of the story."""
+    """Drop the non-story matter Project Gutenberg keeps before the text -- title
+    page, edition note, table of contents, list of illustrations, dedication,
+    **editor's preface / introduction**. For a *chaptered* book the story begins at
+    chapter 1, so everything before it is dropped (this is what skips a long critic's
+    introduction -- e.g. Saintsbury's before *Pride and Prejudice* -- a dedication or
+    a 'by the same author' list). A text with **no chapter structure** keeps its
+    first real prose, removing only positively identified leading front-matter."""
+    h = _first_chapter_index(paras)
+    if h is not None:
+        if _heading_is_first(paras[h]):
+            return paras[h:]                    # chapter 1 has a heading: start there
+        # The first heading is 'CHAPTER II' etc -- chapter 1 carries NO heading (e.g.
+        # Pride & Prejudice opens straight into 'It is a truth...'). Back up over the
+        # contiguous story prose to the end of the front matter, and start there.
+        i = h
+        while i > 0 and not _is_frontmatter_line(paras[i - 1]):
+            i -= 1
+        return paras[i:]
+    # heading-less text: keep the first real prose paragraph.
     i = 0
     dropped = 0
-    while i < len(paras) and i < 300:           # front matter can be long (TOC + plates)
+    while i < len(paras) and i < 300:
         p, s = paras[i], paras[i].strip()
-        if _is_structural_heading(s):
-            nxt = paras[i + 1].strip() if i + 1 < len(paras) else ""
-            # a real chapter heading is followed by the story; a *contents entry*
-            # (a short 'CHAPTER XIX. Tom Tells the Truth') is followed by more
-            # entries -- so only break out of the front matter when the heading is
-            # NOT part of a run of headings / contents lines.
-            if _is_structural_heading(nxt) or _TOC_ENTRY.match(nxt):
-                i += 1
-                dropped += 1
-                continue
-            break                               # an isolated heading: the story starts
         if (_TOC_HEAD.match(s) or _is_toc_blob(s) or _TOC_ENTRY.match(s)
-                or _EDITION_NOTE.search(s) or _is_titlepage_line(p)):
+                or _EDITION_NOTE.search(s) or _is_titlepage_line(p)
+                or (len(s) <= 70 and _TOC_LINE.search(s))):
             i += 1               # title / byline / edition / contents / toc entry / plate
             dropped += 1
             continue
-        # a plain line. If we have already been scrubbing front matter (TOC /
-        # plates), a *short* line here is almost always a stray illustration
-        # caption ('Cat and Toys', "Ain't that Work?") -- only a substantial
-        # paragraph (or a chapter heading, handled above) marks the real start
-        # of the prose.
+        # once front matter has been seen, a remaining *short* line is almost always
+        # a stray illustration caption ('Cat and Toys'), not the story's first prose.
         if dropped and len(s) < 120:
             i += 1
             continue

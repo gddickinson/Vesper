@@ -4031,6 +4031,34 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Ten library books + book cleaning starts narration AT chapter 1 (user-requested)
+The user asked me to download ten books into their library, check each narrates correctly, fix bugs, and
+leave them. Downloaded ten beloved classics via the app's own Gutendex path (`booksource.search` +
+`download_ex`, saved to the real `~/.breathsim/books`): **Pride and Prejudice, The Adventures of Sherlock
+Holmes, A Christmas Carol, The Wonderful Wizard of Oz, Treasure Island, The Secret Garden, Anne of Green
+Gables, Alice in Wonderland, Tom Sawyer, Peter Pan** (alongside the seeded *Wind in the Willows* = 11).
+**Checking each surfaced real cleaning bugs the sample-book validation never hit**: P&P narrated 5 pages of
+George Saintsbury's editor **introduction** first; Sherlock read its **story-title contents list** ("The
+Red-Headed League III."); Treasure Island read its **dedication + poem**; The Secret Garden read a **'by
+the same author' list**; Oz read its **title page**. Root cause: the scrub stopped at the first *substantial
+prose*, which for these is a preface/intro/dedication, not the story.
+**Reworked `booktext._drop_frontmatter` to start narration AT chapter 1** for a chaptered book (a far more
+predictable rule than "keep any preface"): `_first_chapter_index` finds the first *isolated* structural
+heading (skipping contents runs via a `_TOC_LINE` look-ahead that understands **dot-leaders + page numbers**
+-- which fixed Treasure's TOC); a long editor preface / dedication / works-list before it is dropped. Subtle
+cases handled: **`_heading_is_first`** distinguishes a real chapter 1 from a book whose **chapter 1 has no
+heading** (P&P's first heading is "CHAPTER II" -- it backs up over the story prose via `_is_frontmatter_line`
+so "It is a truth universally acknowledged..." is kept, not skipped); a **name-initial dateline** ("L. Frank
+Baum, Chicago, 1900") no longer looks like a roman-numeral heading (so Oz starts at "Dorothy lived..."); added
+**"stave"** as a chapter word (A Christmas Carol -> "MARLEY was dead"); and stray unpaired italic `_` are
+stripped (P&P's "_Walt Whitman"). Also tidied catalogue titles (`booksource._clean_title` drops MARC "$b"
+subfield codes: "Peter Pan : $b [Peter and Wendy]" -> "Peter Pan [Peter and Wendy]") and re-segmented all ten
+library books so they open at the story. **Result: 10/10 narrate their first real line** (Treasure reads its
+chapter title then the story -- acceptable). Tests: extended `test_booktext_clean` (preface-before-ch1 skipped;
+headingless-ch1 backs up to the story) -- this also flips the old "preface preserved" assertion to the new
+"start at chapter 1" behaviour -- + `test_booksource` (title tidy). Verified: 74 offline tests; selftest
+(337/73); drive_check 0 issues; booktext.py 379 lines (<500).
+
 ## Read mode: narrator-only by default + a normal awake-reading pace (user-requested)
 The user, reading novels in Read mode, found two things off: starting a session gave the **breathing
 sound** under the narrator, and the narrator paused too long between sentences/paragraphs ("good for

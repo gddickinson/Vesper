@@ -83,7 +83,9 @@ def main():
     assert bk.sentences()[0].startswith("CHAPTER I."), bk.sentences()[0]
     print("ok: chapters detected; book starts at chapter I")
 
-    # a genuine preface (long prose before chapter 1) is NOT dropped
+    # a preface / introduction before chapter 1 is SKIPPED -- a chaptered book's
+    # narration starts at chapter 1, not an editor's foreword (e.g. Saintsbury's
+    # before Pride & Prejudice). The story, not the front matter, is read.
     with_preface = GUTENBERG.replace(
         "CHAPTER I. The Beginning\n\nAlice was beginning",
         "A note before we begin: this small tale was written on a quiet evening \
@@ -91,9 +93,10 @@ for no reason but the pleasure of it, and it asks nothing of you but that you \
 rest and let the words drift by as you grow sleepy and calm.\n\n"
         "CHAPTER I. The Beginning\n\nAlice was beginning", 1)
     pf = _flat(booktext.segment(with_preface))
-    assert "A note before we begin" in pf, "a real preface should be preserved"
-    assert "by A. Writer" not in pf, "title page should still be dropped"
-    print("ok: a genuine preface is preserved; the title page still dropped")
+    assert pf.startswith("CHAPTER I."), pf[:50]
+    assert "A note before we begin" not in pf, "a preface before chapter 1 is skipped"
+    assert "Alice was beginning to get very tired" in pf, "the story itself is kept"
+    print("ok: a preface before chapter 1 is skipped; narration starts at chapter 1")
 
     # a book with no chapter headings: drop the leading title run, keep all prose
     flat2 = _flat(booktext.segment(
@@ -142,8 +145,8 @@ from a scanned copy and may contain small inconsistencies in the original.\n\n"
     #  - a long Contents list, incl. a SHORT entry that also looks structural
     #    ('CHAPTER XIX. Tom Tells the Truth') -- must not halt the scrub mid-list
     #  - a LIST OF ILLUSTRATIONS of short captions, some ending in '?'/'.'
-    #  - an edition / digitiser note
-    # ...all dropped; narration begins at the genuine authorial PREFACE.
+    #  - an edition / digitiser note, and a PREFACE before chapter 1
+    # ...all dropped; narration begins at chapter 1's first prose.
     REAL = ("*** START OF THE PROJECT GUTENBERG EBOOK TOMLIKE ***\n\n"
             "THE ADVENTURES OF A QUIET BOY\n\nBy A. N. Author\n\n"
             "A Riverside Edition produced from a scanned copy in the public domain.\n\n"
@@ -164,15 +167,41 @@ slowly past the reeds and nothing at all was in a hurry there that warm afternoo
     bk3 = books.from_text(REAL, "Tomlike", "A. N. Author")
     spoken3 = " ".join(u["text"] for u in bookreader.units(bk3))
     first3 = spoken3[:60]
-    assert first3.startswith("Most of the adventures"), first3
+    assert first3.startswith("Tom did not answer"), first3
     assert "ADVENTURES OF A QUIET BOY" not in spoken3, "all-caps title narrated!"
     assert "The Short One" not in spoken3, "structural-looking TOC entry leaked"
     assert "Becky in a Dilemma" not in spoken3, "TOC entry leaked"
     assert "Ain't that Work" not in spoken3 and "Cat and Toys" not in spoken3, "caption leaked"
     assert "Riverside Edition" not in spoken3, "edition note leaked"
+    assert "Most of the adventures" not in spoken3, "a preface before chapter 1 is skipped"
     assert "Tom did not answer at first" in spoken3, "chapter-1 prose must be narrated"
-    assert sum(1 for u in bookreader.units(bk3)) >= 2
-    print("ok: all-caps title / long+short TOC / illustration captions / edition note dropped")
+    assert sum(1 for u in bookreader.units(bk3)) >= 1
+    print("ok: all-caps title / TOC / captions / edition note / preface dropped -> chapter 1")
+
+    # a book whose CHAPTER 1 carries no heading (its first heading is 'CHAPTER II')
+    # -- like Pride & Prejudice, which opens straight into 'It is a truth...'. The
+    # front matter (a critic's preface + a page-numbered plate list) is dropped and
+    # narration starts at the headingless chapter 1, NOT chapter 2.
+    NOHEAD = ("*** START OF THE PROJECT GUTENBERG EBOOK NOHEAD ***\n\n"
+              "A QUIET NOVEL\n\nby A. Writer\n\n"
+              "PREFACE\n\n"
+              "This long editorial preface considers the book at leisure and at some "
+              "length, as such prefaces always do, and is not part of the story at all.\n\n"
+              "ILLUSTRATIONS\n\n"
+              "The Garden Gate 12\n\nThe Old House 48\n\nThe End 211\n\n"
+              "It is a truth universally felt, that a quiet evening in a quiet house is "
+              "a fine and welcome thing to all who have known a long and tiring day.\n\n"
+              "She closed the book softly and listened to the rain against the glass.\n\n"
+              "CHAPTER II\n\n"
+              "The next morning came grey and still, and the house was slow to wake.\n\n"
+              "*** END OF THE PROJECT GUTENBERG EBOOK NOHEAD ***\n")
+    bk4 = books.from_text(NOHEAD, "Nohead", "A. Writer")
+    spoken4 = " ".join(u["text"] for u in bookreader.units(bk4))
+    assert spoken4.startswith("It is a truth universally felt"), spoken4[:60]
+    assert "editorial preface" not in spoken4, "preface leaked into a headingless ch.1"
+    assert "The Garden Gate" not in spoken4, "plate list leaked"
+    assert "The next morning came grey" in spoken4, "the rest of the story is kept"
+    print("ok: a headingless chapter 1 (first heading is CHAPTER II) starts at the story")
 
     print("PASS: booktext front-matter removal")
     return 0
