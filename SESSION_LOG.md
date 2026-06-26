@@ -4031,6 +4031,31 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Robust book cleaning for narration + a shipped sample book (user-requested)
+The user reported the Read narrator still reads non-story text, and asked to ship a short public-domain
+sample book (Winnie-the-Pooh / Wind in the Willows). **Investigated empirically**: fetched the real
+Gutenberg text of *The Wind in the Willows* and ran the existing cleaner -- the narrator was reading the
+whole **table of contents** ("Contents", "CHAPTER I. THE RIVER BANK CHAPTER II. ...") plus the byline and
+the **chapter headings** ("I. THE RIVER BANK", "Two.", "Three."). Root cause: a title-page byline that ends
+in a period (*'Author Of "The Golden Age," Etc.'*) was mistaken for prose, so front-matter dropping stopped
+early and leaked the TOC; and chapter headings were narrated.
+**Fixed in booktext.py**: `_drop_frontmatter` now recognises bylines/edition lines even when they end in a
+period; `_strip_markup` also strips inline footnote refs (`[12]`); a per-paragraph `_is_dropped_para` removes
+scene dividers (`* * *`), footnote blocks and stray TOC anywhere; `_drop_tail` cuts a trailing transcriber's
+note/appendix/glossary; `is_heading` was broadened (catches `I. THE RIVER BANK` + digit-free all-caps titles)
+and a new `is_narratable` lets **`bookreader.units` skip headings/dividers in narration** while keeping them
+in the book for the read-along view + jump-to-chapter nav (so the reader never announces "Chapter Two").
+Result on the real book: narration starts at "The Mole had been working very hard...", **0 headings spoken**
+(was 10+), all 13 chapters still navigable.
+**Sample book**: stripped the PG trademark/boilerplate from Wind in the Willows -> shipped the pure
+public-domain text as `breathsim/data/wind_in_the_willows.txt` (326 KB, ASCII, zero "gutenberg" refs) with a
+tiny `breathsim/sample_book.py` loader. `books.seed_sample_if_fresh()` (called from window init) adds it to
+the library once on a fresh install -- so Read works out of the box -- and never re-adds it if deleted.
+Verified end-to-end: fresh window -> library has the book -> Read auto-loads + the main Play narrates the
+story. Extended test_booktext_clean (headings shown-not-narrated, footnotes/dividers/transcriber-tail
+removed) + new test_sample_book (seed once, narrates the story not the boilerplate, idempotent). Updated
+test_booklib to opt out of the seed. Verified: 73 offline tests; selftest; drive_check 0 issues.
+
 ## Stories: "The Slow Ones" lecture branch (4)
 The every-third-round Stories item, on a theme that IS the point of a sleep app -- slowness as the
 through-line. Four gentle, unhurried creatures, all fresh (distinct from the existing Sloth lecture): **The

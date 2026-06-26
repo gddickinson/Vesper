@@ -155,6 +155,16 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Robust book cleaning for narration + a shipped sample book** (user-requested). Investigated the
+      real Gutenberg *Wind in the Willows*: the narrator was reading the **table of contents**, the byline
+      and the **chapter headings**. Root cause: a byline ending in a period fooled the front-matter scrub.
+      Fixed booktext so it drops bylines/edition lines / TOC / illustration lists / scene dividers / footnote
+      blocks / a trailing transcriber's note, and **keeps chapter headings in the book (for the read-along +
+      jump-to-chapter) but skips them in narration** (so it never says "Chapter Two"). Then shipped a sample:
+      the PG-trademark-stripped public-domain Wind in the Willows (`breathsim/data/wind_in_the_willows.txt` +
+      `sample_book.py`), seeded into the library once on a fresh install via `books.seed_sample_if_fresh()`
+      so **Read works out of the box**. New test_sample_book + extended test_booktext_clean. Verified: 73
+      offline tests; selftest; drive_check 0 issues; narration now starts at the story, 0 headings spoken.
 - [x] **Stories: "The Slow Ones" lecture branch (4).** The every-third-round Stories item -- slowness as the
       through-line, the very point of a sleep app: **The Tortoise** (the unhurried walker, the carried home,
       the centuries-long life), **The Snail** (the silver glide, the spiral shell, sealing away to sleep a

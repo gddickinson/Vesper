@@ -138,6 +138,29 @@ def exists(book_id):
     return os.path.exists(_content_path(book_id))
 
 
+def seed_sample_if_fresh():
+    """On a brand-new install (the library has never been seeded), add the bundled
+    public-domain **sample book** so Read mode works out of the box. Runs at most
+    once -- if you later delete the sample, it is NOT silently re-added. Returns the
+    seeded book id, or ``None`` if it was already seeded / the asset is missing.
+    Cheap + safe to call at startup; never raises."""
+    if _meta_read("_seeded.json", {}).get("sample"):
+        return None
+    _meta_write("_seeded.json", {"sample": True})       # mark first: a failure won't loop
+    try:
+        from . import sample_book
+        raw = sample_book.text()
+        if not raw.strip():
+            return None
+        book = from_text(raw, sample_book.TITLE, sample_book.AUTHOR, source="sample")
+        if book.sentence_count() >= 50 and not exists(book.id):
+            save(book)
+            return book.id
+    except Exception:
+        pass
+    return None
+
+
 def delete(book_id):
     """Remove a book's content, index entry and saved resume position."""
     try:

@@ -624,16 +624,25 @@ Bell). Together these four `synth_*` modules add 31 synthesised instrument/effec
 processing (no I/O): `to_ascii` (fold smart quotes/dashes/accents), `strip_boilerplate`
 (Project Gutenberg header/footer), **`pg_markers`** (has-START/has-END, so a truncated download is
 detectable), `split_paragraphs`, `split_sentences` (abbreviation-aware),
-`segment` → paragraphs-of-sentences **ready to narrate** (it also strips inline `[Illustration]`/
-`[Sidenote]` markers + Gutenberg `_italics_` via `_strip_markup`, and drops the leading **title page /
-table of contents / list of illustrations** before the story via `_drop_frontmatter` -- a conservative
-scrub that stops at the first chapter heading or real prose, so a genuine preface survives), and
-`chapter_marks`; and **`books`** — a `Book` model
-(`paragraphs` + `sentences()`/`sentence_count()`/`paragraph_starts()`), `from_text`, and a **local
+`segment` → paragraphs-of-sentences **ready to narrate**. The scrub (so the narrator reads the **story,
+not the boilerplate**): `_strip_markup` removes inline `[Illustration]`/`[Sidenote]` markers, **footnote
+refs** (`[12]`) and Gutenberg `_italics_`; `_drop_frontmatter` drops the leading **title page / byline /
+edition / table of contents / list of illustrations** (recognising a byline even when it ends in a
+period, e.g. *'Author of "The Golden Age," Etc.'* -- the bug that used to leak the whole contents page),
+stopping at the first chapter heading or real prose so a genuine preface survives; `_drop_tail` cuts a
+trailing **transcriber's note / appendix / glossary**; and a per-paragraph `_is_dropped_para` removes
+**scene dividers** (`* * *`), **footnote blocks** and stray TOC anywhere. **`is_heading`** (now also
+catches `I. THE RIVER BANK` + all-caps title lines, digit-free) and **`is_narratable`** keep chapter
+headings in the book (for the read-along view + `chapter_marks` jump-to nav) while the **narrator skips
+them**, so it never announces "Chapter Two". And **`books`** — a `Book` model
+(`paragraphs` + `sentences()`/`sentence_count()`/`paragraph_starts()`), `from_text`, **`seed_sample_if_fresh`**
+(adds the bundled public-domain sample book once on a fresh install -- see **`sample_book`** +
+`data/wind_in_the_willows.txt` -- so Read works out of the box; never re-added if deleted), and a **local
 library** at `~/.breathsim/books` (`save`/`load`/`list_books`/`delete`/**`disk_bytes`**/
 **`update_meta`** (rename in place) + a self-contained
 `_index.json`/`_progress.json`) with a per-book **resume** `position`/`set_position`/`clear_position`.
-And **`bookreader`** — `units(book, start, line_pause, para_pause)` / `resume_units(book)` yield one
+And **`bookreader`** — `units(book, start, line_pause, para_pause)` (skips non-narratable headings/dividers)
+/ `resume_units(book)` yield one
 narrator unit per sentence (longer pause at paragraph ends; the `sentence` index drives resume) +
 **`chapters(book)`** → `[(sentence_index, title)]` (maps `booktext.chapter_marks` through the book's
 paragraph starts) for **jump-to-chapter** navigation. In Read mode, `win_read.set_reading_book`

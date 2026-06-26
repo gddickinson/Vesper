@@ -133,8 +133,11 @@ def segment(text):
     a genuine preface/prologue is preserved)."""
     body = _strip_markup(to_ascii(strip_boilerplate(text)))
     paras = _drop_frontmatter(split_paragraphs(body))
+    paras = _drop_tail(paras)                      # trailing transcriber notes / appendix
     out = []
     for para in paras:
+        if _is_dropped_para(para):                # divider / footnote block / stray TOC
+            continue
         sents = split_sentences(para)
         if sents:
             out.append(sents)
@@ -145,16 +148,39 @@ def segment(text):
 
 _HEADING = re.compile(
     r"^(chapter|book|part|canto|act|scene|volume|letter)\b.{0,40}$"
-    r"|^[IVXLCDM]{1,7}\.?$|^\d{1,3}\.?$", re.I)
+    r"|^[IVXLCDM]{1,8}\.?$|^\d{1,3}\.?$"
+    r"|^[IVXLCDM]{1,8}\.\s+\S.{0,44}$", re.I)       # "I. THE RIVER BANK"
+# An all-caps title / running-head line ("THE RIVER BANK", "MR. BADGER").
+_HEADING_CAPS = re.compile(r"^[A-Z][A-Z0-9 ,.'\"&:;()/-]{1,46}$")
+
+
+def is_heading(s):
+    """A heading-like line -- a chapter / book / part marker, a lone roman numeral
+    or number, a 'I. THE RIVER BANK', or an all-caps title with no terminal
+    sentence punctuation. Kept in the book for navigation + the read-along view,
+    but skipped by the narrator (see :func:`is_narratable`)."""
+    s = (s or "").strip()
+    if not (0 < len(s) <= 60):
+        return False
+    if _HEADING.match(s):
+        return True
+    # an all-caps line that does NOT end like a sentence is a title, not prose.
+    # Require it to be digit-free so a version / edition line ("MILLENNIUM EDITION
+    # 3.0") is treated as front-matter, not kept as a chapter heading. (Numbered
+    # headings -- 'CHAPTER 1', a lone roman / number -- are caught by _HEADING.)
+    if (s[-1] not in ".?!" and _HEADING_CAPS.match(s)
+            and not any(c.islower() or c.isdigit() for c in s)):
+        return True
+    return False
 
 
 def chapter_marks(paragraphs):
     """Return ``[(paragraph_index, title), ...]`` for heading-like paragraphs (a
-    short line such as 'CHAPTER IV' or a lone roman numeral). Best-effort."""
+    short line such as 'CHAPTER IV', 'I. THE RIVER BANK' or a lone roman numeral)."""
     marks = []
     for i, para in enumerate(paragraphs):
         text = " ".join(para) if isinstance(para, list) else str(para)
-        if len(text) <= 50 and _HEADING.match(text.strip()):
+        if is_heading(text):
             marks.append((i, text.strip()))
     return marks
 
@@ -165,6 +191,7 @@ def chapter_marks(paragraphs):
 _ILLUS = re.compile(
     r"\[\s*(?:illustration|sidenote|image|picture|figure|plate|music)\b[^\]]*\]",
     re.I)
+_FOOTREF = re.compile(r"\[\d{1,3}\]")          # inline footnote reference markers
 # Gutenberg marks italics with underscores (``_very_``); fold to the bare word.
 _ITALIC = re.compile(
     r"(?<![A-Za-z0-9])_([A-Za-z0-9][^_\n]*?[A-Za-z0-9]|[A-Za-z0-9])_(?![A-Za-z0-9])")
@@ -174,26 +201,57 @@ _TOC_HEAD = re.compile(
 # A run of 'CHAPTER <numeral>' references packed together == a table-of-contents
 # blob (real prose almost never lists three numbered chapters in one paragraph).
 _TOC_BLOB = re.compile(r"(?:chapter|book|part|canto|letter)\s+[ivxlcdm\d]+\b", re.I)
+# A line of only punctuation / asterisks / dashes == a scene divider, not prose.
+_DIVIDER = re.compile(r"^[\s*._\-=~+#<>]+$")
+# A paragraph that begins a footnote block, e.g. '[1] ...' or '[12] ...'.
+_FOOTBLOCK = re.compile(r"^\[\d{1,3}\]")
+# Trailing non-story matter (only cut in the LATTER part of the book).
+_TAIL = re.compile(
+    r"^(transcriber'?s?\s+note|footnotes?\b|appendi(x|ces)\b|glossary\b)", re.I)
+# Title-page byline / edition lines that DO end in punctuation (so they slip past
+# the bare-title test) -- still front-matter, only stripped before the story starts.
+_BYLINE = re.compile(
+    r"^(by\s|author\s+of\b|translated\b|illustrated\b|edited\b|adapted\b"
+    r"|a\s+(?:story|tale|novel|romance|comedy|fairy)\b|copyright\b|published\b"
+    r"|printed\b|new\s+(?:and\s+revised|edition)|\w+\s+edition\b)", re.I)
 
 
 def _strip_markup(body):
-    """Drop inline [Illustration]/[Sidenote] markers and unwrap ``_italics_``."""
-    return _ITALIC.sub(r"\1", _ILLUS.sub(" ", body or ""))
-
-
-def _is_heading(p):
-    return len(p) <= 60 and bool(_HEADING.match(p.strip()))
+    """Drop inline [Illustration]/[Sidenote] markers + footnote refs, and unwrap
+    ``_italics_`` -- none of which should be spoken aloud."""
+    body = _FOOTREF.sub("", _ILLUS.sub(" ", body or ""))
+    return _ITALIC.sub(r"\1", body)
 
 
 def _is_titlepage_line(p):
-    """A short line with no sentence punctuation -- a title / author / edition line.
-    NOT a chapter heading (those mark the start of the story and must be kept)."""
+    """A title / author / edition line of the front matter. A bare short line with
+    no sentence punctuation, OR an explicit byline/edition line (even one ending in
+    a period, like 'Author of "The Golden Age," Etc.'). NOT a chapter heading."""
     s = p.strip()
-    return 0 < len(s) <= 70 and s[-1] not in ".?!" and not _HEADING.match(s)
+    if not (0 < len(s) <= 70) or is_heading(s):
+        return False
+    return (s[-1] not in ".?!") or bool(_BYLINE.match(s))
 
 
 def _is_toc_blob(p):
     return len(_TOC_BLOB.findall(p)) >= 3
+
+
+def _is_dropped_para(p):
+    """A paragraph to drop from the book entirely (not just from narration): a
+    scene divider, a footnote block, or a stray table-of-contents line that wasn't
+    caught up front. Positively-identified non-prose only -- never plain story."""
+    s = (p or "").strip()
+    return (not s or bool(_DIVIDER.match(s)) or bool(_FOOTBLOCK.match(s))
+            or bool(_TOC_HEAD.match(s)) or _is_toc_blob(s))
+
+
+def is_narratable(sentence):
+    """False for a line the narrator should NOT read aloud -- a chapter heading or a
+    divider. It stays in the book (so the read-along view shows it and jump-to-chapter
+    can land on it), but the narrator skips it, so it never announces 'Chapter Two'."""
+    s = (sentence or "").strip()
+    return bool(s) and not is_heading(s) and not _DIVIDER.match(s)
 
 
 def _drop_frontmatter(paras):
@@ -203,12 +261,25 @@ def _drop_frontmatter(paras):
     genuine preface) is preserved. Conservative: it only removes positively
     identified front-matter lines and never looks past the start of the story."""
     i = 0
-    while i < len(paras) and i < 40:
+    while i < len(paras) and i < 60:
         p = paras[i]
-        if _is_heading(p):                      # a chapter heading: the story starts
+        if is_heading(p):                       # a chapter heading: the story starts
             break
         if _TOC_HEAD.match(p.strip()) or _is_toc_blob(p) or _is_titlepage_line(p):
             i += 1                              # title / author / edition / contents
             continue
         break                                   # first real prose paragraph
     return paras[i:]
+
+
+def _drop_tail(paras):
+    """Cut trailing non-story matter -- a transcriber's note, footnotes section,
+    appendix or glossary that sits after the story but before the PG END band. Only
+    acts on an explicit marker in the LATTER part of the book, so it never truncates
+    the story itself."""
+    n = len(paras)
+    for i in range(n):
+        s = paras[i].strip()
+        if i >= n * 0.55 and len(s) <= 60 and _TAIL.match(s):
+            return paras[:i]
+    return paras

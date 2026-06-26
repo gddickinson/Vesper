@@ -20,12 +20,17 @@ def units(book, start=0, line_pause=DEFAULT_LINE_PAUSE,
 
     Each unit is ``{"text": sentence, "pause": ms, "kind": "book",
     "sentence": i}``. The last sentence of a paragraph (and the final sentence)
-    gets *para_pause*; the rest get *line_pause*."""
+    gets *para_pause*; the rest get *line_pause*. Chapter headings / dividers stay
+    in the book (for the read-along view + jump-to-chapter) but are **not narrated**
+    -- the reader skips them so it never reads 'Chapter Two' or a row of asterisks."""
+    from . import booktext
     sents = book.sentences()
     n = len(sents)
     starts = set(book.paragraph_starts())
     start = max(0, min(int(start), n))
     for i in range(start, n):
+        if not booktext.is_narratable(sents[i]):     # heading / divider: show, don't read
+            continue
         para_end = (i + 1 in starts) or (i == n - 1)
         yield {"text": sents[i], "pause": para_pause if para_end else line_pause,
                "kind": "book", "sentence": i}

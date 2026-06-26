@@ -55,6 +55,11 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
 
         store.register_all()                       # merge saved patterns/voices
         try:
+            from breathsim import books
+            books.seed_sample_if_fresh()           # 1st run: a sample book for Read mode
+        except Exception:
+            pass
+        try:
             story_db.build()                       # refresh the stories database
         except Exception:
             pass

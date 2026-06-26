@@ -106,6 +106,37 @@ and grey over the water, and nothing at all was in a hurry there.\n\n"
     assert "A Quiet Book" not in flat2 and "by Someone" not in flat2
     print("ok: heading-less book drops the title run, keeps the prose")
 
+    # headings are KEPT in the book (display + jump-to-chapter) but never NARRATED;
+    # footnote refs, scene dividers and a trailing transcriber note are removed
+    from breathsim import bookreader
+    HARD = ("*** START OF THE PROJECT GUTENBERG EBOOK Y ***\n\n"
+            "CHAPTER I\n\nTHE BEGINNING\n\n"
+            "It was a calm night by the river.[1] The water moved slowly past the reeds, \
+and nothing at all was in a hurry there as the evening came softly down.\n\n"
+            "* * *\n\n"
+            "The moon rose over the hill, and all the little creatures settled down, warm \
+and safe, to sleep the quiet night away until the morning.\n\n"
+            "CHAPTER II\n\n"
+            "They woke at dawn and went down to the water once more, glad and unhurried, \
+to begin another slow and gentle day beside the river they loved.\n\n"
+            "TRANSCRIBER'S NOTE\n\n"
+            "Minor spelling errors have been corrected silently. This e-text was prepared \
+from a scanned copy and may contain small inconsistencies in the original.\n\n"
+            "*** END OF THE PROJECT GUTENBERG EBOOK Y ***\n")
+    bk2 = books.from_text(HARD, "Y", "Z")
+    inbook = " ".join(bk2.sentences())
+    spoken = " ".join(u["text"] for u in bookreader.units(bk2))
+    assert "CHAPTER I" in inbook and "CHAPTER II" in inbook, "headings kept for nav/display"
+    assert "CHAPTER" not in spoken and "THE BEGINNING" not in spoken, "headings narrated!"
+    assert "It was a calm night by the river." in spoken, "story prose must be narrated"
+    assert "[1]" not in inbook and "[1]" not in spoken, "footnote ref not stripped"
+    assert "*" not in inbook, "scene divider not dropped"
+    assert "TRANSCRIBER" not in inbook and "scanned copy" not in inbook, "tail not cut"
+    assert booktext.is_narratable("It was a calm night.")
+    assert not booktext.is_narratable("CHAPTER I")
+    assert not booktext.is_narratable("THE RIVER BANK") and not booktext.is_narratable("* * *")
+    print("ok: headings shown-not-narrated; footnotes/dividers/transcriber-tail removed")
+
     print("PASS: booktext front-matter removal")
     return 0
 

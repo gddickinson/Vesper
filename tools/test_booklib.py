@@ -22,6 +22,7 @@ from breathsim import books, booksource  # noqa: E402
 from breathsim.booksource import Outcome  # noqa: E402
 
 books.LIB_DIR = os.path.join(os.environ["BREATHSIM_HOME"], "books")
+books._meta_write("_seeded.json", {"sample": True})   # opt out of the sample seed here
 
 
 def main():

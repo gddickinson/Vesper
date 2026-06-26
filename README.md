@@ -62,9 +62,13 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   slowing and quietening as you drift off, and the **soundscape, the backdrop and the
   character all gently follow the words**.
 - **Read a novel** — a dedicated **Read** mode and a book Reader narrate full public-domain
-  books (download from Project Gutenberg / Standard Ebooks, or drop in your own .txt/.epub) —
-  cleaned to read **the story, not the boilerplate** (the title page, table of contents and
-  illustration captions are skipped) — with **read-along text** that highlights and
+  books. A fresh install **ships with a sample book** (Kenneth Grahame's *The Wind in the
+  Willows*) so Read works out of the box, and you can add more (download from Project Gutenberg
+  / Standard Ebooks, or drop in your own .txt/.epub). Every book is
+  cleaned to read **the story, not the boilerplate** — the title page, byline, table of
+  contents, illustration lists, scene dividers and footnote markers are removed, a trailing
+  transcriber's note is cut, and **chapter headings are shown but never read aloud** (so the
+  narrator never announces "Chapter Two") — with **read-along text** that highlights and
   auto-scrolls, **Night / Sepia / Day** reading
   themes, a searchable **jump-to-chapter** picker, adjustable pace, an opt-in
   **sleep fade** that quietens the narration and stops after a set time, and
