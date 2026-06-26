@@ -3901,6 +3901,22 @@ the correct backdrop or None; every theme + scene base is a registered `face_bg`
 real-lecture sanity sweep (Diwali still cues Embers x13, City x7, etc. -- no regression); selftest;
 all 50 offline tests; drive_check 0 issues.
 
+## Stories: "Waterfalls of the World" lecture branch (4)
+A Stories round (every ~3rd). New branch **Waterfalls of the World** -- Niagara Falls, Victoria Falls,
+Angel Falls, Iguazu Falls -- each a visually distinct great waterfall, and intrinsically sleep-friendly
+(the roar is a natural sound-masker, the imagery calm and rhythmic), kept distinct from Great Rivers /
+Lakes / Canyons and the Deep Ocean. Each module `lectures_{niagara,victoriafalls,angelfalls,iguazu}.py`
+is data-only (NAME + AMBIENCE + 7x12 second-person ASCII SECTIONS): fact-free settle-in, gentle
+accurate geography (Niagara's Horseshoe curtain + mist; Victoria's "smoke that thunders" + moonbows;
+Angel Falls' tallest thread off a tepui drifting to mist; Iguazu's 100+ rainforest cascades + Devil's
+Throat), sleep-drift close, each describing the power softly from a restful distance and likening the
+endless falling water to the breath. Ambiences Ocean Waves / Distant Thunder / Soft Rainstorm /
+Distant Surf (night) (all registered). Four parallel subagents wrote the modules, each self-verifying
+7x12/ASCII/punctuation; then registered in `lectures._CATALOG`. Verified: selftest **285 lectures
+across 60 branches**; lint (7x12, section 1 fact-free, all sections sleep-close, ambience resolves, no
+collisions); all four dispatch through `stories.story_units`; all 53 offline tests; drive_check 0
+issues; story DB rebuilt (24,249 lines / 387,848 words). README/INTERFACE counts 281->285 / 59->60.
+
 ## Stories: "The Old Waterways" lecture branch (4)
 A Stories round (every ~3rd). New branch **The Old Waterways** -- The Roman Aqueduct, The Qanat, The
 Stepwell, The Watermill -- ancient ways of moving and reaching water, kept distinct from Great

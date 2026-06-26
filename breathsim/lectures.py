@@ -104,6 +104,8 @@ from . import lectures_nightingale, lectures_blackbird  # Songbirds
 from . import lectures_skylark, lectures_wren
 from . import lectures_aqueduct, lectures_qanat  # The Old Waterways
 from . import lectures_stepwell, lectures_watermill
+from . import lectures_niagara, lectures_victoriafalls  # Waterfalls of the World
+from . import lectures_angelfalls, lectures_iguazu
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -285,6 +287,8 @@ _CATALOG = [
                    lectures_skylark, lectures_wren]),
     ("The Old Waterways", [lectures_aqueduct, lectures_qanat,
                            lectures_stepwell, lectures_watermill]),
+    ("Waterfalls of the World", [lectures_niagara, lectures_victoriafalls,
+                                 lectures_angelfalls, lectures_iguazu]),
 ]
 
 LECTURES = {}

@@ -1773,6 +1773,24 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Waterfalls of the World** (4): Niagara Falls · Victoria Falls · Angel Falls ·
+      Iguazu Falls -- great waterfalls, each visually distinct, and intrinsically sleep-friendly (a
+      waterfall's roar is a natural sound-masker; the imagery is calm and rhythmic). Distinct from Great
+      Rivers (the course), Great Lakes (still water), Great Canyons (the rock) and the Deep Ocean. Added
+      `lectures_{niagara,victoriafalls,angelfalls,iguazu}.py` (7x12 lines, fact-free section 1, accurate
+      geography woven gently -- Niagara's wide Horseshoe curtain on the US/Canada border, famed for sheer
+      volume + mist + winter ice; Victoria Falls / Mosi-oa-Tunya, "the smoke that thunders" on the
+      Zambezi, the broad sheet into a right-angle chasm, its spray-fed rainforest + moonbows; Angel Falls
+      / Kerepakupai Vena, the world's tallest, a thread off Auyan-tepui drifting to mist before it lands;
+      Iguazu, the Guarani "big water," 100+ cascades in a rainforest horseshoe with the Devil's Throat),
+      ASCII, every section sleep-closing, each likening the endless falling water to the breath, each
+      describing the power softly from a restful distance (nothing frightening; no daredevils/danger).
+      Ambiences Ocean Waves / Distant Thunder / Soft Rainstorm / Distant Surf (night) (all registered).
+      Distinct NAMEs/modules. New branch in `_CATALOG` -> **285 lectures / 60 branches**; story DB
+      rebuilt (24,249 lines / 387,848 words). Done: selftest (285/60); lint -- each 7x12, section 1
+      fact-free (no digits), all 7 sections sleep-close, ASCII-only, ambience resolves to a real
+      GROUP_NATURE voice, no NAME/module collisions; all four dispatch through `stories.story_units`
+      (< 400 units, >= 84 lecture lines); all 53 offline tests; drive_check 0 issues.
 - [x] **New branch — The Old Waterways** (4): The Roman Aqueduct · The Qanat · The Stepwell · The
       Watermill -- ancient ways of moving and reaching water, distinct from Great Rivers/Lakes (natural)
       and Famous Bridges / Ancient Roads & Walls (structures). Added `lectures_{aqueduct,qanat,stepwell,
