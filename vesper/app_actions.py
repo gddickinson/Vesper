@@ -202,10 +202,12 @@ class _ActionsMixin:
         self.start_course_day(name)
 
     def tonights_pick(self):
-        """One-tap: pick a random bedtime lecture (avoiding recent ones), arm it
-        as the Sleep story and begin. Reuses the normal story-start plumbing."""
+        """One-tap: pick a random bedtime experience -- a lecture, a guided session
+        or a poem (avoiding recent ones), arm it as the Sleep story and begin.
+        Reuses the normal story-start plumbing."""
         from breathsim import stories, store, tonight
-        name = tonight.pick(stories.lecture_names(), store.recent_picks())
+        name = tonight.pick_any(stories.lecture_names(),
+                                list(stories.extra_names()), store.recent_picks())
         if not name:
             return
         store.push_recent_pick(name)

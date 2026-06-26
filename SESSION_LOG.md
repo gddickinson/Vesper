@@ -4002,6 +4002,20 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## "Surprise me" now spans the whole storyteller, not just lectures
+A discoverability fix. "Tonight's pick (random story)" / "Surprise me" chose only from `lecture_names()`
+(301 lectures), so the 19 special experiences -- the guided sessions (Sleep Hypnosis x7, Autogenic,
+Loving-Kindness, Safe Place, the new Gentle Journey, Cognitive Shuffle) and the poetry -- were never
+surfaced by it; a user might never find them. Added pure `tonight.pick_any(lectures, extras, recent,
+rng, extra_chance=0.34)`: picks across the whole library with a gentle bias toward the extras so those
+~20 sessions/poems aren't drowned by the hundreds of lectures (uniform-over-320 would surface them only
+~6%; this lands ~34%); avoids recents, deterministic with a seeded rng, graceful fallback. Wired
+`app_actions.tonights_pick` to it. New `tools/test_tonight.py` (avoid-recent/fallback/determinism;
+pick_any reaches both pools ~36% extras over 3000 seeded draws + empty-pool edges + determinism + a real
+pick resolves to a dispatchable item). Confirmed end-to-end offscreen: a surprise landing on a guided
+session arms it as the Sleep story and starts. Verified: selftest; all 60 offline tests; drive_check 0
+issues.
+
 ## Regression test: cycle all 7 modes (the primary navigation)
 A quality/verification round. Mode switching (Meditate / Breathwork / Chant / Sing / Relax / Sleep /
 Read) is the app's primary navigation, and `apply_mode` does a lot each time (rebuilds the whole

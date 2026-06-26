@@ -155,6 +155,22 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **"Surprise me" now spans the whole storyteller, not just lectures** -- a discoverability fix.
+      The "Tonight's pick (random story)" / "Surprise me" one-tap chose only from `lecture_names()` (the
+      301 lectures), so the **19** special storyteller experiences -- the guided sessions (Sleep
+      Hypnosis x7, Autogenic, Loving-Kindness, Safe Place, the new Gentle Journey, Cognitive Shuffle) and
+      the poetry (Nocturnes, Haiku, Tang, Persian, Drifting Haiku, A Wandering Haibun, Quiet Tales) --
+      were **never** surfaced by it; a user might never find them. Added a pure
+      `tonight.pick_any(lectures, extras, recent, rng, extra_chance=0.34)` that picks across the WHOLE
+      library, with a gentle bias toward the *extras* so those ~20 sessions/poems aren't drowned out by
+      the hundreds of lectures (a uniform pick over 320 names would surface them only ~6% of the time;
+      this lands them at ~34%). It avoids recents, is deterministic with a seeded rng, and falls back
+      gracefully across pools. Wired `app_actions.tonights_pick` to it (label still fits: "random
+      story"). New `tools/test_tonight.py` (pick avoid-recent/fallback/determinism; pick_any reaches both
+      pools at ~36% extras over 3000 seeded draws, handles empty pools, deterministic; and a real pick
+      resolves to a dispatchable storyteller item with a registered ambience). Confirmed end-to-end
+      offscreen: a surprise that lands on a guided session arms it as the Sleep story and starts.
+      Verified: selftest; all **60** offline tests; drive_check 0 issues.
 - [x] **Regression test: cycle all 7 modes (the primary navigation)** -- a quality/verification round.
       Selecting a mode (Meditate / Breathwork / Chant / Sing / Relax / Sleep / Read) is how users
       navigate the whole app, and `apply_mode` does a LOT each time -- rebuilds the entire side-panel
