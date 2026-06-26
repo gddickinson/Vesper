@@ -3832,6 +3832,23 @@ registered procedural nature voice; 13 representative lines incl. the new imager
 bed; long-standing cues unregressed; abstract lines + the "warm light" trap return None); selftest;
 all 49 offline tests; drive_check 0 issues. `sound_cues.py` 57 < 500.
 
+## Anti-thrash: confirm an ambience bed-switch over two cueing lines
+A robustness/calmness fix found while extending the soundscape cues last round. `win_story.
+_on_story_unit` set the ambience bed `_sfx_target = cue` on *every* cueing line, so when a lecture's
+imagery alternates (a "fire" line, then a "stream" line, then "fire" again) the bed crossfaded + ducked
+back and forth -- the opposite of restful, and more likely now that more lines cue a bed (last round).
+There was drift-home hysteresis for abstract passages but none for bed->bed switches. Added a pure,
+testable `sound_cues.next_bed(current, base, cue, pending) -> (new_current, new_pending)`: a **first**
+image still blooms in from the base immediately (nice), but switching from one cued bed to a
+*different* one requires the new bed to **recur** on the next cueing line -- a single stray image is
+held as a pending candidate and the current bed is kept, so the soundscape never flips back and forth.
+Wired through `_on_story_unit` with a new `_sfx_pending` slot; the abstract-line drift-home is
+unchanged. Verified: `tools/test_sound_cues.py` extended (bloom-in from base; hold a single stray
+image; confirm a switch when the new image recurs; alternating A/B/A/B holds A; a no-cue line clears
+pending); an in-app integration check (5 alternating fire/water lines -> the bed holds Campfire with
+**0 switches**, where the old code would have flipped it 4 times); selftest; all 49 offline tests;
+drive_check 0 issues. `sound_cues.py` 78 < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

@@ -214,10 +214,15 @@ class _StoryMixin:
             return
         cue = sound_cues.cue_for_text(text)
         if cue:
-            self._sfx_target = cue              # imagery → morph the bed toward it
             self._sfx_idle = 0
+            # bloom the first image in, but confirm a bed->bed switch over two
+            # cueing lines so a single stray image never thrashes the soundscape.
+            self._sfx_target, self._sfx_pending = sound_cues.next_bed(
+                self._sfx_target, self._base_ambience, cue,
+                getattr(self, "_sfx_pending", None))
         else:
             self._sfx_idle += 1
+            self._sfx_pending = None
             if self._sfx_idle >= 4 and self._base_ambience:
                 self._sfx_target = self._base_ambience   # drift home over abstract lines
         from . import story_bg                  # the backdrop follows the words too

@@ -155,6 +155,19 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Anti-thrash: confirm an ambience bed-switch over two cueing lines** -- a robustness/calmness
+      fix found while extending the cues. `_on_story_unit` set the bed `_sfx_target = cue` on *every*
+      cueing line, so when imagery alternates (a "fire" line, then a "stream" line, then "fire"
+      again...) the ambience bed crossfaded + ducked back and forth -- the opposite of restful, and
+      more likely now that more lines cue a bed. Added a pure, testable `sound_cues.next_bed(current,
+      base, cue, pending)` hysteresis: a **first** image still blooms in from the base immediately,
+      but switching from one cued bed to a *different* one requires the new bed to **recur** on the
+      next cueing line; a single stray image is held (kept as a pending candidate) and never flips the
+      bed. Wired through `_on_story_unit` (+ a `_sfx_pending` slot). Verified: `tools/test_sound_cues.py`
+      extended (bloom-in, hold a stray image, confirm a real switch, alternating A/B/A/B stays on A,
+      no-cue clears pending); an **in-app integration check** (5 alternating fire/water lines -> the
+      bed holds Campfire with **0 switches**, was 4); selftest; all 49 offline tests; drive_check 0
+      issues. `sound_cues.py` 78 < 500.
 - [x] **Soundscape follows lantern / lamp + water-drip imagery** -- the storyteller's ambience bed
       crossfades to match imagery in the spoken line (`sound_cues`), but it had no cue for the
       **lamps, diyas, lanterns and festival lights** that the recent branches are full of (Festivals

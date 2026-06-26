@@ -454,8 +454,11 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   `_apply_speech_pace`), the **settle-in lead-in** (`_arm_intro` /
   `set_intro_lead_in` / `_intro_text`), the **audio-unavailable note**
   (`_note_if_silent`), ambience-follow (`_apply_soundscape` / `set_soundscape_follow`
-  / ambience auto-rotate) — the **single ambience-level writer**, combining the cue
-  **duck** with an opt-in **breath swell** (`_breath_swell_factor` /
+  / ambience auto-rotate; the per-line bed choice goes through the pure
+  **`sound_cues.next_bed`** anti-thrash -- a first image blooms in from the base,
+  but a bed->bed switch must recur over two cueing lines, so a single stray image
+  never flips the soundscape back and forth) — the **single ambience-level writer**,
+  combining the cue **duck** with an opt-in **breath swell** (`_breath_swell_factor` /
   `set_breath_swell`: the bed rises with the inhale, softens on the exhale), mood
   check-ins (`set_mood_checkins` / `_after_mood`),
   practice logging (`_log_practice`) and `_ease_mood`. `launch()`.

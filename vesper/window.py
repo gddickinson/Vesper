@@ -107,6 +107,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         self._base_ambience = None         # the story's signature ambience bed
         self._cur_ambience = None          # what's playing now (cues morph it)
         self._sfx_target = None            # ambience the text currently calls for
+        self._sfx_pending = None           # a candidate bed awaiting confirmation
         self._sfx_idle = 0                 # lines since the last imagery cue
         self._soundscape_follow = True     # ambience follows the story's words?
         self._duck_t0 = None               # in-progress ambience-duck start time

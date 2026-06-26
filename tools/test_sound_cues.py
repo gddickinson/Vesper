@@ -51,6 +51,28 @@ def main():
         assert sound_cues.cue_for_text(none_line) is None, ("unexpected cue", none_line)
     print("ok: abstract lines + the 'warm light' trap return no cue")
 
+    # anti-thrash: a bed->bed switch must be confirmed over two cueing lines, so a
+    # single stray image never flips the ambience back and forth.
+    base = "Forest Wind"
+    nb = sound_cues.next_bed
+    # a first cue blooms in from the base immediately
+    assert nb(base, base, "Campfire", None) == ("Campfire", None)
+    assert nb(None, base, "Campfire", None) == ("Campfire", None)
+    # staying on the same imagery is a no-op
+    assert nb("Campfire", base, "Campfire", None) == ("Campfire", None)
+    # a single different image is HELD (current bed kept, the new one pending)
+    assert nb("Campfire", base, "Ocean Waves", None) == ("Campfire", "Ocean Waves")
+    # ...and only switches when that new image recurs on the next cueing line
+    assert nb("Campfire", base, "Ocean Waves", "Ocean Waves") == ("Ocean Waves", None)
+    # alternating A,B,A,B never switches off A (B never recurs consecutively)
+    cur, pend = "Campfire", None
+    for img in ("Ocean Waves", "Campfire", "Ocean Waves", "Campfire"):
+        cur, pend = nb(cur, base, img, pend)
+    assert cur == "Campfire", ("alternating imagery should hold the bed", cur)
+    # no cue leaves the bed (caller eases home) and clears any pending candidate
+    assert nb("Campfire", base, None, "Ocean Waves") == ("Campfire", None)
+    print("ok: next_bed blooms in, holds a stray image, confirms a real switch")
+
     print("PASS: soundscape cues")
     return 0
 

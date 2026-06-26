@@ -55,3 +55,26 @@ def cue_for_text(text):
             if k in t:
                 return voice
     return None
+
+
+def next_bed(current, base, cue, pending):
+    """Decide the ambience bed after a narrated line, with anti-thrash hysteresis.
+
+    *current* = the bed in use (the cued voice or the story's *base*), *cue* = the
+    imagery bed this line calls for (or ``None``), *pending* = a candidate bed left
+    over from the previous line. Returns ``(new_current, new_pending)``.
+
+    A first cue **blooms in** from the base immediately (nice), but switching from
+    one cued bed to a *different* one requires the new bed to recur on the next
+    cueing line -- so a single stray image (e.g. one "fire" line amid water
+    imagery) never thrashes the bed back and forth with crossfades. ``cue=None``
+    leaves the bed alone (the caller eases home over a run of abstract lines)."""
+    if not cue:
+        return current, None
+    if cue == current:
+        return current, None
+    if current is None or current == base:
+        return cue, None                       # bloom the imagery in from the base
+    if cue == pending:
+        return cue, None                       # the new image persisted -> switch beds
+    return current, cue                        # first sight of a new image -> hold, remember it
