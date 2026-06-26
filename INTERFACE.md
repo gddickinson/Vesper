@@ -230,7 +230,7 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   rising embers), a shared text overlay, and `make(name)`/`names()`. Larger scenes
   live in their own modules and self-register at the foot of this file:
   `scene_rain` (rain-on-window), `scene_aurora`, `scene_mandala`, `scene_candle`,
-  `scene_drift`, `scene_lanterns` and `scene_snow`.
+  `scene_drift`, `scene_lanterns`, `scene_snow` and `scene_jelly`.
 - **scene_drift.py** — `DriftScene`: a calm "Drifting" sleep/relax sky — soft, low-contrast
   grey-violet cloud puffs ease slowly across a dusk gradient with a faint breathing moon and a
   hint of stars; brightens gently on the inhale. Reads the virtual `t`, so its drift auto-eases
@@ -244,6 +244,11 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   slow wind, with a scatter of dim high stars; the snow softens/brightens a touch on the inhale.
   Warm-grey (not cold-blue) flakes + dim sky keep it easy at night; reads the virtual `t` (eases under
   Calm visuals).
+- **scene_jelly.py** — `JellyfishScene`: a deeply calm Sleep/Relax bed — a few soft, glowing
+  **jellyfish** rise slowly through a deep blue-black sea (faintly lit from far above), each **bell
+  pulsing** (contracting + easing open) and trailing wavy tentacles, with dim plankton motes drifting
+  up; the glow + pulse swell a touch on the inhale. Seeded params + anim-time motion, so it auto-eases
+  under Calm visuals. Test: `tools/test_jelly_scene.py`.
 - **scene_candle.py** — `CandleScene`: a single warm candle flame in the dark to rest
   the gaze on (*trataka* focused-attention practice) — a pale wax body, the pool of
   light it casts, an ambient glow that **breathes with you**, and a layered teardrop

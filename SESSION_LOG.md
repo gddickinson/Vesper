@@ -3933,6 +3933,21 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Scene: "Jellyfish" -- slow drifting bioluminescent bells
+An enhancement round (a visible addition to balance the recent run of robustness fixes; the user
+enjoys the visuals). New calming Sleep/Relax scene `vesper/scene_jelly.py` (`JellyfishScene`): a few
+soft glowing jellyfish rise slowly through a deep blue-black sea (faintly lit from above), each bell
+pulsing -- contracting then easing open, narrowing/lifting on a slow sine -- and trailing wavy
+tentacles, with dim plankton motes drifting up; the glow + pulse swell a touch on the inhale (breath
+cue). Built to the established scene contract (`draw(p,w,h,c)`, deterministic seeded + anim-time
+motion so it auto-eases under the Calm-visuals reduce-motion toggle), registered in `scenes.py`
+(`_CLASSES` + `AMBIENT`) so it shows in View > Scene automatically. Distinct from every existing scene
+and a natural fit for the Deep-Ocean theme. New `tools/test_jelly_scene.py` (registered + selectable,
+glowing bells over a dark blue-leaning sea, idle-safe, animates) and eyeballed a 640x480 render (five
+translucent teal/lavender/pink/blue bells with halos + tentacles, plankton, breath overlay -- calm and
+lovely). 115 lines (< 500). Verified: selftest; all 55 offline tests; drive_check renders all 13
+scenes with 0 issues.
+
 ## Fix: non-finite audio could blast a noise burst
 A robustness round over the real-time audio core (the one un-swept high-traffic surface, on its own
 thread every session; reproduced before fixing). The master limiter `dsp.soft_clip` was a bare

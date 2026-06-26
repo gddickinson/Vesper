@@ -155,6 +155,21 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Scene: "Jellyfish" -- slow drifting bioluminescent bells** -- a new calming visual scene for
+      Sleep / Relax (a visible enhancement to balance the recent run of robustness fixes), distinct from
+      every existing scene and a natural fit for the Deep-Ocean theme. `vesper/scene_jelly.py`
+      (`JellyfishScene`): a few soft, glowing jellyfish rise slowly through a deep blue-black sea (faintly
+      lit from far above), each **bell pulsing** -- contracting then easing open, the narrows/lifts done
+      with a slow sine -- and trailing **wavy tentacles**, with dim plankton motes drifting up through the
+      dark; the glow + pulse swell a touch on the inhale (breath cue). Built to the established scene
+      contract: a `draw(p,w,h,c)` painter scene, **deterministic** (seeded jelly/mote params + anim-time
+      motion, nothing spawned per frame) reading the virtual `t` so it auto-eases under the **Calm
+      visuals** reduce-motion toggle, registered in `scenes.py` (`_CLASSES` + `AMBIENT`) so it appears in
+      **View > Scene** automatically. New `tools/test_jelly_scene.py` (registered + selectable, paints
+      glowing bells over a dark blue-leaning sea, idle render safe, animates over time) and eyeballed a
+      640x480 render (five translucent teal/lavender/pink/blue bells with halos + tentacles, plankton,
+      breath overlay -- calm and lovely). 115 lines (< 500). Verified: selftest; all 55 offline tests;
+      drive_check renders all **13** scenes with 0 issues.
 - [x] **Fix: non-finite audio could blast a noise burst** -- a real, reproduced robustness gap in the
       real-time audio core (the one un-swept high-traffic surface, running on its own thread every
       session). The master limiter `dsp.soft_clip` was a bare `np.tanh`: `tanh(+/-inf)` safely folds to

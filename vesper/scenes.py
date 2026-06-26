@@ -474,6 +474,9 @@ AMBIENT.append("lanterns")
 from .scene_snow import SnowScene  # noqa: E402
 _CLASSES["snow"] = SnowScene
 AMBIENT.append("snow")
+from .scene_jelly import JellyfishScene  # noqa: E402
+_CLASSES["jellyfish"] = JellyfishScene
+AMBIENT.append("jellyfish")
 
 
 def make(name):
