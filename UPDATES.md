@@ -155,6 +155,15 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Number keys 1-7 jump straight to a mode** -- a keyboard / accessibility follow-up to the
+      screen-reader labels. The mode bar is the primary navigation, but a keyboard-only user could only
+      reach it by tabbing through the panel or opening the Modes menu. Bound digit keys (1 = Meditate ...
+      7 = Read, capped at the nine single-digit keys) to `apply_mode`, generated from `modes.names()` so the
+      mapping can never drift. Digit keys are claimed first by any focused text field / spin box (Qt
+      ShortcutOverride), so they never disturb typing in the book search or an editor. Surfaced the new keys
+      in the "?" cheatsheet so they are discoverable. New `tools/test_mode_shortcuts.py`: one shortcut per
+      mode, key and target line up in order, and firing each switches `current_mode`. Verified: that test +
+      all 62 other offline tests (63/63); selftest; drive_check 0 issues. shortcuts.py 74 lines.
 - [x] **Screen-reader labels on the primary controls** -- an accessibility round. The app is audio-first,
       so blind and low-vision users (VoiceOver / NVDA) rely on it, yet there was **zero** `accessibleName`
       anywhere and the toolTips are hover-only (invisible to assistive tech). The worst offender was the

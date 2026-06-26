@@ -13,6 +13,7 @@ from PySide6.QtGui import QKeySequence, QShortcut
 SHORTCUTS = [
     ("Space", "Play / pause"),
     ("R", "Reset the session"),
+    ("1 - 7", "Jump to a mode (Meditate to Read)"),
     ("V", "Switch face / scene view"),
     ("F", "Fullscreen"),
     ("Z", "Focus (Zen) mode"),
@@ -39,6 +40,15 @@ def bind(win):
     sc("Escape", lambda: exit_overlays(win))
     from . import dialogs                              # "?" -> the shortcuts cheatsheet
     sc("?", lambda: dialogs.open_shortcuts(win))
+
+    # Number keys jump straight to a mode (the primary navigation), so a
+    # keyboard-only user need not Tab to the mode bar. Digit keys are claimed by
+    # any focused text field / spin box first, so they never disturb typing.
+    from breathsim import modes
+    win._mode_shortcuts = [
+        (str(i), name, sc(str(i), lambda n=name: win.apply_mode(n)))
+        for i, name in enumerate(modes.names()[:9], start=1)
+    ]
 
 
 def toggle_fullscreen(win):

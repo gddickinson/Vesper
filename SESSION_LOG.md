@@ -4002,6 +4002,19 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Keyboard: number keys 1-7 jump straight to a mode
+A keyboard / accessibility follow-up to the screen-reader labels. The mode bar is the app's primary
+navigation, but a keyboard-only user could only reach it by tabbing through the panel or via the Modes
+menu. Added digit-key QShortcuts in shortcuts.bind() generated from modes.names() (1 = Meditate ... 7 =
+Read, capped at the nine single-digit keys) -> win.apply_mode(name); stored on win._mode_shortcuts so the
+cheatsheet/test can read them. Digit keys are claimed first by any focused QLineEdit/QSpinBox via Qt's
+ShortcutOverride, so they never disturb typing (same reason the existing R/V/B keys are typing-safe).
+Added a "1 - 7" row to the SHORTCUTS cheatsheet (the "?" overlay) for discoverability. New
+tools/test_mode_shortcuts.py asserts one shortcut per mode, the key + target mode line up in order
+(so the binding can't drift from modes.names()), and firing each shortcut switches current_mode. Verified:
+that test + all 62 other offline tests (63/63); selftest (305/65); drive_check 0 issues; shortcuts.py 74
+lines.
+
 ## A11y: screen-reader labels on the primary controls
 An accessibility round. The app is audio-first -- ideal for blind / low-vision users -- but had zero
 `accessibleName` anywhere, and toolTips are hover-only (invisible to VoiceOver / NVDA). The bare
