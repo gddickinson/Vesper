@@ -1830,6 +1830,24 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Cheeses of the World** (4): Cheddar · Brie · Parmesan · Roquefort -- a cosy
+      craft/food branch in the vein of Tea & Coffee and Spices & Herbs, full of soothing imagery (cool
+      dark caves and cellars, the slow patient months and years of ageing, the quiet turning of the
+      wheels). Added `lectures_{cheddar,brie,parmesan,roquefort}.py` (7x12 lines, fact-free section 1,
+      accurate craft/history woven gently -- Cheddar's Somerset gorge caves + the "cheddaring" of the
+      curd + cloth-wrapped truckles aged in cool cellars; Brie's Ile-de-France ripening rooms + the
+      gentle white bloom ripening inward, "the king of cheeses"; Parmigiano-Reggiano's great golden
+      wheels aged one-to-three years in towering still warehouses, tapped with a little hammer to listen;
+      Roquefort's Combalou cave with its natural "fleurines" carrying a steady cool current that lets the
+      blue veins bloom, plus the old bread-in-a-cave discovery story). ASCII, every section
+      sleep-closing, each likening the long quiet ageing to the listener's own rest, and **no
+      health/nutrition claims** (lint-scanned). Ambiences Rain on a Roof / Summer Porch / Cafe Murmur /
+      Pink Noise (all registered). Distinct NAMEs/modules. New branch in `_CATALOG` -> **293 lectures /
+      62 branches**; story DB rebuilt (24,921 lines / 400,332 words). Done: selftest (293/62); lint --
+      each 7x12, section 1 fact-free (no digits), all 7 sections sleep-close, ASCII-only, ambience
+      resolves to a real voice, no NAME/module collisions, health-claim scan clean; all four dispatch
+      through `stories.story_units` (< 400 units, >= 84 lecture lines); all 56 offline tests; drive_check
+      0 issues.
 - [x] **New branch — Sacred Spaces** (4): Hagia Sophia · Borobudur · Angkor Wat · The Golden Temple --
       real, deeply calming places of worship (vast hush, light through stone, still water, resonance),
       culturally diverse (Byzantine-Christian / Buddhist / Khmer-Hindu / Sikh) and distinct from the

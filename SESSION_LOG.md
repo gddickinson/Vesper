@@ -3901,6 +3901,23 @@ the correct backdrop or None; every theme + scene base is a registered `face_bg`
 real-lecture sanity sweep (Diwali still cues Embers x13, City x7, etc. -- no regression); selftest;
 all 50 offline tests; drive_check 0 issues.
 
+## Stories: "Cheeses of the World" lecture branch (4)
+A Stories round (every ~3rd). New branch **Cheeses of the World** -- Cheddar, Brie, Parmesan, Roquefort
+-- a cosy craft/food branch like Tea & Coffee / Spices & Herbs, full of soothing imagery (cool dark
+caves and cellars, the slow patient months and years of ageing, the quiet turning of the wheels). Each
+module `lectures_{cheddar,brie,parmesan,roquefort}.py` is data-only (NAME + AMBIENCE + 7x12
+second-person ASCII SECTIONS): fact-free settle-in, gentle accurate craft/history (Cheddar's gorge
+caves + "cheddaring"; Brie's white bloom ripening inward; Parmigiano's great wheels aged years in still
+warehouses, tapped with a hammer to listen; Roquefort's Combalou cave "fleurines" and the blue-vein
+bloom), sleep-drift close, each likening the long quiet ageing to the listener's own rest, with **no
+health/nutrition claims** (lint-scanned). Ambiences Rain on a Roof / Summer Porch / Cafe Murmur / Pink
+Noise (all registered). Four parallel subagents wrote the modules, each self-verifying
+7x12/ASCII/punctuation; then registered in `lectures._CATALOG`. Verified: selftest **293 lectures
+across 62 branches**; lint (7x12, section 1 fact-free, all sections sleep-close, ambience resolves, no
+collisions, health-claim scan clean); all four dispatch through `stories.story_units`; all 56 offline
+tests; drive_check 0 issues; story DB rebuilt (24,921 lines / 400,332 words). README/INTERFACE counts
+289->293 / 61->62.
+
 ## Stories: "Sacred Spaces" lecture branch (4)
 A Stories round (every ~3rd). New branch **Sacred Spaces** -- Hagia Sophia, Borobudur, Angkor Wat,
 The Golden Temple -- real, deeply calming places of worship, culturally diverse (Byzantine-Christian /
