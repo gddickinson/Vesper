@@ -13,11 +13,40 @@ voice/scene change kill the old thread, so two narrators can never overlap.
 from __future__ import annotations
 
 import os
+import re
 import subprocess
 import threading
 import time
 
 from . import kokoro_tts, xtts_tts
+
+# --- spoken-text sanitiser -------------------------------------------------
+# Smart-punctuation / non-ASCII a source (a lecture, an AI story, an un-folded
+# book) might still carry -- folded so the engine speaks words, not "em dash".
+_SPK_FOLD = {
+    "—": " -- ", "–": "-", "‒": "-", "―": " -- ",
+    "‘": "'", "’": "'", "‚": "'", "‛": "'",
+    "“": '"', "”": '"', "„": '"', "«": '"', "»": '"',
+    "…": "...", " ": " ", "•": " ", "·": " ",
+}
+# The symbols a TTS engine reads aloud as their NAME ("underscore", "asterisk",
+# "vertical bar", "caret"...) -- italic markers, footnote stars, ASCII-diagram
+# glyphs, stray markup. Dropped from the spoken text (never the read-along view).
+_SPK_DROP = re.compile(r"[_*|\\`~^#=<>{}+/@]")
+
+
+def speakable(text):
+    """Return *text* with the symbols a narrator would mispronounce removed or
+    folded, so it speaks the words (not '_', '*', '|', '&', em-dashes...). Applied
+    only to what is SENT to the TTS engine -- the on-screen read-along / captions
+    keep the original text. Pure + unit-tested."""
+    t = str(text or "")
+    for a, b in _SPK_FOLD.items():
+        t = t.replace(a, b)
+    t = t.replace("[", "(").replace("]", ")").replace("&", " and ")
+    t = re.sub(r"-{3,}", " -- ", t)         # a long ASCII rule -> a single pause
+    t = _SPK_DROP.sub(" ", t)               # drop the name-spoken symbols
+    return re.sub(r"\s{2,}", " ", t).strip()
 
 # macOS ``say`` fallback voices, in preference order. A British female leads (to
 # match the app's British-female default), then other soft, clear voices.
@@ -333,7 +362,7 @@ class Narrator:
     def _speak_say(self, tok, unit, lvl, timing_fn, voice):
         vol = max(0.05, min(0.8, 0.6 * lvl))
         pause = self._pause_ms(unit, timing_fn)
-        txt = str(unit.get("text", "")).replace("[", "(").replace("]", ")")
+        txt = speakable(unit.get("text", ""))     # speak words, not symbols
         text = f"[[volm {vol:.2f}]] {txt} [[slnc {pause}]]"
         try:
             proc = subprocess.Popen(
@@ -358,7 +387,7 @@ class Narrator:
         edge fades -> afplay, driving the lip-sync ``amp`` from the envelope."""
         import numpy as np
         speed = self._speed(lvl)
-        r = synth(str(unit.get("text", "")), voice, speed)
+        r = synth(speakable(unit.get("text", "")), voice, speed)   # speak words, not symbols
         if not self._active(tok) or r is None:
             return self._wait(tok, self._pause_ms(unit, timing_fn))
         samples, sr = r

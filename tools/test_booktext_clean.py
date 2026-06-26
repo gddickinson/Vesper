@@ -225,6 +225,26 @@ slowly past the reeds and nothing at all was in a hurry there that warm afternoo
     assert spoken6.endswith("the freedom of the press."), spoken6[-50:]
     print("ok: a trailing printer's colophon is cut; normal prose with 'press' is kept")
 
+    # a number-prefixed contents-list run ('22 Earlshall 23 A Strike for Liberty...',
+    # as in some Black Beauty editions) is dropped, not narrated as the first line;
+    # ordinary prose that happens to carry a number is untouched.
+    TOCRUN = ("*** START OF THE PROJECT GUTENBERG EBOOK TR ***\n\n"
+              "BLACK PONY\n\nby A. Writer\n\nContents\n\n"
+              "01 My Early Home 02 The Hunt 03 The Breaking In 04 The Meadow\n\n"
+              "22 Earlshall 23 A Strike for Liberty 24 The Lady Anne 25 Reuben\n\n"
+              "The first place that I can well remember was a large pleasant meadow "
+              "with a pond of clear water in it, and some trees over it.\n\n"
+              "While I was young I lived upon my mother's milk, as I could not eat grass.\n\n"
+              "*** END OF THE PROJECT GUTENBERG EBOOK TR ***\n")
+    bk7 = books.from_text(TOCRUN, "Black Pony", "A. Writer")
+    spoken7 = " ".join(u["text"] for u in bookreader.units(bk7))
+    assert spoken7.startswith("The first place that I can well remember"), spoken7[:50]
+    assert "Earlshall" not in spoken7 and "The Hunt" not in spoken7, "contents-run leaked"
+    # a normal sentence with a single 'NN Word' is NOT a contents run
+    assert not booktext._is_toc_run("He was 22 years old when he left, in May.")
+    assert booktext._is_toc_run("01 Home 02 The Hunt 03 Away 04 Back")
+    print("ok: a number-prefixed contents-list run is dropped, real prose kept")
+
     print("PASS: booktext front-matter removal")
     return 0
 

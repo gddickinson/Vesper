@@ -544,7 +544,12 @@ master limiter -- NaN -> silence, never a noise burst to the sound card -- and t
 audio callback contains any fault as silence + logs it once), `speech`,
 `narration` (Kokoro/say + lip-sync `amp`; a
 generation token + per-thread-local player process mean a voice/scene change
-never lets an outgoing narrator cut off the incoming one),
+never lets an outgoing narrator cut off the incoming one; **`narration.speakable()`**
+sanitises the SPOKEN text before either engine so the narrator says words not
+symbols -- strips italic `_`, footnote `*`, `|\ <>^#={}+/@` diagram/markup glyphs,
+folds `&`->'and', `[ ]`->'( )', em-dashes/smart-quotes/ellipsis to ASCII -- while
+the on-screen read-along / captions keep the original text; tested in
+`tools/test_speakable.py`),
 `stories` + the **lecture library** (`lectures` + `lectures_*.py`, 337 across
 72 branches incl. Caves of Wonder (The Crystal Cave · The Glow-Worm Cave · Stalactites and Stalagmites · The Painted Caves) + The Warm Springs (The Onsen · Pamukkale · The Blue Lagoon · The Roman Baths) + Under the Moon (The Hunter's Moon · The Blood Moon · The Moon Rabbit · Footprints on the Moon) + Winter's Hush (The First Snow . Frost . The Icicle . The Frozen Lake) + The Play of Light (The Rainbow · Halos & Sun Dogs · Mirages ·
 The Green Flash) +
@@ -631,7 +636,10 @@ processing (no I/O): `to_ascii` (fold smart quotes/dashes/accents), `strip_boile
 detectable), `split_paragraphs`, `split_sentences` (abbreviation-aware),
 `segment` → paragraphs-of-sentences **ready to narrate**. The scrub (so the narrator reads the **story,
 not the boilerplate**): `_strip_markup` removes inline `[Illustration]`/`[Sidenote]` markers, **footnote
-refs** (`[12]`) and Gutenberg `_italics_`; `_drop_frontmatter` drops the leading **title page / byline /
+refs** (`[12]`), Gutenberg `_italics_` and any leftover lone `_` (incl. one trailing
+punctuation, `England._`); a **`_is_toc_run`** drop catches a number-prefixed
+contents-list run (`22 Earlshall 23 A Strike for Liberty...`), and `_EDITION_NOTE`
+also strips a scan / cover-image credit (`the book cover and spine...`); `_drop_frontmatter` drops the leading **title page / byline /
 edition / table of contents / list of illustrations** (recognising a byline even when it ends in a
 period, e.g. *'Author of "The Golden Age," Etc.'*; an **edition/transcriber note** via `_EDITION_NOTE`,
 e.g. *'A Millennium Fulcrum Edition'*; and each **TOC entry** via `_TOC_ENTRY`, e.g. *'CHAPTER XX. Becky

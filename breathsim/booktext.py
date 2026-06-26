@@ -226,15 +226,32 @@ _TOC_ENTRY = re.compile(r"^(chapter|book|part|canto|letter|volume|stave)\s+[ivxl
 # trailing page number ('The End 476', 'I. The Old Sea-dog ... 11'). Real prose
 # paragraphs don't end in a bare number or carry spaced-dot leaders.
 _TOC_LINE = re.compile(r"\.\s+\.\s+\.|\s\d{1,4}\s*$")
+# A run of '<chapter-number> <Title>' entries packed in one line, the contents-list
+# continuation some editions produce ('22 Earlshall 23 A Strike for Liberty 24 The
+# Lady Anne...'). Three+ '<1-3 digits> <Capital>' pairs == a contents list; real
+# prose virtually never strings numbered Capitalised items together (4-digit years
+# are excluded by the 1-3 digit bound).
+_TOC_RUN = re.compile(r"\b\d{1,3}\s+[A-Z][A-Za-z'.-]")
+
+
+def _is_toc_run(s):
+    return len(_TOC_RUN.findall(s or "")) >= 3
+
+
 # A digitiser / edition / transcriber note that some texts keep at the very front
-# (e.g. 'A Millennium Fulcrum Edition produced ... in the public domain ...').
+# (e.g. 'A Millennium Fulcrum Edition produced ... in the public domain ...', or a
+# scan / cover-image credit some illustrated editions open with).
 _EDITION_NOTE = re.compile(
     r"(millennium fulcrum|fulcrum edition|duncan research|\betexts?\b|\bebooks?\b"
     r"|\be-texts?\b|\be-books?\b|digiti[sz]|transcrib|proofread|this electronic"
-    r"|electronic (?:version|edition)|in the public domain)", re.I)
+    r"|electronic (?:version|edition)|in the public domain"
+    r"|book cover|the images which follow|scanned (?:image|by|from)|frontispiece"
+    r"|cover and spine)", re.I)
 
 
-_STRAY_US = re.compile(r"_(?=[A-Za-z])|(?<=[A-Za-z])_")   # a lone, unpaired italic _
+# A lone, unpaired italic '_' -- one that is NOT inside a word (between two
+# alphanumerics). Strips '_Walt', 'word_' and a trailing 'England._' alike.
+_STRAY_US = re.compile(r"(?<![A-Za-z0-9])_|_(?![A-Za-z0-9])")
 
 
 def _strip_markup(body):
@@ -299,7 +316,7 @@ def _first_chapter_index(paras):
             continue
         nxt = paras[i + 1].strip() if i + 1 < n else ""
         if (_is_structural_heading(nxt) or _TOC_ENTRY.match(nxt)
-                or _TOC_LINE.search(nxt)):
+                or _TOC_LINE.search(nxt) or _is_toc_run(nxt)):
             continue                            # part of a contents run -> not the start
         return i
     return None
@@ -323,7 +340,7 @@ def _is_frontmatter_line(p):
     inside the story doesn't look like a boundary and truncate chapter 1."""
     s = (p or "").strip()
     return bool(_TOC_HEAD.match(s) or _is_toc_blob(s) or _TOC_ENTRY.match(s)
-                or _EDITION_NOTE.search(s) or _BYLINE.match(s)
+                or _EDITION_NOTE.search(s) or _BYLINE.match(s) or _is_toc_run(s)
                 or (len(s) <= 70 and _TOC_LINE.search(s)))
 
 
@@ -352,7 +369,7 @@ def _drop_frontmatter(paras):
     while i < len(paras) and i < 300:
         p, s = paras[i], paras[i].strip()
         if (_TOC_HEAD.match(s) or _is_toc_blob(s) or _TOC_ENTRY.match(s)
-                or _EDITION_NOTE.search(s) or _is_titlepage_line(p)
+                or _EDITION_NOTE.search(s) or _is_titlepage_line(p) or _is_toc_run(s)
                 or (len(s) <= 70 and _TOC_LINE.search(s))):
             i += 1               # title / byline / edition / contents / toc entry / plate
             dropped += 1

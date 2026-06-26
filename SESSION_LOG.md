@@ -4031,6 +4031,26 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Narrator: stop reading out text symbols + replace the rough downloads (user-requested)
+Two linked user requests: "replace downloads that need updating" and "the narrators read out text
+symbols." **Investigated** by tallying non-prose characters across every library book's narration: 1,612
+italic `_` ("_there?_" -> *underscore there underscore*), plus `&`, footnote `*`, `[ ]` editorial inserts,
+and ASCII-diagram glyphs (`| \ < > ^ #`) from books like Flatland. **The robust fix is a narration-time
+sanitiser**, **`narration.speakable()`**, applied to the SPOKEN text in BOTH engines (`say` + Kokoro) so it
+covers every source -- books, lectures, AI stories -- without re-segmenting, while the on-screen read-along
+/ captions keep the original. It strips italic/footnote/diagram/markup symbols, folds `&`->'and',
+`[ ]`->'( )', and em-dashes / smart-quotes / ellipsis to ASCII, and keeps clean prose + ordinary
+punctuation (`( )`, `--`, `'`) untouched. Result across the 61-book library: **1,068 of 1,072 would-be-spoken
+symbols gone** (only 4 `$` remain, which `say` voices correctly as "dollars"). Also extended the **book
+cleaner** (re-segmenting the 50 new books to apply it): a **`_is_toc_run`** drop for a number-prefixed
+contents list (Black Beauty's *"22 Earlshall 23 A Strike for Liberty..."* -> now opens at the story), an
+`_EDITION_NOTE` rule for a scan/cover-image credit (Don Quixote's *"the book cover and spine..."*), and a
+fuller lone-underscore strip (Frankenstein *"England._"* -> *"England."*, Dracula *"shorthand._"*). Verified
+no regression on the known-good books (P&P, Jane Eyre, Moby Dick, etc. all unchanged). New
+`tools/test_speakable.py` + a TOC-run case in `test_booktext_clean`. Verified: **75 offline tests**; selftest
+(337/73); drive_check 0 issues; booktext.py 406 + narration.py 437 lines (<500). The library is user data
+(`~/.breathsim`), so only the code + tests + docs are committed.
+
 ## Book cleaning: cut a trailing printer's colophon (autonomous follow-up)
 A skipped-verification check of the *ends* of the ten downloaded books (I'd only confirmed first lines)
 caught one tail leak: **Pride & Prejudice** narrated a trailing printer's imprint after the story --

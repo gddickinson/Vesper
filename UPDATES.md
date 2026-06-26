@@ -155,6 +155,15 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Narrator: speak words, not text symbols + cleaner book downloads** (user-requested). A new
+      `narration.speakable()` sanitises the SPOKEN text in both TTS engines (say + Kokoro) so the narrator
+      no longer reads italic `_`, footnote `*`, `&`, `[ ]`, em-dashes or ASCII-diagram glyphs aloud --
+      covering books, lectures and AI stories alike, while the on-screen read-along keeps the original.
+      Across the 61-book library that removes 1,068 of 1,072 would-be-spoken symbols. Also hardened the book
+      cleaner (`_is_toc_run` drops a number-prefixed contents list -- Black Beauty; `_EDITION_NOTE` drops a
+      scan/cover credit -- Don Quixote; fuller lone-`_` strip -- Frankenstein/Dracula) and re-segmented the
+      50 new books with it. No regression on the known-good books. New test_speakable + TOC-run test; 75
+      offline tests + selftest + drive_check 0 issues.
 - [x] **Book cleaning starts narration AT chapter 1 + ten library books** (user-requested). Downloaded ten
       classics (P&P, Sherlock, Christmas Carol, Oz, Treasure Island, Secret Garden, Anne of Green Gables,
       Alice, Tom Sawyer, Peter Pan) and found the cleaner read **editor introductions / dedications /
