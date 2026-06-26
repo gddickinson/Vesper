@@ -165,6 +165,13 @@ Set with the user after the realistic-chanting round. Tick as completed.
       `sample_book.py`), seeded into the library once on a fresh install via `books.seed_sample_if_fresh()`
       so **Read works out of the box**. New test_sample_book + extended test_booktext_clean. Verified: 73
       offline tests; selftest; drive_check 0 issues; narration now starts at the story, 0 headings spoken.
+      *Follow-up (stress-tested Alice, Tom Sawyer, Peter Pan):* an all-caps book **TITLE** at the very top
+      and a **short TOC entry** that also looks structural (*'CHAPTER XIX. Tom Tells the Truth'*) used to halt
+      the scrub, and a **list of illustrations** of short captions (*"Ain't that Work?"*, *'Cat and Toys'*)
+      leaked as prose. Split a *structural*-heading test from the all-caps fallback, made a heading end the
+      scrub only when **not** in a run of headings/contents entries, and once front matter is seen treat a
+      remaining **short line as a stray caption**; added `_TOC_ENTRY` + `_EDITION_NOTE` drop rules. All four
+      books now open at real story prose (Tom at its genuine Preface). Extended test_booktext_clean again.
 - [x] **Stories: "The Slow Ones" lecture branch (4).** The every-third-round Stories item -- slowness as the
       through-line, the very point of a sleep app: **The Tortoise** (the unhurried walker, the carried home,
       the centuries-long life), **The Snail** (the silver glide, the spiral shell, sealing away to sleep a

@@ -628,8 +628,14 @@ detectable), `split_paragraphs`, `split_sentences` (abbreviation-aware),
 not the boilerplate**): `_strip_markup` removes inline `[Illustration]`/`[Sidenote]` markers, **footnote
 refs** (`[12]`) and Gutenberg `_italics_`; `_drop_frontmatter` drops the leading **title page / byline /
 edition / table of contents / list of illustrations** (recognising a byline even when it ends in a
-period, e.g. *'Author of "The Golden Age," Etc.'* -- the bug that used to leak the whole contents page),
-stopping at the first chapter heading or real prose so a genuine preface survives; `_drop_tail` cuts a
+period, e.g. *'Author of "The Golden Age," Etc.'*; an **edition/transcriber note** via `_EDITION_NOTE`,
+e.g. *'A Millennium Fulcrum Edition'*; and each **TOC entry** via `_TOC_ENTRY`, e.g. *'CHAPTER XX. Becky
+in a Dilemma...'*). The hard part is telling a real chapter heading from a contents *entry*: it uses a
+**look-ahead** -- `_is_structural_heading` only ends the scrub when the heading is **not** followed by
+another heading/entry (so a short *'CHAPTER XIX. Tom Tells the Truth'* sitting in the TOC no longer halts
+it mid-list), and once front matter has been seen, a remaining **short** line is treated as a stray
+**illustration caption** (*'Cat and Toys'*) rather than the story's first prose. It stops at the first
+chapter heading or **substantial** paragraph so a genuine preface survives; `_drop_tail` cuts a
 trailing **transcriber's note / appendix / glossary**; and a per-paragraph `_is_dropped_para` removes
 **scene dividers** (`* * *`), **footnote blocks** and stray TOC anywhere. **`is_heading`** (now also
 catches `I. THE RIVER BANK` + all-caps title lines, digit-free) and **`is_narratable`** keep chapter

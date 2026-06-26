@@ -4031,6 +4031,28 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Book cleaning: hardened against real TOC / illustration leaks (Alice, Tom Sawyer, Peter Pan)
+Follow-up to the previous round. The single-book (Wind in the Willows) validation missed two failure
+modes, surfaced by **stress-testing three more real Gutenberg books** (Alice #11, Tom Sawyer #74, Peter
+Pan #16). (1) A book whose **all-caps TITLE** sat at the very top was mistaken for a chapter heading and
+halted the front-matter scrub immediately -- fixed by requiring the all-caps heading fallback to be
+**digit-free** and, crucially, splitting `is_heading` into a *structural* form (`_is_structural_heading`:
+the heading regex only, not the bare all-caps fallback) that alone may end the scrub. (2) A **short TOC
+entry** that also looks structural -- *'CHAPTER XIX. Tom Tells the Truth'* (32 chars) -- broke the scrub
+mid-contents-list; and a **list of illustrations** of short captions, some ending in `?`/`.` (*"Ain't that
+Work?"*, *'Cat and Toys'*), leaked as if prose. Fixed `_drop_frontmatter`: a structural heading now only
+ends the scrub when it is **not followed by another heading / `_TOC_ENTRY`** (so a contents entry in a run
+keeps dropping), and once any front matter has been dropped a remaining **short (<120 char) line is treated
+as a stray caption**, not the story start -- only a substantial paragraph (or an isolated chapter heading)
+begins the prose. Added `_TOC_ENTRY` (a `CHAPTER <numeral>...` contents line) and `_EDITION_NOTE` (*'A
+Millennium Fulcrum Edition'*, transcriber/digitiser notes) drop rules; raised the front-matter cap 60->300
+(TOC + plates can be long). Result: **all four books now start at real story prose** -- WitW "The Mole had
+been working very hard...", Alice "Alice was beginning to get very tired...", Tom Sawyer its genuine
+authorial **Preface** ("Most of the adventures recorded in this book really occurred..."), Peter "All
+children, except one, grow up." -- and Tom's tail ends cleanly on its real conclusion, no PG footer. All
+five book tests + the full suite still green. Verified: 73 offline tests; selftest (337/73); drive_check 0
+issues. booktext.py 326 lines (<500).
+
 ## Robust book cleaning for narration + a shipped sample book (user-requested)
 The user reported the Read narrator still reads non-story text, and asked to ship a short public-domain
 sample book (Winnie-the-Pooh / Wind in the Willows). **Investigated empirically**: fetched the real

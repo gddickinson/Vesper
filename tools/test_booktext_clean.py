@@ -137,6 +137,43 @@ from a scanned copy and may contain small inconsistencies in the original.\n\n"
     assert not booktext.is_narratable("THE RIVER BANK") and not booktext.is_narratable("* * *")
     print("ok: headings shown-not-narrated; footnotes/dividers/transcriber-tail removed")
 
+    # the real-Gutenberg shapes that used to leak (Tom Sawyer / Peter Pan):
+    #  - an all-caps TITLE at the very top (must not be read as a chapter heading)
+    #  - a long Contents list, incl. a SHORT entry that also looks structural
+    #    ('CHAPTER XIX. Tom Tells the Truth') -- must not halt the scrub mid-list
+    #  - a LIST OF ILLUSTRATIONS of short captions, some ending in '?'/'.'
+    #  - an edition / digitiser note
+    # ...all dropped; narration begins at the genuine authorial PREFACE.
+    REAL = ("*** START OF THE PROJECT GUTENBERG EBOOK TOMLIKE ***\n\n"
+            "THE ADVENTURES OF A QUIET BOY\n\nBy A. N. Author\n\n"
+            "A Riverside Edition produced from a scanned copy in the public domain.\n\n"
+            "CONTENTS\n\n"
+            "CHAPTER I. The Long Summary That Runs On -- And On Across The Page\n\n"
+            "CHAPTER XVIII. Another Very Long One -- With A Dash And More Words After\n\n"
+            "CHAPTER XIX. The Short One\n\n"
+            "CHAPTER XX. Becky in a Dilemma -- And A Trailing Page Summary Besides\n\n"
+            "ILLUSTRATIONS\n\n"
+            "The Quiet Boy\n\nAin't that Work?\n\nCat and Toys\n\nAmusement\n\n"
+            "PREFACE\n\n"
+            "Most of the adventures recorded in this book really occurred, and one or two \
+were experiences of my own, while the rest belonged to boys who were my schoolmates.\n\n"
+            "CHAPTER I\n\nTHE LONG SUMMARY\n\n"
+            "Tom did not answer at first, for he was busy by the river where the water moved \
+slowly past the reeds and nothing at all was in a hurry there that warm afternoon.\n\n"
+            "*** END OF THE PROJECT GUTENBERG EBOOK TOMLIKE ***\n")
+    bk3 = books.from_text(REAL, "Tomlike", "A. N. Author")
+    spoken3 = " ".join(u["text"] for u in bookreader.units(bk3))
+    first3 = spoken3[:60]
+    assert first3.startswith("Most of the adventures"), first3
+    assert "ADVENTURES OF A QUIET BOY" not in spoken3, "all-caps title narrated!"
+    assert "The Short One" not in spoken3, "structural-looking TOC entry leaked"
+    assert "Becky in a Dilemma" not in spoken3, "TOC entry leaked"
+    assert "Ain't that Work" not in spoken3 and "Cat and Toys" not in spoken3, "caption leaked"
+    assert "Riverside Edition" not in spoken3, "edition note leaked"
+    assert "Tom did not answer at first" in spoken3, "chapter-1 prose must be narrated"
+    assert sum(1 for u in bookreader.units(bk3)) >= 2
+    print("ok: all-caps title / long+short TOC / illustration captions / edition note dropped")
+
     print("PASS: booktext front-matter removal")
     return 0
 

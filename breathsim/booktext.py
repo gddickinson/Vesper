@@ -214,6 +214,17 @@ _BYLINE = re.compile(
     r"^(by\s|author\s+of\b|translated\b|illustrated\b|edited\b|adapted\b"
     r"|a\s+(?:story|tale|novel|romance|comedy|fairy)\b|copyright\b|published\b"
     r"|printed\b|new\s+(?:and\s+revised|edition)|\w+\s+edition\b)", re.I)
+# A single table-of-contents *entry* -- a line that BEGINS with 'CHAPTER <numeral>'
+# (often with a long page-summary trailing). The body's real chapter heading is the
+# short structural form, caught by `_is_structural_heading` first, so this only
+# strips the contents list, never the chapter that starts the story.
+_TOC_ENTRY = re.compile(r"^(chapter|book|part|canto|letter|volume)\s+[ivxlcdm\d]+\b", re.I)
+# A digitiser / edition / transcriber note that some texts keep at the very front
+# (e.g. 'A Millennium Fulcrum Edition produced ... in the public domain ...').
+_EDITION_NOTE = re.compile(
+    r"(millennium fulcrum|fulcrum edition|duncan research|\betexts?\b|\bebooks?\b"
+    r"|\be-texts?\b|\be-books?\b|digiti[sz]|transcrib|proofread|this electronic"
+    r"|electronic (?:version|edition)|in the public domain)", re.I)
 
 
 def _strip_markup(body):
@@ -223,12 +234,22 @@ def _strip_markup(body):
     return _ITALIC.sub(r"\1", body)
 
 
+def _is_structural_heading(s):
+    """A *structural* chapter heading -- 'CHAPTER IV', a lone roman/number, or
+    'I. THE RIVER BANK' -- i.e. the heading regex, NOT the bare all-caps fallback.
+    This is what marks the start of the story (a bare all-caps line at the very top
+    is more likely the book's TITLE, so it must not halt the front-matter scrub)."""
+    s = (s or "").strip()
+    return 0 < len(s) <= 60 and bool(_HEADING.match(s))
+
+
 def _is_titlepage_line(p):
-    """A title / author / edition line of the front matter. A bare short line with
-    no sentence punctuation, OR an explicit byline/edition line (even one ending in
-    a period, like 'Author of "The Golden Age," Etc.'). NOT a chapter heading."""
+    """A title / author / edition line of the front matter: a bare short line with no
+    sentence punctuation (incl. an all-caps book title), OR an explicit byline/edition
+    line even when it ends in a period ('Author of "The Golden Age," Etc.'). NOT a
+    *structural* chapter heading (those mark the start of the story and are kept)."""
     s = p.strip()
-    if not (0 < len(s) <= 70) or is_heading(s):
+    if not (0 < len(s) <= 70) or _is_structural_heading(s):
         return False
     return (s[-1] not in ".?!") or bool(_BYLINE.match(s))
 
@@ -261,12 +282,32 @@ def _drop_frontmatter(paras):
     genuine preface) is preserved. Conservative: it only removes positively
     identified front-matter lines and never looks past the start of the story."""
     i = 0
-    while i < len(paras) and i < 60:
-        p = paras[i]
-        if is_heading(p):                       # a chapter heading: the story starts
-            break
-        if _TOC_HEAD.match(p.strip()) or _is_toc_blob(p) or _is_titlepage_line(p):
-            i += 1                              # title / author / edition / contents
+    dropped = 0
+    while i < len(paras) and i < 300:           # front matter can be long (TOC + plates)
+        p, s = paras[i], paras[i].strip()
+        if _is_structural_heading(s):
+            nxt = paras[i + 1].strip() if i + 1 < len(paras) else ""
+            # a real chapter heading is followed by the story; a *contents entry*
+            # (a short 'CHAPTER XIX. Tom Tells the Truth') is followed by more
+            # entries -- so only break out of the front matter when the heading is
+            # NOT part of a run of headings / contents lines.
+            if _is_structural_heading(nxt) or _TOC_ENTRY.match(nxt):
+                i += 1
+                dropped += 1
+                continue
+            break                               # an isolated heading: the story starts
+        if (_TOC_HEAD.match(s) or _is_toc_blob(s) or _TOC_ENTRY.match(s)
+                or _EDITION_NOTE.search(s) or _is_titlepage_line(p)):
+            i += 1               # title / byline / edition / contents / toc entry / plate
+            dropped += 1
+            continue
+        # a plain line. If we have already been scrubbing front matter (TOC /
+        # plates), a *short* line here is almost always a stray illustration
+        # caption ('Cat and Toys', "Ain't that Work?") -- only a substantial
+        # paragraph (or a chapter heading, handled above) marks the real start
+        # of the prose.
+        if dropped and len(s) < 120:
+            i += 1
             continue
         break                                   # first real prose paragraph
     return paras[i:]
