@@ -4031,6 +4031,23 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Stories: "Winter's Hush" snow/winter lecture branch (4, user-requested)
+Part three of the snow request (the snow stories). New winter branch -- The First Snow, Frost, The Icicle,
+The Frozen Lake -- the quiet wonders of deep winter, chosen to stay distinct from Snowflakes (Small
+Wonders), the Polar Worlds (Arctic/Antarctica/Icebergs/Tundra) and How-the-World-Sleeps (hibernation).
+Written by 4 parallel subagents to the house format (7x12 second-person present ASCII, fact-free settle-in
+section 1 with no numerals, sleep-drift section 7). Content: the great hush of fresh snow (its pockets of
+trapped air soaking up sound; why snow is white though ice is clear; the blanket keeping the ground warm);
+frost forming by deposition -- vapour straight to ice -- in fern-like patterns on cold glass (Jack Frost,
+hoar frost); the icicle built drip by patient drip with its gentle ripples; and a lake freezing from the
+top down (water near freezing grows lighter and rises; ice floats as a lid), the floating ice sheltering
+the slow, safe deep through winter while the surface sings -- the finale easing into that deep still calm
+and sleep. Ambiences: Soft Rainstorm / Wind in Pines / Gentle Rain / Brown Noise. Registered in
+lectures._CATALOG; story DB rebuilt (321 lectures / 69 branches, ~442k words). Validated 7x12 + no-digit +
+ASCII; eyeballed the Frozen Lake's fact-free intro + sleep close. Verified: selftest (321/69); all 66
+offline tests; drive_check 0 issues. Together with the Snowman + Winter Cabin, this completes the
+three-part user request (more character quirks + a snowman + snow scenes + snow stories).
+
 ## Scene: "Winter Cabin" -- a warm-lit cabin in the snow (user-requested snow scene)
 Part two of the snow request. A cosy Sleep/Relax scene, distinct from the existing bare Snowfall scene: a
 small log cabin with two warm amber windows nestled in deep snow under a starry winter night -- dark

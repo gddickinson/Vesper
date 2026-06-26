@@ -513,8 +513,8 @@ audio callback contains any fault as silence + logs it once), `speech`,
 `narration` (Kokoro/say + lip-sync `amp`; a
 generation token + per-thread-local player process mean a voice/scene change
 never lets an outgoing narrator cut off the incoming one),
-`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 317 across
-68 branches incl. The Play of Light (The Rainbow · Halos & Sun Dogs · Mirages ·
+`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 321 across
+69 branches incl. Winter's Hush (The First Snow . Frost . The Icicle . The Frozen Lake) + The Play of Light (The Rainbow · Halos & Sun Dogs · Mirages ·
 The Green Flash) +
 Bread & Baking (The First Bread · Sourdough · Breads of the
 World · The Hearth) +

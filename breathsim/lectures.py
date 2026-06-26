@@ -152,6 +152,8 @@ from . import (lectures_firstbread, lectures_sourdough,
                lectures_worldbreads, lectures_hearth)
 from . import (lectures_rainbow, lectures_halos,
                lectures_mirage, lectures_greenflash)
+from . import (lectures_firstsnow, lectures_frost,
+               lectures_icicle, lectures_frozenlake)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -320,6 +322,8 @@ _CATALOG = [
                         lectures_worldbreads, lectures_hearth]),
     ("The Play of Light", [lectures_rainbow, lectures_halos,
                            lectures_mirage, lectures_greenflash]),
+    ("Winter's Hush", [lectures_firstsnow, lectures_frost,
+                       lectures_icicle, lectures_frozenlake]),
 ]
 
 LECTURES = {}

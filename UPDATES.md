@@ -1998,6 +1998,15 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Winter's Hush** (4, user-requested snow stories): The First Snow · Frost · The Icicle ·
+      The Frozen Lake -- the quiet wonders of deep winter, distinct from Snowflakes (Small Wonders), the
+      Polar Worlds and How-the-World-Sleeps. The great hush of fresh snow (its trapped air soaking up
+      sound); frost growing straight from vapour into fern-like crystals on the cold glass; the icicle built
+      drip by patient drip; and a lake freezing from the top down (because near-freezing water grows lighter
+      and rises), its floating ice lid sheltering the slow, safe deep all winter -- the finale easing into
+      that deep still calm and sleep. Ambiences: Soft Rainstorm / Wind in Pines / Gentle Rain / Brown Noise.
+      321 lectures / 69 branches. Written by 4 parallel subagents; lint-checked (7x12, ASCII, no digits),
+      DB rebuilt, gauntlet green. Pairs with the new Snowman character + Winter Cabin scene.
 - [x] **New branch — The Play of Light** (4): The Rainbow · Halos & Sun Dogs · Mirages · The Green Flash
       -- the everyday wonders of atmospheric optics, gentle science woven with wonder. Each raindrop a
       tiny lens fanning sunlight into a bow made just for your eyes; six-sided ice crystals high in cirrus
