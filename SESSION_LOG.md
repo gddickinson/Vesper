@@ -3708,6 +3708,27 @@ ticks, threads stable); selftest; all 44 offline tests; drive_check 0 issues. **
 picked): wire `anatomy_skull` as an **opt-in face** with the **jaw lip-syncing the narration** for
 spooky tales (not a separate story category).
 
+## Talking-Skull character (user-requested) -- opt-in face + jaw lip-sync
+The user asked for a talking skull for supernatural stories and picked "opt-in face + jaw lip-syncs
+narration". Investigated faceView's `anatomy_skull` render mode: it exists and renders cleanly, but
+its mandible barely drops with `jaw_open` (measured a dark-cavity delta + eyeballed jaw 0 vs 1 --
+only the teeth shift down slightly), AND faceView is an **external sibling dependency not tracked in
+the Vesper git repo** (no submodule), so enhancing its renderer wouldn't ship with Vesper. So built
+the skull **self-contained in Vesper's own 2D character framework** -- the right home: it ships,
+auto-integrates (idle head motion, costumes, per-character voice, story-following), and gives a
+genuinely articulated jaw. New `vesper/char_skull.py` (`Skull(B.Character)`) draws a domed cranium
+with cranial sutures, hollow eye sockets with a faint **ember glow** that breathes, a nasal aperture,
+upper teeth on the maxilla, and an **articulated mandible (QPainterPath U-bone) that hinges open with
+`anim.mouth`** -- already driven by the narration amplitude, so the jaw **lip-syncs the storyteller**
+for free. Registered in `characters._CHARS` (now **18 characters**) and given a deep/slow/hollow voice
++ cold cyan glow in `char_voice` (a gentle spooky greeting). Sleep-gentle by design: warm ivory bone,
+soft low-contrast glow, slow motion -- atmospheric, not frightening. Verified: new
+`tools/test_char_skull.py` (registered + voiced; the mandible cavity grows 1848->4856 px as the jaw
+opens); selftest; all 45 offline tests; drive_check 0 issues; an offscreen GUI smoke (pick "Skull"
+in-app, 60 ticks, threads stable 1->2); closed / talking / in-app PNGs eyeballed (clean closed skull
+at rest; clearly talking with a dark cavity + lower teeth when the jaw drops; breathing on the
+starfield in the real window). README 17->18 characters; INTERFACE char list + char_skull entry.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

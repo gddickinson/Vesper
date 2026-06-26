@@ -79,6 +79,10 @@ VOICES = {
     "Man": CharVoice(("am_michael", "am_", "bm_daniel", "bm_", "daniel", "alex"),
                      1.0, "#86e6bf", "Hey. Let's slow down together.",
                      "warm and human", xtts="Viktor Eka"),
+    "Skull": CharVoice(("bm_george", "bm_", "am_michael", "am_", "lee", "daniel"),
+                       0.84, "#9fe6dc",
+                       "Gather close. I have a quiet old tale to tell.",
+                       "deep, slow and hollow", xtts="Damien Black"),
 }
 
 DEFAULT = CharVoice(("af_", "bf_"), 1.0, "#86e6bf", "", "")

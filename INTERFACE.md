@@ -154,9 +154,13 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   - **char_<name>.py** — one file per character (all subclass `Character`, return a
     `Head`): **Cat** (default) · Penguin · Dog · Owl · Fox · Chicken · Bunny · Bear ·
     Panda · Frog · Duckling · Hedgehog · **Robot** (brushed-metal head, glowing eyes,
-    pulsing antenna, LED mouth, chest core) · Woman · Man (chibi humans). Each uses
-    the shared kit (tail swish, ear twitch, body breathing, bristle, blush) with its
-    own drawing + signature touches.
+    pulsing antenna, LED mouth, chest core) · Woman · Man (chibi humans) · **Skull**
+    (`char_skull.py` — a gentle storybook **talking skull** for spooky / folklore
+    tales: domed cranium with sutures, hollow sockets with a faint **ember glow**, a
+    nasal aperture, upper teeth, and an **articulated mandible** that hinges open with
+    `anim.mouth` so it **lip-syncs the narration**; opt-in via the Character menu, with
+    its own deep/slow/hollow voice). Each uses the shared kit (tail swish, ear twitch,
+    body breathing, bristle, blush) with its own drawing + signature touches.
   - **char_costume.py** — costume overlays positioned from the `Head` anchor (None,
     Wizard/Party/Top Hat, Beanie, Crown, Halo, Headphones, Sunglasses, Flower, Scarf,
     Bow Tie), with a faint cyber glow.

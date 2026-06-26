@@ -21,10 +21,11 @@ from .char_panda import Panda
 from .char_penguin import Penguin
 from .char_robot import Robot
 from .char_sheep import Sheep
+from .char_skull import Skull
 
 _CHARS = [Cat(), Penguin(), Dog(), Owl(), Fox(), Chicken(), Bunny(), Bear(),
           Panda(), Frog(), Duckling(), Hedgehog(), Mouse(), Sheep(), Robot(),
-          Woman(), Man()]
+          Woman(), Man(), Skull()]
 CHARACTERS = {c.name: c for c in _CHARS}
 DEFAULT = "Cat"
 

@@ -12,10 +12,10 @@ required.</p>
 Vesper paces your breath with a soft animated visualization and real-time synthesised
 sound. It spans seven activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep ·
 Read** — each with its own purpose-built control panel, visual scene and soundscape. At its
-centre is a talking-head **avatar** (a 3D head, or one of **17 hand-drawn cartoon
+centre is a talking-head **avatar** (a 3D head, or one of **18 hand-drawn cartoon
 characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **261
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
-<!-- counts: 261 lectures / 54 branches · 150 voices · 66 phrases · 7 modes · 17 characters -->
+<!-- counts: 261 lectures / 54 branches · 150 voices · 66 phrases · 7 modes · 18 characters -->
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
@@ -32,8 +32,9 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   narrator and shifts expression with the mood of the words. A **cyberpunk face-style**
   system (starry eyes, Tron/circuit grids that follow the head, translucent / dot-matrix
   renders) can react to the story, breath and chant. Or switch to the **2D cast**.
-- **17 cartoon characters + costumes** — Cat, Penguin, Dog, Owl, Fox, Chicken, Bunny,
-  Bear, Panda, Frog, Duckling, Hedgehog, **Mouse**, **Sheep**, **Robot**, Woman and Man,
+- **18 cartoon characters + costumes** — Cat, Penguin, Dog, Owl, Fox, Chicken, Bunny,
+  Bear, Panda, Frog, Duckling, Hedgehog, **Mouse**, **Sheep**, **Robot**, Woman, Man and a
+  talking **Skull** (hollow ember-lit sockets + a jaw that lip-syncs the narration, for spooky tales),
   each with breathing, blinks, tail-swishes, "hair-on-end" startles and drowsy
   **yawns / stretches / nod-offs / head-cocks / look-arounds**, **17 costumes**
   (incl. sleep-friendly Nightcap / Sleep Mask / Earmuffs), and its own narrator

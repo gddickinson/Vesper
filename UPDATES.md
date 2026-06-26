@@ -155,11 +155,21 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
-- [ ] **Talking-skull face (user-requested)** -- wire faceView's `anatomy_skull` render mode as an
-      **opt-in face you pick** (face/appearance menu), with the **jaw lip-syncing the narration**
-      (drive `jaw_open` from the narration amp like the normal mouth; push the mandible drop further
-      so it clearly opens). For spooky / supernatural storytelling. (User picked: opt-in face + jaw
-      lip-sync; NOT a separate spooky story category.) NEXT ROUND.
+- [x] **Talking-Skull character (user-requested)** -- a gentle storybook **talking skull** for spooky
+      / folklore tales, **opt-in** from the Character menu. Investigated faceView's `anatomy_skull`
+      mode first: it exists but its mandible barely drops with `jaw_open` (measured + eyeballed), and
+      faceView is an **external sibling dependency not tracked in the Vesper repo** -- so enhancing it
+      wouldn't ship. Built it **self-contained in Vesper's 2D character framework** instead: new
+      `vesper/char_skull.py` (`Skull(B.Character)`) draws a domed cranium with sutures, hollow sockets
+      with a faint **ember glow** (breathes), a nasal aperture, upper teeth, and an **articulated
+      mandible that hinges open with `anim.mouth`** -- which is already driven by the narration
+      amplitude, so the **jaw lip-syncs the storyteller**. Registered in `characters._CHARS` (18
+      characters) + a deep/slow/hollow voice in `char_voice` (cold cyan glow). Self-contained, ships,
+      and lip-syncs out of the box. Verified: new `tools/test_char_skull.py` (registered + voiced;
+      mandible cavity 1848->4856 px as the jaw opens); selftest; all 45 offline tests; drive_check 0
+      issues; an offscreen GUI smoke (pick Skull in-app, 60 ticks, threads stable); closed / talking /
+      in-app PNGs eyeballed (clean closed skull at rest, clearly talking when the jaw drops). User
+      picked: opt-in face + jaw lip-sync (NOT a separate story category). `char_skull.py` 166 < 500.
 - [x] **Natural 3D head motion on the neck (user-requested)** -- the talking-head only nodded with the
       breath (pitch) and swayed a little (yaw); it never tilted side-to-side. Added gentle **idle head
       life**: a slow side-to-side **roll** (head-tilt), an occasional **chin-lift**, and lazy yaw/pitch
