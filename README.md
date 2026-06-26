@@ -62,13 +62,19 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   slowing and quietening as you drift off, and the **soundscape, the backdrop and the
   character all gently follow the words**.
 - **Read a novel** — a dedicated **Read** mode and a book Reader narrate full public-domain
-  books. A fresh install **ships with a sample book** (Kenneth Grahame's *The Wind in the
+  books — **narrator only by default** (no breathing or ambient bed) at a **normal,
+  awake-reading pace** (a one-tap toggle makes it slow and sleep-paced). A fresh install
+  **ships with a sample book** (Kenneth Grahame's *The Wind in the
   Willows*) so Read works out of the box, and you can add more (download from Project Gutenberg
   / Standard Ebooks, or drop in your own .txt/.epub). Every book is
-  cleaned to read **the story, not the boilerplate** — the title page, byline, table of
-  contents, illustration lists, scene dividers and footnote markers are removed, a trailing
-  transcriber's note is cut, and **chapter headings are shown but never read aloud** (so the
-  narrator never announces "Chapter Two") — with **read-along text** that highlights and
+  cleaned to read **the story, not the boilerplate**: narration **begins at chapter one** —
+  the title page, byline, table of contents, illustration lists, an editor's
+  introduction / dedication, scene dividers, footnote markers and a trailing
+  transcriber's note or printer's colophon are all removed, and **chapter headings are shown
+  but never read aloud** (so the narrator never announces "Chapter Two"). And the narrator
+  **speaks words, not symbols** — italic markers, ASCII-diagram glyphs and stray markup are
+  cleaned from the spoken line while the on-screen text keeps the original. With **read-along
+  text** that highlights and
   auto-scrolls, **Night / Sepia / Day** reading
   themes, a searchable **jump-to-chapter** picker, adjustable pace, an opt-in
   **sleep fade** that quietens the narration and stops after a set time, and
@@ -172,7 +178,7 @@ Optional extras (each degrades gracefully if absent):
   faster-than-real-time on Apple Silicon). Opt-in and **not bundled** (it's large and
   under the non-commercial Coqui CPML): install it yourself with
   `python tools/setup_xtts.py --accept-license`, then pick an "XTTS" narration voice in
-  Sleep. The 15 characters speak in XTTS too when it's installed. See
+  Sleep. The cartoon characters speak in XTTS too when it's installed. See
   [`docs/XTTS.md`](docs/XTTS.md).
 
 > Graceful degradation: no GPU → software face; no faceView → the cartoon cast; no audio
