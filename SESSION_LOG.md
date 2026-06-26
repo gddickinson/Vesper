@@ -4016,6 +4016,21 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Regression test: guided-program stage stepping (session director)
+A quality/lock round, diversifying off the recent character work. The SessionDirector (session.py) drives
+all 11 guided programs (Wim Hof, pranayama, body-scan, vocal warm-up, NSDR, sleep wind-down, ...) by
+walking their Stages on the breath clock -- but the stepping was untested. Scouted it first and confirmed
+the logic is sound: `_update_program`'s index loop clamps to the last stage (never overflows), guards
+empty/unknown programs early, and `stage_info` guards the -1 initial state and clamps countdowns to >= 0 --
+no bug. Locked it with tools/test_programs.py (a fake app + a controllable clock): start_program lays out
+_starts ([0,60,180]) / _total / controller.session_seconds and cues stage 0; update() applies + announces
+each stage exactly once at its time and never re-applies mid-stage; the last stage holds past the program's
+end (no overflow); stage_info reports the right (title, i, n) and non-negative stage/total countdowns; an
+unknown name is a no-op (program stays None) and an empty-stages program is accepted but never advances or
+crashes; and -- the broad smoke -- every shipped program steps through applying each stage in order, which
+also asserts none has a 0-minute stage (which would be silently skipped). Verified: that test + all 65
+other offline tests (66/66); selftest (313/67); drive_check 0 issues. No app change.
+
 ## Characters: signature drawn quirks (frog throat-puff, bunny nose-twitch)
 A follow-up to the #294 motion-trait work (the natural next step I'd flagged), adding the two iconic
 per-character *drawn* gestures that were still missing -- the rest of the cast already had theirs (dog

@@ -155,6 +155,17 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Regression test: guided-program stage stepping** -- a quality/lock round (diversifying off the
+      recent character work). The SessionDirector drives all 11 guided programs (Wim Hof, pranayama,
+      body-scan, vocal warm-up, NSDR, sleep wind-down, ...) by walking their Stages on the breath clock,
+      but that stepping (`start_program` / `_update_program` / `stage_info`) was untested. Confirmed the
+      logic is sound (no bug -- the index loop clamps to the last stage, empty/unknown programs return
+      early, stage_info guards the -1 initial state) and locked it with `tools/test_programs.py` (fake app
+      + controllable clock): start lays out `_starts`/`_total`/`session_seconds` and cues stage 0;
+      transitions apply + speak each stage exactly once (never re-applied mid-stage) and the last stage
+      holds past the end; stage_info's countdowns are right and never negative; unknown + empty-stages
+      programs degrade safely; and **every shipped program steps through in order with no 0-minute-stage
+      skip**. Verified: that test + all 65 others (66/66); selftest; drive_check 0 issues. No app change.
 - [x] **Signature drawn quirks per character** -- a follow-up to the motion-trait work, adding the two
       iconic per-character gestures that were missing (the others -- dog floppy-ears/tail-wag/tongue, cat
       whiskers/tail, mouse whiskers, bunny ear-twitch -- already had theirs). A **frog throat-sac that
