@@ -103,6 +103,7 @@ class FaceWidget(QWidget):
         self._hg = None                          # hourglass timer state (or None)
         self._hg_rect = None                     # last-drawn hit rect
         self._hg_click_cb = None                 # flip-to-reset callback
+        self._warned = False                     # log a paint error only once
         self._stop = False
         self._thread = None
         if self._faceview_ok:                    # ONE render thread (idles on cat)
@@ -334,37 +335,51 @@ class FaceWidget(QWidget):
             time.sleep(0.005 if self._active else 0.1)
 
     def paintEvent(self, _ev):
+        # Always painter.end() in a finally: paintEvent runs from the Qt event loop,
+        # not the _tick guard, so an escape would leave the painter active and crash
+        # the next repaint ('Cannot destroy paint device that is being painted').
         w, h = max(2, self.width()), max(2, self.height())
         painter = QPainter(self)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
-        painter.fillRect(0, 0, w, h, QColor(theme.BG))
-        try:                                                 # animated backdrop
-            self._bg.draw(painter, w, h, self._t, self._breath, self._hue)
-            if self._bg_next is not None:                    # gentle story crossfade
-                painter.setOpacity(self._bg_blend)
-                self._bg_next.draw(painter, w, h, self._t, self._breath, self._hue)
+        try:
+            painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+            painter.fillRect(0, 0, w, h, QColor(theme.BG))
+            try:                                                 # animated backdrop
+                self._bg.draw(painter, w, h, self._t, self._breath, self._hue)
+                if self._bg_next is not None:                    # gentle story crossfade
+                    painter.setOpacity(self._bg_blend)
+                    self._bg_next.draw(painter, w, h, self._t, self._breath, self._hue)
+                    painter.setOpacity(1.0)
+            except Exception as exc:
                 painter.setOpacity(1.0)
-        except Exception:
-            painter.setOpacity(1.0)
-        fr = None if self._show_cat else self._frame
-        if fr is not None:                                   # 3D avatar frame
-            rgba, fw, fh = fr
-            qimg = QImage(rgba.data, fw, fh, 4 * fw, QImage.Format.Format_RGBA8888)
-            pm = QPixmap.fromImage(qimg)
-            scale = 0.97 + 0.06 * self._breath               # breathing zoom
-            sw, sh = int(fw * scale), int(fh * scale)
-            painter.drawPixmap((w - sw) // 2, (h - sh) // 2, sw, sh, pm)
-        elif self._show_cat:                                 # 2D character + costume
+                self._warn("backdrop", exc)
             try:
-                anim = self._anim_cur or self._anim.step(0.0, self._cat_state)
-                char = characters.get(self._char_name)
-                head = char.draw(painter, w, h, anim)
-                characters.draw_costume(painter, head, self._costume, anim,
-                                        self._cat_state.get("hue", self._hue))
-            except Exception:
-                pass
-        face_bg.warm_overlay(painter, w, h, self._warm)      # Sleep wind-down warmth
-        captions.paint_caption(painter, w, h, self._caption,  # a11y narration overlay
-                               self._cap_scale)
-        self._hg_rect = hourglass.draw_corner(painter, w, h, self._hg)
-        painter.end()
+                fr = None if self._show_cat else self._frame
+                if fr is not None:                               # 3D avatar frame
+                    rgba, fw, fh = fr
+                    qimg = QImage(rgba.data, fw, fh, 4 * fw,
+                                  QImage.Format.Format_RGBA8888)
+                    pm = QPixmap.fromImage(qimg)
+                    scale = 0.97 + 0.06 * self._breath           # breathing zoom
+                    sw, sh = int(fw * scale), int(fh * scale)
+                    painter.drawPixmap((w - sw) // 2, (h - sh) // 2, sw, sh, pm)
+                elif self._show_cat:                             # 2D character + costume
+                    anim = self._anim_cur or self._anim.step(0.0, self._cat_state)
+                    char = characters.get(self._char_name)
+                    head = char.draw(painter, w, h, anim)
+                    characters.draw_costume(painter, head, self._costume, anim,
+                                            self._cat_state.get("hue", self._hue))
+                face_bg.warm_overlay(painter, w, h, self._warm)  # Sleep wind-down warmth
+                captions.paint_caption(painter, w, h, self._caption,  # a11y overlay
+                                       self._cap_scale)
+                self._hg_rect = hourglass.draw_corner(painter, w, h, self._hg)
+            except Exception as exc:                  # avatar / overlay must never escape
+                self._warn("avatar", exc)
+        finally:
+            painter.end()
+
+    def _warn(self, where, exc):
+        """Log the first paint error once (further suppressed) so a silent face/scene
+        failure is diagnosable, without spamming the console ~40x per second."""
+        if not self._warned:
+            self._warned = True
+            print(f"[vesper] face {where} draw error (further suppressed): {exc!r}")

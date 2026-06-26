@@ -29,6 +29,7 @@ class VizWidget(QWidget):
         self._hg_click_cb = None
         self._caption = []                        # a11y: wrapped narration caption lines
         self._cap_scale = 1.0                     # a11y: UI text-size factor for captions
+        self._warned = False                      # log a paint error only once
         self._ctx = {"running": False, "volume": 0.5, "airflow": 0.0,
                      "phase": "inhale", "cycle_frac": 0.0, "remaining": 0.0,
                      "label": "Ready", "t": 0.0, "prog": None}
@@ -99,17 +100,34 @@ class VizWidget(QWidget):
         self.update()
 
     def paintEvent(self, _ev):
+        # paintEvent runs from the Qt event loop, NOT inside the _tick guard, so an
+        # escape here would leave the QPainter active -> 'Cannot destroy paint device
+        # that is being painted' -> hard crash. Always p.end() in a finally, and keep
+        # every scene/overlay fault inside this method (degrade, never crash).
         p = QPainter(self)
-        p.setRenderHint(QPainter.RenderHint.Antialiasing, True)
-        w, h = max(2, self.width()), max(2, self.height())
         try:
-            self._scene.draw(p, w, h, self._ctx)
-        except Exception:
-            p.fillRect(0, 0, w, h, theme.BG)
-        if not self._calm:                            # 'reduce motion' drops the busy layer
-            self._weather.draw(p, w, h, self._ctx.get("t", 0.0),
-                               self._ctx.get("volume", 0.5))   # optional weather layer
-        face_bg.warm_overlay(p, w, h, self._warm)     # Sleep wind-down warmth
-        captions.paint_caption(p, w, h, self._caption, self._cap_scale)  # a11y overlay
-        self._hg_rect = hourglass.draw_corner(p, w, h, self._hg)
-        p.end()
+            p.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+            w, h = max(2, self.width()), max(2, self.height())
+            try:
+                self._scene.draw(p, w, h, self._ctx)
+            except Exception as exc:
+                p.fillRect(0, 0, w, h, theme.BG)
+                self._warn("scene", exc)
+            try:
+                if not self._calm:                    # 'reduce motion' drops the busy layer
+                    self._weather.draw(p, w, h, self._ctx.get("t", 0.0),
+                                       self._ctx.get("volume", 0.5))   # weather layer
+                face_bg.warm_overlay(p, w, h, self._warm)     # Sleep wind-down warmth
+                captions.paint_caption(p, w, h, self._caption, self._cap_scale)  # a11y
+                self._hg_rect = hourglass.draw_corner(p, w, h, self._hg)
+            except Exception as exc:                  # an overlay must never escape paint
+                self._warn("overlay", exc)
+        finally:
+            p.end()
+
+    def _warn(self, where, exc):
+        """Log the first paint error once (further ones suppressed) so a silently
+        failing scene/overlay is at least diagnosable, without spamming ~40x/sec."""
+        if not self._warned:
+            self._warned = True
+            print(f"[vesper] viz {where} draw error (further suppressed): {exc!r}")

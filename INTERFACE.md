@@ -252,7 +252,11 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 - **scene_pitch.py** — `PitchScene`: the pitch-trainer scene (note grid + target
   line + live-pitch trail + plain-words guidance), fed a `pitch` dict.
 - **viz.py** — `VizWidget(QWidget)`: hosts a persistent scene, `set_scene(name)`,
-  `update_state(ctx)` each frame; paints via `scene.draw(p, w, h, ctx)`. Also draws
+  `update_state(ctx)` each frame; paints via `scene.draw(p, w, h, ctx)`. Both
+  `paintEvent`s (here + `face.py`) wrap their body in `try/finally: p.end()` and guard
+  the scene + overlays, so a per-frame fault degrades gracefully and is logged once
+  (`_warn`) instead of escaping the event loop (which would leave the painter active and
+  hard-crash the next repaint -- this path is **not** under the `_tick` guard). Also draws
   the corner **hourglass timer** (`set_hourglass(state)`) and forwards taps on it to
   `_hg_click_cb` (flip-to-reset). `FaceWidget` does the same. **`set_calm(on)`** is the
   accessibility **"reduce motion"** chokepoint: it feeds the scenes a virtual decorative

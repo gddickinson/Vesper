@@ -155,6 +155,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Fix: a paint fault could hard-crash an overnight session** -- a reproduced structural risk
+      found by a per-frame rendering bug-hunt. `VizWidget.paintEvent` / `FaceWidget.paintEvent` ran the
+      scene draw inside a `try/except`, but the **overlays after it** (weather, warm Sleep dimming,
+      a11y captions, hourglass) and the 3D-frame `drawPixmap` sat **unguarded before `p.end()`** -- and
+      `paintEvent` runs from the **Qt event loop, not the `_tick` guard**. If any overlay/frame ever
+      raised, the exception escaped `paintEvent` with the `QPainter` still active, so the next repaint
+      hit "QPaintDevice: Cannot destroy paint device that is being painted" -> **segfault** (reproduced:
+      exit 139). Worst case during a long unattended sleep session. Fix: wrap both paint bodies in
+      `try/finally` that always `p.end()`s, guard the scene + overlays so a fault is contained, and log
+      it **once** (`_warn`, matching the `_tick` pattern) so a silently-failing scene -- previously a
+      blank-but-alive background with zero diagnostics -- is now diagnosable without ~40x/sec log spam.
+      New `tools/test_paint_safety.py` forces an overlay/scene to raise during an offscreen paint and
+      asserts the fault is contained (`_warned` flips, painting recovers) for both widgets. Verified:
+      selftest (281/59); all 53 offline tests; drive_check renders all 12 scenes with 0 issues.
 - [x] **Fix: an outgoing narrator silenced the incoming one** -- a real, reproduced **sleep-critical**
       bug in the bedtime storyteller, found by a runtime bug-hunt over the unattended-sleep paths. Each
       narrator thread shells out to a player process (macOS `say` / `afplay`), but the process handle

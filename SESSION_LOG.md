@@ -3917,6 +3917,19 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Fix: a paint fault could hard-crash an overnight session
+A robustness round (per-frame rendering bug-hunt; reproduced before fixing). `VizWidget.paintEvent`
+and `FaceWidget.paintEvent` drew the scene inside a `try/except`, but the overlays after it (weather,
+warm Sleep dimming, captions, hourglass) and the 3D-frame `drawPixmap` were unguarded before
+`p.end()` -- and `paintEvent` runs from the Qt event loop, **not** the `_tick` guard. A fault there
+escaped with the `QPainter` still active, so the next repaint hit "Cannot destroy paint device that is
+being painted" -> segfault (reproduced exit 139). Fix: both paint bodies now wrap in `try/finally`
+that always `p.end()`s, guard the scene + overlays, and log the first fault once (`_warn`) so a
+silently-failing scene is diagnosable without ~40x/sec spam. New `tools/test_paint_safety.py` forces
+an overlay/scene to raise during an offscreen paint and pins that the fault is contained (`_warned`
+flips, painting recovers) for both widgets. Verified: selftest (281/59); all 53 offline tests;
+drive_check renders all 12 scenes with 0 issues.
+
 ## Fix: an outgoing narrator silenced the incoming one
 A robustness round (runtime bug-hunt over the unattended-sleep paths; reproduced before fixing). The
 bedtime storyteller speaks one line per background thread, each shelling out to a player process
