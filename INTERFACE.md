@@ -171,8 +171,10 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
     `head_box` framing, and the `Character` base + `Head` anchor (so a costume fits
     any character).
   - **char_<name>.py** — one file per character (all subclass `Character`, return a
-    `Head`): **Cat** (default) · Penguin · Dog · Owl · Fox · Chicken · Bunny · Bear ·
-    Panda · Frog · Duckling · Hedgehog · Mouse · Sheep · **Sloth** (`char_sloth.py` -- a
+    `Head`): **Cat** (default) · Penguin · Dog (floppy ears + tail-wag + lolling tongue) ·
+    Owl · Fox · Chicken · Bunny (a quick **nose-twitch** that rides the ear signal) · Bear ·
+    Panda · Frog (a **throat-sac** that puffs out on the in-breath) · Duckling · Hedgehog ·
+    Mouse · Sheep · **Sloth** (`char_sloth.py` -- a
     slow, sleepy, perpetually-smiling sloth with the signature dark eye patches: the
     perfect sleep-app mascot, slow-voiced + charming when nodding off) · **Koala**
     (`char_koala.py` -- a soft grey koala with big fuzzy round ears and the signature

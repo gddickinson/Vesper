@@ -39,6 +39,12 @@ class Frog(B.Character):
         p.drawEllipse(QPointF(cx, cy + R * 0.25), bw, bh)
         p.setBrush(B.qc(_BELLY, 0.9))
         p.drawEllipse(QPointF(cx, cy + R * 0.55), bw * 0.6, bh * 0.6)
+        # the frog's signature: a throat sac that puffs out on the in-breath
+        puff = R * (0.3 + 0.24 * a.breath)
+        p.setBrush(B.qc(theme.blend(_SKIN, _BELLY, 0.45), 0.85))
+        p.drawEllipse(QPointF(cx, cy + R * 0.62), puff * 1.2, puff)
+        p.setBrush(B.qc("#ffffff", 0.1 + 0.14 * a.breath))      # sheen fills as it swells
+        p.drawEllipse(QPointF(cx - R * 0.08, cy + R * 0.55), puff * 0.55, puff * 0.5)
         # eye bulges on top of the head + the cute eyes inside them
         ey = cy - R * 0.55
         eye_lift = a.bristle * R * 0.1

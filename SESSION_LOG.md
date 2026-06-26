@@ -4016,6 +4016,21 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Characters: signature drawn quirks (frog throat-puff, bunny nose-twitch)
+A follow-up to the #294 motion-trait work (the natural next step I'd flagged), adding the two iconic
+per-character *drawn* gestures that were still missing -- the rest of the cast already had theirs (dog
+floppy-ears + tail-wag + tongue + bristle, cat whiskers + swishy tail, mouse whiskers + curling tail,
+bunny ear-twitch). Added a **frog throat-sac** that puffs out on the in-breath: a soft pale-green sac
+(blend of skin + belly) with a sheen, both scaled by `anim.breath`, drawn behind the grin so it visibly
+inflates and deflates with the breathing. Added a **bunny nose-twitch**: the little nose + philtrum ride a
+`sin(t * 19) * anim.ear * 0.06R` offset, so the nose flicks quickly side-to-side on the same twitch signal
+that perks the ears (nose + ears move together, as a real rabbit's do). Both are small additive draws in
+their own char files using existing animation signals -- no new plumbing, no other characters touched.
+PNG-eyeballed at low/high breath (frog) and still/twitched (bunny): the frog throat clearly inflates; the
+bunny nose sits off-centre and wiggles in motion; both stay cute and intact. Verified: all 65 offline tests
+(the cast smoke renders frog + bunny across 5 states with no crash); selftest (313/67); drive_check 0 issues;
+char_frog 75 lines, char_bunny 79.
+
 ## Characters: 2 new animals + per-character motion traits (user-requested)
 The user asked for "more animals and more features tailored for each character type." Delivered both.
 (1) Two new sleepy companions: a soft grey **Koala** (char_koala.py -- big fuzzy round ears, pink inner

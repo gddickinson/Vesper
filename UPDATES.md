@@ -155,6 +155,16 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Signature drawn quirks per character** -- a follow-up to the motion-trait work, adding the two
+      iconic per-character gestures that were missing (the others -- dog floppy-ears/tail-wag/tongue, cat
+      whiskers/tail, mouse whiskers, bunny ear-twitch -- already had theirs). A **frog throat-sac that
+      puffs out on the in-breath** (driven by `anim.breath` -- a soft pale-green sac with a sheen that
+      visibly inflates), and a **bunny nose-twitch** (a quick side-to-side wiggle of the nose riding the
+      same `anim.ear` twitch signal as the ears, so nose + ears flick together). Both are small additive
+      draws in their own char files, driven by existing animation signals -- no new plumbing. PNG-eyeballed
+      across states (frog clearly inflates/deflates with the breath; bunny nose sits off-centre and wiggles
+      in motion); the cast smoke covers no-crash. Verified: all 65 offline tests; selftest; drive_check 0
+      issues; both files < 80 lines.
 - [x] **More animals + per-character motion traits** (user-requested) -- (1) two new sleepy companions,
       a soft grey **Koala** (big fuzzy ears + spoon nose; sleeps ~20 h/day) and a russet **Red Panda**
       (white face-mask, tear-marks, bushy ringed tail), each a `char_<name>.py` + registry + voice profile

@@ -59,11 +59,14 @@ class Bunny(B.Character):
 
     def _nose_mouth(self, p, cx, cy, R, a):
         ny = cy + R * 0.26
+        # the bunny's signature: a quick side-to-side nose-twitch (rides the same
+        # twitch signal as the ears, so nose + ears flick together)
+        nx = cx + math.sin(a.t * 19.0) * a.ear * R * 0.06
         p.setBrush(B.qc(_NOSE))                               # little nose
-        p.drawPolygon(B.poly((cx - R * 0.08, ny), (cx + R * 0.08, ny),
-                             (cx, ny + R * 0.08)))
+        p.drawPolygon(B.poly((nx - R * 0.08, ny), (nx + R * 0.08, ny),
+                             (nx, ny + R * 0.08)))
         B.pen(p, B.qc(_FUR_DK), R * 0.03)                     # philtrum
-        p.drawPolyline(B.poly((cx, ny + R * 0.08), (cx, ny + R * 0.2)))
+        p.drawPolyline(B.poly((nx, ny + R * 0.08), (cx, ny + R * 0.2)))
         p.setPen(B.NOPEN)
         if a.mouth > 0.06:
             p.setBrush(B.qc("#3a2230"))
