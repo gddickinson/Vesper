@@ -4002,6 +4002,20 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Stories: "Bread & Baking" lecture branch (4)
+A Stories round (every ~3rd). New warm, domestic branch -- The First Bread, Sourdough, Breads of the
+World, The Hearth -- a deeply sleep-appropriate subject (the comfort of warm bread, the smell of baking).
+Written by 4 parallel subagents to the house format (7 sections x 12 second-person present-tense ASCII
+sentences; fact-free settle-in section 1, no numerals; sleep-drift section 7). Gentle science + history:
+wild grains ground between stones + the accidental discovery of wild-yeast leavening in ancient Egypt;
+the living sourdough starter (wild yeasts + friendly lactobacilli) + its patient overnight rise; a fond
+tour of world breads (naan / pita / tortilla / injera / baguette / rye / steamed buns); the communal oven
++ the browning crust + bread as the smell of home, the finale drifting to sleep by a warm hearth.
+Ambiences: Singing Bowl / Rain on a Roof / Cafe Murmur / Campfire. Registered in lectures._CATALOG; story
+DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit + ASCII + every line ends
+.?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
+all 65 offline tests; drive_check 0 issues.
+
 ## Characters: 2 new animals + per-character motion traits (user-requested)
 The user asked for "more animals and more features tailored for each character type." Delivered both.
 (1) Two new sleepy companions: a soft grey **Koala** (char_koala.py -- big fuzzy round ears, pink inner

@@ -504,8 +504,10 @@ audio callback contains any fault as silence + logs it once), `speech`,
 `narration` (Kokoro/say + lip-sync `amp`; a
 generation token + per-thread-local player process mean a voice/scene change
 never lets an outgoing narrator cut off the incoming one),
-`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 309 across
-66 branches incl. Threads of the World (Silk · Wool · Linen · Cotton) +
+`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 313 across
+67 branches incl. Bread & Baking (The First Bread · Sourdough · Breads of the
+World · The Hearth) +
+Threads of the World (Silk · Wool · Linen · Cotton) +
 The Mapmaker's World (First Maps · Charts of the Sea · The Shape of the
 World · The View from Above) +
 Pilgrim Paths (Camino de Santiago · Shikoku · Kumano Kodo · Via Francigena) +

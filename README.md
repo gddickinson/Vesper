@@ -15,7 +15,7 @@ Read** — each with its own purpose-built control panel, visual scene and sound
 centre is a talking-head **avatar** (a 3D head, or one of **19 hand-drawn cartoon
 characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **301
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
-<!-- counts: 309 lectures / 66 branches · 150 voices · 66 phrases · 7 modes · 21 characters -->
+<!-- counts: 313 lectures / 67 branches · 150 voices · 66 phrases · 7 modes · 21 characters -->
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
@@ -47,7 +47,7 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   crickets, a distant night surf, a warm summer porch…) plus synthesised **bells & gongs, drums, winds & organs, environmental FX**
   and a **cosmic generative-music** engine sonifying real planetary + pulsar data. Nothing
   to download.
-- **The bedtime storyteller** — **309 authored sleep-lectures across 66 branches** (the
+- **The bedtime storyteller** — **313 authored sleep-lectures across 67 branches** (the
   Cosmos, the Inner Planets &amp; the Dwarf Planets, Earth &amp; Sea, the Living World, the
   Human Body, Histories, Materials &amp; Making, Ideas &amp; Wonders, Myth &amp; Legend, the
   Polar Worlds, Weathers of the World, the Microscopic World, the Great Voyages, Grasslands

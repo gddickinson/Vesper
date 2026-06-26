@@ -1947,6 +1947,15 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Bread & Baking** (4): The First Bread · Sourdough · Breads of the World · The Hearth
+      -- a warm, domestic, deeply sleep-appropriate branch. Gentle science + history: wild grains ground
+      between stones and the accidental discovery of wild-yeast leavening in ancient Egypt; the living
+      sourdough starter (wild yeasts + friendly bacteria) and its patient overnight rise; a fond tour of
+      the world's breads (naan, pita, tortilla, injera, baguette, rye, steamed buns); and the communal
+      oven / hearth, the browning crust, and bread as the smell of home -- the finale drifting to sleep by
+      a warm oven. Ambiences: Singing Bowl / Rain on a Roof / Cafe Murmur / Campfire. 313 lectures / 67
+      branches. Written by 4 parallel subagents; lint-checked (7x12, ASCII, no digits, every line ends
+      .?!), DB rebuilt, gauntlet green.
 - [x] **New branch — Threads of the World** (4): Silk · Wool · Linen · Cotton -- the great natural
       fibres we spin into cloth, a deeply sleep-appropriate subject (you fall asleep wrapped in these).
       Each is sensory + science-touched: the silkworm's single mile-long thread and the Silk Road; wool's
