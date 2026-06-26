@@ -3882,6 +3882,25 @@ branches**; story DB rebuilt (`python -m breathsim.story_db`: 273 / 57 / 368,447
 gitignored); all 49 offline tests; drive_check 0 issues; tone spot-checked (Ikebana keeps its
 impermanence serene rather than melancholy). README / INTERFACE counts 269->273 / 56->57.
 
+## Fix: story backdrop matcher fired on false substrings
+A real, prominent bug found by carrying the story_char substring-collision lesson over to the visual
+side. The backdrop-follows-the-words matcher (`story_bg.bg_for_text`) used raw substring matching, so
+a trigger lit a *longer unrelated word*: "star" fired on "start" / "stared" / "startle" (Stars
+backdrop), "sea" on "season" / "seat", "tree" on "s-tree-t" -- routing a **city street to the Forest
+backdrop** -- plus "oak" -> "cloak", "current" -> "currently", "lane" -> "plane", "shop" ->
+"workshop"/"bishop". Switched `bg_for_text` to **whole-word matching**: it splits the line into words
+(`[a-z]+`) and a single-word trigger matches a word or its simple +s/+es plural, while a trigger
+containing a space still matches as a phrase. Added the compounds that the loose match used to catch
+(starlight / starlit / moonlit / rainfall / waterfall / firelit) and changed the "rippl" stem to
+"ripple"; dropped the dead accented "cafe" duplicate. (Prefix matching alone wouldn't fix
+"star"->"start", since "start" begins with "star" -- whole-word matching is what's needed.) The
+anti-thrash from the last two rounds already softened single stray hits, but a "street"-heavy passage
+could still have drifted to Forest -- now it cannot. Verified: new `tools/test_story_bg.py` (12 real
+imagery lines map to the right backdrop; the start/season/street/cloak/currently/plane traps return
+the correct backdrop or None; every theme + scene base is a registered `face_bg`; empty -> None); a
+real-lecture sanity sweep (Diwali still cues Embers x13, City x7, etc. -- no regression); selftest;
+all 50 offline tests; drive_check 0 issues.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

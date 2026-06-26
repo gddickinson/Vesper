@@ -8,28 +8,35 @@ crossfades slowly and eases home over abstract passages, so it never startles.
 """
 from __future__ import annotations
 
-# (face_bg name, trigger words). Order matters -- first match wins, so the more
-# specific / evocative families come first.
+import re
+
+_WORD = re.compile(r"[a-z]+")
+
+# (face_bg name, trigger words/phrases). Order matters -- first match wins, so the
+# more specific / evocative families come first. Single-word triggers match WHOLE
+# words (plus a simple +s/+es plural), so e.g. "star" never fires on "start" or
+# "stared" and "tree" never fires on "street"; triggers with a space match as a
+# phrase (substring). Inflections we care about are listed explicitly.
 _THEMES = [
-    ("Embers", ("fire", "flame", "hearth", "ember", "candle", "lantern",
+    ("Embers", ("fire", "fires", "flame", "hearth", "ember", "candle", "lantern",
                 "fireplace", "coal", "forge", "furnace", "campfire", "glow of the",
-                "warm light", "firelight")),
+                "warm light", "firelight", "firelit")),
     ("Aurora", ("aurora", "northern light", "southern light")),
     ("Nebula", ("nebula", "stardust", "deep space", "the void", "cosmos", "cosmic",
                 "galaxy", "galaxies", "interstellar")),
-    ("Stars", ("star", "stars", "starry", "night sky", "moon", "moonlight",
-               "constellation", "comet", "planet", "the heavens", "midnight sky",
-               "milky way")),
-    ("Rain", ("rain", "drizzle", "downpour", "shower", "storm", "thunder",
-              "raindrop", "puddle", "snow", "snowfall", "sleet", "frost",
+    ("Stars", ("star", "starry", "starlight", "starlit", "night sky", "moon",
+               "moonlight", "moonlit", "constellation", "comet", "planet",
+               "the heavens", "midnight sky", "milky way")),
+    ("Rain", ("rain", "rainfall", "raindrop", "drizzle", "downpour", "shower",
+              "storm", "thunder", "puddle", "snow", "snowfall", "sleet", "frost",
               "blizzard", "the rain")),
     ("Underwater", ("sea", "ocean", "wave", "tide", "shore", "river", "stream",
-                    "lake", "water", "harbour", "harbor", "coral", "current",
-                    "the deep", "rippl", "lagoon", "brook")),
-    ("Forest", ("forest", "tree", "trees", "wood", "woods", "leaf", "leaves",
+                    "lake", "water", "waterfall", "harbour", "harbor", "coral",
+                    "current", "the deep", "ripple", "lagoon", "brook")),
+    ("Forest", ("forest", "tree", "wood", "woods", "leaf", "leaves",
                 "meadow", "grass", "garden", "moss", "fern", "glade", "pine",
                 "oak", "branch", "blossom", "petal", "hedgerow", "orchard")),
-    ("City", ("city", "street", "town", "market", "cafe", "café", "window",
+    ("City", ("city", "street", "town", "market", "cafe", "window",
               "rooftop", "lane", "square", "alley", "lamplit", "tavern", "shop",
               "cottage", "village", "courtyard")),
 ]
@@ -48,13 +55,19 @@ DEFAULT_BASE = "Stars"
 
 def bg_for_text(text: str):
     """The backdrop best matching the imagery in *text*, or ``None`` if the line is
-    abstract (no clear scene)."""
+    abstract (no clear scene). A single-word trigger matches a **whole word** (or its
+    simple +s/+es plural) so it never fires on a longer unrelated word ("star" not
+    "start", "tree" not "street"); a trigger containing a space matches as a phrase."""
     if not text:
         return None
-    low = text.lower()
-    for name, words in _THEMES:
-        for wd in words:
-            if wd in low:
+    low = str(text).lower()
+    words = set(_WORD.findall(low))
+    for name, triggers in _THEMES:
+        for t in triggers:
+            if " " in t:
+                if t in low:
+                    return name
+            elif t in words or (t + "s") in words or (t + "es") in words:
                 return name
     return None
 

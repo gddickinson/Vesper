@@ -138,7 +138,10 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   storyteller drives it via `win_story._apply_story_bg` (Sound ▸ "Backdrop follows the
   story", persisted); the per-line backdrop choice goes through the **same
   `sound_cues.next_bed` anti-thrash** the ambience bed uses, so the backdrop doesn't
-  flip-flop on alternating imagery. Pure + testable.
+  flip-flop on alternating imagery. `bg_for_text` matches single-word triggers as
+  **whole words** (+ simple plural), so it never mis-fires on a longer unrelated word
+  ("star" not "start", "tree" not "street"); space-containing triggers match as a
+  phrase. Pure + testable (`tools/test_story_bg.py`).
 - **2D character cast** — the QPainter face shown when faceView is missing or the
   user picks **Sound ▸ Cartoon cat face** (then **Character** / **Costume** submenus,
   persisted). A small framework, all driven by the same per-frame state as the 3D

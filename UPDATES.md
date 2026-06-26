@@ -155,6 +155,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Fix: story backdrop matcher fired on false substrings** -- a real, prominent bug. The
+      backdrop-follows-the-words matcher (`story_bg.bg_for_text`) used raw substring matching, so a
+      trigger lit a *longer unrelated word*: "star" fired on "start" / "stared" / "startle" (Stars
+      backdrop), "sea" on "season" / "seat", "tree" on "s-tree-t" -- routing a **city street to the
+      Forest backdrop** -- "oak" on "cloak", "current" on "currently", "lane" on "plane". Switched to
+      **whole-word matching** (single-word triggers match a word or its simple +s/+es plural; triggers
+      with a space still match as a phrase), and added the few compounds that otherwise needed the loose
+      match (starlight / starlit / moonlit / rainfall / waterfall / firelit; "rippl"->"ripple"). The
+      anti-thrash from the last two rounds already softened single stray hits, but a "street"-heavy
+      passage could still have drifted to Forest -- now it can't. Verified: new `tools/test_story_bg.py`
+      (12 real imagery lines map right; the start/season/street/cloak/currently/plane traps return the
+      correct backdrop or None; every backdrop is a registered `face_bg`; scene bases resolve); a
+      real-lecture sanity sweep (Diwali still cues Embers x13 etc. -- no regression); selftest; all 50
+      offline tests; drive_check 0 issues.
 - [x] **Anti-thrash the story backdrop too** -- the same fix, now for the *visual* side. Last round's
       anti-thrash only covered the ambience bed, but `_on_story_unit` set the themed **backdrop**
       (`_story_bg_target` = Rain / Forest / City / Embers / Stars) with the identical per-line
