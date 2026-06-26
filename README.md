@@ -13,7 +13,7 @@ Vesper paces your breath with a soft animated visualization and real-time synthe
 sound. It spans seven activities — **Meditate · Breathwork · Chant · Sing · Relax · Sleep ·
 Read** — each with its own purpose-built control panel, visual scene and soundscape. At its
 centre is a talking-head **avatar** (a 3D head, or one of **17 hand-drawn cartoon
-characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **253
+characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **257
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
 <!-- counts: 257 lectures / 53 branches · 150 voices · 66 phrases · 7 modes · 17 characters -->
 
@@ -33,7 +33,8 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   renders) can react to the story, breath and chant. Or switch to the **2D cast**.
 - **17 cartoon characters + costumes** — Cat, Penguin, Dog, Owl, Fox, Chicken, Bunny,
   Bear, Panda, Frog, Duckling, Hedgehog, **Mouse**, **Sheep**, **Robot**, Woman and Man,
-  each with breathing, blinks, tail-swishes and "hair-on-end" startles, **17 costumes**
+  each with breathing, blinks, tail-swishes, "hair-on-end" startles and drowsy
+  **yawns / stretches / nod-offs / head-cocks / look-arounds**, **17 costumes**
   (incl. sleep-friendly Nightcap / Sleep Mask / Earmuffs), and its own narrator
   **voice + personality**. The bedtime storyteller can even pick a fitting character per
   scene (a cosy bear for a hibernation tale, a wise owl for the night sky).
@@ -83,7 +84,8 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   gentle, opt-in bedtime notes — a **gratitude** "one good thing" and a **park-your-worries**
   tomorrow's-list, both shown to shorten sleep onset.
 - **Accessible &amp; tidy** — global **UI text-size**, a **calm-visuals (reduce-motion)**
-  toggle, a **mono-audio** downmix for single-sided hearing, **narration captions**
+  toggle (also softens + spaces out the characters' drowsy gestures), a **mono-audio**
+  downmix for single-sided hearing, **narration captions**
   (the spoken line shown on-screen for deaf / hard-of-hearing listeners), an
   **always-warm low-blue screen** for evening eye comfort, drag-and-drop file loading,
   and a **searchable chooser** for the long lists (200+ stories, 150 voices).

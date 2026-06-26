@@ -90,6 +90,7 @@ class FaceWidget(QWidget):
         self._swallow_t0 = None                  # occasional swallow
         self._next_swallow = 16.0
         self._tilt = 0.0                         # eased head-tilt (curiosity)
+        self._calm_anim = False                  # 'reduce motion' softens gestures
         self._next_blink = 2.5                   # randomized idle blink schedule
         self._blink_end = -1.0
         self._warm = 0.0                         # warm low-blue Sleep dimming (0..1)
@@ -150,6 +151,11 @@ class FaceWidget(QWidget):
 
     def set_warm(self, amount):
         self._warm = max(0.0, min(1.0, float(amount)))
+
+    def set_calm(self, on):
+        """Accessibility 'reduce motion': soften + space out the character's
+        spontaneous gestures (yawn / stretch / nod-off / head-cock / look-around)."""
+        self._calm_anim = bool(on)
 
     def set_hourglass(self, state):
         """state = dict(frac, t, running, spin) to show the timer, or None to hide."""
@@ -231,7 +237,8 @@ class FaceWidget(QWidget):
         pitch = (0.5 - vol) * 0.18 + 0.02 * math.sin(0.09 * t) + sigh * 0.1 + swal * 0.05
         self._cat_state = dict(vol=vol, t=t, mouth=mo, eye_open=eye_open,
                                smile=smile_eff, hue=(self._char_hue or self._hue),
-                               gaze=(gaze_x, gaze_y), tilt=self._tilt)
+                               gaze=(gaze_x, gaze_y), tilt=self._tilt,
+                               calm=1.0 if self._calm_anim else 0.0)
         dt = (t - self._anim_last_t) if self._anim_last_t is not None else 0.0
         self._anim_last_t = t
         self._anim_cur = self._anim.step(dt, self._cat_state)   # advance characters

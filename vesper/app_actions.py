@@ -362,6 +362,7 @@ class _ActionsMixin:
         + guide dot stay responsive."""
         self._calm_visuals = bool(on)
         self.viz.set_calm(self._calm_visuals)
+        self.face.set_calm(self._calm_visuals)        # also softens character gestures
         from breathsim import store
         store.save_settings({"calm_visuals": self._calm_visuals})
 

@@ -3618,6 +3618,30 @@ scene with a caption, eyeballed (a readable, restful caption panel). All 42 offl
 drive_check 0 issues; `viz.py` 142 and `captions.py` 44, both < 500. (Scope note: captions render on the
 **scene** view; the talking-head face view is a separate paint path and could gain captions later.)
 
+## Character actions: drowsy gestures (yawn / stretch / nod-off / head-cock / look-around)
+The user asked to "add more character actions". The shared `char_anim.AnimState` already produced a
+breathing bob, idle sway, blinks, a swishing tail, ear twitches and a startle-bristle; its docstring
+notes "new motions only have to be added once", so the cleanest, highest-value move was to add the
+new actions **there** and fold them into the existing `Anim` output fields -- giving **all 17
+characters** the gestures with **no per-character drawing code**. Added five rarer, sleep-fitting
+one-shots, each scheduled by a new `_oneshot(t0_attr, next_attr, dur, lo, hi, slow, on_start)` helper:
+a slow contagious **yawn** (mouth opens wide and holds while the eyes squeeze toward shut -- via
+`max` over the incoming lip-sync mouth + the blink), a luxurious **stretch** (positive squash bump +
+small upward bob lift -- the body lengthens), a sleepy **nod-off** (`_nod_off`: head sinks slowly then
+catches itself, a "dozing" beat -- bob + a little tilt), a curious **head-cock** (eased tilt to a
+random side and back) and an idle **look-around** (a brief gaze peek to a fresh point, added to and
+clamped over the supplied gaze). Reduce-motion now also calms the cast: `face.set_calm` (wired from
+`app_actions.set_calm_visuals`, applied on launch via `win_settings`) passes a `calm` flag into
+`_cat_state`; `step` reads it to scale gesture amplitudes down (`1 - 0.7*calm`) and stretch the
+reschedule intervals (`1 + 1.8*calm`). Pure (math + random, seeded) so it stays unit-testable.
+Verified: new `tools/test_char_anim.py` (every field finite + in-bounds over a 240s run; yawn opens
+the mouth while the eyes shut; stretch/head-cock/look-around all fire; head cocks both ways;
+reduce-motion yawns 4 < 8 at full motion; gestures combine with, never erase, the supplied
+mouth/gaze); `selftest.py` (150 voices / 257 lectures / 53 branches); all 43 offline tests pass;
+`drive_check` 0 issues; an offscreen GUI smoke (Sleep + face view + Cat + calm toggle on/off, ran 80
+`_tick`s, threads stable 1->2); and Cat **yawn** + **head-cock** pose PNGs rendered + eyeballed (clear
+shut-eye wide-mouth yawn; head tilted with the big cute eyes). `char_anim.py` 217 < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

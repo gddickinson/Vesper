@@ -132,10 +132,15 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   persisted). A small framework, all driven by the same per-frame state as the 3D
   head:
   - **char_anim.py** — `AnimState.step(dt, state) -> Anim`: the shared animation
-    engine turning breath/mouth/eye/smile/gaze (+ optional `excite`) into rich,
-    character-agnostic signals — breathing bob + squash, idle sway, blinks (incl.
-    spontaneous), a continuously **swishing tail**, **ear twitches**, and a **"hair
-    on end" bristle** that spikes on excitement / a rare startle and eases off.
+    engine turning breath/mouth/eye/smile/gaze (+ optional `excite`/`calm`) into
+    rich, character-agnostic signals — breathing bob + squash, idle sway, blinks
+    (incl. spontaneous), a continuously **swishing tail**, **ear twitches**, and a
+    **"hair on end" bristle** that spikes on excitement / a rare startle. On top it
+    weaves rarer **drowsy gestures** — a slow contagious **yawn**, a luxurious
+    **stretch**, a sleepy **nod-off**, a curious **head-cock** and an idle
+    **look-around** — folded back into the same mouth / blink / bob / squash / tilt
+    / gaze fields (via the `_oneshot` scheduler) so *every* character performs them
+    with no per-character drawing code; reduce-motion (`calm`) softens + spaces them.
   - **char_base.py** — shared kit: colour helpers, breath `aura`, big **cute glossy
     eyes** (blink / gaze / pupil dilation / happy squint / catchlight), `blush`,
     `head_box` framing, and the `Character` base + `Head` anchor (so a costume fits

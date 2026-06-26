@@ -155,6 +155,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Character actions: drowsy gestures for every character** (user-requested -- "add more
+      character actions") -- the shared `char_anim.AnimState` now weaves five rarer, sleep-fitting
+      gestures into the existing Anim signals, so all **17 characters** gain them with **zero
+      per-character drawing code**: a slow contagious **yawn** (mouth wide while the eyes squeeze
+      shut), a luxurious **stretch** (body lengthen + lift), a sleepy **nod-off** (head sinks then
+      catches), a curious **head-cock** (to either side), and an idle **look-around** (gaze peek). A
+      small `_oneshot` scheduler folds each into mouth / blink / bob / squash / tilt / gaze (clamped,
+      combining with -- never erasing -- the supplied lip-sync mouth + gaze). Reduce-motion now also
+      calms the cast: `face.set_calm` (wired from `app_actions.set_calm_visuals`, restored on launch)
+      passes `calm` into the engine, which softens amplitudes + spaces the gestures out. Verified:
+      new pure `tools/test_char_anim.py` (in-bounds over 240s; every gesture fires + reads right;
+      reduce-motion yawns 4 < 8; gestures combine with inputs); selftest (150 voices / 257 lectures);
+      drive_check 0 issues; offscreen GUI smoke (face view + character + calm toggle, threads 1->2
+      stable); Cat yawn + head-cock PNGs eyeballed. char_anim 217 < 500.
 - [x] **Accessibility: Narration captions (on-screen spoken text)** -- a View-menu a11y toggle
       (beside Calm visuals / Mono audio) that shows the **current spoken line as on-screen text** over
       the scene during narration, so deaf / hard-of-hearing listeners can follow the storyteller,
