@@ -156,6 +156,8 @@ from . import (lectures_firstsnow, lectures_frost,
                lectures_icicle, lectures_frozenlake)
 from . import (lectures_huntersmoon, lectures_bloodmoon,
                lectures_moonrabbit, lectures_moonfootprints)  # Under the Moon
+from . import (lectures_onsen, lectures_pamukkale,
+               lectures_bluelagoon, lectures_romanbaths)  # The Warm Springs
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -328,6 +330,8 @@ _CATALOG = [
                        lectures_icicle, lectures_frozenlake]),
     ("Under the Moon", [lectures_huntersmoon, lectures_bloodmoon,
                         lectures_moonrabbit, lectures_moonfootprints]),
+    ("The Warm Springs", [lectures_onsen, lectures_pamukkale,
+                          lectures_bluelagoon, lectures_romanbaths]),
 ]
 
 LECTURES = {}

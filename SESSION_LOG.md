@@ -4031,6 +4031,21 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Stories: "The Warm Springs" lecture branch (4)
+The every-third-round Stories item. A fresh, tonally-ideal-for-sleep theme not yet in the 70 branches:
+sinking into warm geothermal / bath waters (peak relaxation imagery), four geographically + culturally
+distinct lectures so it never feels samey -- **The Onsen** (a snowy Japanese mountain hot spring; the
+washing ritual, the outdoor rotenburo, the Jigokudani snow monkeys), **Pamukkale** (Turkey's white
+travertine terraces -- warm mineral water building a frozen stone waterfall over ages, the stepped turquoise
+pools, Hierapolis above), **The Blue Lagoon** (Iceland's milky silica-blue geothermal pool warmed by the
+thin volcanic crust, steam against the cold air, the aurora overhead) and **The Roman Baths** (the age-old
+warm spring, the caldarium ritual, Sulis Minerva and the coins dropped in the steam, the water still rising
+today). Written by 4 parallel subagents to the house format (7x12 second-person present ASCII, fact-free
+no-digit settle-in section 1, sleep-drift section 7); I re-validated 7x12 + endings + no-digits + ASCII
+myself. Ambiences: Mountain Stream / Gentle Rain / Soft Rainstorm / Singing Bowl. Registered in
+lectures._CATALOG; story DB rebuilt (329 lectures / 71 branches, ~451k words). Verified: selftest (329/71);
+all 70 offline tests; drive_check 0 issues; each file ~107-124 lines.
+
 ## Deep GUI test-drive: Read-mode fix + a rigorous every-mode/every-dialog harness (user-requested)
 The user reported "when I start a session in Read I just get breathing" and asked for a rigorous test run of
 EVERY aspect of the GUI. Found + fixed the bug, then built the regression that catches it.

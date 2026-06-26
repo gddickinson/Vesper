@@ -155,6 +155,14 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Stories: "The Warm Springs" lecture branch (4).** The every-third-round Stories item -- a fresh,
+      deeply soothing sleep theme (sinking into warm water): **The Onsen** (a snowy Japanese hot spring +
+      the snow monkeys), **Pamukkale** (Turkey's white travertine terraces), **The Blue Lagoon** (Iceland's
+      milky geothermal pool under the aurora) and **The Roman Baths** (the age-old spring, the caldarium
+      ritual, Sulis Minerva). House 7x12 format (fact-free no-digit settle-in, sleep-drift close), written by
+      4 parallel subagents + re-validated by hand. Ambiences Mountain Stream / Gentle Rain / Soft Rainstorm /
+      Singing Bowl. Story DB rebuilt (329 lectures / 71 branches). Verified: selftest 329/71; all 70 offline
+      tests; drive_check 0 issues.
 - [x] **Deep GUI test-drive: Read-mode fix + every-mode/every-dialog harness** (user-requested). The user
       hit "start a Read session and just get breathing". Root cause: the **main transport** (the big Play /
       Space) started the breath + storyteller but NOT the novel -- reading only began from the read-along
