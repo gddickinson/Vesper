@@ -83,6 +83,10 @@ class FaceWidget(QWidget):
         self._active = True                      # throttle render thread when hidden
         self._gaze_ph = (random.random() * 6.283, random.random() * 6.283)
         self._head_ph = random.random() * 6.283
+        self._roll_ph = random.random() * 6.283  # slow side-to-side head-tilt phase
+        self._pitch_ph = random.random() * 6.283  # slow chin up/down drift phase
+        self._chin_t0 = None                     # occasional slow chin-lift one-shot
+        self._next_chin = 13.0
         self._sacc = (0.0, 0.0)                  # micro-saccade gaze offset
         self._next_sacc = 1.5
         self._sigh_t0 = None                     # rare settling-sigh
@@ -271,9 +275,18 @@ class FaceWidget(QWidget):
             p.nose_wrinkle = max(0.0, min(0.16, nose))       # noseSneer lifts the lip
             p.smile = smile_eff
             p.brow_raise = brow_eff
-            p.pitch = pitch                                  # breath nod + sigh/swallow
-            p.yaw = (0.04 * math.sin(0.07 * t + self._head_ph) * calm
-                     + self._tilt * 0.1)                     # idle sway + head-cock
+            # Idle head life on the neck: slow side-to-side roll, a gentle chin
+            # lift now and then, and lazy yaw/pitch drift -- layered on the breath
+            # nod and eased toward stillness late (calm) and under reduce-motion.
+            hm = calm * (0.4 if self._calm_anim else 1.0)
+            chin = self._gesture("_chin_t0", "_next_chin", t, 2.8, 16.0, 40.0)
+            idle_yaw = 0.045 * math.sin(0.07 * t + self._head_ph)
+            idle_pitch = 0.03 * math.sin(0.055 * t + self._pitch_ph)
+            idle_roll = (0.035 * math.sin(0.045 * t + self._roll_ph)
+                         + 0.018 * math.sin(0.11 * t + self._head_ph))
+            p.pitch = pitch + (idle_pitch - chin * 0.16) * hm   # nod + chin-lift
+            p.yaw = (idle_yaw + self._tilt * 0.05) * hm + self._tilt * 0.02
+            p.roll = (idle_roll + self._tilt * 0.13) * hm       # head-cock -> roll
             p.eye_open = eye_open
             p._style = self._style                       # cyberpunk render style
             p._pulse = self._pulse                       # breath glow (reactive)

@@ -322,10 +322,13 @@ def render(params, size):
         # head nod / turn (base yaw pi so the FACE faces the camera, not the back)
         py = float(getattr(params, "pitch", 0.0)) * 0.4
         yw = np.pi + float(getattr(params, "yaw", 0.0)) * 0.6
+        rl = float(getattr(params, "roll", 0.0)) * 0.6           # side-to-side tilt
         cy, sy, cp, sp = np.cos(yw), np.sin(yw), np.cos(py), np.sin(py)
+        cr_, sr_ = np.cos(rl), np.sin(rl)
         Ry = np.array([[cy, 0, sy], [0, 1, 0], [-sy, 0, cy]], "f4")
         Rx = np.array([[1, 0, 0], [0, cp, -sp], [0, sp, cp]], "f4")
-        vr = vc @ (Ry @ Rx).T
+        Rz = np.array([[cr_, -sr_, 0], [sr_, cr_, 0], [0, 0, 1]], "f4")
+        vr = vc @ (Rz @ Ry @ Rx).T                               # roll = image-plane tilt
         # per-triangle flat normals (in rotated space, projection-independent)
         t = _S["model"].triangles
         e1 = vr[t[:, 1]] - vr[t[:, 0]]

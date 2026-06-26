@@ -48,10 +48,16 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   (`face_bg`) then composites the (transparent-background) head over it with the
   **breathing zoom**. `set_state(vol, t, prog, mouth, nose, pucker, stretch, phase,
   smile, brow, eye_bias)` applies the *already-resolved* mouth + head-nod/zoom, plus
-  **naturalistic life**: a gently wandering **gaze**, a tiny idle **head sway**,
-  **randomized blinks** (varied gap, occasional double, heavier as the session winds
-  down), and the eased **emotion** (smile/brow/eye-openness) — so the face is alive
-  while reading, breathing, or idle. `_t` drives the eye starfield + bg tint hue.
+  **naturalistic life**: a gently wandering **gaze**, **idle head motion** on the neck
+  — a slow side-to-side **roll** (head-tilt), an occasional **chin-lift**, and lazy
+  yaw/pitch drift, layered on the breath nod and eased toward stillness late
+  (`prog`) + under reduce-motion (`_calm_anim`) — **randomized blinks** (varied gap,
+  occasional double, heavier as the session winds down), and the eased **emotion**
+  (smile/brow/eye-openness) — so the face is alive while reading, breathing, or idle.
+  `_t` drives the eye starfield + bg tint hue. (The head is rendered **head + neck
+  only**, no shoulders, so a chin-lift moves only the head; the GPU rotation in
+  `face_gpu` now applies `roll` as an image-plane tilt so the side-to-side motion
+  shows on the GPU head as well as the software ICT one.)
   `set_background(name)` picks the backdrop; `set_active(on)`
   throttles the render thread when the scene view is showing. NumPy→`QImage`
   RGBA8888; speaking-vs-breathing precedence is decided in `window._face_inputs`.

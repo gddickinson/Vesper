@@ -155,6 +155,24 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [ ] **Talking-skull face (user-requested)** -- wire faceView's `anatomy_skull` render mode as an
+      **opt-in face you pick** (face/appearance menu), with the **jaw lip-syncing the narration**
+      (drive `jaw_open` from the narration amp like the normal mouth; push the mandible drop further
+      so it clearly opens). For spooky / supernatural storytelling. (User picked: opt-in face + jaw
+      lip-sync; NOT a separate spooky story category.) NEXT ROUND.
+- [x] **Natural 3D head motion on the neck (user-requested)** -- the talking-head only nodded with the
+      breath (pitch) and swayed a little (yaw); it never tilted side-to-side. Added gentle **idle head
+      life**: a slow side-to-side **roll** (head-tilt), an occasional **chin-lift**, and lazy yaw/pitch
+      **drift**, layered on the breath nod and eased toward stillness late in a wind-down (`prog`) and
+      under the **reduce-motion** flag. Crucially, the **GPU rotation never honoured `roll`** (only
+      built yaw+pitch matrices), so `face_gpu` now composes an image-plane `Rz` so the tilt shows on
+      the GPU head too (the software ICT head already read roll). The head is rendered **head + neck
+      only** (no shoulders), so a chin-lift naturally moves only the head -- exactly the ask. Verified:
+      new `tools/test_head_motion.py` (roll varies over time + stays gentle; pitch/yaw drift;
+      reduce-motion AND wind-down both damp it); a forced-roll GPU render eyeballed (head clearly tilts
+      ear-to-shoulder as a head+neck unit); offscreen GUI smoke (Sleep + face view, 120 ticks, threads
+      stable 1->2); selftest; all 44 offline tests; drive_check 0 issues. `face.py` 370, `face_gpu.py`
+      432 -- both < 500.
 - [x] **Captions honour the UI text-size setting (a11y)** -- the narration captions used a fixed
       font (sized only to the view height), so a low-vision user who picked **Large / Extra-large**
       text got large UI chrome but small captions. New pure `captions.caption_base_px(h, scale)`

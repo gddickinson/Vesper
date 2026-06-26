@@ -3688,6 +3688,26 @@ Extra-large caption PNG eyeballed (clearly larger, still fitted within the pane)
 pre-existing item: the scene's own phase-label/subtitle (`scenes._Overlay`) can clip at Extra-large
 because it rides the scaled app font without a fit-to-width -- a future polish round, not the caption.
 
+## Natural 3D head motion on the neck (user-requested)
+The user asked whether the 3D head could move more naturally -- side-to-side tilts, back-to-front,
+lifting the chin without the shoulders moving, a few more natural motions -- and whether faceView has
+a skull model with a moving jaw for supernatural stories. Investigated faceView: the head exposes
+**yaw + pitch + roll** (the ICT mesh reads all three; `chin_raise` blendshape exists), is rendered
+**head + neck only (no shoulders)**, and there's an **`anatomy_skull`** render mode (procedural; jaw
+articulates subtly). The head only nodded with breath (pitch) and swayed a touch (yaw) -- roll was
+never set, so no side-to-side tilt. This round added gentle **idle head life** in `face.set_state`: a
+slow **roll** (head-tilt), an occasional **chin-lift** (a `_gesture` one-shot easing the head back),
+and lazy yaw/pitch **drift**, all layered on the breath nod and scaled by `hm = calm * (reduce-motion
+factor)` so they ease toward stillness late and soften under the a11y reduce-motion flag. The big
+catch: the **GPU renderer only built yaw+pitch rotation matrices and ignored `roll`** -- so `face_gpu`
+now composes an image-plane `Rz` and the side-to-side tilt shows on the GPU head as well as the
+software ICT one. Verified: new `tools/test_head_motion.py` (roll varies over time + gentle; pitch/yaw
+drift; reduce-motion AND wind-down both damp the idle roll); a forced-roll GPU render eyeballed (head
+clearly tilts ear-to-shoulder as a head+neck unit, no shoulders to move); offscreen GUI smoke (120
+ticks, threads stable); selftest; all 44 offline tests; drive_check 0 issues. **Next round** (user
+picked): wire `anatomy_skull` as an **opt-in face** with the **jaw lip-syncing the narration** for
+spooky tales (not a separate story category).
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

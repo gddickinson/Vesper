@@ -27,7 +27,8 @@ device, no neural voices, no 3D head — there's always a calm fallback.
 ## Highlights
 
 - **A living avatar** — the faceView ICT head rendered on the GPU (moderngl), with a soft
-  software fallback. It nods with the breath, blinks, wanders its gaze, lip-syncs the
+  software fallback. It nods with the breath, tilts and lifts its head on the neck,
+  blinks, wanders its gaze, lip-syncs the
   narrator and shifts expression with the mood of the words. A **cyberpunk face-style**
   system (starry eyes, Tron/circuit grids that follow the head, translucent / dot-matrix
   renders) can react to the story, breath and chant. Or switch to the **2D cast**.
