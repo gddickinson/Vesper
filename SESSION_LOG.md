@@ -3760,6 +3760,26 @@ scene stars/motes don't confound it -- the uncapped long line clips at the edges
 not and still draws); a before/after orb PNG eyeballed (the full subtitle now fits within the pane);
 selftest; all 46 offline tests; drive_check 0 issues. `scenes.py` 487 < 500.
 
+## Storyteller character-follow uses the full 18-character cast
+The opt-in "Character follows the story" feature (`story_char.char_for_scene`) lets the talking-head
+swap to a fitting cartoon character per scene -- but its theme map only reached **8** of the 18
+characters, so the cast that has grown over many rounds (Mouse, Sheep, Robot, +Skull) mostly never
+got picked. Enriched `_THEMES` to reach **15** characters: new themes for **Sheep** (shepherd /
+lullaby / flock / pasture -- pairs beautifully with the just-added Keepers-of-the-Night + Lullabies
+branches), **Chicken** (dawn / morning / farm -- a rooster for the Sunrise/Wake mode), **Robot**
+(machine / train / forge / clockwork / loom), **Mouse** (small / tiny / micro -- Small Wonders /
+Microscopic World), **Dog** (journey / voyage / watch -- a loyal guard for the night watchman),
+**Hedgehog** (autumn / burrow / bramble) and **Panda** (bamboo). **Skull / Woman / Man** stay
+deliberate manual-only picks (the Skull per the user's choice not to tie it to a story category).
+While in here, fixed a latent matching bug: `char_for_scene` matched triggers as any **substring**,
+so `rain` matched "t-**rain**" and sent every Train lecture to the Duckling; it now matches a **word
+prefix** (`re` word-split), which keeps stem matches (`hibernat`->"hibernation", `lullab`->"lullabies")
+but kills the cross-word false hits. Verified: new `tools/test_story_char.py` (every mapped name is a
+registered character; 15 reachable; a dozen representative scenes map to the right character;
+empty/unknown -> the default Owl; Skull/Woman/Man never auto-assigned); a distribution sweep over all
+270 lecture+scene names (12 distinct characters now appear, Owl still leads as the default night
+narrator -- fitting); selftest; all 47 offline tests; drive_check 0 issues.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

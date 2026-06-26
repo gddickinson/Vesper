@@ -155,6 +155,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Storyteller character-follow uses the full cast** -- the opt-in "Character follows the story"
+      map (`story_char`) only reached **8** of the now-**18** characters, so most of the cast never
+      got to look the part. Enriched `_THEMES` so **15** are reachable -- new themes for **Sheep**
+      (shepherd / lullaby / flock -- pairs with the new Keepers-of-the-Night + Lullabies branches),
+      **Chicken** (dawn / morning / farm), **Robot** (machine / train / forge / clockwork), **Mouse**
+      (small / tiny / micro), **Dog** (journey / voyage / watch), **Hedgehog** (autumn / burrow) and
+      **Panda** (bamboo) -- while **Skull / Woman / Man** stay deliberate manual-only picks. Also
+      fixed a latent matching bug: triggers now match a **word prefix** (so stems like `hibernat`
+      still hit "hibernation") instead of any substring, so `rain` no longer matches "t-**rain**"
+      (which had sent every Train lecture to the Duckling). Verified: new `tools/test_story_char.py`
+      (every mapped name is a registered character; 15 reachable; representative scenes map right;
+      empty/unknown -> Owl; Skull/Woman/Man never auto-picked); a distribution check over all 270
+      lecture+scene names (12 characters used, no crashes); selftest; all 47 offline tests;
+      drive_check 0 issues.
 - [x] **Fix: scene overlay text clipped on a narrow pane** -- the breathing scenes draw a phase
       label + the storyteller **subtitle** centred over the orb, but `scenes._text` used a fixed font
       with no fit-to-width, so a long subtitle (the spoken story line, ~42 chars) ran straight off

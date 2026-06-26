@@ -123,7 +123,11 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   Primary guarantees: opt-in + process isolation + no in-process exec. Offline test:
   `tools/test_llm_plugin.py`.
 - **story_char.py** — maps a story scene / lecture to a fitting cartoon character
-  (`char_for_scene`: sea→Penguin, night→Owl, forest→Bear, …, default Owl). Opt-in
+  (`char_for_scene`: sea→Penguin · shepherd/lullaby→Sheep · dawn→Chicken · train/
+  machine→Robot · journey→Dog · small→Mouse · forest→Bear · cosy→Cat · night→Owl …,
+  default Owl). Covers **15 of the 18** characters (Skull/Woman/Man stay manual
+  picks); triggers match a **word prefix** so stems work (`hibernat`→"hibernation")
+  without false hits inside other words (`rain` must not match "t-rain"). Opt-in
   **Face ▸ "Character follows the story"** (persisted): when on and the cartoon face is
   shown, the storyteller swaps to the matching character via `set_character(persist=
   False)` and restores the user's saved pick afterwards (`win_story._apply_story_character`

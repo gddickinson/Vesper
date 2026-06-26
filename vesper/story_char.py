@@ -6,32 +6,60 @@ on, and the user's own chosen character is restored afterwards. Pure + testable.
 """
 from __future__ import annotations
 
-# (character, trigger words). First match wins; more specific themes lead.
+import re
+
+_WORD = re.compile(r"[a-z]+")
+
+# (character, trigger words). First match wins, so the more specific / leading
+# themes come first. Covers most of the 18-strong cast; Skull, Woman and Man are
+# left out on purpose -- they stay deliberate manual picks (the Skull especially).
 _THEMES = [
-    ("Penguin", ("sea", "ocean", "tide", "wave", "coast", "seaside", "coral",
-                 "whale", "iceberg", "antarctic", "harbour", "harbor")),
-    ("Duckling", ("river", "pond", "lake", "stream", "rain", "duck", "marsh")),
-    ("Owl", ("night", "star", "sky", "moon", "cosmos", "galaxy", "planet",
-             "constellation", "comet", "nebula", "owl", "midnight", "library")),
+    # pastoral + sleep: the shepherd / lullaby tales -- lead so "night" can't grab them
+    ("Sheep", ("sheep", "shepherd", "flock", "wool", "lamb", "fleece",
+               "lullab", "pasture", "meadow", "dream")),
+    ("Penguin", ("sea", "ocean", "tide", "wave", "coast", "seaside", "surf",
+                 "coral", "whale", "iceberg", "antarctic", "arctic", "polar",
+                 "lighthouse", "harbour", "harbor")),
+    ("Duckling", ("river", "pond", "lake", "stream", "rain", "duck", "marsh",
+                  "wetland", "canal")),
+    ("Frog", ("swamp", "jungle", "rainforest", "lily", "bog", "mangrove")),
+    ("Bunny", ("flower", "spring", "blossom", "petal", "clover", "dew", "seed",
+               "bloom")),
+    ("Hedgehog", ("hedge", "burrow", "bramble", "thicket", "autumn", "leaf",
+                  "leaves", "acorn", "moss")),
+    ("Fox", ("garden", "hill", "field", "vine", "orchard", "spice", "tea",
+             "coffee", "grass", "savanna")),
     ("Bear", ("forest", "wood", "mountain", "cave", "winter", "hibernat",
-              "honey", "pine", "snow", "taiga")),
-    ("Fox", ("meadow", "garden", "hill", "field", "autumn", "harvest", "vine",
-             "orchard", "spice", "tea", "coffee")),
-    ("Bunny", ("flower", "spring", "blossom", "petal", "clover", "dew", "seed")),
-    ("Cat", ("cottage", "home", "hearth", "fire", "cafe", "café", "candle",
-             "blanket", "quilt", "lamp", "kitchen")),
-    ("Frog", ("swamp", "jungle", "rainforest", "lily", "bog")),
+              "honey", "pine", "snow", "taiga", "den")),
+    ("Panda", ("bamboo", "panda", "jade")),
+    ("Mouse", ("small", "tiny", "little", "micro", "miniature", "crumb",
+               "grain", "pebble", "speck", "attic")),
+    ("Chicken", ("dawn", "morning", "sunrise", "wake", "farm", "barn", "egg",
+                 "rooster", "harvest")),
+    ("Robot", ("machine", "clockwork", "engine", "factory", "metal", "circuit",
+               "robot", "train", "railway", "loom", "forge", "blacksmith",
+               "gear", "iron", "steel", "glass", "bridge")),
+    ("Dog", ("journey", "voyage", "road", "trail", "path", "compass", "caravan",
+             "travel", "wander", "walk", "watchman", "watch", "guard")),
+    ("Cat", ("cottage", "home", "hearth", "fire", "cafe", "candle", "blanket",
+             "quilt", "lamp", "lantern", "kitchen", "bread", "oven", "bake",
+             "warm", "purr")),
+    ("Owl", ("night", "star", "sky", "moon", "cosmos", "galaxy", "planet",
+             "constellation", "comet", "nebula", "owl", "midnight", "library",
+             "philosoph", "wisdom")),
 ]
 DEFAULT = "Owl"                                   # a calm, wise night-time narrator
 
 
 def char_for_scene(scene) -> str:
-    """The cartoon character that best fits *scene* (a story scene or lecture name)."""
+    """The cartoon character that best fits *scene* (a story scene or lecture name).
+    A trigger matches when it is the **start of a word** in the scene -- so stems
+    work (``hibernat`` -> "hibernation") without false hits inside other words
+    (``rain`` must not match "t-rain"). First theme with any match wins."""
     if not scene:
         return DEFAULT
-    low = str(scene).lower()
-    for name, words in _THEMES:
-        for wd in words:
-            if wd in low:
-                return name
+    words = _WORD.findall(str(scene).lower())
+    for name, triggers in _THEMES:
+        if any(wd.startswith(t) for wd in words for t in triggers):
+            return name
     return DEFAULT
