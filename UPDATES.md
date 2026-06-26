@@ -1804,6 +1804,24 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Sacred Spaces** (4): Hagia Sophia · Borobudur · Angkor Wat · The Golden Temple --
+      real, deeply calming places of worship (vast hush, light through stone, still water, resonance),
+      culturally diverse (Byzantine-Christian / Buddhist / Khmer-Hindu / Sikh) and distinct from the
+      *imaginary* "Mythic Places" branch; deliberately avoids the existing "Stained Glass" craft lecture.
+      Added `lectures_{hagiasophia,borobudur,angkorwat,goldentemple}.py` (7x12 lines, fact-free section
+      1, accurate history/architecture woven gently -- Hagia Sophia's floating dome on its ring of forty
+      windows, "Holy Wisdom," its layered life as cathedral/mosque/museum on pendentives; Borobudur's
+      solid stepped stone mountain of nine terraces you circle slowly upward past carved panels to the
+      plain empty summit stupa; Angkor Wat's five lotus-bud towers as Mount Meru mirrored in a vast still
+      moat at dawn; the Golden Temple / Harmandir Sahib floating in the Amrit Sarovar, four doors open to
+      all, day-and-night kirtan and the langar feeding everyone as equals), ASCII, every section
+      sleep-closing, faiths kept gentle and inclusive (no conflict). Ambiences Singing Bowl / Wind in
+      Pines / Night Crickets / Wind Chimes (all registered). Distinct NAMEs/modules. New branch in
+      `_CATALOG` -> **289 lectures / 61 branches**; story DB rebuilt (24,585 lines / 394,191 words).
+      Done: selftest (289/61); lint -- each 7x12, section 1 fact-free (no digits), all 7 sections
+      sleep-close, ASCII-only, ambience resolves to a real voice, no NAME/module collisions; all four
+      dispatch through `stories.story_units` (< 400 units, >= 84 lecture lines); all 55 offline tests;
+      drive_check 0 issues.
 - [x] **New branch — Waterfalls of the World** (4): Niagara Falls · Victoria Falls · Angel Falls ·
       Iguazu Falls -- great waterfalls, each visually distinct, and intrinsically sleep-friendly (a
       waterfall's roar is a natural sound-masker; the imagery is calm and rhythmic). Distinct from Great

@@ -106,6 +106,8 @@ from . import lectures_aqueduct, lectures_qanat  # The Old Waterways
 from . import lectures_stepwell, lectures_watermill
 from . import lectures_niagara, lectures_victoriafalls  # Waterfalls of the World
 from . import lectures_angelfalls, lectures_iguazu
+from . import lectures_hagiasophia, lectures_borobudur  # Sacred Spaces
+from . import lectures_angkorwat, lectures_goldentemple
 from . import (lectures_blackforest, lectures_cloudforest, lectures_daintree,
                lectures_taiga)
 from . import (lectures_atacama, lectures_gobi, lectures_namib,
@@ -289,6 +291,8 @@ _CATALOG = [
                            lectures_stepwell, lectures_watermill]),
     ("Waterfalls of the World", [lectures_niagara, lectures_victoriafalls,
                                  lectures_angelfalls, lectures_iguazu]),
+    ("Sacred Spaces", [lectures_hagiasophia, lectures_borobudur,
+                       lectures_angkorwat, lectures_goldentemple]),
 ]
 
 LECTURES = {}

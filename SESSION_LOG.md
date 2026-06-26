@@ -3901,6 +3901,23 @@ the correct backdrop or None; every theme + scene base is a registered `face_bg`
 real-lecture sanity sweep (Diwali still cues Embers x13, City x7, etc. -- no regression); selftest;
 all 50 offline tests; drive_check 0 issues.
 
+## Stories: "Sacred Spaces" lecture branch (4)
+A Stories round (every ~3rd). New branch **Sacred Spaces** -- Hagia Sophia, Borobudur, Angkor Wat,
+The Golden Temple -- real, deeply calming places of worship, culturally diverse (Byzantine-Christian /
+Buddhist / Khmer-Hindu / Sikh) and distinct from the imaginary "Mythic Places" branch; avoids the
+existing "Stained Glass" craft lecture. Each module
+`lectures_{hagiasophia,borobudur,angkorwat,goldentemple}.py` is data-only (NAME + AMBIENCE + 7x12
+second-person ASCII SECTIONS): fact-free settle-in, gentle accurate history/architecture (the floating
+dome of Hagia Sophia; Borobudur's stone-mountain terraces circled slowly to the empty summit stupa;
+Angkor Wat's lotus-bud towers mirrored in a still moat at dawn; the Golden Temple floating in the Amrit
+Sarovar with day-and-night kirtan and the langar), sleep-drift close, faiths kept gentle and inclusive
+(no conflict). Ambiences Singing Bowl / Wind in Pines / Night Crickets / Wind Chimes (all registered).
+Four parallel subagents wrote the modules, each self-verifying 7x12/ASCII/punctuation; then registered
+in `lectures._CATALOG`. Verified: selftest **289 lectures across 61 branches**; lint (7x12, section 1
+fact-free, all sections sleep-close, ambience resolves, no collisions); all four dispatch through
+`stories.story_units`; all 55 offline tests; drive_check 0 issues; story DB rebuilt (24,585 lines /
+394,191 words). README/INTERFACE counts 285->289 / 60->61.
+
 ## Stories: "Waterfalls of the World" lecture branch (4)
 A Stories round (every ~3rd). New branch **Waterfalls of the World** -- Niagara Falls, Victoria Falls,
 Angel Falls, Iguazu Falls -- each a visually distinct great waterfall, and intrinsically sleep-friendly

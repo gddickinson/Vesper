@@ -489,8 +489,9 @@ audio callback contains any fault as silence + logs it once), `speech`,
 `narration` (Kokoro/say + lip-sync `amp`; a
 generation token + per-thread-local player process mean a voice/scene change
 never lets an outgoing narrator cut off the incoming one),
-`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 285 across
-60 branches incl. Waterfalls of the World (Niagara · Victoria · Angel · Iguazu) +
+`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 289 across
+61 branches incl. Sacred Spaces (Hagia Sophia · Borobudur · Angkor Wat · The Golden Temple) +
+Waterfalls of the World (Niagara · Victoria · Angel · Iguazu) +
 The Old Waterways (The Roman Aqueduct · The Qanat · The Stepwell · The
 Watermill) + Songbirds (The Nightingale · The Blackbird · The Skylark · The Wren) +
 a small-worlds trilogy — The Inner Planets (Mercury · Venus · Mars · Earth
