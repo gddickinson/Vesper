@@ -95,6 +95,34 @@ def test_paint_caption_renders():
     print("ok: paint_caption draws onto a QPainter and no-ops on empty input")
 
 
+def test_caption_legible_over_bright():
+    """Over a BRIGHT scene the caption must stay legible (a11y): the dark panel +
+    per-glyph drop-shadow give real contrast, so the light text is not washed out."""
+    from PySide6.QtGui import QColor, QImage, QPainter
+    from PySide6.QtWidgets import QApplication
+    QApplication.instance() or QApplication([])
+    from vesper import captions
+    W, H = 480, 320
+    img = QImage(W, H, QImage.Format.Format_ARGB32)
+    img.fill(QColor("#eef3ff"))                    # a bright scene (sum ~= 736)
+    p = QPainter(img)
+    captions.paint_caption(p, W, H, captions.wrap(
+        "You let the warm light carry you gently down toward sleep."))
+    p.end()
+    contrast = very_dark = 0
+    for y in range(int(H * 0.70), H - 4, 2):
+        for x in range(4, W - 4, 2):
+            c = img.pixelColor(x, y)
+            s = c.red() + c.green() + c.blue()
+            if s < 560:                            # notably darker than the bright bg
+                contrast += 1
+            if s < 300:                            # a near-black drop-shadow stroke
+                very_dark += 1
+    assert contrast > 150, f"caption lacks a dark backing over a bright scene ({contrast})"
+    assert very_dark > 0, "the per-glyph drop-shadow should add near-black strokes"
+    print("ok: caption keeps a dark panel + shadow contrast over a bright scene")
+
+
 def test_caption_base_px():
     """The caption font size scales with the UI text-size factor and stays in a
     calm clamped range (pure, no Qt)."""
@@ -116,6 +144,7 @@ def main():
     test_wrap()
     test_caption_base_px()
     test_paint_caption_renders()
+    test_caption_legible_over_bright()
     test_toggle_and_caption()
     print("PASS: narration captions")
     return 0

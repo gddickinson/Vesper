@@ -55,12 +55,15 @@ def caption_base_px(h, scale=1.0):
 
 def paint_caption(p, w, h, lines, scale=1.0):
     """Draw wrapped caption *lines* as soft centred text on a faint rounded panel
-    at the foot of the view -- readable but low-contrast so it stays restful in a
-    dark room. Shared by every view that can show narration (the scene VizWidget
-    and the talking-head FaceWidget) so captions look identical wherever they
-    appear. *scale* is the accessibility UI text-size factor, so larger text sizes
-    enlarge the caption too (still shrunk to fit a narrow view). Qt is imported
-    lazily here, keeping ``wrap`` usable in pure contexts."""
+    at the foot of the view -- restful in a dark room, yet kept **legible over any
+    scene** (a soft drop-shadow behind each glyph, the standard subtitle technique,
+    so the text stays readable even over a bright scene like Sunrise or the
+    jellyfish glow -- captions are an accessibility feature, so legibility wins).
+    Shared by every view that can show narration (the scene VizWidget and the
+    talking-head FaceWidget) so captions look identical wherever they appear.
+    *scale* is the accessibility UI text-size factor, so larger text sizes enlarge
+    the caption too (still shrunk to fit a narrow view). Qt is imported lazily
+    here, keeping ``wrap`` usable in pure contexts."""
     if not lines:
         return
     from PySide6.QtCore import QRectF, Qt
@@ -85,13 +88,19 @@ def paint_caption(p, w, h, lines, scale=1.0):
     top = bottom - block_h
     panel = QRectF((w - tw) / 2 - pad, top - pad / 2, tw + 2 * pad, block_h + pad)
     bg = QColor(theme.BG)
-    bg.setAlphaF(0.45)
+    bg.setAlphaF(0.55)                             # a touch more backing for legibility
     p.setPen(Qt.PenStyle.NoPen)
     p.setBrush(bg)
     p.drawRoundedRect(panel, 10, 10)
-    p.setPen(QColor(theme.TEXT))
+    shadow = QColor("#04070d")                     # soft dark drop-shadow keeps the text
+    shadow.setAlphaF(0.7)                          # readable over any scene (a11y)
+    text = QColor(theme.TEXT)
     y = top
     for ln in lines:
         lw = fm.horizontalAdvance(ln)
-        p.drawText(int((w - lw) / 2), int(y + fm.ascent()), ln)
+        x, base = int((w - lw) / 2), int(y + fm.ascent())
+        p.setPen(shadow)
+        p.drawText(x + 1, base + 1, ln)
+        p.setPen(text)
+        p.drawText(x, base, ln)
         y += lh

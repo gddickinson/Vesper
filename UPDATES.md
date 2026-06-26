@@ -155,6 +155,17 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **A11y: caption legibility over any scene** -- the narration **captions** are opt-in *for
+      accessibility*, but their soft `theme.TEXT` on a 45%-opaque panel could be hard to read over a
+      **bright** scene (Sunrise, Aurora, the new jellyfish glow) for the deaf/hard-of-hearing users who
+      most need them. Applied the standard subtitle technique: a subtle **dark drop-shadow behind each
+      glyph** (a +1px near-black stroke) so the text keeps real contrast over *any* background, plus a
+      small bump to the panel backing (0.45 -> 0.55). One bounded change in `captions.paint_caption`;
+      still restful (the shadow is unobtrusive in a dark room). Extended `tools/test_captions.py`:
+      render a caption over a deliberately **bright** background and assert the band keeps a dark
+      panel + near-black shadow strokes (real contrast, not washed out). Eyeballed a caption over the
+      jellyfish scene (crisp, calm, clearly legible). Verified: selftest; all 56 offline tests;
+      drive_check 0 issues.
 - [x] **Sleep aid: "A Gentle Journey Downstream" guided imagery** -- a new guided-imagery sleep session
       (an enhancement; first confirmed the books/reader "fall asleep to a novel" path is already
       well-hardened, so no fix was needed there). A classic relaxation visualisation built on *being

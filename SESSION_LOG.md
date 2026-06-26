@@ -3950,6 +3950,17 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## A11y: caption legibility over any scene
+An accessibility-polish round. The narration captions are opt-in for accessibility, but their soft
+`theme.TEXT` on a 45%-opaque panel could be hard to read over a bright scene (Sunrise, Aurora, the new
+jellyfish glow) for the users who most need them. Applied the standard subtitle technique: a subtle
+dark drop-shadow behind each glyph (a +1px near-black stroke) so text keeps real contrast over any
+background, plus a small panel-backing bump (0.45 -> 0.55). One bounded change in
+`captions.paint_caption`; still restful. Extended `tools/test_captions.py` to render a caption over a
+deliberately bright background and assert the band keeps a dark panel + near-black shadow strokes;
+eyeballed a caption over the jellyfish scene (crisp, calm, legible). Verified: selftest; all 56 offline
+tests; drive_check 0 issues.
+
 ## Sleep aid: "A Gentle Journey Downstream" guided imagery
 An enhancement round (first confirmed the books/reader "fall asleep to a novel" path is already
 well-hardened -- `percent_read`/`in_progress` guard zero-sentence books, `units` clamps,
