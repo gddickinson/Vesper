@@ -191,6 +191,13 @@ class _ReadMixin:
             return
         lp, pp = (700, 1600) if self._read_long else (650, 900)
         start = books.position(self._read_bid)
+        total = len(book.sentences())
+        if total and start >= total:                # finished, or a stale resume
+            start = 0                               # position left past the (changed) end
+            books.set_position(self._read_bid, 0)   # -- so Play reads from the start again
+            self.status.showMessage(
+                'Starting "%s" again from the beginning.'
+                % getattr(book, "title", "your book"), 4000)
         units = bookreader.units(book, start=start, line_pause=lp, para_pause=pp)
         self._reading = True
         self._reader_busy = True
