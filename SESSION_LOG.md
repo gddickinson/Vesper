@@ -3817,6 +3817,21 @@ programmatically (7x12, ASCII, punctuation, registered ambience) then registered
 drive_check 0 issues; tone spot-checked (the pendulum tick stays a calm heartbeat, not tense).
 README / INTERFACE counts 265->269 / 55->56.
 
+## Soundscape follows lantern / lamp + water-drip imagery
+A small, broadly-useful polish that leverages the recent content: the storyteller's ambience bed
+crossfades to match imagery in the narrated line (`sound_cues.cue_for_text`), but the cue map had no
+entry for the **lamps, diyas, lanterns and festival lights** the new branches are full of (Festivals
+of Light, Obon, Diwali, the Lamplighter, the Lanterns scene), nor for **dripping / trickling water**
+(the Water Clock). Added: lantern / diya / oil lamp / "the lamps" / paper lantern / festival-of-light
+-> the warm **Campfire** bed (next to the existing candlelight keys); trickl* / dripping / "drip of" /
+fountain / spring-water -> the **Mountain Stream** bed. Kept the keys specific to avoid false hits and
+dropped a too-broad "warm light" candidate (it would have grabbed e.g. "the warm light of the stars"
+off the cosmic bed). On the real lectures this now cues ~9 Diwali, ~18 Obon and ~7 Water-Clock lines
+that previously matched nothing. Verified: new `tools/test_sound_cues.py` (every cue target is a
+registered procedural nature voice; 13 representative lines incl. the new imagery cue to the right
+bed; long-standing cues unregressed; abstract lines + the "warm light" trap return None); selftest;
+all 49 offline tests; drive_check 0 issues. `sound_cues.py` 57 < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

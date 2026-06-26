@@ -155,6 +155,18 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Soundscape follows lantern / lamp + water-drip imagery** -- the storyteller's ambience bed
+      crossfades to match imagery in the spoken line (`sound_cues`), but it had no cue for the
+      **lamps, diyas, lanterns and festival lights** that the recent branches are full of (Festivals
+      of Light, Obon, Diwali, the Lamplighter, the Lanterns scene) or for **dripping / trickling
+      water** (the Water Clock). Added them: lantern / diya / oil lamp / "the lamps" / paper lantern /
+      festival-of-light -> the warm **Campfire** bed (alongside candlelight); and trickl* / dripping /
+      "drip of" / fountain / spring-water -> the **Mountain Stream** bed. Kept the keys specific to
+      avoid false hits (dropped a too-broad "warm light"). Now ~9 Diwali / ~18 Obon / ~7 Water-Clock
+      lines cue a fitting bed where they previously got none. Verified: new `tools/test_sound_cues.py`
+      (every target a registered voice; 13 representative lines incl. the new imagery cue right;
+      long-standing cues unregressed; abstract lines + the "warm light" trap return None); selftest;
+      all 49 offline tests; drive_check 0 issues. `sound_cues.py` 57 < 500.
 - [x] **Sleep aid: "A Safe and Peaceful Place" guided-imagery session** -- a classic, evidence-based
       relaxation technique that was a genuine gap among the guided sessions: build and inhabit an
       imagined peaceful place, engaging **one sense at a time** (what you see, hear, feel, smell
