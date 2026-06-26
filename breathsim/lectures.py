@@ -147,6 +147,7 @@ from . import (lectures_ashurbanipal, lectures_houseofwisdom,
                lectures_scriptorium, lectures_timbuktu)
 from . import (lectures_firstmaps, lectures_seacharts,
                lectures_mapprojection, lectures_viewfromabove)
+from . import (lectures_silk, lectures_wool, lectures_linen, lectures_cotton)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -309,6 +310,8 @@ _CATALOG = [
                        lectures_kumano, lectures_viafrancigena]),
     ("The Mapmaker's World", [lectures_firstmaps, lectures_seacharts,
                               lectures_mapprojection, lectures_viewfromabove]),
+    ("Threads of the World", [lectures_silk, lectures_wool,
+                              lectures_linen, lectures_cotton]),
 ]
 
 LECTURES = {}

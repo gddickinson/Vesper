@@ -4002,6 +4002,21 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Stories: "Threads of the World" lecture branch (4)
+A Stories round (every ~3rd). New textiles/fibre branch -- Silk, Wool, Linen, Cotton -- the great natural
+fibres we spin into cloth, a deeply sleep-appropriate subject (you fall asleep wrapped in them). Written by
+4 parallel subagents to the house format (7 sections x 12 second-person present-tense ASCII sentences;
+fact-free settle-in section 1, no numerals; sleep-drift section 7). Each is sensory + science-touched: the
+silkworm's single near-mile-long thread + the Silk Road; wool's crimp trapping pockets of warm air + lanolin
++ felting; flax retting in the field + ancient Egyptian linen; the cotton boll bursting like a small white
+cloud + the twisting-ribbon fibre (kept gentle/wonder-focused, no fraught history). Ambiences: Wind Chimes /
+Campfire / Summer Porch / Rain on a Roof. Registered in lectures._CATALOG; story DB rebuilt (309 lectures /
+66 branches, ~425k words). Validated 7x12 + no-digit + ASCII + every line ends .?! across all 4; eyeballed
+section 1 (fact-free) and section 7 (sleep close). Verified: selftest (309/66); all 63 offline tests;
+drive_check 0 issues. NOTE: selftest's phrase-peak check flagged "Frere Jacques peak 1.02 > 1.0" once but
+passed clean on 3 re-runs -- a pre-existing intermittent (per-run naturalness RNG nudging a phrase calibrated
+at the ceiling), unrelated to lectures; hardened separately next.
+
 ## Keyboard: number keys 1-7 jump straight to a mode
 A keyboard / accessibility follow-up to the screen-reader labels. The mode bar is the app's primary
 navigation, but a keyboard-only user could only reach it by tabbing through the panel or via the Modes

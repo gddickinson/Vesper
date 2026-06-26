@@ -1935,6 +1935,14 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Threads of the World** (4): Silk · Wool · Linen · Cotton -- the great natural
+      fibres we spin into cloth, a deeply sleep-appropriate subject (you fall asleep wrapped in these).
+      Each is sensory + science-touched: the silkworm's single mile-long thread and the Silk Road; wool's
+      crimp trapping pockets of warm air, lanolin, and felting; flax retting in the field and the cool of
+      ancient Egyptian linen; the cotton boll bursting like a small white cloud and the twisting ribbon of
+      its fibre. Ambiences: Wind Chimes / Campfire / Summer Porch / Rain on a Roof. 309 lectures / 66
+      branches. Written by 4 parallel subagents; lint-checked (7x12, ASCII, no digits, every line ends
+      .?!), DB rebuilt, gauntlet green.
 - [x] **New branch — The Mapmaker's World** (4): The First Maps · Charts of the Sea · The Shape of the
       World · The View from Above -- the quiet history of cartography, from a clay tablet you could cover
       with your hand to the whole blue earth seen from space. A coherent arc (the urge to map -> finding
