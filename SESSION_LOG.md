@@ -4031,6 +4031,22 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Stories: "Caves of Wonder" lecture branch (4)
+The every-third-round Stories item. A wondrous, dark, slow, awe-filled theme -- the quiet underground -- kept
+distinct from the lone existing general "caves" lecture (Earth & Sea) by going deep into four specific
+marvels: **The Crystal Cave** (Naica's chamber of giant selenite beams grown atom by atom over an immense
+time), **The Glow-Worm Cave** (drifting in a little boat on a silent underground river beneath Waitomo's
+ceiling of thousands of blue-green living lights -- a starry sky underground, doubled in the glassy black
+water), **Stalactites and Stalagmites** (the raindrop's journey through limestone, the down-growing icicle
+that "holds tight" meeting the up-climbing mound that "reaches mightily", a cave as a clock measured in ages)
+and **The Painted Caves** (Lascaux / Chauvet / Altamira -- herds of horses and bulls in charcoal and ochre by
+firelight, the stencilled handprints' "I was here" across deep time). Written by 4 parallel subagents to the
+house format (7x12 second-person present ASCII, fact-free no-digit settle-in section 1, sleep-drift section
+7); I re-validated 7x12 + endings + no-digits + ASCII myself. Ambiences: Singing Bowl / Mountain Stream /
+Gentle Rain / Brown Noise. Registered in lectures._CATALOG; story DB rebuilt (333 lectures / 72 branches,
+~455k words). Verified: selftest (333/72); all 72 offline tests; drive_check 0 issues; each file ~107-124
+lines. (The storyteller maps "cave"->Bear, so the cosy bear narrates the Crystal/Glow-Worm/Painted caves.)
+
 ## Stories: "The Warm Springs" lecture branch (4)
 The every-third-round Stories item. A fresh, tonally-ideal-for-sleep theme not yet in the 70 branches:
 sinking into warm geothermal / bath waters (peak relaxation imagery), four geographically + culturally

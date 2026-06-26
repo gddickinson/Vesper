@@ -155,6 +155,14 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Stories: "Caves of Wonder" lecture branch (4).** The every-third-round Stories item -- the quiet
+      underground, dark and slow and awe-filled: **The Crystal Cave** (Naica's giant selenite beams),
+      **The Glow-Worm Cave** (Waitomo's living star-ceiling over an underground river), **Stalactites and
+      Stalagmites** (the drip-built underworld, a cave-clock of ages) and **The Painted Caves** (Lascaux /
+      Chauvet, the first art in the firelit dark). House 7x12 format (fact-free no-digit settle-in, sleep-drift
+      close), written by 4 parallel subagents + re-validated by hand. Ambiences Singing Bowl / Mountain Stream
+      / Gentle Rain / Brown Noise. Story DB rebuilt (333 lectures / 72 branches). Verified: selftest 333/72;
+      all 72 offline tests; drive_check 0 issues.
 - [x] **Stories: "The Warm Springs" lecture branch (4).** The every-third-round Stories item -- a fresh,
       deeply soothing sleep theme (sinking into warm water): **The Onsen** (a snowy Japanese hot spring +
       the snow monkeys), **Pamukkale** (Turkey's white travertine terraces), **The Blue Lagoon** (Iceland's
