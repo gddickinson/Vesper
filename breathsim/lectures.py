@@ -150,6 +150,8 @@ from . import (lectures_firstmaps, lectures_seacharts,
 from . import (lectures_silk, lectures_wool, lectures_linen, lectures_cotton)
 from . import (lectures_firstbread, lectures_sourdough,
                lectures_worldbreads, lectures_hearth)
+from . import (lectures_rainbow, lectures_halos,
+               lectures_mirage, lectures_greenflash)
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -316,6 +318,8 @@ _CATALOG = [
                               lectures_linen, lectures_cotton]),
     ("Bread & Baking", [lectures_firstbread, lectures_sourdough,
                         lectures_worldbreads, lectures_hearth]),
+    ("The Play of Light", [lectures_rainbow, lectures_halos,
+                           lectures_mirage, lectures_greenflash]),
 ]
 
 LECTURES = {}

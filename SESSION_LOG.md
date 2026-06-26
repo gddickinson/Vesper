@@ -4002,6 +4002,21 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Stories: "The Play of Light" lecture branch (4)
+A Stories round (every ~3rd). New atmospheric-optics branch -- The Rainbow, Halos & Sun Dogs, Mirages, The
+Green Flash -- the everyday wonders of light bending through air and water, gentle science woven with
+wonder. Written by 4 parallel subagents to the house format (7 sections x 12 second-person present-tense
+ASCII sentences; fact-free settle-in section 1, no numerals; sleep-drift section 7). Content: each raindrop
+a tiny lens fanning sunlight into a bow centred on your own eyes (and unreachable); six-sided ice crystals
+in cirrus making a pale halo + sun dogs ahead of the snow; the air bending light into a shimmering desert
+"pool" (inferior mirage) or lifting distant ships into a Fata Morgana (superior mirage); and the fleeting
+green flash at the top of the setting sun -- the finale easing into the blue dusk and sleep. Aurora was
+deliberately excluded (already a Cosmos lecture, "The Northern Lights"). Ambiences: Gentle Rain / Wind in
+Pines / Brown Noise / Ocean Waves. Registered in lectures._CATALOG; story DB rebuilt (317 lectures / 68
+branches, ~436k words). Validated 7x12 + no-digit + ASCII + every line ends .?! across all 4; eyeballed
+section 1 (fact-free) and section 7 (sleep close). Verified: selftest (317/68); all 66 offline tests;
+drive_check 0 issues.
+
 ## Stories: "Bread & Baking" lecture branch (4)
 A Stories round (every ~3rd). New warm, domestic branch -- The First Bread, Sourdough, Breads of the
 World, The Hearth -- a deeply sleep-appropriate subject (the comfort of warm bread, the smell of baking).

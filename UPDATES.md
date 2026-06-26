@@ -1968,6 +1968,15 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — The Play of Light** (4): The Rainbow · Halos & Sun Dogs · Mirages · The Green Flash
+      -- the everyday wonders of atmospheric optics, gentle science woven with wonder. Each raindrop a
+      tiny lens fanning sunlight into a bow made just for your eyes; six-sided ice crystals high in cirrus
+      forming a pale halo + sun dogs ahead of the snow; the air itself bending light into a shimmering
+      desert "pool" or lifting far ships into a Fata Morgana castle in the air; and the fleeting green
+      flash at the very top of the setting sun -- the finale drifting into the blue dusk and sleep. Aurora
+      excluded (it is already a Cosmos lecture). Ambiences: Gentle Rain / Wind in Pines / Brown Noise /
+      Ocean Waves. 317 lectures / 68 branches. Written by 4 parallel subagents; lint-checked (7x12, ASCII,
+      no digits, every line ends .?!), DB rebuilt, gauntlet green.
 - [x] **New branch — Bread & Baking** (4): The First Bread · Sourdough · Breads of the World · The Hearth
       -- a warm, domestic, deeply sleep-appropriate branch. Gentle science + history: wild grains ground
       between stones and the accidental discovery of wild-yeast leavening in ancient Egypt; the living

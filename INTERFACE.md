@@ -506,8 +506,10 @@ audio callback contains any fault as silence + logs it once), `speech`,
 `narration` (Kokoro/say + lip-sync `amp`; a
 generation token + per-thread-local player process mean a voice/scene change
 never lets an outgoing narrator cut off the incoming one),
-`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 313 across
-67 branches incl. Bread & Baking (The First Bread · Sourdough · Breads of the
+`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 317 across
+68 branches incl. The Play of Light (The Rainbow · Halos & Sun Dogs · Mirages ·
+The Green Flash) +
+Bread & Baking (The First Bread · Sourdough · Breads of the
 World · The Hearth) +
 Threads of the World (Silk · Wool · Linen · Cotton) +
 The Mapmaker's World (First Maps · Charts of the Sea · The Shape of the
