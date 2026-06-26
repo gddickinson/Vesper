@@ -96,8 +96,14 @@ class ReadAlongPane(QWidget):
         self._last_hl = -1
         if not book:
             self.title.setText("Read")
-            self.prog.setText("")
-            self.text.clear()
+            self.prog.setText("no book yet")
+            self.text.setPlainText(                 # a helpful empty state, not a blank box
+                "No book loaded yet.\n\n"
+                "Open the Books menu and choose \"Find & manage books\" to download a "
+                "free classic from Project Gutenberg or Standard Ebooks -- or simply "
+                "drag a .txt or .epub file onto the window.\n\n"
+                "Then press Read, and the text will follow along, line by line, as it "
+                "is gently narrated to you.")
             return
         sents = book.sentences()
         starts = set(book.paragraph_starts())

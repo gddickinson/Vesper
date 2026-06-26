@@ -69,6 +69,13 @@ def main():
     assert win.read_pane.play.text() == "Read"
     assert books.position(bid) == 4
 
+    # the empty-library state is a helpful placeholder, not a blank box
+    win.read_pane.set_book(None)
+    empty = win.read_pane.text.toPlainText()
+    assert "No book" in empty and "Find & manage books" in empty, empty
+    assert win.read_pane.prog.text() == "no book yet"
+    print("ok: empty Read pane explains how to add a book")
+
     # leaving Read hides the pane and stops any reading
     win.apply_mode("Meditate")
     assert not win.read_pane.isVisible()
