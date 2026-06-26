@@ -540,7 +540,7 @@ audio callback contains any fault as silence + logs it once), `speech`,
 `narration` (Kokoro/say + lip-sync `amp`; a
 generation token + per-thread-local player process mean a voice/scene change
 never lets an outgoing narrator cut off the incoming one),
-`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 333 across
+`stories` + the **lecture library** (`lectures` + `lectures_*.py`, 337 across
 72 branches incl. Caves of Wonder (The Crystal Cave · The Glow-Worm Cave · Stalactites and Stalagmites · The Painted Caves) + The Warm Springs (The Onsen · Pamukkale · The Blue Lagoon · The Roman Baths) + Under the Moon (The Hunter's Moon · The Blood Moon · The Moon Rabbit · Footprints on the Moon) + Winter's Hush (The First Snow . Frost . The Icicle . The Frozen Lake) + The Play of Light (The Rainbow · Halos & Sun Dogs · Mirages ·
 The Green Flash) +
 Bread & Baking (The First Bread · Sourdough · Breads of the

@@ -160,6 +160,8 @@ from . import (lectures_onsen, lectures_pamukkale,
                lectures_bluelagoon, lectures_romanbaths)  # The Warm Springs
 from . import (lectures_crystalcave, lectures_glowworm,
                lectures_stalactites, lectures_paintedcaves)  # Caves of Wonder
+from . import (lectures_tortoise, lectures_snail,
+               lectures_manatee, lectures_koala)  # The Slow Ones
 
 # Pause (ms) after each lecture line / at a section's end. The narrator's
 # ``pause_scale`` lengthens these further as the session winds down.
@@ -336,6 +338,8 @@ _CATALOG = [
                           lectures_bluelagoon, lectures_romanbaths]),
     ("Caves of Wonder", [lectures_crystalcave, lectures_glowworm,
                          lectures_stalactites, lectures_paintedcaves]),
+    ("The Slow Ones", [lectures_tortoise, lectures_snail,
+                       lectures_manatee, lectures_koala]),
 ]
 
 LECTURES = {}

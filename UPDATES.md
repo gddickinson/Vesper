@@ -155,6 +155,14 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Stories: "The Slow Ones" lecture branch (4).** The every-third-round Stories item -- slowness as the
+      through-line, the very point of a sleep app: **The Tortoise** (the unhurried walker, the carried home,
+      the centuries-long life), **The Snail** (the silver glide, the spiral shell, sealing away to sleep a
+      season), **The Manatee** (the gentle sea cow drifting weightless in warm shallows) and **The Koala**
+      (one of the sleepiest creatures alive, snug in a gum-tree fork). House 7x12 format (fact-free no-digit
+      settle-in, sleep-drift close), written by 4 parallel subagents + re-validated by hand. Ambiences
+      Night Crickets / Gentle Rain / Ocean Waves / Wind in Pines. Story DB rebuilt (337 lectures / 73
+      branches). Verified: selftest 337/73; all 72 offline tests; drive_check 0 issues.
 - [x] **Stories: "Caves of Wonder" lecture branch (4).** The every-third-round Stories item -- the quiet
       underground, dark and slow and awe-filled: **The Crystal Cave** (Naica's giant selenite beams),
       **The Glow-Worm Cave** (Waitomo's living star-ceiling over an underground river), **Stalactites and

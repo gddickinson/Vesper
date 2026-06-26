@@ -4031,6 +4031,22 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Stories: "The Slow Ones" lecture branch (4)
+The every-third-round Stories item, on a theme that IS the point of a sleep app -- slowness as the
+through-line. Four gentle, unhurried creatures, all fresh (distinct from the existing Sloth lecture): **The
+Tortoise** (the slowest wanderer, the carried shell-home, the astonishing long life of the Galapagos/Aldabra
+giants, the tortoise-and-hare wisdom of slow-and-steady), **The Snail** (the smooth muscular glide, the
+silver moonlit trail, the spiral carried home, sealing the shell's door to sleep a whole season), **The
+Manatee** (the gentle weightless sea cow drifting in warm shallows, grazing seagrass, rising slowly to
+breathe) and **The Koala** (one of the sleepiest creatures alive -- drowsing most of every day, wedged snug
+in a gum-tree fork, saving its strength on tough low-energy eucalyptus leaves; the joey dozing in the warm
+pouch). Written by 4 parallel subagents to the house format (7x12 second-person present ASCII, fact-free
+no-digit settle-in section 1, sleep-drift section 7); I re-validated 7x12 + endings + no-digits + ASCII
+myself. Ambiences: Night Crickets / Gentle Rain / Ocean Waves / Wind in Pines. Registered in
+lectures._CATALOG; story DB rebuilt (337 lectures / 73 branches, ~459k words). Verified: selftest (337/73);
+all 72 offline tests; drive_check 0 issues; each file ~116-134 lines. (Chosen after a green health check
+turned up no real bug -- a clearly-valuable content round rather than manufactured polish.)
+
 ## Stories: "Caves of Wonder" lecture branch (4)
 The every-third-round Stories item. A wondrous, dark, slow, awe-filled theme -- the quiet underground -- kept
 distinct from the lone existing general "caves" lecture (Earth & Sea) by going deep into four specific
