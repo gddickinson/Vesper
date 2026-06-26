@@ -308,6 +308,20 @@ Set with the user after the realistic-chanting round. Tick as completed.
       a Sleep narration line is wrapped onto the scene; clears when off) + offscreen GUI smoke (menu item
       present, threads stable) + a PNG eyeballed (legible caption panel under the night scene); all 42
       offline tests; selftest; drive_check 0 issues; `viz.py` 142 / `captions.py` 44 < 500.
+- [x] **Stories: "The Mindful Arts" lecture branch (4)** -- the slow, contemplative East-Asian arts,
+      a natural fit for a meditation/sleep app (presence, patience, wonder-over-mastery) and distinct
+      from all 56 prior branches. **Calligraphy** (shodo -- the "four treasures", grinding the sumi ink
+      stick to settle the mind, the single unretouchable brushstroke that records the breath; Singing
+      Bowl) · **Origami** (a plain square become a crane by patient valley + mountain folds, the
+      thousand-crane senbazuru wish; Rain on a Roof) · **Bonsai** (an ordinary tree kept small over
+      decades by gentle pruning, tended for generations, a conversation not control; Forest Wind) ·
+      **Ikebana** (kado -- a few stems and a great deal of restful empty space, heaven/earth/person,
+      seasonality and impermanence as beauty; Wind Chimes). Each is the standard 7 sections x 12
+      second-person present-tense ASCII lines, settling in at section 1 and drifting to sleep at
+      section 7, the throughline being slowness, patience and presence. Written with four parallel
+      subagents; validated then registered in `lectures._CATALOG`. Verified: selftest (now **273
+      lectures across 57 branches**); story DB rebuilt (273 / 57 / 368,447 words); all 49 offline
+      tests; drive_check 0 issues; tone spot-checked (Ikebana keeps its impermanence serene, not sad).
 - [x] **Stories: "The Great Clocks" lecture branch (4)** -- timekeeping through the ages, a theme
       whose slow, even rhythm is itself sleep-fitting (and distinct from all 55 prior branches). **The
       Sundial** (shadow time -- the gnomon, "the one that knows", the slow creep of a shadow at the

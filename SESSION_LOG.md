@@ -3863,6 +3863,25 @@ holds **Rain** with **0 switches**, where the old code would have flipped it 4 t
 `tools/test_sound_cues.py` `next_bed` unit tests already cover the shared logic; selftest; all 49
 offline tests; drive_check 0 issues.
 
+## Stories: "The Mindful Arts" lecture branch (4)
+The Stories cadence came due (3 FOCUS rounds since The Great Clocks). Added a branch whose subject is
+itself a meditation -- the slow, contemplative East-Asian arts -- a natural fit for the app's ethos
+(presence, patience, wonder-over-mastery) and distinct from all 56 prior branches (incl. the Western
+"Quiet Crafts"). Four lectures, the standard shape (7 sections x 12 second-person present-tense ASCII
+lines, settle-in at section 1, drift-to-sleep at section 7): **Calligraphy** (shodo -- the four
+treasures, grinding the sumi ink stick to still the mind, the single unretouchable brushstroke that
+records the breath exactly; Singing Bowl) · **Origami** (a plain square becoming a crane by patient
+valley + mountain folds, the senbazuru thousand-crane wish; Rain on a Roof) · **Bonsai** (an ordinary
+tree kept small over decades by gentle pruning, tended for generations -- a conversation, not control;
+Forest Wind) · **Ikebana** (kado -- a few stems and a great deal of restful empty space, the
+heaven/earth/person lines, seasonality and impermanence as beauty; Wind Chimes). The throughline --
+slowness, patience and presence, each breath like one unhurried brushstroke -- is squarely on-theme.
+Written with four parallel subagents; validated programmatically (7x12, ASCII, punctuation, registered
+ambience) then registered in `lectures._CATALOG`. Verified: selftest now **273 lectures across 57
+branches**; story DB rebuilt (`python -m breathsim.story_db`: 273 / 57 / 368,447 words; .db
+gitignored); all 49 offline tests; drive_check 0 issues; tone spot-checked (Ikebana keeps its
+impermanence serene rather than melancholy). README / INTERFACE counts 269->273 / 56->57.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +
