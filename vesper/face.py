@@ -92,6 +92,7 @@ class FaceWidget(QWidget):
         self._tilt = 0.0                         # eased head-tilt (curiosity)
         self._calm_anim = False                  # 'reduce motion' softens gestures
         self._caption = []                       # a11y: wrapped narration caption rows
+        self._cap_scale = 1.0                    # a11y: UI text-size factor for captions
         self._next_blink = 2.5                   # randomized idle blink schedule
         self._blink_end = -1.0
         self._warm = 0.0                         # warm low-blue Sleep dimming (0..1)
@@ -163,6 +164,11 @@ class FaceWidget(QWidget):
         talking-head view (a list of wrapped rows), or [] to clear -- the same
         caption overlay the scene view uses, so it reads identically in both."""
         self._caption = list(lines or [])
+
+    def set_caption_scale(self, scale):
+        """Accessibility: the global UI text-size factor, so captions over the face
+        enlarge with the rest of the interface (see fontscale)."""
+        self._cap_scale = max(0.5, float(scale))
 
     def set_hourglass(self, state):
         """state = dict(frac, t, running, spin) to show the timer, or None to hide."""
@@ -345,6 +351,7 @@ class FaceWidget(QWidget):
             except Exception:
                 pass
         face_bg.warm_overlay(painter, w, h, self._warm)      # Sleep wind-down warmth
-        captions.paint_caption(painter, w, h, self._caption)  # a11y narration overlay
+        captions.paint_caption(painter, w, h, self._caption,  # a11y narration overlay
+                               self._cap_scale)
         self._hg_rect = hourglass.draw_corner(painter, w, h, self._hg)
         painter.end()

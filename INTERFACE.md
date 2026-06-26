@@ -253,9 +253,12 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   helper; `window.set_captions` (View menu toggle, persisted `captions`, off by default)
   clears both when off. Offline test: `tools/test_captions.py`.
 - **captions.py** — `wrap(text, width=42, max_lines=3)` -> a few centred caption rows,
-  eliding gracefully so the on-screen caption stays a calm fixed size (pure, Qt-free), plus
-  the shared **`paint_caption(p, w, h, lines)`** that both views call to draw the low-contrast
-  rounded panel (lazy Qt import; shrinks the font to fit a narrow view so it never clips).
+  eliding gracefully so the on-screen caption stays a calm fixed size (pure, Qt-free), the
+  pure **`caption_base_px(h, scale)`** font sizer, plus the shared
+  **`paint_caption(p, w, h, lines, scale)`** that both views call to draw the low-contrast
+  rounded panel (lazy Qt import; the caption font scales with the **UI text-size** setting --
+  pushed via `set_caption_scale` from `window.set_text_scale` -- and shrinks to fit a narrow
+  view so it never clips).
 - **hourglass.py** — the session **countdown timer** painter: `draw(p, rect, frac, t,
   running, spin)` renders a glass hourglass whose top bulb empties / bottom heap fills
   as `frac` (elapsed fraction) goes 0→1, with a falling sand stream; `spin` rotates it

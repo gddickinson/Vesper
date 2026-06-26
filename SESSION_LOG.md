@@ -3675,6 +3675,19 @@ no-ops on empty); selftest (261 lectures / 54 branches); all 43 offline tests; d
 a Cat + caption face PNG eyeballed (both rows legible and fitted within the pane). `captions.py` 86,
 `viz.py` 109, `face.py` 350 -- all < 500.
 
+## Captions honour the UI text-size setting (a11y)
+The narration captions used a fixed font (sized only to the view height), bypassing the global
+**UI text-size** accessibility setting -- so a low-vision user who chose Large / Extra-large got
+large chrome but small captions. Added a pure `captions.caption_base_px(h, scale)` that sizes the
+caption font and multiplies by the text-size factor (clamped to a calm 10..40 px; the existing
+fit-to-width shrink still applies on a narrow pane). `VizWidget`/`FaceWidget` gained
+`set_caption_scale`, pushed from `window.set_text_scale` (and applied on launch from the persisted
+`font_scale`). Verified: `tools/test_captions.py` extended (Small<Normal<Large<Extra-large ordering
++ clamps; the scale reaches both views); selftest; all 43 offline tests; drive_check 0 issues; an
+Extra-large caption PNG eyeballed (clearly larger, still fitted within the pane). Noted a separate
+pre-existing item: the scene's own phase-label/subtitle (`scenes._Overlay`) can clip at Extra-large
+because it rides the scaled app font without a fit-to-width -- a future polish round, not the caption.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

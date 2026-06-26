@@ -155,6 +155,17 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Captions honour the UI text-size setting (a11y)** -- the narration captions used a fixed
+      font (sized only to the view height), so a low-vision user who picked **Large / Extra-large**
+      text got large UI chrome but small captions. New pure `captions.caption_base_px(h, scale)`
+      sizes the caption font and scales it by the global text-size factor (clamped 10..40 px, still
+      shrunk to fit a narrow view); `VizWidget`/`FaceWidget` gained `set_caption_scale`, pushed from
+      `window.set_text_scale` (applied on launch via the persisted `font_scale`). Verified:
+      `tools/test_captions.py` extended (size scales Small<Normal<Large<Extra-large + clamps; the
+      scale reaches both views); selftest; all 43 offline tests; drive_check 0 issues; an
+      Extra-large caption PNG eyeballed (larger, still fitted). `captions.py` 97 < 500. (Noted for a
+      future round: the scene's own phase-label/subtitle text can clip at Extra-large -- a separate
+      `scenes._Overlay` concern, not the caption overlay.)
 - [x] **Captions on the talking-head face view (a11y) + shared draw** -- finishes the gap the
       Narration-captions round flagged ("captions render on the scene view; the face view is a
       separate paint path and could gain captions later"). The panel-drawing code moved out of

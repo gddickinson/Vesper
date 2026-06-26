@@ -65,6 +65,11 @@ def test_toggle_and_caption():
     assert w.face._caption, "captions should appear on the face view during narration"
     assert "warm gold light" in " ".join(w.face._caption)
 
+    # the UI text-size setting reaches the caption font on both views
+    w.set_text_scale(1.5)
+    assert abs(w.viz._cap_scale - 1.5) < 1e-6 and abs(w.face._cap_scale - 1.5) < 1e-6
+    w.set_text_scale(1.0)
+
     # turn off -> BOTH overlays clear immediately + persisted off
     w.set_captions(False)
     assert w.viz._caption == [] and w.face._caption == []
@@ -90,8 +95,26 @@ def test_paint_caption_renders():
     print("ok: paint_caption draws onto a QPainter and no-ops on empty input")
 
 
+def test_caption_base_px():
+    """The caption font size scales with the UI text-size factor and stays in a
+    calm clamped range (pure, no Qt)."""
+    from vesper import captions
+    h = 600
+    small = captions.caption_base_px(h, 0.85)
+    normal = captions.caption_base_px(h, 1.0)
+    large = captions.caption_base_px(h, 1.25)
+    xl = captions.caption_base_px(h, 1.5)
+    assert small < normal < large < xl, (small, normal, large, xl)
+    assert 10 <= small and xl <= 40, (small, xl)
+    # a tiny view never goes below the readable floor; a huge factor stays capped
+    assert captions.caption_base_px(50, 1.0) >= 10
+    assert captions.caption_base_px(2000, 3.0) <= 40
+    print("ok: caption_base_px scales with text-size and stays clamped")
+
+
 def main():
     test_wrap()
+    test_caption_base_px()
     test_paint_caption_renders()
     test_toggle_and_caption()
     print("PASS: narration captions")

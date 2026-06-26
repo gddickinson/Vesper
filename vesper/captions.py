@@ -44,12 +44,23 @@ def wrap(text, width=42, max_lines=3):
     return lines
 
 
-def paint_caption(p, w, h, lines):
+def caption_base_px(h, scale=1.0):
+    """The caption font size (px) for a view *h* px tall, before any fit-to-width
+    shrink. Scales with the view and with the accessibility UI text-size *scale*
+    (so 'Large'/'Extra-large' enlarge the captions too), clamped to a calm range.
+    Pure + testable."""
+    base = max(13, min(22, int(h * 0.030)))
+    return max(10, min(40, int(round(base * max(0.5, float(scale))))))
+
+
+def paint_caption(p, w, h, lines, scale=1.0):
     """Draw wrapped caption *lines* as soft centred text on a faint rounded panel
     at the foot of the view -- readable but low-contrast so it stays restful in a
     dark room. Shared by every view that can show narration (the scene VizWidget
     and the talking-head FaceWidget) so captions look identical wherever they
-    appear. Qt is imported lazily here, keeping ``wrap`` usable in pure contexts."""
+    appear. *scale* is the accessibility UI text-size factor, so larger text sizes
+    enlarge the caption too (still shrunk to fit a narrow view). Qt is imported
+    lazily here, keeping ``wrap`` usable in pure contexts."""
     if not lines:
         return
     from PySide6.QtCore import QRectF, Qt
@@ -59,7 +70,7 @@ def paint_caption(p, w, h, lines):
     pad = 18
     margin = 16                                   # keep clear of the view edges
     avail = max(40, w - 2 * margin - 2 * pad)     # widest a caption line may be
-    size = max(13, min(22, int(h * 0.030)))
+    size = caption_base_px(h, scale)
     p.setFont(QFont("Helvetica Neue", size))
     fm = p.fontMetrics()
     tw = max((fm.horizontalAdvance(ln) for ln in lines), default=0)

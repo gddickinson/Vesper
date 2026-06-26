@@ -204,6 +204,8 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
             f.setPointSizeF(max(6.0, self._base_pt * scale))
             app.setFont(f)
         self.setStyleSheet(fontscale.scaled_css(theme.STYLESHEET, scale))
+        self.viz.set_caption_scale(scale)            # captions enlarge with the UI too
+        self.face.set_caption_scale(scale)
 
     # --- visualization view (face ↔ scene) --------------------------------
     def set_view(self, name):

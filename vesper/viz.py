@@ -28,6 +28,7 @@ class VizWidget(QWidget):
         self._hg_rect = None
         self._hg_click_cb = None
         self._caption = []                        # a11y: wrapped narration caption lines
+        self._cap_scale = 1.0                     # a11y: UI text-size factor for captions
         self._ctx = {"running": False, "volume": 0.5, "airflow": 0.0,
                      "phase": "inhale", "cycle_frac": 0.0, "remaining": 0.0,
                      "label": "Ready", "t": 0.0, "prog": None}
@@ -56,6 +57,11 @@ class VizWidget(QWidget):
         wrapped caption rows), or [] to clear. Drawn as a calm overlay at the foot
         of whatever scene is showing, so it works the same for every scene."""
         self._caption = list(lines or [])
+
+    def set_caption_scale(self, scale):
+        """Accessibility: the global UI text-size factor, so captions enlarge with
+        the rest of the interface (see fontscale)."""
+        self._cap_scale = max(0.5, float(scale))
 
     def mousePressEvent(self, ev):
         pos = ev.position()
@@ -104,6 +110,6 @@ class VizWidget(QWidget):
             self._weather.draw(p, w, h, self._ctx.get("t", 0.0),
                                self._ctx.get("volume", 0.5))   # optional weather layer
         face_bg.warm_overlay(p, w, h, self._warm)     # Sleep wind-down warmth
-        captions.paint_caption(p, w, h, self._caption)  # a11y narration overlay
+        captions.paint_caption(p, w, h, self._caption, self._cap_scale)  # a11y overlay
         self._hg_rect = hourglass.draw_corner(p, w, h, self._hg)
         p.end()
