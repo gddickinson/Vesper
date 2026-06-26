@@ -127,5 +127,9 @@ class Noise:
 
 
 def soft_clip(x: np.ndarray) -> np.ndarray:
-    """Gentle tanh limiter to keep the master bus from clipping."""
-    return np.tanh(x)
+    """Gentle tanh limiter to keep the master bus from clipping -- and **always
+    finite**. ``tanh`` already folds +/-inf to +/-1, but ``tanh(nan)`` is ``nan``;
+    a single misbehaving track could otherwise send a non-finite buffer to the
+    sound card and play full-scale garbage (a loud burst). ``nan_to_num`` maps any
+    NaN to silence (0.0), so the worst case is a brief quiet block, never noise."""
+    return np.nan_to_num(np.tanh(x), nan=0.0, posinf=1.0, neginf=-1.0)

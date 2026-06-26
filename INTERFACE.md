@@ -478,7 +478,10 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
 
 ## Vendored core — `breathsim/` (in this project)
 The whole audio/logic/story core lives here, gui-free (the Tk GUI is not vendored):
-`controller`, `engine`, `speech`, `narration` (Kokoro/say + lip-sync `amp`; a
+`controller`, `engine` (the real-time mixer; `dsp.soft_clip` is a **finite-safe**
+master limiter -- NaN -> silence, never a noise burst to the sound card -- and the
+audio callback contains any fault as silence + logs it once), `speech`,
+`narration` (Kokoro/say + lip-sync `amp`; a
 generation token + per-thread-local player process mean a voice/scene change
 never lets an outgoing narrator cut off the incoming one),
 `stories` + the **lecture library** (`lectures` + `lectures_*.py`, 285 across

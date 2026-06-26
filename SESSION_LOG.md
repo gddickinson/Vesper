@@ -3933,6 +3933,21 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Fix: non-finite audio could blast a noise burst
+A robustness round over the real-time audio core (the one un-swept high-traffic surface, on its own
+thread every session; reproduced before fixing). The master limiter `dsp.soft_clip` was a bare
+`np.tanh`: `tanh(+/-inf)` folds safely to +/-1, but **`tanh(nan)` is `nan`**, which passed straight
+through `outdata` to the sound card -- so a single NaN from a misbehaving track/morph/reverb would play
+full-scale garbage, a sudden loud burst in a sleeper's ears (the worst failure for a sleep app). Made
+the limiter finite-safe (`np.nan_to_num(np.tanh(x), nan=0.0, posinf=1.0, neginf=-1.0)`) so the worst
+case is a brief silent block -- protecting the live callback, the WAV export and previews at once. The
+audio callback also now logs its swallowed fault once (`_cb_warned`, via `getattr`) so a
+persistently-silent stream is diagnosable. New `tools/test_audio_safety.py` pins `soft_clip` finite +
+limiting + small-signal-linear and the callback's finite output for a NaN layer + contained-and-warned
+raising layer. Kept `engine.py` at 499 lines (folded a verbose comment) to stay under the 500-line rule.
+Verified: selftest (every voice still renders cleanly through the new limiter); all 54 offline tests;
+drive_check 0 issues.
+
 ## Character actions: a contented sigh + a cosy nestle-down
 An enhancement round (varying from the recent robustness fixes; honours the earlier "add more
 character actions" request). Two more gentle, sleep-appropriate drowsy gestures for the shared 2D

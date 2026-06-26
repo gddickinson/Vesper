@@ -90,8 +90,7 @@ class Chime:
 
 class AudioEngine:
     def __init__(self, controller: BreathController, sr: int | None = None,
-                 blocksize: int = 2048):   # ~46ms: headroom against callback jitter
-                                           # (Kokoro synth / GC) that caused crackle
+                 blocksize: int = 2048):   # ~46ms headroom vs callback jitter (synth/GC crackle)
         self.controller = controller
         self.sr = sr or _default_samplerate()
         self.block = blocksize
@@ -494,5 +493,7 @@ class AudioEngine:
                 out[:, 0] = m
                 out[:, 1] = m
             outdata[:] = out.astype(np.float32)
-        except Exception:
+        except Exception as exc:                   # a fault yields silence, never a crash
             outdata.fill(0)
+            if not getattr(self, "_cb_warned", False):   # log once -> diagnosable silence
+                self._cb_warned = True; print(f"[breathsim] audio callback error: {exc!r}")

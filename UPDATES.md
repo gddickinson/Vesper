@@ -155,6 +155,22 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Fix: non-finite audio could blast a noise burst** -- a real, reproduced robustness gap in the
+      real-time audio core (the one un-swept high-traffic surface, running on its own thread every
+      session). The master limiter `dsp.soft_clip` was a bare `np.tanh`: `tanh(+/-inf)` safely folds to
+      +/-1, but **`tanh(nan)` is `nan`**, which flowed straight through `outdata` to CoreAudio -- so a
+      single misbehaving track / morph / reverb producing a NaN would play **full-scale garbage**, i.e. a
+      sudden loud burst in a sleeper's ears at 3am (the worst failure mode for a sleep app). Made the
+      limiter **finite-safe** (`np.nan_to_num(np.tanh(x), nan=0.0, posinf=1.0, neginf=-1.0)`) so the
+      worst case is a brief silent block, never noise -- protecting the live callback, the offline WAV
+      export and every preview at once. Also the audio callback now logs its swallowed fault **once**
+      (`_cb_warned`, matching the `_tick`/paint patterns) so a persistently-silent stream is diagnosable
+      instead of failing silently forever. New `tools/test_audio_safety.py` pins both: `soft_clip` is
+      always finite + still limits to +/-1 + linear when small (NaN/inf inputs), and the engine callback
+      yields finite output for a NaN-spewing layer (silenced, not noise) and contains a raising layer as
+      silence + warns once. (Kept `engine.py` at 499 lines, under the 500-line rule, by folding a verbose
+      comment.) Verified: selftest (every voice still renders cleanly through the new limiter); all 54
+      offline tests; drive_check 0 issues.
 - [x] **Character actions: a contented sigh + a cosy nestle-down** -- two more gentle, sleep-appropriate
       drowsy gestures for the 2D storyteller cast (honouring the earlier "add more character actions"
       ask), on top of the existing yawn / stretch / nod-off / head-cock / look-around. A **sigh** opens
