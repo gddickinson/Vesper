@@ -92,6 +92,13 @@ def main() -> int:
         if any(not u["text"].strip() or u["text"].strip()[-1] not in ".?!"
                for u in lec):
             problems.append(f"{nm}: malformed line")
+        # section 1 is a fact-free settle-in: no digits should jar a drifting
+        # listener (e.g. "277 miles long"). Enforce the no-digit convention.
+        rec = lectures.get(nm)
+        sec1 = rec.sections[0] if rec and rec.sections else []
+        if any(any(c.isdigit() for c in line) for line in sec1):
+            problems.append(f"{nm}: digits in the settle-in (section 1 must be "
+                            f"fact-free)")
     print(f"Checked {len(names)} lectures across "
           f"{len(lectures.categories())} branches.")
 
