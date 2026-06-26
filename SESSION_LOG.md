@@ -3950,6 +3950,21 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Sleep aid: "A Gentle Journey Downstream" guided imagery
+An enhancement round (first confirmed the books/reader "fall asleep to a novel" path is already
+well-hardened -- `percent_read`/`in_progress` guard zero-sentence books, `units` clamps,
+`resume_units` resets past-end -- so no fix needed there). New guided-imagery session
+`breathsim/journey.py`: lie back in a small boat on a calm river and let the **current carry you** --
+nothing to row or steer -- watch the banks slip by, set each worry on the water to float away, ease to
+a still lagoon and rest. Its theme is *letting go of effort/control*, distinct from the static "Safe
+and Peaceful Place", the body relaxation of Autogenic/PMR, and the breath of NSDR. Built to the
+established guided-session contract (`NAME` + `AMBIENCE` = Mountain Stream + `units(rng, guidance)`
+reusing `hypnosis.drift_tail`), wired through the three `stories.py` hooks (`extra_names` /
+`ambience_for` / `story_units`) so it auto-appears in the picker's Self-help & poetry group (verified
+offscreen). New `tools/test_journey.py` (well-formed units, embark/drift/banks/let-go/rest arc +
+being-carried framing, guidance flag, endless drift, registered ambience, dispatch). Verified:
+selftest; all 56 offline tests; drive_check 0 issues.
+
 ## Scene: "Jellyfish" -- slow drifting bioluminescent bells
 An enhancement round (a visible addition to balance the recent run of robustness fixes; the user
 enjoys the visuals). New calming Sleep/Relax scene `vesper/scene_jelly.py` (`JellyfishScene`): a few

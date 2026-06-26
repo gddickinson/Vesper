@@ -155,6 +155,21 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Sleep aid: "A Gentle Journey Downstream" guided imagery** -- a new guided-imagery sleep session
+      (an enhancement; first confirmed the books/reader "fall asleep to a novel" path is already
+      well-hardened, so no fix was needed there). A classic relaxation visualisation built on *being
+      carried*: you lie back in a small boat on a calm river and let the **current carry you** -- nothing
+      to row or steer -- watch the soft banks slip by, set each worry on the water like a leaf to float
+      away behind you, then ease to a still lagoon and rest. Its theme is **letting go of effort and
+      control**, which makes it genuinely distinct from the *static* "Safe and Peaceful Place", the
+      body-relaxation of Autogenic/PMR, and the breath of NSDR. `breathsim/journey.py` (`NAME` +
+      `AMBIENCE` = Mountain Stream + `units(rng, guidance)`), reusing the shared `hypnosis.drift_tail`
+      for the endless soft sleep tail, and wired through the three storyteller hooks in `stories.py`
+      (`extra_names` / `ambience_for` / `story_units`) so it appears automatically in the picker's
+      **Self-help & poetry** group (verified offscreen). New `tools/test_journey.py` (well-formed units,
+      the embark/drift/banks/let-go/rest arc + the being-carried framing, guidance flag adds/removes the
+      breath-paced breaths, endless drift, registered ambience, dispatch wired). Verified: selftest; all
+      56 offline tests; drive_check 0 issues.
 - [x] **Scene: "Jellyfish" -- slow drifting bioluminescent bells** -- a new calming visual scene for
       Sleep / Relax (a visible enhancement to balance the recent run of robustness fixes), distinct from
       every existing scene and a natural fit for the Deep-Ocean theme. `vesper/scene_jelly.py`

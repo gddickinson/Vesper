@@ -134,10 +134,10 @@ def book_id_for(name):
 def extra_names():
     """Special non-templated storyteller generators (Cognitive Shuffle, Sleep
     Hypnosis + themed self-help hypnosis sessions, Poetry)."""
-    from . import (autogenic, haibun, haiku, hypnosis, hypnosis_topics,
+    from . import (autogenic, haibun, haiku, hypnosis, hypnosis_topics, journey,
                    lovingkindness, poetry, poetry_world, safeplace, shuffle, tales)
     return ([shuffle.NAME, hypnosis.NAME, autogenic.NAME, lovingkindness.NAME,
-             safeplace.NAME]
+             safeplace.NAME, journey.NAME]
             + hypnosis_topics.names()
             + [poetry.NAME] + poetry_world.names()
             + [haiku.NAME, haibun.NAME, tales.NAME])
@@ -159,10 +159,12 @@ def ambience_for(name):
     """Ambience voice for a scene *or* a lecture (None if unknown, e.g. Random)."""
     if isinstance(name, str) and name.startswith(BOOK_PREFIX):
         return BOOK_AMBIENCE
-    from . import (autogenic, hypnosis, hypnosis_topics, lovingkindness, poetry,
-                   poetry_world, safeplace, shuffle)
+    from . import (autogenic, hypnosis, hypnosis_topics, journey, lovingkindness,
+                   poetry, poetry_world, safeplace, shuffle)
     if name == shuffle.NAME:
         return shuffle.AMBIENCE
+    if name == journey.NAME:
+        return journey.AMBIENCE
     if name == hypnosis.NAME:
         return hypnosis.AMBIENCE
     if name == autogenic.NAME:
@@ -315,10 +317,13 @@ def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
         if book:                                 # resume by sentence; finite stream
             yield from bookreader.resume_units(book)
         return
-    from . import (autogenic, hypnosis, hypnosis_topics, lovingkindness, poetry,
-                   poetry_world, safeplace, shuffle)
+    from . import (autogenic, hypnosis, hypnosis_topics, journey, lovingkindness,
+                   poetry, poetry_world, safeplace, shuffle)
     if scene_name == shuffle.NAME:
         yield from shuffle.units(rng, guidance)
+        return
+    if scene_name == journey.NAME:
+        yield from journey.units(rng, guidance)
         return
     if scene_name == hypnosis.NAME:
         yield from hypnosis.units(rng, guidance)

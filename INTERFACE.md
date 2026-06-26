@@ -514,7 +514,11 @@ a loved one -> a neutral person -> a difficult one -> all beings, then `hypnosis
 sleep; Singing Bowl bed) + **`safeplace`** (a **guided-imagery** session -- "A Safe and Peaceful
 Place": let a peaceful place form, then move through what you **see / hear / feel / smell** there,
 settle into belonging where no worry can follow, then `hypnosis.drift_tail` into sleep; Forest Wind
-bed) + **`hypnosis_topics`** (6 **themed self-help** hypnosis
+bed) + **`journey`** (a **guided-imagery** session -- "A Gentle Journey Downstream": lie back in a
+small boat on a calm river and let the **current carry you** -- nothing to row or steer -- watch the
+banks slip by, set each worry on the water to float away, then ease to rest, then `hypnosis.drift_tail`;
+its theme is *letting go of effort/control*, distinct from the static safe-place; Mountain Stream bed) +
+**`hypnosis_topics`** (6 **themed self-help** hypnosis
 sessions reusing that arc with a different permissive suggestion block -- Letting Go of Stress
 / Quiet Confidence / Calm Focus / Letting Go of Worry / Deep Self-Acceptance / Peaceful
 Gratitude, all winding down to sleep) +
