@@ -74,8 +74,10 @@ class Reverb:
 SPACES = {
     "Off":       (1.0, 1.00, 0.00, 2600.0),
     "Room":      (0.55, 0.92, 0.17, 3200.0),
+    "Cave":      (0.80, 1.02, 0.26, 1500.0),   # dark, stony, intimate (heavy damping)
     "Hall":      (1.00, 1.00, 0.25, 2600.0),
     "Cathedral": (1.55, 1.04, 0.32, 2200.0),
+    "Canyon":    (1.95, 1.06, 0.30, 2500.0),   # vast outdoor space, long airy tail
 }
 
 

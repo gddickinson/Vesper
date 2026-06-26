@@ -155,6 +155,19 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Reverb: two new sacred spaces + a regression test** -- a robustness round that became a small
+      enhancement. First swept the un-`selftest`ed audio-effects path (the master-bus reverb, the cosmic
+      generative-music engine, the choir): all sound -- the reverb clamps comb feedback to `min(0.94,
+      g*fbk)` (< 1 -> stable, verified finite over a 4000-block loud run), the cosmic engine prunes its
+      dead pads (no unbounded growth). So no fix needed; instead added value: the sacred-space send
+      (#166) shipped with **no dedicated test** and only Off/Room/Hall/Cathedral, so added two more
+      master-bus spaces to `reverb.SPACES` -- a **dark, intimate Cave** (short delays, heavy damping)
+      and a **vast outdoor Canyon** (long airy tail) -- which auto-wire into the **Sound > Space** menu
+      via `space_names()`. New `tools/test_reverb.py` pins the invariants: every space is offered,
+      every comb feedback clamps < 1 (the stability condition), all stay **finite + bounded** under a
+      loud 58-second run (no feedback blow-up), **Off is a pure identity pass-through** (dry preserved),
+      and a wet space adds a tail that **rings out and decays**. Verified: selftest; all 57 offline
+      tests; drive_check 0 issues.
 - [x] **A11y: caption legibility over any scene** -- the narration **captions** are opt-in *for
       accessibility*, but their soft `theme.TEXT` on a 45%-opaque panel could be hard to read over a
       **bright** scene (Sunrise, Aurora, the new jellyfish glow) for the deaf/hard-of-hearing users who

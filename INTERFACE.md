@@ -547,7 +547,11 @@ Campfire / Singing Bowl / Wind Chimes / Night Crickets / **Purr** ambiences;
 — the **Cosmic Music** generative engine (`GROUP_MUSIC`: Music of the Spheres ·
 Starlight Choir · Deep Space): endless, non-repeating, just-intonation pads scheduled on
 near-coprime cycles over a drone with slow root drift, washed through a block-delay
-feedback-comb `reverb.Reverb`; and **`synth_bell`** — a struck-resonator engine + 12-instrument
+feedback-comb `reverb.Reverb`. `reverb` also has a master-bus **`SpaceReverb`** (a selectable
+sacred-space send wired into the Sound menu via `space_names()`): **Off · Room · Cave · Hall ·
+Cathedral · Canyon** -- Off passes the dry signal through untouched, the rest add a damped wet
+tail with comb feedback clamped < 1 for stability (pinned by `tools/test_reverb.py`). And
+**`synth_bell`** — a struck-resonator engine + 12-instrument
 **Bells & Gongs** library (`GROUP_BELLS`: bells / bowls / gong / triangle / tingsha / tubular +
 a sung bowl) tolling slowly as a meditation/ambience bed; and **`synth_drum`** — a
 membrane/percussion synth + **Drums** library (`GROUP_DRUMS`: frame/taiko/tabla/djembe/log/

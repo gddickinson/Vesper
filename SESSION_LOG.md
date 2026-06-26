@@ -3967,6 +3967,19 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Reverb: two new sacred spaces + a regression test
+A robustness round that became a small enhancement. Swept the audio-effects path not covered by
+`selftest`'s per-voice loop -- the master-bus reverb, the cosmic generative-music engine, the choir --
+and found it sound: the reverb clamps comb feedback to `min(0.94, g*fbk)` (< 1 -> stable; verified
+finite + bounded over a 4000-block loud run), the cosmic engine prunes its dead pads (no unbounded
+growth). So no fix needed; instead added value. The sacred-space send (#166) shipped with no dedicated
+test and only Off/Room/Hall/Cathedral, so added two more spaces to `reverb.SPACES` -- a dark intimate
+**Cave** (short delays, heavy damping) and a vast outdoor **Canyon** (long airy tail) -- auto-wired into
+the Sound > Space menu via `space_names()`. New `tools/test_reverb.py` pins the invariants: every space
+offered, every comb feedback < 1 (stability), all finite + bounded under a loud run (no blow-up), Off a
+pure identity pass-through (dry preserved), and a wet space rings out and decays. Verified: selftest;
+all 57 offline tests; drive_check 0 issues.
+
 ## A11y: caption legibility over any scene
 An accessibility-polish round. The narration captions are opt-in for accessibility, but their soft
 `theme.TEXT` on a 45%-opaque panel could be hard to read over a bright scene (Sunrise, Aurora, the new
