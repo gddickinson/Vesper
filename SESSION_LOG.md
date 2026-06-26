@@ -4002,6 +4002,19 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Regression test: Stats practice insights (incl. corrupt-history safety)
+A quality/lock round. breathsim/insights.py builds the Stats dialog's gentle summaries (total time, average
+sit, busiest weekday, time-of-day, week-over-week, this-month, longest streak, breathing pace) -- pure and
+carefully guarded (every helper has a None empty-state; the #152 hardening tolerates corrupt/legacy history)
+-- but had NO test. Added tools/test_insights.py with an injected fixed "today" for determinism: a brand-new
+history yields no lines and every helper returns None; a realistic 7-day-streak history gives the right
+average (8.9), week-over-week split (70 vs 10), evening time-of-day, resonant pace line and "on it now"
+streak; the streak/TOD/weekday thresholds hold; and -- the important one -- a deliberately corrupt history
+(junk + unparseable day keys, a non-dict day value, non-numeric minutes, junk hour keys, a mixed bpm list)
+never raises and still degrades to sensible lines. Locks rounds #103/#121/#142/#146/#148 and the #152
+corrupt-history hardening at the insights layer. Verified: that test + all 63 other offline tests (64/64);
+selftest (309/66); drive_check 0 issues. No app change.
+
 ## Harden: make selftest's peak check deterministic (kill a flaky lint)
 Follow-up to the Threads round, where selftest once flagged "Frere Jacques peak 1.02 > 1.0" then passed
 clean on re-run. Root cause: the synth's breath noise is OS-seeded (dsp.Noise -> np.random.default_rng(None)),
