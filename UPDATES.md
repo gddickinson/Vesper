@@ -155,6 +155,18 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Storyteller picks the Sloth for sleepy/slow tales** -- a small follow-up to last round's Sloth:
+      it was only manually selectable, but the storyteller auto-picks a fitting character per scene
+      (`story_char.char_for_scene`, the "Character follows the story" toggle), and a sloth is the *ideal*
+      narrator for the explicitly sleep/slow content -- which previously fell through to the default Owl.
+      Added a **Sloth** theme entry (triggers `sleep / asleep / slumber / doze / drowsy / nap / snooze /
+      siesta / slow / lazy / yawn / hammock / rest / sloth`), placed so dream/lullaby still go to Sheep
+      and the broad `slow`/`rest` stems don't steal others (verified). A whole-library scan confirms it
+      now catches exactly the **13** sleep-themed items -- the "How the World Sleeps" branch (Dolphins /
+      Birds on the Wing / Bear's Long Sleep / Sleeping Hive), "The Sloth" + "The Sleeping Brain"
+      lectures, and all 7 Sleep Hypnosis sessions -- and nothing unrelated. Extended
+      `tools/test_story_char.py` (Sloth reachable + gets the sleep/slow themes + does not steal
+      Forest→Bear / Constellations→Owl). Verified: selftest; all 58 offline tests; drive_check 0 issues.
 - [x] **Character: a sleepy Sloth (the perfect sleep-app mascot)** -- a new member of the 2D character
       cast (the user has consistently enjoyed the characters), and the single most on-theme one missing:
       a slow, dreamy, perpetually-smiling **sloth**, whose defining traits -- slowness and dozing -- make

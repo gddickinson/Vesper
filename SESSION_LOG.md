@@ -3985,6 +3985,18 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Storyteller picks the Sloth for sleepy/slow tales
+A small follow-up to last round's Sloth. It was only manually selectable, but the storyteller
+auto-picks a fitting character per scene (`story_char.char_for_scene`, the "Character follows the
+story" toggle), and a sloth is the ideal narrator for the explicit sleep/slow content -- which
+previously defaulted to Owl. Added a Sloth theme entry (sleep/asleep/slumber/doze/drowsy/nap/snooze/
+siesta/slow/lazy/yawn/hammock/rest/sloth), placed so dream/lullaby still go to Sheep and the broad
+slow/rest stems don't steal others. A whole-library scan confirmed it catches exactly the 13
+sleep-themed items (the "How the World Sleeps" branch, "The Sloth" + "The Sleeping Brain" lectures, all
+7 Sleep Hypnosis sessions) and nothing unrelated. Extended `tools/test_story_char.py` (Sloth reachable
++ gets the sleep/slow themes + does not steal Forest->Bear / Constellations->Owl). Verified: selftest;
+all 58 offline tests; drive_check 0 issues.
+
 ## Character: a sleepy Sloth (the perfect sleep-app mascot)
 An enhancement round (the user has consistently enjoyed the character cast). Added the single most
 on-theme missing member: a slow, dreamy, perpetually-smiling **sloth** -- whose defining traits

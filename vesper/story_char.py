@@ -11,12 +11,15 @@ import re
 _WORD = re.compile(r"[a-z]+")
 
 # (character, trigger words). First match wins, so the more specific / leading
-# themes come first. Covers most of the 18-strong cast; Skull, Woman and Man are
+# themes come first. Covers most of the 19-strong cast; Skull, Woman and Man are
 # left out on purpose -- they stay deliberate manual picks (the Skull especially).
 _THEMES = [
     # pastoral + sleep: the shepherd / lullaby tales -- lead so "night" can't grab them
     ("Sheep", ("sheep", "shepherd", "flock", "wool", "lamb", "fleece",
                "lullab", "pasture", "meadow", "dream")),
+    # the sleepiest narrator of all -- the explicit sleep/slowness themes
+    ("Sloth", ("sleep", "asleep", "slumber", "doze", "drowsy", "nap", "snooze",
+               "siesta", "slow", "lazy", "yawn", "hammock", "rest", "sloth")),
     ("Penguin", ("sea", "ocean", "tide", "wave", "coast", "seaside", "surf",
                  "coral", "whale", "iceberg", "antarctic", "arctic", "polar",
                  "lighthouse", "harbour", "harbor")),

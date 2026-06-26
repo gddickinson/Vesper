@@ -29,9 +29,20 @@ def main():
 
     # the map now reaches a broad spread of the cast (not just the original 8)
     assert len(names) >= 14, ("character-follow should use most of the cast", len(names))
-    for newcomer in ("Sheep", "Chicken", "Robot", "Mouse", "Dog", "Hedgehog", "Panda"):
+    for newcomer in ("Sheep", "Chicken", "Robot", "Mouse", "Dog", "Hedgehog",
+                     "Panda", "Sloth"):
         assert newcomer in names, ("newer cast member unused: " + newcomer)
     print("ok: %d distinct characters reachable (incl. the newer cast)" % len(names))
+
+    # the sleepy Sloth narrates the explicitly sleep/slow-themed content
+    for sleepy in ("How the World Sleeps", "The Sleeping Brain",
+                   "How Dolphins Sleep", "Sleep Hypnosis", "A slow afternoon",
+                   "The Sloth"):
+        assert story_char.char_for_scene(sleepy) == "Sloth", (sleepy, "should be Sloth")
+    # ...but its broad triggers (slow/rest) must not steal non-sleepy scenes
+    assert story_char.char_for_scene("The Black Forest") == "Bear"
+    assert story_char.char_for_scene("The Constellations") == "Owl"
+    print("ok: the Sloth gets the sleep/slow themes without stealing others")
 
     # representative scenes / lecture names map to a fitting character
     cases = {
