@@ -3660,6 +3660,21 @@ selftest now reports **261 lectures across 54 branches**; story DB rebuilt
 all 43 offline tests pass; `drive_check` 0 issues; tone spot-checked (Obon stays tender, every branch
 closes on "goodnight, rest well"). README / INTERFACE counts bumped 257->261 lectures, 53->54 branches.
 
+## Captions on the talking-head face view (a11y) + shared draw
+Finished the gap the Narration-captions round explicitly flagged: captions rendered only on the
+scene view, "the talking-head face view is a separate paint path and could gain captions later."
+Moved the panel-drawing out of `VizWidget._draw_caption` into a shared **`captions.paint_caption
+(p, w, h, lines)`** (lazy Qt import so `wrap` stays pure) that BOTH `VizWidget` and the new
+`FaceWidget.set_caption` call -- so the overlay is pixel-identical on either view. `win_frame` now
+computes the wrap **once** per frame and feeds whichever view is showing; `app_actions.set_captions
+(off)` clears both. The first face-view PNG revealed the 42-char lines overflowing the narrow face
+pane (~half the window) and clipping on the left, so `paint_caption` now shrinks the font to fit the
+available width -- a fix that also hardens the scene view at small window sizes. Verified:
+`tools/test_captions.py` extended (face-view caption wired + a `paint_caption` render smoke that
+no-ops on empty); selftest (261 lectures / 54 branches); all 43 offline tests; drive_check 0 issues;
+a Cat + caption face PNG eyeballed (both rows legible and fitted within the pane). `captions.py` 86,
+`viz.py` 109, `face.py` 350 -- all < 500.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

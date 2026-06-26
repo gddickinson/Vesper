@@ -42,3 +42,45 @@ def wrap(text, width=42, max_lines=3):
             last = last[:width - 1].rstrip()
         lines[-1] = last + "..."
     return lines
+
+
+def paint_caption(p, w, h, lines):
+    """Draw wrapped caption *lines* as soft centred text on a faint rounded panel
+    at the foot of the view -- readable but low-contrast so it stays restful in a
+    dark room. Shared by every view that can show narration (the scene VizWidget
+    and the talking-head FaceWidget) so captions look identical wherever they
+    appear. Qt is imported lazily here, keeping ``wrap`` usable in pure contexts."""
+    if not lines:
+        return
+    from PySide6.QtCore import QRectF, Qt
+    from PySide6.QtGui import QColor, QFont
+    from . import theme
+    lines = list(lines)[:3]
+    pad = 18
+    margin = 16                                   # keep clear of the view edges
+    avail = max(40, w - 2 * margin - 2 * pad)     # widest a caption line may be
+    size = max(13, min(22, int(h * 0.030)))
+    p.setFont(QFont("Helvetica Neue", size))
+    fm = p.fontMetrics()
+    tw = max((fm.horizontalAdvance(ln) for ln in lines), default=0)
+    if tw > avail:                                # shrink to fit a narrow view
+        size = max(10, int(size * avail / tw))
+        p.setFont(QFont("Helvetica Neue", size))
+        fm = p.fontMetrics()
+        tw = max((fm.horizontalAdvance(ln) for ln in lines), default=0)
+    lh = fm.height() + 4
+    block_h = lh * len(lines)
+    bottom = h - max(24, int(h * 0.06))
+    top = bottom - block_h
+    panel = QRectF((w - tw) / 2 - pad, top - pad / 2, tw + 2 * pad, block_h + pad)
+    bg = QColor(theme.BG)
+    bg.setAlphaF(0.45)
+    p.setPen(Qt.PenStyle.NoPen)
+    p.setBrush(bg)
+    p.drawRoundedRect(panel, 10, 10)
+    p.setPen(QColor(theme.TEXT))
+    y = top
+    for ln in lines:
+        lw = fm.horizontalAdvance(ln)
+        p.drawText(int((w - lw) / 2), int(y + fm.ascent()), ln)
+        y += lh

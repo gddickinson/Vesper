@@ -155,6 +155,19 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Captions on the talking-head face view (a11y) + shared draw** -- finishes the gap the
+      Narration-captions round flagged ("captions render on the scene view; the face view is a
+      separate paint path and could gain captions later"). The panel-drawing code moved out of
+      `VizWidget._draw_caption` into a shared **`captions.paint_caption(p, w, h, lines)`** (lazy Qt
+      import, keeping `wrap` pure) that BOTH `VizWidget` and `FaceWidget` call, so the caption looks
+      identical on either view. `FaceWidget` gains `set_caption` + paints it after the head/character;
+      `win_frame` now computes the wrap **once** and feeds whichever view is active; `set_captions(off)`
+      clears both. While here, `paint_caption` shrinks the font to fit a narrow view so the line never
+      clips (the face pane is ~half the window width -- the first PNG showed the text running off the
+      left edge; fixed). Verified: `tools/test_captions.py` extended (face-view caption wired; the
+      shared `paint_caption` renders onto a QPainter and no-ops on empty); all 43 offline tests;
+      selftest; drive_check 0 issues; Cat + caption face PNG eyeballed (both rows legible, fitted).
+      `captions.py` 86, `viz.py` 109, `face.py` 350 -- all < 500.
 - [x] **Character actions: drowsy gestures for every character** (user-requested -- "add more
       character actions") -- the shared `char_anim.AnimState` now weaves five rarer, sleep-fitting
       gestures into the existing Anim signals, so all **17 characters** gain them with **zero

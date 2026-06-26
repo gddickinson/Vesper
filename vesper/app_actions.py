@@ -377,12 +377,13 @@ class _ActionsMixin:
 
     def set_captions(self, on):
         """Accessibility (persisted, off by default): show the current spoken line
-        as on-screen text over the scene during narration, for deaf / hard-of-
-        hearing users (storyteller, lectures, guided sessions). Clears immediately
-        when turned off."""
+        as on-screen text during narration (over the scene *or* the talking-head
+        face), for deaf / hard-of-hearing users (storyteller, lectures, guided
+        sessions). Clears immediately when turned off."""
         self._captions = bool(on)
         if not self._captions:
             self.viz.set_caption([])
+            self.face.set_caption([])
         from breathsim import store
         store.save_settings({"captions": self._captions})
 

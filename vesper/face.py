@@ -31,7 +31,7 @@ try:                                              # the 3D head is optional
 except Exception:                                 # no faceView -> 2D cartoon-cat fallback
     _HAVE_FACEVIEW = False
 
-from . import char_anim, characters, face_bg, face_gpu, hourglass, theme
+from . import captions, char_anim, characters, face_bg, face_gpu, hourglass, theme
 
 # faceView's Claude avatar: the ICT head, xray (glowing cyan) style, "young"
 # identity — exactly what the characters file names as default Claude.
@@ -91,6 +91,7 @@ class FaceWidget(QWidget):
         self._next_swallow = 16.0
         self._tilt = 0.0                         # eased head-tilt (curiosity)
         self._calm_anim = False                  # 'reduce motion' softens gestures
+        self._caption = []                       # a11y: wrapped narration caption rows
         self._next_blink = 2.5                   # randomized idle blink schedule
         self._blink_end = -1.0
         self._warm = 0.0                         # warm low-blue Sleep dimming (0..1)
@@ -156,6 +157,12 @@ class FaceWidget(QWidget):
         """Accessibility 'reduce motion': soften + space out the character's
         spontaneous gestures (yawn / stretch / nod-off / head-cock / look-around)."""
         self._calm_anim = bool(on)
+
+    def set_caption(self, lines):
+        """Accessibility: show the current spoken line as on-screen text over the
+        talking-head view (a list of wrapped rows), or [] to clear -- the same
+        caption overlay the scene view uses, so it reads identically in both."""
+        self._caption = list(lines or [])
 
     def set_hourglass(self, state):
         """state = dict(frac, t, running, spin) to show the timer, or None to hide."""
@@ -338,5 +345,6 @@ class FaceWidget(QWidget):
             except Exception:
                 pass
         face_bg.warm_overlay(painter, w, h, self._warm)      # Sleep wind-down warmth
+        captions.paint_caption(painter, w, h, self._caption)  # a11y narration overlay
         self._hg_rect = hourglass.draw_corner(painter, w, h, self._hg)
         painter.end()

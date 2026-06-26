@@ -215,13 +215,16 @@ class _FrameMixin:
             self.apply_cast_tick()             # dramatized: swap character + mood
         self._ease_mood(running)               # expression eases toward the mood
         self._react_face(state, running)       # reactive style/glow (when toggled on)
+        # a11y: the full spoken line on screen, shown the same on whichever view is
+        # active (scene or talking-head face).
+        if getattr(self, "_captions", False) and running and self._story_line:
+            from . import captions
+            cap = captions.wrap(self._story_line)
+        else:
+            cap = []
         if self._view == "scene":
             self.viz.update_state(self._scene_ctx(state, running, prog))
-            if getattr(self, "_captions", False) and running and self._story_line:
-                from . import captions                # a11y: full spoken line on screen
-                self.viz.set_caption(captions.wrap(self._story_line))
-            else:
-                self.viz.set_caption([])
+            self.viz.set_caption(cap)
         else:
             breath, mo = self._face_inputs(state, running, amp)
             self.face.set_state(breath, self._anim_t, prog or 0.0,
@@ -229,6 +232,7 @@ class _FrameMixin:
                                 pucker=mo["pucker"], stretch=mo["stretch"],
                                 phase=state.phase, smile=self._smile,
                                 brow=self._brow, eye_bias=self._eyeb)
+            self.face.set_caption(cap)
         # Sleep wind-down dims + warms toward sleep; the Sunrise wake-up does the
         # inverse, brightening from a warm pre-dawn dimness to a clear, full view.
         wake = getattr(self.director, "wake", False) and running and total > 0

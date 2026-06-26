@@ -56,16 +56,43 @@ def test_toggle_and_caption():
     joined = " ".join(w.viz._caption)
     assert "shoulders soften" in joined
 
-    # turn off -> overlay clears immediately + persisted off
+    # in the talking-head FACE view the same line is wrapped onto the face too
+    w.set_captions(True)
+    w.set_view("face")
+    w._story_line = "You let the warm gold light carry you gently down toward sleep."
+    w._tick()
+    app.processEvents()
+    assert w.face._caption, "captions should appear on the face view during narration"
+    assert "warm gold light" in " ".join(w.face._caption)
+
+    # turn off -> BOTH overlays clear immediately + persisted off
     w.set_captions(False)
-    assert w.viz._caption == []
+    assert w.viz._caption == [] and w.face._caption == []
     assert store.load_settings().get("captions") is False
     w.close()
-    print("ok: toggle round-trips, persists, wires the caption, clears when off")
+    print("ok: toggle round-trips, persists, wires scene+face caption, clears when off")
+
+
+def test_paint_caption_renders():
+    """The shared paint_caption helper draws onto any QPainter without error and
+    is a no-op for empty input (so both views can call it unconditionally)."""
+    from PySide6.QtGui import QImage, QPainter
+    from PySide6.QtWidgets import QApplication
+    QApplication.instance() or QApplication([])             # QFont needs a QGuiApplication
+    from vesper import captions
+    img = QImage(400, 300, QImage.Format.Format_ARGB32)
+    img.fill(0)
+    p = QPainter(img)
+    captions.paint_caption(p, 400, 300, [])                 # empty -> no-op, no crash
+    captions.paint_caption(p, 400, 300, captions.wrap(
+        "You breathe out slowly, and the lanterns drift on the dark water."))
+    p.end()
+    print("ok: paint_caption draws onto a QPainter and no-ops on empty input")
 
 
 def main():
     test_wrap()
+    test_paint_caption_renders()
     test_toggle_and_caption()
     print("PASS: narration captions")
     return 0
