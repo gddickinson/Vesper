@@ -1857,6 +1857,24 @@ no `ANTHROPIC_API_KEY=<value>`, no long key-like tokens in the diff).
 - [ ] **Narration language**: expose Kokoro's languages/voices where available.
 
 ## Stories (ongoing — every ~3rd round)
+- [x] **New branch — Castles & Keeps** (4): Neuschwanstein · Himeji Castle · Edinburgh Castle ·
+      Mont-Saint-Michel -- great castles and strongholds, evocative and calming when framed by their
+      settings + quiet history (NOT battles -- kept gentle throughout, like Sacred Spaces). Globally and
+      visually distinct: a Bavarian fairytale crag, a Japanese white-heron castle, a Scottish castle on a
+      volcanic rock, a French tidal-island abbey-fortress. Added `lectures_{neuschwanstein,himeji,
+      edinburghcastle,montsaintmichel}.py` (7x12 lines, fact-free section 1, accurate history/
+      architecture woven gently -- Neuschwanstein's "new swan stone" built purely as the dreamer King
+      Ludwig's romantic storybook castle above misty pines; Himeji's nail-free wooden keep in luminous
+      white plaster, the "White Heron" / Shirasagi spreading its roofs over cherry blossom; Edinburgh
+      Castle on Castle Rock, the worn plug of an ancient volcano, wrapped in the grey "haar," its tiny
+      old stone chapel; Mont-Saint-Michel's spired abbey on a tidal island in a bay of Europe's largest
+      tides, glowing golden and mirrored in the wet sand). ASCII, every section sleep-closing, each
+      likening the place to settling into rest. Ambiences Wind in Pines / Wind Chimes / Gentle Rain /
+      Ocean Waves (all registered). Distinct NAMEs/modules. New branch in `_CATALOG` -> **297 lectures /
+      63 branches**; story DB rebuilt (25,257 lines / 406,988 words). Done: selftest (297/63); lint --
+      each 7x12, section 1 fact-free (no digits), all 7 sections sleep-close, ASCII-only, ambience
+      resolves to a real voice, no NAME/module collisions; all four dispatch through
+      `stories.story_units`; all 58 offline tests; drive_check 0 issues.
 - [x] **New branch — Cheeses of the World** (4): Cheddar · Brie · Parmesan · Roquefort -- a cosy
       craft/food branch in the vein of Tea & Coffee and Spices & Herbs, full of soothing imagery (cool
       dark caves and cellars, the slow patient months and years of ageing, the quiet turning of the

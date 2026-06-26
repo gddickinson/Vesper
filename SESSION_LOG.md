@@ -3901,6 +3901,24 @@ the correct backdrop or None; every theme + scene base is a registered `face_bg`
 real-lecture sanity sweep (Diwali still cues Embers x13, City x7, etc. -- no regression); selftest;
 all 50 offline tests; drive_check 0 issues.
 
+## Stories: "Castles & Keeps" lecture branch (4)
+A Stories round (every ~3rd). New branch **Castles & Keeps** -- Neuschwanstein, Himeji Castle,
+Edinburgh Castle, Mont-Saint-Michel -- great castles/strongholds framed gently by setting + quiet
+history (no battles), globally and visually distinct (Bavarian fairytale crag / Japanese white-heron
+castle / Scottish volcanic rock / French tidal-island abbey-fortress), and distinct from Sacred Spaces,
+Famous Bridges and Ancient Roads & Walls. Each module
+`lectures_{neuschwanstein,himeji,edinburghcastle,montsaintmichel}.py` is data-only (NAME + AMBIENCE +
+7x12 second-person ASCII SECTIONS): fact-free settle-in, gentle accurate history/architecture
+(Neuschwanstein's storybook swan castle; Himeji's nail-free white-plaster keep over cherry blossom;
+Edinburgh Castle on its ancient volcanic rock in the grey haar; Mont-Saint-Michel glowing on its tidal
+island), sleep-drift close, each likening the place to settling into rest. Ambiences Wind in Pines /
+Wind Chimes / Gentle Rain / Ocean Waves (all registered). Four parallel subagents wrote the modules,
+each self-verifying 7x12/ASCII/punctuation; then registered in `lectures._CATALOG`. Verified: selftest
+**297 lectures across 63 branches**; lint (7x12, section 1 fact-free, all sections sleep-close, ambience
+resolves, no collisions); all four dispatch through `stories.story_units`; all 58 offline tests;
+drive_check 0 issues; story DB rebuilt (25,257 lines / 406,988 words). README/INTERFACE counts
+293->297 / 62->63.
+
 ## Stories: "Cheeses of the World" lecture branch (4)
 A Stories round (every ~3rd). New branch **Cheeses of the World** -- Cheddar, Brie, Parmesan, Roquefort
 -- a cosy craft/food branch like Tea & Coffee / Spices & Herbs, full of soothing imagery (cool dark
