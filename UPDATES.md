@@ -155,6 +155,19 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Deep GUI test-drive: Read-mode fix + every-mode/every-dialog harness** (user-requested). The user
+      hit "start a Read session and just get breathing". Root cause: the **main transport** (the big Play /
+      Space) started the breath + storyteller but NOT the novel -- reading only began from the read-along
+      pane's own button. Fixed via `win_read.read_with_transport()` so the main Play/Pause drives the book
+      narration in Read mode (with a "no book loaded" hint for a fresh, empty library). Built
+      **`tools/test_gui_drive.py`**: starts a real session in all 7 modes and asserts each mode's defining
+      behaviour (Read narrates on Play, Sleep arms the storyteller, the rest run the breath), smoke-opens all
+      11 dialogs/editors, and drives all 116 checkable menu actions through their real handlers. That harness
+      also surfaced a **latent bug**: reflect-the-checkmark handlers held stored `QAction` refs that dangle
+      after a menu rebuild (`menuBar().clear()`), raising a `RuntimeError` Qt **silently swallows in a slot** --
+      fixed with a shared `menus.alive()` guard at all four call sites, and the harness now fails on any
+      swallowed slot exception (via `sys.excepthook`). Verified: 69 offline tests; selftest 325/70; drive_check
+      0 issues; PNG-eyeballed the read-along pane showing the novel under the narrating cat.
 - [x] **Costumes + new robots/aliens + story/theme integration** (user-requested). Added **11 costumes**
       in two small modules merged into the one registry (17 -> 28): **professions** (Police Cap, Fire Helmet,
       Nurse Cap, Head Mirror, Chef Hat, Hard Hat, Graduation Cap) and **sci-fi** (Space Helmet -- translucent

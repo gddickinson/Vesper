@@ -424,6 +424,7 @@ class _ActionsMixin:
 
     # --- menu checkbox reflection ----------------------------------------
     def _sync_menu(self):
-        act = getattr(self, "_act_mute", None)
+        from . import menus
+        act = menus.alive(getattr(self, "_act_mute", None))
         if act is not None:
             act.setChecked(getattr(self, "_is_muted", False))

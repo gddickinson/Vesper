@@ -161,6 +161,24 @@ class _ReadMixin:
         return max(0.0, min(1.0, gain))
 
     # --- narration playback ------------------------------------------------
+    def read_with_transport(self, starting):
+        """In Read mode the **main transport** (the big Play / Space) also drives the
+        novel narration, so the one obvious Play button reads the book -- not just the
+        breathing visuals. (Reading used to start only from the read-along pane's own
+        button, so pressing Play gave "just breathing".) Guides the user when no book
+        is loaded yet. A no-op outside Read mode."""
+        if getattr(self, "current_mode", None) != "Read":
+            return
+        if starting:
+            if not self._read_bid:
+                self.status.showMessage(
+                    "No book loaded yet -- open the Books menu to add or download one.",
+                    6000)
+            elif not self._reading:
+                self.start_reading()
+        elif self._reading:
+            self.stop_reading()
+
     def toggle_reading(self):
         self.stop_reading() if self._reading else self.start_reading()
 

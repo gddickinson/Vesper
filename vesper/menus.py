@@ -350,8 +350,29 @@ def _view(win, m):
     reflect_view(win)
 
 
+def alive(action):
+    """Return *action* if its underlying C++ QAction is still valid, else None.
+    ``build`` does ``menuBar().clear()``, which deletes the old QActions -- so a
+    stored "reflect the checkmark" reference (``win._act_face`` etc.) can be left
+    dangling after a rebuild. Guarding with this keeps a reflect_* / toggle handler
+    from raising ``RuntimeError: Internal C++ object already deleted`` (which Qt
+    silently swallows inside a slot). The next build sets the right checkmark anyway."""
+    if action is None:
+        return None
+    try:
+        from shiboken6 import isValid
+        return action if isValid(action) else None
+    except Exception:                       # pragma: no cover - shiboken always present
+        try:
+            action.isEnabled()              # cheap probe; raises if the C++ side is gone
+            return action
+        except RuntimeError:
+            return None
+
+
 def reflect_view(win):
-    f, s = getattr(win, "_act_face", None), getattr(win, "_act_scene", None)
+    f = alive(getattr(win, "_act_face", None))
+    s = alive(getattr(win, "_act_scene", None))
     if f is not None:
         f.setChecked(win._view == "face")
     if s is not None:

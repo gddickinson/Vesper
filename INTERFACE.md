@@ -410,7 +410,13 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   **View** (face↔scene · scene · weather · text size · reading aids · hourglass ·
   Zen/Blackout/Fullscreen) / **Help**. Helpers `_toggle`/`_sub_list`/`_list_menu`
   keep it declarative. `win.rebuild_menu()` refreshes it; an offscreen audit triggers
-  all ~427 items to guarantee every action fires.
+  all ~427 items to guarantee every action fires. **`alive(action)`** guards a stored
+  reflect-the-checkmark `QAction` ref against a `menuBar().clear()` rebuild (used by
+  `reflect_view` / `toggle_hourglass` / `set_face_cat` / mute-sync, so a slot never
+  raises on a deleted C++ object -- Qt would swallow it silently). The whole GUI is
+  exercised by **`tools/test_gui_drive.py`** (starts a real session in every mode and
+  asserts its defining behaviour -- incl. Read narrating on the main Play -- opens every
+  dialog, and fires all 116 checkable menu actions, failing on any swallowed slot error).
 - **shortcuts.py** — `bind(win)` global keys (Space play/pause · R reset ·
   F fullscreen · Z Zen · Esc exit) + `toggle_zen`/`toggle_fullscreen` (Zen hides
   the mode bar + panel + menus, leaving only the breathing face).
@@ -462,8 +468,10 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   font, play/pause). `win_read._ReadMixin` owns `_build_center` (assembles the whole central
   widget, kept out of window.py), `enter_read`/`leave_read`, `start_reading`/`stop_reading`/
   `toggle_reading` (narrate `bookreader` units via the Narrator + dramatized cast, persisting the
-  per-book resume), a follow timer, and `set_read_along`/`set_reading_speed`/`set_reading_pauses`/
-  `set_reading_voice`. `sections_read._ReadCardMixin._card_read` is the Reading control card (book
+  per-book resume), **`read_with_transport(starting)`** (so the **main transport** Play/Space drives
+  the novel narration in Read mode -- not just the read-pane button -- with a "no book loaded" hint
+  for an empty library; called from `window.toggle_transport`), a follow timer, and
+  `set_read_along`/`set_reading_speed`/`set_reading_pauses`/`set_reading_voice`. `sections_read._ReadCardMixin._card_read` is the Reading control card (book
   picker · add-a-novel · read-along · start/pause · speed · pauses · narration voice). Reading is
   narration-first; breathing visuals (the Start button) and a sleep fade (Sleep mode) are opt-in.
   Coexists with the Reader dialog + the Sleep novel option. Offline test: `tools/test_read_mode.py`.

@@ -287,7 +287,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
     def set_face_cat(self, on):
         """Use the cartoon cat instead of the 3D head (View menu / persisted)."""
         self.face.set_use_cat(on)
-        act = getattr(self, "_act_cat", None)
+        act = menus.alive(getattr(self, "_act_cat", None))
         if act is not None and act.isChecked() != self.face.uses_cat():
             act.setChecked(self.face.uses_cat())
 
@@ -394,6 +394,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
             self.controller.pause()
             self.engine.set_master_volume(0.0)
             self.narrator.stop()
+            self.read_with_transport(False)          # also pause novel narration (Read)
             self._intro_sched = []                   # retire any settle-in lead-in
             self.panel.reflect_running(False)
             self._after_mood()                       # offer it after we've paused
@@ -416,6 +417,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
         self._arm_intro(fresh)
         if fresh and getattr(self, "_settle", False):  # ease the pace down from the start
             self.director.start_settle(self.controller.pattern)
+        self.read_with_transport(True)                 # also start novel narration (Read)
         self._note_if_silent()                         # honest visual-only message
         self.panel.reflect_running(self.controller.running)
 

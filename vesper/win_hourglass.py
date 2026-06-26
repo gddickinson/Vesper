@@ -34,7 +34,8 @@ class _HourglassMixin:
     def toggle_hourglass(self, show=None):
         """Show/hide the hourglass session timer (View menu / persisted)."""
         self._hg_show = (not self._hg_show) if show is None else bool(show)
-        act = getattr(self, "_act_hourglass", None)
+        from . import menus
+        act = menus.alive(getattr(self, "_act_hourglass", None))
         if act is not None and act.isChecked() != self._hg_show:
             act.setChecked(self._hg_show)
 

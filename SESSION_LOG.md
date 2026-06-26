@@ -4031,6 +4031,31 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Deep GUI test-drive: Read-mode fix + a rigorous every-mode/every-dialog harness (user-requested)
+The user reported "when I start a session in Read I just get breathing" and asked for a rigorous test run of
+EVERY aspect of the GUI. Found + fixed the bug, then built the regression that catches it.
+**The Read bug**: Read mode's novel narration was started ONLY by the read-along pane's own Play button
+(`toggle_reading` -> `start_reading`); the MAIN transport (the big Play / Space, `toggle_transport`) started
+the breath controller + `_start_story`, and in Read mode `_story_scene` is None -> so the obvious Play gave
+breathing only. Fix: a new `win_read.read_with_transport(starting)` that, in Read mode, also starts/stops the
+book narration from the main transport (and shows a "no book loaded -- open the Books menu" hint when the
+library is empty -- a fresh install ships none). Repro'd headless (Play -> reading stayed False) and confirmed
+fixed (Play -> controller.running AND _reading True; Pause stops both); PNG-eyeballed the read-along pane
+showing the book text under the narrating cat.
+**The harness** (`tools/test_gui_drive.py`): starts a real session in all 7 modes and asserts each mode's
+*defining* behaviour -- Read narrates the novel on the main Play, Sleep arms the storyteller scene, the rest
+run the breath with no narration -- then ticks the ~40fps loop, pauses, and resets each. It then smoke-opens
+all 11 menu dialogs/editors (modal `exec()` neutralised) and drives EVERY checkable menu action (116 of them:
+the Sound/View/Session toggles + the character/costume/scene/face-style radio picks) through its real wired
+handler, re-resolving each by menu *path* so it survives the handlers that rebuild the menu bar.
+**A second, latent bug the harness surfaced**: several reflect-the-checkmark handlers
+(`menus.reflect_view`, `win_hourglass.toggle_hourglass`, `set_face_cat`, the mute sync) hold stored `QAction`
+references; `menus.build` does `menuBar().clear()`, so after a rebuild those refs dangle and the handlers
+raised `RuntimeError: Internal C++ object already deleted` -- which **Qt silently swallows inside a slot**, so
+it never surfaced. Added a shared `menus.alive(action)` guard (shiboken `isValid`) used at all four call
+sites, and made the harness install a `sys.excepthook` recorder so a swallowed slot exception now FAILS the
+test. Verified: 69 offline tests (incl. the new drive); selftest 325/70; drive_check 0 issues.
+
 ## Costumes + new robots/aliens + story/theme integration (user-requested)
 The user asked for more costumes (space helmet, sci-fi items, professions -- police / fire / doctor / nurse /
 chef / construction) integrated into the stories/themes, plus more robots and aliens; then, "review stories
