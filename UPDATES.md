@@ -155,6 +155,17 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **New scene: Starlit Lake** -- a serene Sleep/Relax visual (diversifying off the recent test +
+      character rounds). A calm dark lake at night: a soft starfield and a low crescent moon in the upper
+      sky, and below the horizon the still water mirrors them -- each star a fainter, gently-trembling
+      twin, and a long vertical **moonglade** of glittering dashes running down from the moon -- with a
+      faint mist on the horizon. Distinct from NightScene (sky only) and WaveScene (an active sea): this is
+      a still, reflective water bed. The moon-halo, the glade and the water shimmer swell a touch on the
+      inhale (a quiet breath cue). Deterministic (a seeded starfield + anim-time motion, nothing per
+      frame); reduce-motion eases it automatically via the slowed `t`. New `scene_lake.py` (128 lines) +
+      registered in scenes.py (scene count 13 -> 14, appears as "Lake" in View > Scene). PNG-eyeballed at
+      inhale + exhale (both serene); drive_check builds all 14 scenes, 0 issues. Verified: selftest; all 66
+      offline tests; drive_check 0 issues.
 - [x] **Regression test: guided-program stage stepping** -- a quality/lock round (diversifying off the
       recent character work). The SessionDirector drives all 11 guided programs (Wim Hof, pranayama,
       body-scan, vocal warm-up, NSDR, sleep wind-down, ...) by walking their Stages on the breath clock,

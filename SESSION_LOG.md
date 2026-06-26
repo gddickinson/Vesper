@@ -4031,6 +4031,22 @@ DB rebuilt (313 lectures / 67 branches, ~430k words). Validated 7x12 + no-digit 
 .?! across all 4; eyeballed section 1 (fact-free) and section 7 (sleep close). Verified: selftest (313/67);
 all 65 offline tests; drive_check 0 issues.
 
+## Scene: "Starlit Lake" -- stars + moon mirrored on still water (sleep/relax)
+A new ambient scene, diversifying off the recent test + character rounds with something fresh and visible.
+A calm dark lake at night: a soft seeded starfield + a low crescent moon (with halo) in the upper sky, and
+below a horizon (with a faint mist band) the still water mirrors them -- each star a fainter, gently-
+trembling reflection, and a long vertical **moonglade** of glittering dashes running down from the moon and
+widening toward the viewer. Distinct from NightScene (sky only) and WaveScene (an active rising sea): this
+is a still, reflective water bed. The moon-halo, the glade and the water shimmer swell a touch on the inhale
+(a quiet breath cue, like the Jellyfish scene). Deterministic -- a seeded starfield + anim-time motion,
+nothing spawned per frame -- so it's cheap and stable, and it reads the per-frame `t` (slowed by the Calm
+visuals toggle) so the shimmer eases automatically under reduce-motion. New scene_lake.py (128 lines)
+following the scene_jelly template (own module, registered at the foot of scenes.py via _CLASSES + AMBIENT);
+appears as "Lake" in View > Scene (menu titles via .capitalize(), consistent with the other scenes). Scene
+count 13 -> 14. PNG-eyeballed at inhale (bright moon-halo + glade) and exhale (gently dimmer) -- both serene
+and clearly a starlit lake. Verified: selftest (317/68); all 66 offline tests; drive_check builds all 14
+scenes with 0 issues; file < 500 lines.
+
 ## Regression test: guided-program stage stepping (session director)
 A quality/lock round, diversifying off the recent character work. The SessionDirector (session.py) drives
 all 11 guided programs (Wim Hof, pranayama, body-scan, vocal warm-up, NSDR, sleep wind-down, ...) by

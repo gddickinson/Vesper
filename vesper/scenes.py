@@ -477,6 +477,9 @@ AMBIENT.append("snow")
 from .scene_jelly import JellyfishScene  # noqa: E402
 _CLASSES["jellyfish"] = JellyfishScene
 AMBIENT.append("jellyfish")
+from .scene_lake import StarlitLake  # noqa: E402
+_CLASSES["lake"] = StarlitLake
+AMBIENT.append("lake")
 
 
 def make(name):

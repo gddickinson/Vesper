@@ -245,7 +245,9 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   rising embers), a shared text overlay, and `make(name)`/`names()`. Larger scenes
   live in their own modules and self-register at the foot of this file:
   `scene_rain` (rain-on-window), `scene_aurora`, `scene_mandala`, `scene_candle`,
-  `scene_drift`, `scene_lanterns`, `scene_snow` and `scene_jelly`.
+  `scene_drift`, `scene_lanterns`, `scene_snow`, `scene_jelly` and `scene_lake`
+  (**Starlit Lake** -- stars + moon mirrored on still dark water, with a trembling
+  moonglade; breath swells the moon-halo, glade and shimmer).
 - **scene_drift.py** — `DriftScene`: a calm "Drifting" sleep/relax sky — soft, low-contrast
   grey-violet cloud puffs ease slowly across a dusk gradient with a faint breathing moon and a
   hint of stars; brightens gently on the inhale. Reads the virtual `t`, so its drift auto-eases
