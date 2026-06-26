@@ -57,7 +57,14 @@ def day_label(course, idx):
 
 
 def apply_day(app, course, idx):
-    """Apply one course day to the app, reusing the normal session machinery."""
+    """Apply one course day to the app, reusing the normal session machinery.
+
+    *idx* is clamped to a real day, so a corrupt/legacy saved position (negative,
+    or past the end) can never IndexError -- it just falls back to the nearest
+    valid day rather than crashing the night's sit."""
+    if not course or not course.days:
+        return
+    idx = max(0, min(int(idx), course.total - 1))
     day = course.days[idx]
     if day.program:
         app.start_session_mode(day.program)

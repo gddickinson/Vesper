@@ -4002,6 +4002,19 @@ then registered in `lectures._CATALOG`. Verified: selftest **281 lectures across
 dispatch through `stories.story_units`; all 52 offline tests; drive_check 0 issues; story DB rebuilt
 (23,913 lines / 381,436 words). README/INTERFACE counts 277->281 / 58->59.
 
+## Harden the multi-night courses against a bad saved day index
+A robustness round in the corrupt-store-JSON vein. `courses.apply_day(app, course, idx)` indexed
+`course.days[idx]` with no bounds check, and `start_course_day`'s guard (`day if day < total else
+total-1`) handled a finished course but not a NEGATIVE saved day from a corrupt/legacy `courses.json` --
+which silently replays the wrong day (Python negative indexing wraps) or IndexErrors mid-sit if very
+negative. Now `apply_day` clamps idx to a real day (`max(0, min(int(idx), total-1))`) and no-ops on an
+empty/None course (the choke point); `start_course_day` clamps both ends in one expression. Added
+`tools/test_courses.py` (the feature had none): shipped courses well-formed, day_label, program- vs
+mode-day dispatch + intention announced, and a negative/past-end/empty/None index degrades safely; plus
+an offscreen smoke proving a corrupt `{day:-7}` and `{day:999}` both start the real "7 Nights to Sleep"
+course without crashing. Verified: that test + all 60 other offline tests (61/61); selftest (301
+lectures / 64 branches); drive_check 0 issues. `courses.py` 128 lines, test 127.
+
 ## "Surprise me" now spans the whole storyteller, not just lectures
 A discoverability fix. "Tonight's pick (random story)" / "Surprise me" chose only from `lecture_names()`
 (301 lectures), so the 19 special experiences -- the guided sessions (Sleep Hypnosis x7, Autogenic,

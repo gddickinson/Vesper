@@ -155,6 +155,19 @@ Set with the user after the realistic-chanting round. Tick as completed.
      small motion, dim palette; default-on but toggle-able; honours Sleep dimming.
 
 ## App improvements — FOCUS (do these first)
+- [x] **Harden the multi-night courses against a bad saved day index** -- a robustness fix in the same
+      vein as the corrupt-store-JSON hardening. `courses.apply_day(app, course, idx)` indexed
+      `course.days[idx]` with **no bounds check**, and `start_course_day`'s guard
+      (`day if day < total else total - 1`) handled a *finished* course but **not a negative** saved day
+      from a corrupt/legacy `courses.json` -- which would silently replay the wrong day (Python negative
+      indexing wraps) or, if very negative, IndexError mid-sit. Now `apply_day` clamps `idx` to a real day
+      (`max(0, min(int(idx), total - 1))`) and no-ops on an empty/None course, and `start_course_day`
+      clamps both ends in one expression -- so any drifted/corrupt position just falls back to the nearest
+      day. Added `tools/test_courses.py` (the feature had none): shipped courses well-formed, day_label,
+      program- vs mode-day dispatch + intention announced, and a negative / past-end / empty / None index
+      degrades safely; plus an offscreen smoke that a corrupt `{day: -7}` and `{day: 999}` both start the
+      real course without crashing. Verified: that test + all 60 other offline tests (61/61); selftest
+      (301 lectures / 64 branches); drive_check 0 issues. `courses.py` 128 lines, test 127.
 - [x] **"Surprise me" now spans the whole storyteller, not just lectures** -- a discoverability fix.
       The "Tonight's pick (random story)" / "Surprise me" one-tap chose only from `lecture_names()` (the
       301 lectures), so the **19** special storyteller experiences -- the guided sessions (Sleep

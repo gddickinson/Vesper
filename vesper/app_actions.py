@@ -190,7 +190,8 @@ class _ActionsMixin:
             return
         total = course.total
         day = store.course_day(name)
-        idx = day if day < total else total - 1      # completed -> replay last day
+        # completed -> replay last day; a corrupt/negative saved day -> first day
+        idx = max(0, min(int(day), total - 1))
         courses.apply_day(self, course, idx)
         self._active_course = (name, total)
         self.status.showMessage(
