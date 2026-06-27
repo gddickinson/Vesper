@@ -1,18 +1,15 @@
 //  KokoroOnnxBackend.swift   ← copy to Vesper/Audio/Neural/ (drop the .template)
-//  Vesper — Kokoro neural-TTS backend via sherpa-onnx.
+//  Vesper — Kokoro neural-TTS backend via sherpa-onnx (verified against v1.13.3).
 //
 //  Prerequisites (see docs/KOKORO_SHERPA_WALKTHROUGH.md):
 //   • sherpa-onnx.xcframework + onnxruntime.xcframework added (Embed & Sign)
-//   • sherpa-onnx's SherpaOnnx.swift helper copied into Vesper/Audio/Neural/
-//   • a bridging header importing the sherpa-onnx C API ("c-api.h")
+//   • SherpaOnnx.swift copied into Vesper/Audio/Neural/
+//   • a bridging header importing "sherpa-onnx/c-api/c-api.h"
 //   • a bundled `kokoro` folder reference (model.onnx, voices.bin, tokens.txt,
-//     espeak-ng-data/)
+//     espeak-ng-data/, lexicon-us-en.txt, lexicon-gb-en.txt)
 //
-//  Then register at launch in VesperApp.swift:
+//  Register at launch in VesperApp.swift:
 //      init() { NeuralTTS.backend = KokoroOnnxBackend() }
-//
-//  NOTE: the sherpaOnnxOffline* helper signatures come from the SherpaOnnx.swift
-//  you copy in — match this file to that version (the API shifts between releases).
 
 import Foundation
 
@@ -24,12 +21,12 @@ final class KokoroOnnxBackend: NeuralTTSBackend {
               let tokens = KokoroModel.resolvedTokens?.path,
               let dataDir = KokoroModel.resolvedDataDir?.path else { return nil }
 
-        // Kokoro model config. Multilingual models also take `lexicon:` + `dictDir:`.
         var kokoro = sherpaOnnxOfflineTtsKokoroModelConfig(
             model: KokoroModel.resolvedModel.path,
             voices: KokoroModel.resolvedVoices.path,
             tokens: tokens,
-            dataDir: dataDir
+            dataDir: dataDir,
+            lexicon: KokoroModel.resolvedLexicon   // "" is fine for espeak-only models
         )
         var model = sherpaOnnxOfflineTtsModelConfig(
             kokoro: kokoro, numThreads: 2, debug: 0, provider: "cpu")
@@ -39,7 +36,9 @@ final class KokoroOnnxBackend: NeuralTTSBackend {
 
     func synthesize(text: String, voiceID: String, speed: Float)
         -> (samples: [Float], sampleRate: Double)? {
-        // Map "af_heart" → Kokoro speaker index (catalog order ≈ voices.bin order).
+        // `sid` indexes the speakers in voices.bin. KokoroCatalog order is
+        // best-effort for this model — if a voice sounds wrong, reorder the
+        // catalog (the audio is correct, only the label may be off).
         let sid = KokoroCatalog.all.firstIndex { $0.id == voiceID } ?? 0
         let audio = tts.generate(text: text, sid: Int(sid), speed: speed)
         guard !audio.samples.isEmpty else { return nil }

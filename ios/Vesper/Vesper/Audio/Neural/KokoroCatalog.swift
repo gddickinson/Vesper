@@ -93,6 +93,17 @@ enum KokoroModel {
     static var resolvedTokens: URL? { bundledDir?.appendingPathComponent("tokens.txt") }
     static var resolvedDataDir: URL? { bundledDir?.appendingPathComponent("espeak-ng-data") }
 
+    /// Comma-joined English lexicons (the multilingual model needs these for
+    /// good g2p; empty for models that only use espeak-ng-data).
+    static var resolvedLexicon: String {
+        guard let d = bundledDir else { return "" }
+        return ["lexicon-us-en.txt", "lexicon-gb-en.txt"]
+            .map { d.appendingPathComponent($0) }
+            .filter { exists($0) }
+            .map { $0.path }
+            .joined(separator: ",")
+    }
+
     static func removeDownload() {
         try? FileManager.default.removeItem(at: modelPath)
         try? FileManager.default.removeItem(at: voicesPath)

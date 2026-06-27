@@ -1,6 +1,9 @@
 # Xcode / build artifacts
 build/
 DerivedData/
+
+# Staged Kokoro neural engine + model (large binaries; local only — drag into Xcode)
+vendor/
 *.xcuserstate
 xcuserdata/
 *.xcworkspace/xcuserdata/

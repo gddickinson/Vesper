@@ -1,97 +1,92 @@
-# Turn on Kokoro neural narration with sherpa-onnx
+# Turn on Kokoro neural narration — step by step
 
-This switches Vesper's narration from the system voices to **Kokoro** — the same
-high-quality, fully-offline neural voices the desktop app uses. ~30 minutes of
-Xcode work, no code beyond dropping in one file.
+This switches Vesper's narration to **Kokoro** neural voices (desktop-grade,
+fully offline). **The downloads and staging are already done for you** — the
+files live in `ios/vendor/` on this Mac. You only do Xcode clicks. ~15 minutes.
 
-## What the app already does for you
+> Already verified against **sherpa-onnx v1.13.3** + the **kokoro-int8-multi-lang
+> v1.1** model. The app's `KokoroModel`/`NeuralNarrator`/picker/routing are
+> wired; the backend file + config are written to match this exact version.
 
-Everything *around* the model is built and shipping:
-- the **voice catalog** (`KokoroCatalog`),
-- **path resolution** that finds a bundled `kokoro` model folder (or a downloaded one),
-- the **playback engine** (`NeuralNarrator` — streams PCM with breath-length gaps),
-- **picker + routing**: when a Kokoro model is present the voices appear in the
-  Sleep ▸ **Voice** list, and narration/preview route through the neural engine
-  the moment a backend is registered.
+## What's already staged (don't re-download)
 
-So you only need to: **(1)** add the sherpa-onnx engine + a Kokoro model, and
-**(2)** drop in one `KokoroOnnxBackend.swift` that registers itself.
+| Path on this Mac | What it is |
+|---|---|
+| `ios/vendor/Frameworks/sherpa-onnx.xcframework` | the engine (static lib) |
+| `ios/vendor/Frameworks/onnxruntime.xcframework` | onnxruntime 1.26 |
+| `ios/vendor/SherpaOnnx.swift` | the Swift wrapper for the C API |
+| `ios/vendor/kokoro/` | the model (model.onnx, voices.bin, tokens.txt, espeak-ng-data/, English lexicons) — 190 MB |
+| `ios/docs/Vesper-Bridging-Header.h` | the bridging header to copy in |
+| `ios/docs/KokoroOnnxBackend.swift.template` | the backend to copy in |
 
-## Step 1 — Get the sherpa-onnx iOS frameworks
+## Steps (all in Xcode)
 
-Repo: <https://github.com/k2-fsa/sherpa-onnx> · releases:
-<https://github.com/k2-fsa/sherpa-onnx/releases>
+Open `ios/Vesper/Vesper.xcodeproj`. In the left panel select the **Vesper** group
+(yellow folder) so new files land in the target. Then:
 
-- **Easiest — prebuilt:** grab the iOS asset (e.g. `sherpa-onnx-<ver>-ios.tar.bz2`,
-  or the `*.xcframework` assets). It contains `sherpa-onnx.xcframework` **and**
-  `onnxruntime.xcframework`.
-- **Or build it:** `git clone … && ./build-ios.sh` → `build-ios/*.xcframework`.
+1. **Add the two frameworks.** In Finder open `ios/vendor/Frameworks`. Drag both
+   `sherpa-onnx.xcframework` and `onnxruntime.xcframework` into the Xcode project
+   navigator → in the sheet, tick **"Copy items if needed"** and the **Vesper**
+   target. Then select the project ▸ **Vesper** target ▸ **General** ▸ *Frameworks,
+   Libraries, and Embedded Content* → set **both** to **Embed & Sign**.
 
-## Step 2 — Get a Kokoro model bundle
+2. **Add the Swift wrapper.** Drag `ios/vendor/SherpaOnnx.swift` into the
+   `Vesper/Audio/Neural` group (Copy items if needed; Vesper target).
 
-From sherpa-onnx's released TTS models, download a Kokoro one (English
-`kokoro-en-v0_19`, or multilingual `kokoro-multi-lang-v1_0`):
+3. **Add the bridging header.** Drag `ios/docs/Vesper-Bridging-Header.h` into the
+   `Vesper` group (Copy items if needed). Then project ▸ Vesper target ▸ **Build
+   Settings** ▸ search *"bridging"* ▸ set **Objective-C Bridging Header** =
+   `Vesper/Vesper-Bridging-Header.h`. (If a later build says *"c-api.h not found"*,
+   add the framework's headers to **Header Search Paths**:
+   `$(BUILT_PRODUCTS_DIR)/../../SourcePackages` isn't needed — instead point it at
+   the xcframework's `Headers` dir, recursive.)
+
+4. **Add the backend.** In Finder duplicate `ios/docs/KokoroOnnxBackend.swift.template`,
+   rename the copy to `KokoroOnnxBackend.swift` (drop `.template`), and drag it
+   into `Vesper/Audio/Neural` (Vesper target).
+
+5. **Add the model.** Drag the **`ios/vendor/kokoro`** folder into the project →
+   in the sheet choose **"Create folder references"** (you'll get a **blue**
+   folder, not a yellow group), Copy items if needed, Vesper target. This bundles
+   the model; `KokoroModel.bundledDir` finds it because it's named `kokoro`.
+
+6. **Register the engine.** Open `Vesper/VesperApp.swift` and add an `init`:
+   ```swift
+   @main
+   struct VesperApp: App {
+       init() { NeuralTTS.backend = KokoroOnnxBackend() }
+       var body: some Scene { WindowGroup { RootView() } }
+   }
+   ```
+
+7. **Build & run** to your iPhone. Open **Sleep ▸ Voice** — the Kokoro voices now
+   appear ("Heart · US ♀ · Neural", …). Pick one and tap **Preview**.
+
+## Verify / troubleshoot
+
+- **`c-api.h` not found** → the bridging header import is `sherpa-onnx/c-api/c-api.h`;
+  if Xcode can't find it, add the xcframework's `Headers` folder to *Header Search
+  Paths* (recursive) in Build Settings.
+- **Linker errors about onnxruntime** → make sure **both** xcframeworks are
+  *Embed & Sign* (step 1).
+- **No neural voices in the picker** → the dragged folder must be **blue**
+  (folder reference), named exactly `kokoro`, and in the Vesper target; confirm
+  `model.onnx` is inside it.
+- **A voice's name doesn't match how it sounds** → expected. The `sid` indices in
+  this multilingual `voices.bin` don't perfectly line up with `KokoroCatalog`'s
+  English names. The audio is real neural Kokoro; just pick the voice you like by
+  ear. To fix labels, reorder `KokoroCatalog.all` to match the model's speaker
+  order. (I can help map them once you tell me which sounds like what.)
+- **App is large (~190 MB)** → that's the bundled model. Fine for device installs;
+  for App Store later, switch to on-demand download (extend `KokoroDownloader` to
+  fetch + unpack the `.tar.bz2`).
+
+## If you ever need to re-fetch the staged files
 
 ```bash
-curl -LO https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-en-v0_19.tar.bz2
-tar xf kokoro-en-v0_19.tar.bz2          # → folder with model.onnx, voices.bin, tokens.txt, espeak-ng-data/
-mv kokoro-en-v0_19 kokoro               # the app looks for a folder named exactly "kokoro"
+cd ios/vendor
+curl -LO https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.3/sherpa-onnx-v1.13.3-ios.tar.bz2
+curl -LO https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-int8-multi-lang-v1_1.tar.bz2
+curl -LO https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/master/swift-api-examples/SherpaOnnx.swift
+# then unpack and arrange as the table above
 ```
-
-## Step 3 — Add everything to the Xcode project
-
-1. **Frameworks** — drag `sherpa-onnx.xcframework` + `onnxruntime.xcframework` into
-   the project (Copy items if needed; add to the Vesper target). Target ▸ General ▸
-   *Frameworks, Libraries, and Embedded Content* → set both to **Embed & Sign**.
-2. **Swift helper** — copy sherpa-onnx's `swift-api-examples/SherpaOnnx.swift`
-   into `Vesper/Audio/Neural/` (it wraps the C API in Swift — `SherpaOnnxOfflineTtsWrapper`, the `sherpaOnnxOffline*Config(...)` builders, etc.).
-3. **Bridging header** — create `Vesper/Vesper-Bridging-Header.h`:
-   ```objc
-   #import "c-api.h"   // sherpa-onnx C API (from the xcframework headers)
-   ```
-   Build Settings ▸ *Objective-C Bridging Header* = `Vesper/Vesper-Bridging-Header.h`
-   (mirror sherpa-onnx's own iOS example's bridging header).
-4. **Model bundle** — drag the **`kokoro`** folder in and choose **"Create folder
-   references"** (a *blue* folder, not a yellow group), added to the Vesper target.
-   This bundles `model.onnx`, `voices.bin`, `tokens.txt`, `espeak-ng-data/`.
-   `KokoroModel.bundledDir` finds it automatically. (Adds ~80–330 MB — prefer the
-   int8/quantized model to keep it small.)
-
-## Step 4 — Drop in the backend
-
-Copy [`KokoroOnnxBackend.swift.template`](KokoroOnnxBackend.swift.template) into
-`Vesper/Audio/Neural/KokoroOnnxBackend.swift`. It implements `NeuralTTSBackend`
-against `SherpaOnnxOfflineTtsWrapper`, reading the resolved Kokoro paths.
-
-## Step 5 — Register it at launch
-
-In `VesperApp.swift`:
-
-```swift
-@main
-struct VesperApp: App {
-    init() { NeuralTTS.backend = KokoroOnnxBackend() }   // nil-safe if files absent
-    var body: some Scene { WindowGroup { RootView() } }
-}
-```
-
-## Step 6 — Build & run
-
-Build to your device. In **Sleep ▸ Voice** the Kokoro voices now appear
-("Heart · US ♀ · Neural", "George · UK ♂ · Neural", …). Pick one and tap
-**Preview** — desktop-grade, fully-offline narration.
-
-## Troubleshooting
-
-- **Compile errors in the backend** — the `sherpaOnnxOffline*` helper signatures
-  come from the `SherpaOnnx.swift` you copied; match the backend to that file's
-  current field names (the API evolves between sherpa-onnx versions).
-- **No neural voices in the picker** — the folder reference must be named exactly
-  `kokoro`, be a *blue* folder, be in the target, and contain `model.onnx`.
-- **Crash on first synth** — check the bridging header path, that both
-  xcframeworks are Embed & Sign, and that `espeak-ng-data/` is bundled.
-- **App too large / want on-demand** — instead of bundling, extend
-  `KokoroDownloader` to download + unpack the model `.tar.bz2` at runtime (needs a
-  bzip2/tar lib such as libarchive); the rest already supports the downloaded path.
-- **Speaker mapping** — `KokoroCatalog.all` order should match the speaker indices
-  in `voices.bin`; reorder the catalog if a voice sounds wrong.
