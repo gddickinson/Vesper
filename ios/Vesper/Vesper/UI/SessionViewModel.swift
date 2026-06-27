@@ -46,6 +46,13 @@ enum Mode: String, CaseIterable, Identifiable {
         }
     }
     var narrates: Bool { self == .sleep }
+    var defaultAmbience: String {
+        switch self {
+        case .meditate, .breathwork: return "None"
+        case .relax: return "Ocean Surf"
+        case .sleep: return "Rain"
+        }
+    }
 }
 
 final class SessionViewModel: ObservableObject {
@@ -60,6 +67,8 @@ final class SessionViewModel: ObservableObject {
     @Published var mode: Mode { didSet { if oldValue != mode { applyMode() } } }
     @Published var patternName: String { didSet { clock.setPattern(pattern); save() } }
     @Published var voiceName: String { didSet { engine?.setVoice(voice); save() } }
+    @Published var ambienceName: String { didSet { engine?.setAmbience(ambience); save() } }
+    @Published var ambienceLevel: Double { didSet { engine?.setAmbienceLevel(Float(ambienceLevel)); save() } }
     @Published var breathLevel: Double { didSet { engine?.setBreathLevel(Float(breathLevel)); save() } }
     @Published var masterVolume: Double { didSet { engine?.masterVolume = Float(masterVolume); save() } }
     @Published var narrate: Bool { didSet { save() } }
@@ -78,6 +87,7 @@ final class SessionViewModel: ObservableObject {
 
     var pattern: BreathPattern { Patterns.byName(patternName) ?? Patterns.default }
     var voice: BreathVoice { BreathVoice.byName(voiceName) ?? .default }
+    var ambience: AmbienceVoice { AmbienceVoice.byName(ambienceName) ?? AmbienceVoice.all[0] }
     var lecture: Lecture { Lectures.byTitle(lectureTitle) ?? Lectures.all.first ?? Lectures.fallback[0] }
     var lecturesInBranch: [Lecture] { Lectures.inBranch(lectureBranch) }
 
@@ -103,6 +113,8 @@ final class SessionViewModel: ObservableObject {
         mode = m
         patternName = d.string(forKey: "pattern") ?? m.defaultPattern
         voiceName = d.string(forKey: "voice") ?? m.defaultVoice
+        ambienceName = d.string(forKey: "ambience") ?? m.defaultAmbience
+        ambienceLevel = d.object(forKey: "ambienceLevel") as? Double ?? 0.5
         breathLevel = d.object(forKey: "breathLevel") as? Double ?? 0.8
         masterVolume = d.object(forKey: "master") as? Double ?? 0.9
         narrate = d.object(forKey: "narrate") as? Bool ?? true
@@ -152,6 +164,8 @@ final class SessionViewModel: ObservableObject {
             let e = AudioEngine(clock: clock, voice: voice)
             e.masterVolume = Float(masterVolume)
             e.setBreathLevel(Float(breathLevel))
+            e.setAmbience(ambience)
+            e.setAmbienceLevel(Float(ambienceLevel))
             engine = e
         }
     }
@@ -161,6 +175,7 @@ final class SessionViewModel: ObservableObject {
     private func applyMode() {
         patternName = mode.defaultPattern
         voiceName = mode.defaultVoice
+        ambienceName = mode.defaultAmbience
         save()
     }
 
@@ -190,6 +205,8 @@ final class SessionViewModel: ObservableObject {
         d.set(mode.rawValue, forKey: "mode")
         d.set(patternName, forKey: "pattern")
         d.set(voiceName, forKey: "voice")
+        d.set(ambienceName, forKey: "ambience")
+        d.set(ambienceLevel, forKey: "ambienceLevel")
         d.set(breathLevel, forKey: "breathLevel")
         d.set(masterVolume, forKey: "master")
         d.set(narrate, forKey: "narrate")

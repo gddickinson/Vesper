@@ -16,6 +16,7 @@ final class AudioEngine {
     private var source: AVAudioSourceNode?
     private let clock: BreathClock
     private let synth: BreathSynth
+    private let ambience: AmbienceSynth
     private let sr: Double
 
     private let maxFrames = 8192
@@ -36,6 +37,8 @@ final class AudioEngine {
         let rate = session.sampleRate > 0 ? session.sampleRate : 44100
         self.sr = rate
         self.synth = BreathSynth(sr: Float(rate), voice: voice)
+        self.ambience = AmbienceSynth(sr: Float(rate),
+                                      voice: AmbienceVoice.byName("None") ?? AmbienceVoice.all[0])
         self.scratch = .allocate(capacity: maxFrames)
         scratch.initialize(repeating: 0, count: maxFrames)
         configureSession()
@@ -79,6 +82,7 @@ final class AudioEngine {
 
         let clk = clock
         let syn = synth
+        let amb = ambience
         let scratchPtr = scratch
         let srF = Float(sr)
 
@@ -106,10 +110,11 @@ final class AudioEngine {
 
             syn.render(into: scratchPtr, frames: frames,
                        airflow0: a0, airflow1: a1, mix0: m0, mix1: m1)
+            amb.addInto(scratchPtr, frames: frames)   // continuous nature bed on top
 
             for buffer in abl {
                 guard let dst = buffer.mData?.assumingMemoryBound(to: Float.self) else { continue }
-                for i in 0..<frames { dst[i] = scratchPtr[i] }
+                for i in 0..<frames { dst[i] = softClip(scratchPtr[i]) }
             }
             return noErr
         }
@@ -142,4 +147,6 @@ final class AudioEngine {
 
     func setBreathLevel(_ level: Float) { synth.level = max(0, min(1, level)) }
     func setVoice(_ v: BreathVoice) { synth.setVoice(v) }
+    func setAmbience(_ v: AmbienceVoice) { ambience.setVoice(v) }
+    func setAmbienceLevel(_ l: Float) { ambience.level = max(0, min(1, l)) }
 }

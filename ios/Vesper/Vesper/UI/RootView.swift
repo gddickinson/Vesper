@@ -96,6 +96,11 @@ struct RootView: View {
                 slider("Breathing", value: $vm.breathLevel)
                 slider("Volume", value: $vm.masterVolume)
             }
+            card {
+                pickerRow("Nature sound", selection: $vm.ambienceName,
+                          options: AmbienceVoice.all.map(\.name))
+                slider("Ambience", value: $vm.ambienceLevel)
+            }
             if vm.mode.narrates {
                 card {
                     pickerRow("Branch", selection: $vm.lectureBranch,
