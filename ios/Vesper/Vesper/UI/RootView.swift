@@ -52,17 +52,24 @@ struct RootView: View {
         .padding(.horizontal, 12)
     }
 
+    private var showsCompanion: Bool { vm.mode == .sleep && vm.companionName != "Orb" }
+
     private var orbArea: some View {
         ZStack {
-            OrbView(state: vm.breath, progress: vm.progress, animT: vm.animT)
-            VStack(spacing: 6) {
-                Text(vm.breath.label.uppercased())
-                    .font(.system(size: 15, weight: .semibold)).tracking(3)
-                    .foregroundStyle(Theme.text.opacity(0.9))
-                if vm.running {
-                    Text(String(format: "%.0f", vm.breath.remaining.rounded(.up)))
-                        .font(.system(size: 30, weight: .light, design: .rounded))
-                        .foregroundStyle(Theme.text.opacity(0.55))
+            if showsCompanion {
+                CharacterView(character: vm.companionName, state: vm.breath,
+                              animT: vm.animT, mouth: vm.mouth)
+            } else {
+                OrbView(state: vm.breath, progress: vm.progress, animT: vm.animT)
+                VStack(spacing: 6) {
+                    Text(vm.breath.label.uppercased())
+                        .font(.system(size: 15, weight: .semibold)).tracking(3)
+                        .foregroundStyle(Theme.text.opacity(0.9))
+                    if vm.running {
+                        Text(String(format: "%.0f", vm.breath.remaining.rounded(.up)))
+                            .font(.system(size: 30, weight: .light, design: .rounded))
+                            .foregroundStyle(Theme.text.opacity(0.55))
+                    }
                 }
             }
             if !vm.caption.isEmpty {
@@ -103,6 +110,8 @@ struct RootView: View {
             }
             if vm.mode.narrates {
                 card {
+                    pickerRow("Companion", selection: $vm.companionName,
+                              options: ["Orb"] + Characters.names)
                     pickerRow("Branch", selection: $vm.lectureBranch,
                               options: Lectures.branches)
                     pickerRow("Lecture", selection: $vm.lectureTitle,

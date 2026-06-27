@@ -9,7 +9,7 @@
 //  reason this is a native app rather than a web page.
 
 import Foundation
-import AVFoundation
+@preconcurrency import AVFoundation
 
 final class AudioEngine {
     private let engine = AVAudioEngine()

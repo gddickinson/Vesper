@@ -62,6 +62,7 @@ final class SessionViewModel: ObservableObject {
     @Published var elapsed: Double = 0
     @Published var running = false
     @Published var caption = ""
+    @Published var mouth: Double = 0     // 0..1 lip-sync openness for the companion
 
     // User selections (persisted).
     @Published var mode: Mode { didSet { if oldValue != mode { applyMode() } } }
@@ -74,6 +75,8 @@ final class SessionViewModel: ObservableObject {
     @Published var narrate: Bool { didSet { save() } }
     @Published var lectureBranch: String { didSet { if oldValue != lectureBranch { onBranchChange() } } }
     @Published var lectureTitle: String { didSet { save() } }
+    /// "Orb" or a character name — the Sleep avatar.
+    @Published var companionName: String { didSet { save() } }
     /// Optional auto-stop minutes (0 = open-ended). Drives the progress arc.
     @Published var sessionMinutes: Double { didSet { save() } }
 
@@ -111,7 +114,9 @@ final class SessionViewModel: ObservableObject {
     init() {
         let m = Mode(rawValue: d.string(forKey: "mode") ?? "meditate") ?? .meditate
         mode = m
-        patternName = d.string(forKey: "pattern") ?? m.defaultPattern
+        let startPattern = Patterns.byName(d.string(forKey: "pattern") ?? m.defaultPattern)
+            ?? Patterns.default
+        patternName = startPattern.name
         voiceName = d.string(forKey: "voice") ?? m.defaultVoice
         ambienceName = d.string(forKey: "ambience") ?? m.defaultAmbience
         ambienceLevel = d.object(forKey: "ambienceLevel") as? Double ?? 0.5
@@ -122,9 +127,10 @@ final class SessionViewModel: ObservableObject {
             ?? Lectures.all.first ?? Lectures.fallback[0]
         lectureBranch = d.string(forKey: "lectureBranch") ?? startLec.branch
         lectureTitle = startLec.title
+        companionName = d.string(forKey: "companion") ?? Characters.default
         sessionMinutes = d.object(forKey: "minutes") as? Double ?? 0
-        clock = BreathClock(pattern: Patterns.byName(patternName) ?? Patterns.default)
-        breath = clock.state()
+        clock = BreathClock(pattern: startPattern)
+        breath = BreathMath.state(startPattern, at: 0)
     }
 
     // MARK: transport
@@ -194,7 +200,12 @@ final class SessionViewModel: ObservableObject {
         breath = clock.state()
         elapsed = clock.now()
         animT += 1.0 / 60.0
-        if narrator.isSpeaking { caption = narrator.currentLine }
+        if narrator.isSpeaking {
+            caption = narrator.currentLine
+            mouth = max(0, 0.45 + 0.45 * sin(animT * 9)) * 0.7   // gentle lip-sync
+        } else {
+            mouth = 0
+        }
         // gentle auto-stop
         if sessionMinutes > 0 && elapsed >= sessionMinutes * 60 && running {
             pause()
@@ -212,6 +223,7 @@ final class SessionViewModel: ObservableObject {
         d.set(narrate, forKey: "narrate")
         d.set(lectureBranch, forKey: "lectureBranch")
         d.set(lectureTitle, forKey: "lecture")
+        d.set(companionName, forKey: "companion")
         d.set(sessionMinutes, forKey: "minutes")
     }
 }

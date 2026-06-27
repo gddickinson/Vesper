@@ -9,10 +9,10 @@
 //  AVSpeechSynthesizer is the always-available baseline.
 
 import Foundation
-import AVFoundation
+@preconcurrency import AVFoundation
 
 final class Narrator: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
-    private let synth = AVSpeechSynthesizer()
+    private nonisolated(unsafe) let synth = AVSpeechSynthesizer()
 
     @Published var currentLine: String = ""
     @Published var isSpeaking: Bool = false
