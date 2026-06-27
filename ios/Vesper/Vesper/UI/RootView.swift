@@ -6,6 +6,7 @@ import SwiftUI
 
 struct RootView: View {
     @StateObject private var vm = SessionViewModel()
+    @StateObject private var neural = KokoroDownloader()
     @State private var showStats = false
 
     var body: some View {
@@ -169,6 +170,7 @@ struct RootView: View {
                         .font(.system(size: 10)).foregroundStyle(Theme.faint)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                neuralCard
             }
             card {
                 HStack {
@@ -208,6 +210,47 @@ struct RootView: View {
             Spacer().frame(width: 50)
         }
         .padding(.bottom, 6)
+    }
+
+    @ViewBuilder private var neuralCard: some View {
+        card {
+            HStack(spacing: 6) {
+                Text("Neural voices").font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(Theme.text)
+                Text("BETA").font(.system(size: 8, weight: .bold)).foregroundStyle(Theme.bg)
+                    .padding(.horizontal, 5).padding(.vertical, 2)
+                    .background(Theme.accentWarm).clipShape(Capsule())
+                Spacer()
+            }
+            Text("Kokoro — the most natural, fully-offline narration (the same neural voices as the desktop app).")
+                .font(.system(size: 11)).foregroundStyle(Theme.faint)
+                .fixedSize(horizontal: false, vertical: true)
+            switch neural.state {
+            case .idle:
+                Button { neural.start() } label: {
+                    Label("Download voice model (~110 MB)", systemImage: "arrow.down.circle")
+                        .font(.system(size: 12, weight: .medium)).foregroundStyle(Theme.accent)
+                }
+            case .downloading:
+                ProgressView(value: neural.progress).tint(Theme.accent)
+                Text("Downloading… \(Int(neural.progress * 100))%")
+                    .font(.system(size: 10)).foregroundStyle(Theme.muted)
+            case .ready:
+                Text(NeuralTTS.backend == nil
+                     ? "Model ready ✓ — neural voices switch on once the voice engine is enabled (see docs/KOKORO_IOS.md)."
+                     : "Neural voices ready ✓ — pick one in the Voice list.")
+                    .font(.system(size: 10)).foregroundStyle(Theme.accent)
+                Button { neural.deleteModel() } label: {
+                    Text("Delete model").font(.system(size: 11)).foregroundStyle(Theme.muted)
+                }
+            case .failed(let msg):
+                Text("Download failed: \(msg)")
+                    .font(.system(size: 10)).foregroundStyle(Theme.accentWarm)
+                Button { neural.start() } label: {
+                    Text("Retry").font(.system(size: 11)).foregroundStyle(Theme.accent)
+                }
+            }
+        }
     }
 
     // MARK: small building blocks

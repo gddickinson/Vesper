@@ -31,6 +31,11 @@ sleep app — **keeps playing with the screen locked** (the `audio` background m
   branch → lecture grouped picker and a **Surprise me** random pick; narrated by
   `AVSpeechSynthesizer` (premium/enhanced voice) with on-screen captions —
   continuing with the screen off.
+- **Narration voices** — a Voice picker over every installed system voice
+  (Default / Enhanced / **Premium**) plus your **Personal Voice** (iOS 17+), with a
+  Preview button; and an opt-in **Kokoro neural** path (download the ~110 MB model
+  in-app; the inference engine drops in per [`docs/KOKORO_IOS.md`](docs/KOKORO_IOS.md)
+  for desktop-grade offline voices).
 - **Background audio**: `.playback` session + `UIBackgroundModes = audio`, with
   **lock-screen Now Playing** controls (`MPNowPlayingInfoCenter` / remote commands).
 - **Practice Stats**: sits · total minutes · day streak + recent sessions.
