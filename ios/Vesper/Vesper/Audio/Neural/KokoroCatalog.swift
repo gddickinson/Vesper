@@ -70,13 +70,28 @@ enum KokoroModel {
         try? FileManager.default.createDirectory(at: d, withIntermediateDirectories: true)
         return d
     }
+    // Download destinations (used by KokoroDownloader).
     static var modelPath: URL { dir.appendingPathComponent("kokoro.onnx") }
     static var voicesPath: URL { dir.appendingPathComponent("voices.bin") }
 
-    static var isDownloaded: Bool {
-        let f = FileManager.default
-        return f.fileExists(atPath: modelPath.path) && f.fileExists(atPath: voicesPath.path)
-    }
+    private static func exists(_ u: URL) -> Bool { FileManager.default.fileExists(atPath: u.path) }
+    static var downloaded: Bool { exists(modelPath) && exists(voicesPath) }
+
+    /// A Kokoro model folder bundled into the app (drag the unpacked sherpa-onnx
+    /// `kokoro-…` folder in as a *folder reference* named `kokoro`). See
+    /// docs/KOKORO_SHERPA_WALKTHROUGH.md.
+    static var bundledDir: URL? { Bundle.main.url(forResource: "kokoro", withExtension: nil) }
+    static var bundled: Bool { bundledDir.map { exists($0.appendingPathComponent("model.onnx")) } ?? false }
+
+    /// Is a usable Kokoro model present (bundled or downloaded)?
+    static var isDownloaded: Bool { bundled || downloaded }
+
+    // Paths the inference backend should read — prefer the bundled folder, which
+    // also carries the tokens + espeak-ng-data that sherpa-onnx needs.
+    static var resolvedModel: URL { bundledDir?.appendingPathComponent("model.onnx") ?? modelPath }
+    static var resolvedVoices: URL { bundledDir?.appendingPathComponent("voices.bin") ?? voicesPath }
+    static var resolvedTokens: URL? { bundledDir?.appendingPathComponent("tokens.txt") }
+    static var resolvedDataDir: URL? { bundledDir?.appendingPathComponent("espeak-ng-data") }
 
     static func removeDownload() {
         try? FileManager.default.removeItem(at: modelPath)

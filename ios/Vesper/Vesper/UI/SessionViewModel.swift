@@ -88,6 +88,7 @@ final class SessionViewModel: ObservableObject {
     private let clock: BreathClock
     private var engine: AudioEngine?
     private let narrator = Narrator()
+    private let neuralNarrator = NeuralNarrator()
     private let nowPlaying = NowPlaying()
     private var runStart: Double = 0
     private var timer: Timer?
@@ -98,7 +99,13 @@ final class SessionViewModel: ObservableObject {
     var ambience: AmbienceVoice { AmbienceVoice.byName(ambienceName) ?? AmbienceVoice.all[0] }
     var lecture: Lecture { Lectures.byTitle(lectureTitle) ?? Lectures.all.first ?? Lectures.fallback[0] }
     var lecturesInBranch: [Lecture] { Lectures.inBranch(lectureBranch) }
-    var narrationVoices: [(id: String, label: String)] { Narrator.voiceMenu() }
+    var narrationVoices: [(id: String, label: String)] {
+        var items = Narrator.voiceMenu()
+        if NeuralTTS.modelPresent {
+            items += KokoroCatalog.all.map { (id: KokoroCatalog.pickerID($0), label: $0.label) }
+        }
+        return items
+    }
 
     func onBranchChange() {
         if let first = lecturesInBranch.first { lectureTitle = first.title }
@@ -121,10 +128,15 @@ final class SessionViewModel: ObservableObject {
     /// Speak one line in the chosen voice so the user can audition it.
     func previewVoice() {
         ensureEngine()
-        narrator.rate = 0.92
-        narrator.linePause = 0.2
-        narrator.selectVoice(id: narrationVoiceID)
-        narrator.speak(["This is how tonight's stories will sound, soft and slow."])
+        let line = "This is how tonight's stories will sound, soft and slow."
+        if let kid = KokoroCatalog.voiceID(fromPicker: narrationVoiceID), NeuralTTS.isReady {
+            neuralNarrator.speak(lines: [line], voiceID: kid, rate: 0.95, linePause: 0)
+        } else {
+            narrator.rate = 0.92
+            narrator.linePause = 0.2
+            narrator.selectVoice(id: narrationVoiceID)
+            narrator.speak([line])
+        }
     }
 
     var progress: Double {
@@ -171,10 +183,16 @@ final class SessionViewModel: ObservableObject {
         runStart = clock.now()
         engine?.start()
         if mode.narrates && narrate {
-            narrator.rate = mode == .sleep ? 0.85 : 0.95
-            narrator.linePause = mode == .sleep ? 1.4 : 0.6
-            narrator.selectVoice(id: narrationVoiceID)
-            narrator.speak(lecture.lines)
+            let rate: Float = mode == .sleep ? 0.85 : 0.95
+            let pause: Double = mode == .sleep ? 1.4 : 0.6
+            if let kid = KokoroCatalog.voiceID(fromPicker: narrationVoiceID), NeuralTTS.isReady {
+                neuralNarrator.speak(lines: lecture.lines, voiceID: kid, rate: rate, linePause: pause)
+            } else {
+                narrator.rate = rate
+                narrator.linePause = pause
+                narrator.selectVoice(id: narrationVoiceID)   // falls back to best for neural ids
+                narrator.speak(lecture.lines)
+            }
         }
         running = true
         updateNowPlaying(playing: true)
@@ -186,6 +204,7 @@ final class SessionViewModel: ObservableObject {
         clock.pause()
         engine?.stop()
         narrator.pause()
+        neuralNarrator.stop()
         running = false
         updateNowPlaying(playing: false)
     }
@@ -193,6 +212,7 @@ final class SessionViewModel: ObservableObject {
     func reset() {
         clock.reset()
         narrator.stop()
+        neuralNarrator.stop()
         caption = ""
         breath = clock.state()
         elapsed = 0
@@ -233,7 +253,10 @@ final class SessionViewModel: ObservableObject {
         breath = clock.state()
         elapsed = clock.now()
         animT += 1.0 / 60.0
-        if narrator.isSpeaking {
+        if neuralNarrator.isSpeaking {
+            caption = neuralNarrator.currentLine
+            mouth = max(0, 0.45 + 0.45 * sin(animT * 9)) * 0.7
+        } else if narrator.isSpeaking {
             caption = narrator.currentLine
             mouth = max(0, 0.45 + 0.45 * sin(animT * 9)) * 0.7   // gentle lip-sync
         } else {
