@@ -46,3 +46,30 @@ No simulator runtime is installed, so a headless run also needs a runtime downlo
 
 Next: bundle the full lecture/book library as JSON; port the 36 cartoon characters
 from `QPainter` to SwiftUI `Canvas`; nature ambiences; Stats/streaks; Now-Playing.
+
+## R2 — content + ambiences + characters + ship-polish (all four user picks)
+User chose to do all of: bundle full content, port characters, nature ambiences,
+ship-polish. Shipped in four committed phases, each verified by a real
+`xcodebuild` build (the user repaired the toolchain with `sudo xcodebuild
+-runFirstLaunch`, so device-class builds run; **note** `swiftc -typecheck` misses
+definite-initialization — only the full build caught a real DI error in
+`SessionViewModel.init`, since fixed):
+
+- **Content**: `ios/tools/export_content.py` dumps the desktop lectures to
+  `Content/lectures.json` (337 across 73 branches, 2.4 MB); `LectureStore` loads
+  it from the bundle (built-in fallback if absent); Sleep gets a branch→lecture
+  grouped picker + a "Surprise me".
+- **Ambiences**: `AmbienceSynth` — one parametric engine (noise colour → optional
+  swept filter → swell LFO + sparse crackle) → 8 beds (rain/ocean/wind/fire/
+  stream/crickets/pink/brown), mixed as a continuous second layer in the source
+  node with a final soft-clip; per-mode defaults; Nature-sound picker + level.
+- **Characters**: `CharacterKit` (aura/head/eyes/blush/nose/mouth/whiskers/ears) +
+  12 `CharacterDrawer`s (Cat…Lion) on a SwiftUI Canvas; `CharacterView`; Sleep
+  shows one as a breathing **companion** that lip-syncs the narration. QA'd by
+  on-simulator screenshots (Cat/Owl/Fox/Lion all recognizable).
+- **Polish**: a procedural **app icon** (`ios/tools/make_icon.py`), lock-screen
+  **Now Playing** (`MPNowPlayingInfoCenter` + remote play/pause), and a
+  **PracticeLog**/`StatsView` (sits · minutes · day streak). Also cleared the
+  `AVSpeechSynthesizer` Sendable warning with `nonisolated(unsafe)`.
+
+Every file < 500 lines. Final state: `** BUILD SUCCEEDED **`, 0 errors / 0 warnings.

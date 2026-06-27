@@ -6,22 +6,32 @@ a wrapper: the breath timing, procedural breath audio, and the breathing orb are
 re-built in Swift so the app runs fully on-device, offline, and — crucially for a
 sleep app — **keeps playing with the screen locked** (the `audio` background mode).
 
-## What works in this first slice
+## What works
 
 - **Four modes** (Meditate · Breathwork · Relax · Sleep) — the mode bar is the
-  primary navigation, as on desktop. Each one-tap configures pattern + breath voice.
+  primary navigation, as on desktop. Each one-tap configures pattern + breath
+  voice + ambience.
 - **Breath pacing**: 16 patterns (Coherent 5.5, Box, 4-7-8, Physiological Sigh, …)
   with the exact desktop envelope math (raised-cosine `volume`, sine-bump `airflow`).
 - **Procedural breath sound**: a real-time `AVAudioSourceNode` renders filtered
   noise (white/pink/brown → swept band-pass → brightness low-pass) shaped by the
   breath airflow — loud mid-breath, silent during holds. Five breath voices.
+- **Nature ambiences**: a parametric `AmbienceSynth` (rain · ocean surf · soft
+  wind · crackling fire · stream · night crickets · pink/brown noise) mixed as a
+  continuous second layer, with its own level.
 - **Breathing orb**: a SwiftUI `Canvas` scene with layered glow, a guide ring, a
   travelling cycle dot, a session-progress arc, and a phase-tinted hue.
-- **Spoken sleep-lectures**: `AVSpeechSynthesizer` narrates a starter set of four
-  lectures slowly, with on-screen captions, picking a natural (premium/enhanced)
-  voice — and it continues with the screen off.
-- **Background audio**: `.playback` audio session + `UIBackgroundModes = audio`.
-- **Persistence**: last mode / pattern / voice / volumes via `UserDefaults`.
+- **12 cartoon characters** (Cat, Dog, Bunny, Bear, Panda, Fox, Owl, Penguin,
+  Frog, Sloth, Mouse, Lion) drawn with SwiftUI `Canvas` — the Sleep mode shows
+  one as a breathing **companion** that lip-syncs the narration.
+- **337 sleep-lectures** across 73 branches (bundled `lectures.json`), a
+  branch → lecture grouped picker and a **Surprise me** random pick; narrated by
+  `AVSpeechSynthesizer` (premium/enhanced voice) with on-screen captions —
+  continuing with the screen off.
+- **Background audio**: `.playback` session + `UIBackgroundModes = audio`, with
+  **lock-screen Now Playing** controls (`MPNowPlayingInfoCenter` / remote commands).
+- **Practice Stats**: sits · total minutes · day streak + recent sessions.
+- **App icon** + **persistence** of every selection via `UserDefaults`.
 
 ## Architecture (mirrors the desktop core)
 
@@ -55,19 +65,18 @@ no third-party dependencies.
 
 ### Verification status
 
-The whole app **type-checks cleanly against the iOS 26.5 SDK** (`swiftc -typecheck`,
-0 errors, 2 benign `Sendable` warnings). The command-line `xcodebuild` on this
-machine currently can't produce the `.app` because the shared Xcode components are
-stale (it fails to load `IDESimulatorFoundation`). Fix it once with:
+The app **builds clean** (`** BUILD SUCCEEDED **`, 0 errors / 0 warnings) and runs
+in the iOS Simulator. Headless build/run:
 
 ```
-sudo xcodebuild -runFirstLaunch        # installs/repairs the shared components
-# then, to run headless in a simulator:
 xcodebuild -project Vesper.xcodeproj -scheme Vesper \
-  -destination 'platform=iOS Simulator,name=iPhone 16' build
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build CODE_SIGNING_ALLOWED=NO
 ```
 
-Building from the **Xcode GUI** does not hit that CLI-plugin issue.
+If `xcodebuild` ever fails to load `IDESimulatorFoundation` (stale shared Xcode
+components), repair once with `sudo xcodebuild -runFirstLaunch`. The Xcode GUI build
+is unaffected. Note: `swiftc -typecheck` is a fast inner-loop check but does **not**
+run definite-initialization — use a full build to catch those.
 
 ## Roadmap toward parity
 
