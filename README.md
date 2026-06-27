@@ -22,6 +22,11 @@ vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 fron
 lives in [`vesper/`](vesper/). Everything **degrades gracefully** — no GPU, no audio
 device, no neural voices, no 3D head — there's always a calm fallback.
 
+> **📱 iOS (native Swift) —** a SwiftUI + AVAudioEngine build for iPhone & iPad is taking
+> shape under [`ios/`](ios/): the breath clock, procedural breath audio and breathing orb,
+> re-implemented natively so it runs offline and keeps playing with the screen locked. See
+> [`ios/README.md`](ios/README.md).
+
 ---
 
 ## Highlights
