@@ -73,6 +73,8 @@ final class SessionViewModel: ObservableObject {
     @Published var breathLevel: Double { didSet { engine?.setBreathLevel(Float(breathLevel)); save() } }
     @Published var masterVolume: Double { didSet { engine?.masterVolume = Float(masterVolume); save() } }
     @Published var narrate: Bool { didSet { save() } }
+    /// Narration voice identifier ("" = automatic best installed voice).
+    @Published var narrationVoiceID: String { didSet { save() } }
     @Published var lectureBranch: String { didSet { if oldValue != lectureBranch { onBranchChange() } } }
     @Published var lectureTitle: String { didSet { save() } }
     /// "Orb" or a character name — the Sleep avatar.
@@ -95,6 +97,7 @@ final class SessionViewModel: ObservableObject {
     var ambience: AmbienceVoice { AmbienceVoice.byName(ambienceName) ?? AmbienceVoice.all[0] }
     var lecture: Lecture { Lectures.byTitle(lectureTitle) ?? Lectures.all.first ?? Lectures.fallback[0] }
     var lecturesInBranch: [Lecture] { Lectures.inBranch(lectureBranch) }
+    var narrationVoices: [(id: String, label: String)] { Narrator.voiceMenu() }
 
     func onBranchChange() {
         if let first = lecturesInBranch.first { lectureTitle = first.title }
@@ -106,6 +109,15 @@ final class SessionViewModel: ObservableObject {
         let l = Lectures.random()
         lectureBranch = l.branch
         lectureTitle = l.title
+    }
+
+    /// Speak one line in the chosen voice so the user can audition it.
+    func previewVoice() {
+        ensureEngine()
+        narrator.rate = 0.92
+        narrator.linePause = 0.2
+        narrator.selectVoice(id: narrationVoiceID)
+        narrator.speak(["This is how tonight's stories will sound, soft and slow."])
     }
 
     var progress: Double {
@@ -125,6 +137,7 @@ final class SessionViewModel: ObservableObject {
         breathLevel = d.object(forKey: "breathLevel") as? Double ?? 0.8
         masterVolume = d.object(forKey: "master") as? Double ?? 0.9
         narrate = d.object(forKey: "narrate") as? Bool ?? true
+        narrationVoiceID = d.string(forKey: "voiceID") ?? ""
         let startLec = Lectures.byTitle(d.string(forKey: "lecture") ?? "")
             ?? Lectures.all.first ?? Lectures.fallback[0]
         lectureBranch = d.string(forKey: "lectureBranch") ?? startLec.branch
@@ -153,6 +166,7 @@ final class SessionViewModel: ObservableObject {
         if mode.narrates && narrate {
             narrator.rate = mode == .sleep ? 0.85 : 0.95
             narrator.linePause = mode == .sleep ? 1.4 : 0.6
+            narrator.selectVoice(id: narrationVoiceID)
             narrator.speak(lecture.lines)
         }
         running = true
@@ -233,6 +247,7 @@ final class SessionViewModel: ObservableObject {
         d.set(breathLevel, forKey: "breathLevel")
         d.set(masterVolume, forKey: "master")
         d.set(narrate, forKey: "narrate")
+        d.set(narrationVoiceID, forKey: "voiceID")
         d.set(lectureBranch, forKey: "lectureBranch")
         d.set(lectureTitle, forKey: "lecture")
         d.set(companionName, forKey: "companion")

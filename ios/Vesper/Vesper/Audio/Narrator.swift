@@ -41,6 +41,46 @@ final class Narrator: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
             ?? AVSpeechSynthesisVoice(language: "en-GB")
     }
 
+    /// All installed English voices, best quality first (premium → enhanced →
+    /// default), then alphabetical. Drives the in-app voice picker.
+    static func englishVoices() -> [AVSpeechSynthesisVoice] {
+        func rank(_ q: AVSpeechSynthesisVoiceQuality) -> Int {
+            switch q {
+            case .premium: return 0
+            case .enhanced: return 1
+            default: return 2
+            }
+        }
+        return AVSpeechSynthesisVoice.speechVoices()
+            .filter { $0.language.hasPrefix("en") }
+            .sorted {
+                rank($0.quality) != rank($1.quality)
+                    ? rank($0.quality) < rank($1.quality) : $0.name < $1.name
+            }
+    }
+
+    /// A friendly label, e.g. "Ava — Premium" or "Daniel · GB".
+    static func label(for v: AVSpeechSynthesisVoice) -> String {
+        let region = v.language.split(separator: "-").last.map(String.init) ?? ""
+        switch v.quality {
+        case .premium:  return "\(v.name) — Premium"
+        case .enhanced: return "\(v.name) — Enhanced"
+        default:        return "\(v.name) · \(region)"
+        }
+    }
+
+    /// Menu of (id, label) for the picker; "" = automatic best voice.
+    static func voiceMenu() -> [(id: String, label: String)] {
+        [(id: "", label: "Automatic (best)")]
+            + englishVoices().map { (id: $0.identifier, label: label(for: $0)) }
+    }
+
+    /// Select a voice by identifier ("" = the best installed voice).
+    func selectVoice(id: String) {
+        voice = id.isEmpty ? Narrator.bestVoice()
+                           : (AVSpeechSynthesisVoice(identifier: id) ?? Narrator.bestVoice())
+    }
+
     /// Speak a sequence of lines. Replaces anything currently queued.
     func speak(_ lines: [String]) {
         stop()

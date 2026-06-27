@@ -139,6 +139,26 @@ struct RootView: View {
                     Toggle("Narrate", isOn: $vm.narrate)
                         .font(.system(size: 13)).foregroundStyle(Theme.text)
                         .tint(Theme.accent)
+                    HStack {
+                        Text("Voice").font(.system(size: 13)).foregroundStyle(Theme.text)
+                        Spacer()
+                        Picker("Voice", selection: $vm.narrationVoiceID) {
+                            ForEach(vm.narrationVoices, id: \.id) { Text($0.label).tag($0.id) }
+                        }
+                        .pickerStyle(.menu).tint(Theme.accent)
+                        .frame(maxWidth: 210, alignment: .trailing)
+                    }
+                    HStack {
+                        Button { vm.previewVoice() } label: {
+                            Label("Preview", systemImage: "speaker.wave.2.fill")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(Theme.accent)
+                        }
+                        Spacer()
+                    }
+                    Text("Tip: for far more natural narration, download an Enhanced or Premium English voice in Settings ▸ Accessibility ▸ Spoken Content ▸ Voices.")
+                        .font(.system(size: 10)).foregroundStyle(Theme.faint)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             card {
