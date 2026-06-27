@@ -63,6 +63,7 @@ final class SessionViewModel: ObservableObject {
     @Published var running = false
     @Published var caption = ""
     @Published var mouth: Double = 0     // 0..1 lip-sync openness for the companion
+    @Published var personalVoiceAuthorized = false   // refreshes the voice list
 
     // User selections (persisted).
     @Published var mode: Mode { didSet { if oldValue != mode { applyMode() } } }
@@ -109,6 +110,12 @@ final class SessionViewModel: ObservableObject {
         let l = Lectures.random()
         lectureBranch = l.branch
         lectureTitle = l.title
+    }
+
+    /// Ask iOS to let Vesper use the user's Personal Voice; on success it
+    /// appears in the voice picker.
+    func enablePersonalVoice() {
+        Narrator.requestPersonalVoice { [weak self] ok in self?.personalVoiceAuthorized = ok }
     }
 
     /// Speak one line in the chosen voice so the user can audition it.

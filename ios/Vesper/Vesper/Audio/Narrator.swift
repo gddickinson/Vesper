@@ -41,31 +41,48 @@ final class Narrator: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
             ?? AVSpeechSynthesisVoice(language: "en-GB")
     }
 
-    /// All installed English voices, best quality first (premium → enhanced →
-    /// default), then alphabetical. Drives the in-app voice picker.
+    /// True if `v` is the user's Personal Voice (iOS 17+).
+    static func isPersonalVoice(_ v: AVSpeechSynthesisVoice) -> Bool {
+        if #available(iOS 17.0, *) { return v.voiceTraits.contains(.isPersonalVoice) }
+        return false
+    }
+
+    /// All English voices plus any authorized Personal Voice, best first
+    /// (Personal → Premium → Enhanced → default), then alphabetical.
     static func englishVoices() -> [AVSpeechSynthesisVoice] {
-        func rank(_ q: AVSpeechSynthesisVoiceQuality) -> Int {
-            switch q {
+        func rank(_ v: AVSpeechSynthesisVoice) -> Int {
+            if isPersonalVoice(v) { return -1 }
+            switch v.quality {
             case .premium: return 0
             case .enhanced: return 1
             default: return 2
             }
         }
         return AVSpeechSynthesisVoice.speechVoices()
-            .filter { $0.language.hasPrefix("en") }
-            .sorted {
-                rank($0.quality) != rank($1.quality)
-                    ? rank($0.quality) < rank($1.quality) : $0.name < $1.name
-            }
+            .filter { $0.language.hasPrefix("en") || isPersonalVoice($0) }
+            .sorted { rank($0) != rank($1) ? rank($0) < rank($1) : $0.name < $1.name }
     }
 
-    /// A friendly label, e.g. "Ava — Premium" or "Daniel · GB".
+    /// A friendly label, e.g. "Ava — Premium", "My Voice — Personal Voice".
     static func label(for v: AVSpeechSynthesisVoice) -> String {
+        if isPersonalVoice(v) { return "\(v.name) — Personal Voice" }
         let region = v.language.split(separator: "-").last.map(String.init) ?? ""
         switch v.quality {
         case .premium:  return "\(v.name) — Premium"
         case .enhanced: return "\(v.name) — Enhanced"
         default:        return "\(v.name) · \(region)"
+        }
+    }
+
+    /// Ask the user to allow Vesper to use their Personal Voice (iOS 17+).
+    /// Calls back with whether it's now authorized (always false pre-iOS 17).
+    static func requestPersonalVoice(_ done: @escaping (Bool) -> Void) {
+        if #available(iOS 17.0, *) {
+            AVSpeechSynthesizer.requestPersonalVoiceAuthorization { status in
+                DispatchQueue.main.async { done(status == .authorized) }
+            }
+        } else {
+            done(false)
         }
     }
 

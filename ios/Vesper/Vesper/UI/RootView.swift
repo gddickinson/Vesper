@@ -155,8 +155,17 @@ struct RootView: View {
                                 .foregroundStyle(Theme.accent)
                         }
                         Spacer()
+                        Button { vm.enablePersonalVoice() } label: {
+                            Label("Use my voice", systemImage: "person.wave.2.fill")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(Theme.accent)
+                        }
                     }
-                    Text("Tip: for far more natural narration, download an Enhanced or Premium English voice in Settings ▸ Accessibility ▸ Spoken Content ▸ Voices.")
+                    if vm.personalVoiceAuthorized {
+                        Text("Personal Voice enabled — pick it in the Voice list above.")
+                            .font(.system(size: 10)).foregroundStyle(Theme.accent)
+                    }
+                    Text("Tip: for far more natural narration, download an Enhanced or Premium English voice in Settings ▸ Accessibility ▸ Spoken Content ▸ Voices. \"Use my voice\" needs a Personal Voice set up in Settings ▸ Accessibility ▸ Personal Voice (iOS 17+).")
                         .font(.system(size: 10)).foregroundStyle(Theme.faint)
                         .fixedSize(horizontal: false, vertical: true)
                 }
