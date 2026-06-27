@@ -98,8 +98,20 @@ struct RootView: View {
             }
             if vm.mode.narrates {
                 card {
-                    pickerRow("Tonight's lecture", selection: $vm.lectureTitle,
-                              options: Lectures.all.map(\.title))
+                    pickerRow("Branch", selection: $vm.lectureBranch,
+                              options: Lectures.branches)
+                    pickerRow("Lecture", selection: $vm.lectureTitle,
+                              options: vm.lecturesInBranch.map(\.title))
+                    HStack {
+                        Button { vm.surpriseLecture() } label: {
+                            Label("Surprise me", systemImage: "sparkles")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(Theme.accent)
+                        }
+                        Spacer()
+                        Text("\(Lectures.all.count) lectures")
+                            .font(.system(size: 11)).foregroundStyle(Theme.faint)
+                    }
                     Toggle("Narrate", isOn: $vm.narrate)
                         .font(.system(size: 13)).foregroundStyle(Theme.text)
                         .tint(Theme.accent)

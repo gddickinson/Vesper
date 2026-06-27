@@ -63,6 +63,7 @@ final class SessionViewModel: ObservableObject {
     @Published var breathLevel: Double { didSet { engine?.setBreathLevel(Float(breathLevel)); save() } }
     @Published var masterVolume: Double { didSet { engine?.masterVolume = Float(masterVolume); save() } }
     @Published var narrate: Bool { didSet { save() } }
+    @Published var lectureBranch: String { didSet { if oldValue != lectureBranch { onBranchChange() } } }
     @Published var lectureTitle: String { didSet { save() } }
     /// Optional auto-stop minutes (0 = open-ended). Drives the progress arc.
     @Published var sessionMinutes: Double { didSet { save() } }
@@ -77,7 +78,20 @@ final class SessionViewModel: ObservableObject {
 
     var pattern: BreathPattern { Patterns.byName(patternName) ?? Patterns.default }
     var voice: BreathVoice { BreathVoice.byName(voiceName) ?? .default }
-    var lecture: Lecture { Lectures.byTitle(lectureTitle) ?? Lectures.all[0] }
+    var lecture: Lecture { Lectures.byTitle(lectureTitle) ?? Lectures.all.first ?? Lectures.fallback[0] }
+    var lecturesInBranch: [Lecture] { Lectures.inBranch(lectureBranch) }
+
+    func onBranchChange() {
+        if let first = lecturesInBranch.first { lectureTitle = first.title }
+        save()
+    }
+
+    /// Pick a random lecture from anywhere in the library.
+    func surpriseLecture() {
+        let l = Lectures.random()
+        lectureBranch = l.branch
+        lectureTitle = l.title
+    }
 
     var progress: Double {
         guard sessionMinutes > 0 else { return 0 }
@@ -92,7 +106,10 @@ final class SessionViewModel: ObservableObject {
         breathLevel = d.object(forKey: "breathLevel") as? Double ?? 0.8
         masterVolume = d.object(forKey: "master") as? Double ?? 0.9
         narrate = d.object(forKey: "narrate") as? Bool ?? true
-        lectureTitle = d.string(forKey: "lecture") ?? Lectures.all[0].title
+        let startLec = Lectures.byTitle(d.string(forKey: "lecture") ?? "")
+            ?? Lectures.all.first ?? Lectures.fallback[0]
+        lectureBranch = d.string(forKey: "lectureBranch") ?? startLec.branch
+        lectureTitle = startLec.title
         sessionMinutes = d.object(forKey: "minutes") as? Double ?? 0
         clock = BreathClock(pattern: Patterns.byName(patternName) ?? Patterns.default)
         breath = clock.state()
@@ -176,6 +193,7 @@ final class SessionViewModel: ObservableObject {
         d.set(breathLevel, forKey: "breathLevel")
         d.set(masterVolume, forKey: "master")
         d.set(narrate, forKey: "narrate")
+        d.set(lectureBranch, forKey: "lectureBranch")
         d.set(lectureTitle, forKey: "lecture")
         d.set(sessionMinutes, forKey: "minutes")
     }
