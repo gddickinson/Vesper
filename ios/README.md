@@ -21,9 +21,12 @@ sleep app — **keeps playing with the screen locked** (the `audio` background m
   continuous second layer, with its own level.
 - **Breathing orb**: a SwiftUI `Canvas` scene with layered glow, a guide ring, a
   travelling cycle dot, a session-progress arc, and a phase-tinted hue.
-- **12 cartoon characters** (Cat, Dog, Bunny, Bear, Panda, Fox, Owl, Penguin,
-  Frog, Sloth, Mouse, Lion) drawn with SwiftUI `Canvas` — the Sleep mode shows
-  one as a breathing **companion** that lip-syncs the narration.
+- **36 cartoon characters** drawn with SwiftUI `Canvas` (the full desktop cast:
+  Cat, Penguin, Dog, Owl, Fox, Chicken, Bunny, Bear, Panda, Frog, Duckling,
+  Hedgehog, Mouse, Rat, Sheep, Sloth, Koala, Red Panda, Lion, Tiger, Elephant,
+  Giraffe, Rhino, Pig, Cow, Monkey, Deer, Snowman, Luna, Robot, Bot, Alien,
+  Martian, Woman, Man, Skull) — the Sleep mode shows one as a breathing
+  **companion** that lip-syncs the narration.
 - **337 sleep-lectures** across 73 branches (bundled `lectures.json`), a
   branch → lecture grouped picker and a **Surprise me** random pick; narrated by
   `AVSpeechSynthesizer` (premium/enhanced voice) with on-screen captions —

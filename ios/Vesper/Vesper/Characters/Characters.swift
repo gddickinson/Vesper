@@ -6,8 +6,13 @@ import Foundation
 
 enum Characters {
     static let all: [CharacterDrawer] = [
-        CatChar(), DogChar(), BunnyChar(), BearChar(), PandaChar(), FoxChar(),
-        OwlChar(), PenguinChar(), FrogChar(), SlothChar(), MouseChar(), LionChar(),
+        CatChar(), PenguinChar(), DogChar(), OwlChar(), FoxChar(), ChickenChar(),
+        BunnyChar(), BearChar(), PandaChar(), FrogChar(), DucklingChar(),
+        HedgehogChar(), MouseChar(), RatChar(), SheepChar(), SlothChar(),
+        KoalaChar(), RedPandaChar(), LionChar(), TigerChar(), ElephantChar(),
+        GiraffeChar(), RhinoChar(), PigChar(), CowChar(), MonkeyChar(), DeerChar(),
+        SnowmanChar(), LunaChar(), RobotChar(), BotChar(), AlienChar(),
+        MartianChar(), WomanChar(), ManChar(), SkullChar(),
     ]
     static let names: [String] = all.map(\.name)
     static let byName: [String: CharacterDrawer] =

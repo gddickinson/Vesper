@@ -73,3 +73,15 @@ definite-initialization — only the full build caught a real DI error in
   `AVSpeechSynthesizer` Sendable warning with `nonisolated(unsafe)`.
 
 Every file < 500 lines. Final state: `** BUILD SUCCEEDED **`, 0 errors / 0 warnings.
+
+## R3 — complete the character cast to all 36
+The remaining 24 characters (Chicken, Duckling, Sheep, Pig, Cow, Tiger, Elephant,
+Giraffe, Rhino, Monkey, Deer, Hedgehog, Rat, Koala, Red Panda, Snowman, Luna,
+Robot, Bot, Alien, Martian, Woman, Man, Skull) drafted by six parallel subagents
+(each read `CharacterKit` + a template, wrote one `Characters<group>.swift`), then
+integrated into `Characters.all` in the desktop order (now **36**), built, and
+QA'd via an on-simulator 24-cell contact sheet (all recognizable: red-comb
+chicken, wool-ring sheep, striped tiger, trunk+ears elephant, antlered deer, spiky
+hedgehog, spoon-nose koala, red-cap snowman, sleepy moon, masked red panda,
+glowing-eye robot, almond-eyed alien, cyclops martian, socket-and-teeth skull…).
+`** BUILD SUCCEEDED **`, 0 errors / 0 warnings.
