@@ -63,8 +63,26 @@ Every file is kept under 500 lines; one concept per file.
 ## Build & run
 
 Open `Vesper.xcodeproj` in **Xcode** (26.x), pick an iPhone/iPad simulator or a
-device, and press **Run**. Bundle id `com.vesper.ios`; deployment target iOS 17;
-no third-party dependencies.
+device, and press **Run**. Bundle id `com.georgedickinson.vesper`; deployment
+target iOS 17; no third-party dependencies.
+
+### Run on your own iPhone/iPad (free Personal Team)
+
+The project is configured for automatic signing with team `L42G2H67V8`. To put it
+on a real device:
+
+1. Plug the device into the Mac (trust the computer when prompted).
+2. Open `Vesper.xcodeproj`; in the toolbar's device menu pick your device.
+3. Target ▸ **Signing & Capabilities**: confirm "Automatically manage signing"
+   and your team are selected (Xcode creates a development profile on the fly).
+4. Press **Run**. On the device, trust the developer profile under
+   Settings ▸ General ▸ VPN & Device Management.
+
+A free Personal Team build **expires after ~7 days** — just Run again to renew.
+**TestFlight / App Store** distribution instead needs a paid Apple Developer
+Program membership (which adds an Apple Distribution cert + App Store Connect).
+When that's in place, set `INFOPLIST_KEY_ITSAppUsesNonExemptEncryption` (already
+present), archive in Release, and upload via Xcode Organizer or an ASC API key.
 
 ### Verification status
 
