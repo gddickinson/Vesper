@@ -6,6 +6,7 @@ import SwiftUI
 
 struct RootView: View {
     @StateObject private var vm = SessionViewModel()
+    @State private var showStats = false
 
     var body: some View {
         ZStack {
@@ -21,6 +22,15 @@ struct RootView: View {
         }
         .preferredColorScheme(.dark)
         .tint(Theme.accent)
+        .overlay(alignment: .topTrailing) {
+            Button { showStats = true } label: {
+                Image(systemName: "chart.bar.fill")
+                    .font(.system(size: 15)).foregroundStyle(Theme.muted)
+                    .padding(14)
+            }
+            .accessibilityLabel("Practice stats")
+        }
+        .sheet(isPresented: $showStats) { StatsView() }
     }
 
     private var header: some View {

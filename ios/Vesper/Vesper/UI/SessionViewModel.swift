@@ -85,6 +85,8 @@ final class SessionViewModel: ObservableObject {
     private let clock: BreathClock
     private var engine: AudioEngine?
     private let narrator = Narrator()
+    private let nowPlaying = NowPlaying()
+    private var runStart: Double = 0
     private var timer: Timer?
     private let d = UserDefaults.standard
 
@@ -131,6 +133,12 @@ final class SessionViewModel: ObservableObject {
         sessionMinutes = d.object(forKey: "minutes") as? Double ?? 0
         clock = BreathClock(pattern: startPattern)
         breath = BreathMath.state(startPattern, at: 0)
+        nowPlaying.configure { [weak self] in self?.togglePlay() }
+    }
+
+    private func updateNowPlaying(playing: Bool) {
+        let title = mode == .sleep ? lecture.title : mode.title
+        nowPlaying.update(title: title, subtitle: "Vesper · \(pattern.name)", playing: playing)
     }
 
     // MARK: transport
@@ -140,6 +148,7 @@ final class SessionViewModel: ObservableObject {
     func start() {
         ensureEngine()
         clock.start()
+        runStart = clock.now()
         engine?.start()
         if mode.narrates && narrate {
             narrator.rate = mode == .sleep ? 0.85 : 0.95
@@ -147,14 +156,17 @@ final class SessionViewModel: ObservableObject {
             narrator.speak(lecture.lines)
         }
         running = true
+        updateNowPlaying(playing: true)
         startTimer()
     }
 
     func pause() {
+        PracticeLog.log(minutes: (clock.now() - runStart) / 60)
         clock.pause()
         engine?.stop()
         narrator.pause()
         running = false
+        updateNowPlaying(playing: false)
     }
 
     func reset() {
