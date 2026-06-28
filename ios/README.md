@@ -6,6 +6,40 @@ a wrapper: the breath timing, procedural breath audio, and the breathing orb are
 re-built in Swift so the app runs fully on-device, offline, and — crucially for a
 sleep app — **keeps playing with the screen locked** (the `audio` background mode).
 
+## Screenshots
+
+| Metal breathing orb | Night-sky scene | Sleepy companion |
+|---|---|---|
+| ![orb](Vesper/docs/images/orb.png) | ![night sky](Vesper/docs/images/night-sky.png) | ![sloth companion](Vesper/docs/images/companion-sloth.png) |
+| **Fireplace scene** | **Ocean (Relax)** | **Bear companion** |
+| ![fireplace](Vesper/docs/images/fireplace.png) | ![ocean](Vesper/docs/images/ocean.png) | ![bear companion](Vesper/docs/images/companion-bear.png) |
+
+## Highlights (2026 update)
+
+- **GPU visuals (Metal).** A fluid, self-lit **breathing-orb shader** plus five
+  scene shaders (night sky · aurora · embers · fireplace · ocean) with gentle
+  **CoreMotion tilt parallax** and Reduce-Motion support. *(One-time setup: Xcode 26
+  ships the Metal compiler separately — run `xcodebuild -downloadComponent MetalToolchain`.)*
+- **Dimensional companions.** Shared-kit soft shading, glossy catch-lit eyes,
+  contact shadows and an idle head-tilt; in Sleep they get **drowsy** (drooping
+  eyes, a contented smile, drifting "z"s) as the wind-down deepens.
+- **On-device AI bedtime stories.** Apple **Foundation Models** (iOS 26, fully
+  `#available`-guarded) compose a fresh, calming story — narrated by Kokoro —
+  falling back to a written lecture when Apple Intelligence isn't present.
+- **Generative ambient pad** ("Dreamfield"): a slow evolving chord, click-free.
+- **HRV coherence (Meditate).** A breathing-band **coherence score + ring** and an
+  adaptive resonance pace, from Apple Health HR (guarded) or a breath-driven demo.
+- **Evidence-based sleep science.** Four guided sessions (paradoxical intention ·
+  deep-sleep hypnosis · stimulus control · constructive worry), a **Deep Sleep
+  pink-noise** bed, and a full **CBT-I program**: a sleep diary, a sleep-efficiency
+  -driven **sleep window** with a wake-time anchor, **wind-down reminders**, and a
+  **sleep-regularity** score. (See [`Vesper/docs/HEALTHKIT_SETUP.md`](Vesper/docs/HEALTHKIT_SETUP.md).)
+- **Apple platform**: App Intents/Siri quick-start, daily reminders, streaks +
+  calendar heatmap, HealthKit **Mindful Minutes / State of Mind** write-back, a
+  custom-pattern builder, and a **Read-aloud** mode.
+- **Neural voices**: bundled **fp32 Kokoro** (highest-quality, fully offline,
+  ~50 voices) — the same quality tier as the desktop.
+
 ## What works
 
 - **Four modes** (Meditate · Breathwork · Relax · Sleep) — the mode bar is the

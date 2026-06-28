@@ -73,6 +73,30 @@ def delete_pattern(name):
            [p for p in patterns_list() if p.get("name") != name])
 
 
+# --- sleep diary (CBT-I) ---------------------------------------------------
+
+_SLEEP_CAP = 400
+
+
+def sleep_entries():
+    """Logged sleep-diary nights (list of dicts, oldest first); malformed-safe."""
+    return [e for e in _read_list("sleep_diary.json") if isinstance(e, dict)]
+
+
+def log_sleep(entry):
+    """Add or replace a diary entry by its ``day`` (yyyy-mm-dd); capped + safe."""
+    if not isinstance(entry, dict) or "day" not in entry:
+        return
+    rows = [e for e in sleep_entries() if e.get("day") != entry.get("day")]
+    rows.append(entry)
+    rows.sort(key=lambda e: e.get("day", ""))
+    _write("sleep_diary.json", rows[-_SLEEP_CAP:])
+
+
+def clear_sleep_diary():
+    _write("sleep_diary.json", [])
+
+
 # --- voices ----------------------------------------------------------------
 
 def voices_list():

@@ -39,11 +39,30 @@ enum Patterns {
             "A deep inhale, a held vase breath, and a long exhale for inner-fire practice."),
         BreathPattern("Sitali (Cooling) 5-1-6", 5, 1, 6, 0,
             "A slow cooling inhale and a soft exhale."),
+        BreathPattern("Resonance 6/min (5-5)", 5, 0, 5, 0,
+            "Even 5s in / 5s out — exactly six breaths a minute, the heart-coherence sweet spot."),
+        BreathPattern("Even 5-5-5", 5, 5, 5, 0,
+            "Inhale, hold, exhale in equal fives. A roomy, steadying triangle for focus."),
+        BreathPattern("Relaxing 4-4-6-2", 4, 4, 6, 2,
+            "A gentle asymmetric square with a longer exhale — calming without holding your breath too long."),
     ]
 
     static let `default` = all[0]
 
     static func byName(_ name: String) -> BreathPattern? {
         all.first { $0.name == name }
+    }
+}
+
+extension BreathPattern {
+    /// A resonance / coherent pattern at `bpm` breaths per minute — equal inhale
+    /// and exhale, no holds (the HRV-coherence style of paced breathing). ~6/min
+    /// is the classic resonance-frequency sweet spot.
+    static func paced(bpm: Double) -> BreathPattern {
+        let b = max(3.0, min(10.0, bpm))
+        let half = (60.0 / b) / 2.0
+        return BreathPattern("Paced \(String(format: "%.1f", b))/min",
+                             half, 0, half, 0,
+                             "Resonance breathing — equal in and out, no holds.")
     }
 }

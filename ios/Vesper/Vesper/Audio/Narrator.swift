@@ -98,24 +98,29 @@ final class Narrator: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
                            : (AVSpeechSynthesisVoice(identifier: id) ?? Narrator.bestVoice())
     }
 
-    /// Speak a sequence of lines. Replaces anything currently queued.
-    func speak(_ lines: [String]) {
+    /// Speak a sequence of lines. Replaces anything currently queued. When
+    /// `windDown` is set, each successive line is a little slower, softer and
+    /// more spaced out — the desktop's sleep wind-down, applied across the queue.
+    func speak(_ lines: [String], windDown: Bool = false) {
         stop()
-        guard !lines.isEmpty else { return }
+        let captions = lines.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                            .filter { !$0.isEmpty }
+        guard !captions.isEmpty else { return }
         // AVSpeechUtterance.rate is 0…1 around `default`; map our multiplier.
         let base = AVSpeechUtteranceDefaultSpeechRate
-        let mapped = max(AVSpeechUtteranceMinimumSpeechRate,
-                         min(AVSpeechUtteranceMaximumSpeechRate, base * rate))
-        for line in lines {
-            let text = line.trimmingCharacters(in: .whitespacesAndNewlines)
-            if text.isEmpty { continue }
-            let u = AVSpeechUtterance(string: text)
+        let span = Double(max(1, captions.count - 1))
+        for (i, caption) in captions.enumerated() {
+            let lvl = windDown ? max(0.25, 1.0 - 0.75 * Double(i) / span) : 1.0
+            let u = AVSpeechUtterance(string: Speakable.clean(caption))  // speak words
             u.voice = voice
-            u.rate = mapped
+            u.rate = max(AVSpeechUtteranceMinimumSpeechRate,
+                         min(AVSpeechUtteranceMaximumSpeechRate,
+                             base * rate * Float(0.82 + 0.18 * lvl)))
+            u.volume = Float(0.95 * (0.4 + 0.6 * lvl))
             u.pitchMultiplier = 0.98
-            u.postUtteranceDelay = linePause
+            u.postUtteranceDelay = linePause * (1 + 0.6 * (1 - lvl))
             u.preUtteranceDelay = 0
-            queueTexts[ObjectIdentifier(u)] = text
+            queueTexts[ObjectIdentifier(u)] = caption   // captions keep the original
             synth.speak(u)
         }
         isSpeaking = true

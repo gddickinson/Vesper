@@ -104,6 +104,9 @@ def _sessions(win, m):
         lambda: win.worries_now())
     m.addAction("Greet me by name…").triggered.connect(
         lambda: win.ask_listener_name())
+    m.addSeparator()
+    m.addAction("Sleep program (CBT-I)…").triggered.connect(
+        lambda: dialogs.open_sleep_program(win))
 
 
 def _books(win, m):

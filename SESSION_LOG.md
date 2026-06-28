@@ -4752,6 +4752,31 @@ still defers to the sleepy Sloth / pastoral Sheep -- good for a sleep app. READM
 offline tests pass per-process; selftest (150 voices, 66 phrases, 337 lectures/73 branches);
 drive_check 0 issues. (Library books are user data, not committed.)
 
+## Sleep-science mirror (D1) — evidence-based guided sessions + pink-noise bed
+Mirrored the iOS app's sleep-science upgrade to the desktop. New `breathsim/sleeptech.py`
+adds 4 evidence-based Sleep storyteller sessions — **Let Go of Trying** (paradoxical
+intention), **Deeper Sleep** (Cordi & Rasch deep-sleep hypnotic suggestion), **Awake in
+the Night** (stimulus control / quarter-hour rule), **Put the Day to Rest** (constructive
+worry / Scullin 2018) — registered through `stories.extra_names`/`ambience_for`/
+`story_units`, each closing on the shared `hypnosis.drift_tail`. Plus a new GROUP_NATURE
+voice **"Deep Sleep (Pink Noise)"** (soft pink noise, ~0.8 Hz slow-wave-ish swell via
+`am_rate`/`am_depth`, gain-calibrated like Pink/Brown). selftest green (151 voices, 337
+lectures). The matching iOS work + research are in the agent memory
+`vesper-sleep-science-upgrades`. Next: D2 — CBT-I sleep diary + sleep-window into `store`
++ a Sleep-panel card.
+
+## Sleep-science mirror (D2) — CBT-I sleep diary + sleep-window
+The first-line insomnia treatment, mirrored from the iOS app. New pure `breathsim/cbti.py`:
+from the sleep diary it computes Time-In-Bed / Total-Sleep / Sleep-Efficiency, then `plan(wake_minutes)`
+prescribes a **sleep-restriction window** (max 5 h, anchored to a fixed wake time) with the standard
+extend/tighten titration, a 0–100 **sleep-regularity** score (circular MAD of bed+wake times),
+stimulus-control `RULES` and a rotating hygiene `tip`. Diary persistence added to `store.py`
+(`log_sleep`/`sleep_entries`/`clear_sleep_diary` in ~/.breathsim, capped + malformed-safe). GUI:
+`dialogs.open_sleep_program` (+ a "Log last night…" form) wired into **Sessions ▸ "Sleep program (CBT-I)…"**.
+Verified: selftest green, offscreen GUI smoke (the dialog renders the window e.g. "11:05 PM – 6:30 AM").
+Also: made `kokoro_tts.py` explicit that it uses the **fp32** (highest-quality) Kokoro build. README
+(desktop + iOS) refreshed with install instructions, the sleep-science features and iOS screenshots.
+
 ## Roadmap to parity with the Tk app
 - Per-mode **workspaces** + control cards (Breath/Voice/Chant/Sing/Relax/Sleep).
 - Visual **scenes** as Qt painters (orb, ripple, wave, night, pitch trainer) +

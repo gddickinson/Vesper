@@ -135,9 +135,11 @@ def extra_names():
     """Special non-templated storyteller generators (Cognitive Shuffle, Sleep
     Hypnosis + themed self-help hypnosis sessions, Poetry)."""
     from . import (autogenic, haibun, haiku, hypnosis, hypnosis_topics, journey,
-                   lovingkindness, poetry, poetry_world, safeplace, shuffle, tales)
+                   lovingkindness, poetry, poetry_world, safeplace, shuffle,
+                   sleeptech, tales)
     return ([shuffle.NAME, hypnosis.NAME, autogenic.NAME, lovingkindness.NAME,
              safeplace.NAME, journey.NAME]
+            + sleeptech.names()
             + hypnosis_topics.names()
             + [poetry.NAME] + poetry_world.names()
             + [haiku.NAME, haibun.NAME, tales.NAME])
@@ -160,7 +162,9 @@ def ambience_for(name):
     if isinstance(name, str) and name.startswith(BOOK_PREFIX):
         return BOOK_AMBIENCE
     from . import (autogenic, hypnosis, hypnosis_topics, journey, lovingkindness,
-                   poetry, poetry_world, safeplace, shuffle)
+                   poetry, poetry_world, safeplace, shuffle, sleeptech)
+    if sleeptech.has(name):
+        return sleeptech.ambience(name)
     if name == shuffle.NAME:
         return shuffle.AMBIENCE
     if name == journey.NAME:
@@ -318,7 +322,10 @@ def story_units(scene_name, rng=None, guidance=True, run=11, start_section=0):
             yield from bookreader.resume_units(book)
         return
     from . import (autogenic, hypnosis, hypnosis_topics, journey, lovingkindness,
-                   poetry, poetry_world, safeplace, shuffle)
+                   poetry, poetry_world, safeplace, shuffle, sleeptech)
+    if sleeptech.has(scene_name):
+        yield from sleeptech.units(scene_name, rng, guidance)
+        return
     if scene_name == shuffle.NAME:
         yield from shuffle.units(rng, guidance)
         return

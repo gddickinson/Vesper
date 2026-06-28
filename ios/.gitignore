@@ -8,3 +8,13 @@ vendor/
 xcuserdata/
 *.xcworkspace/xcuserdata/
 .DS_Store
+
+# Local-only Kokoro overlay inside the app target. These reference the large
+# vendored frameworks/model and must NEVER be committed (GitHub's 100 MB limit; a
+# clone wouldn't have the assets). The repo stays "neural-ready but neural-free" —
+# docs/KOKORO_SHERPA_WALKTHROUGH.md explains how to add them locally.
+Vesper/Vesper/Frameworks/
+Vesper/Vesper/Audio/Neural/KokoroOnnxBackend.swift
+Vesper/Vesper/Audio/Neural/SherpaOnnx.swift
+Vesper/Vesper/Vesper-Bridging-Header.h
+Vesper/kokoro/

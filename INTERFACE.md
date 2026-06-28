@@ -594,6 +594,12 @@ bed) + **`journey`** (a **guided-imagery** session -- "A Gentle Journey Downstre
 small boat on a calm river and let the **current carry you** -- nothing to row or steer -- watch the
 banks slip by, set each worry on the water to float away, then ease to rest, then `hypnosis.drift_tail`;
 its theme is *letting go of effort/control*, distinct from the static safe-place; Mountain Stream bed) +
+**`sleeptech`** (4 **evidence-based** guided sessions mirroring the iOS app: **Let Go of Trying**
+(*paradoxical intention* -- AASM "well-established"), **Deeper Sleep** (a *Cordi & Rasch* deep-sleep
+hypnotic suggestion -- ↑ slow-wave sleep; over the new **Deep Sleep (Pink Noise)** bed), **Awake in
+the Night** (*stimulus control* / the quarter-hour rule), **Put the Day to Rest** (*constructive worry*
+/ cognitive offloading, Scullin 2018); each closes on `hypnosis.drift_tail`; `names`/`has`/`ambience`/
+`units(name, rng, guidance)`, registered via `stories.extra_names`) +
 **`hypnosis_topics`** (6 **themed self-help** hypnosis
 sessions reusing that arc with a different permissive suggestion block -- Letting Go of Stress
 / Quiet Confidence / Calm Focus / Letting Go of Worry / Deep Self-Acceptance / Peaceful
@@ -612,7 +618,12 @@ storyteller options via `stories.extra_names()`; the shuffle is a stream of rand
 shared with the GUI's `story_bg`), **`story_db`** (SQLite record of every
 story; `build`/`connect`/`search`/`lectures_in`/`lines_of`/`stats`; CLI
 `python -m breathsim.story_db`), `kokoro_tts`, `voices`, `patterns`, `modes`,
-`personas`, `choir`, `session` (SessionDirector), `programs`, `phrases`, `store`,
+`personas`, `choir`, `session` (SessionDirector), `programs`, `phrases`, `store`
+(now also a **sleep diary**: `log_sleep`/`sleep_entries`/`clear_sleep_diary`), **`cbti`**
+(the **CBT-I sleep-window engine** -- `plan(wake_minutes)` turns the diary's sleep efficiency
+into a sleep-restriction window anchored to a fixed wake time + titration, a `regularity` score,
+stimulus-control `RULES` and a rotating `tip`; surfaced by the **Sessions ▸ "Sleep program (CBT-I)…"**
+dialog `dialogs.open_sleep_program`) + **`sleeptech`** (4 evidence-based guided sessions),
 `tracks` (+ `rhythm`, **`textures`** — the `kind="texture"` event generators for the
 Campfire / Singing Bowl / Wind Chimes / Night Crickets / **Purr** ambiences;
 `textures.register_generator` lets other modules add `kind="texture"` voices),

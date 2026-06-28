@@ -1,8 +1,15 @@
 """Optional Kokoro neural TTS -- far more natural than macOS ``say``.
 
-A local ONNX model (cross-platform, ~310 MB) with ~50 voices. Everything here
-degrades gracefully: if ``kokoro-onnx`` isn't installed or the model files are
-missing, ``ready()`` is False and the narrator falls back to ``say``.
+A local ONNX model (cross-platform) with ~50 voices. Everything here degrades
+gracefully: if ``kokoro-onnx`` isn't installed or the model files are missing,
+``ready()`` is False and the narrator falls back to ``say``.
+
+**Highest quality by design.** Of the three Kokoro v1.0 ONNX builds --
+``kokoro-v1.0.onnx`` (full **fp32**, ~310 MB), ``kokoro-v1.0.fp16.onnx`` (~169 MB)
+and ``kokoro-v1.0.int8.onnx`` (~88 MB) -- we deliberately use the **fp32** model,
+the maximum-fidelity reference build (fp16/int8 trade audio quality for size).
+This matches the iOS app's fp32 Kokoro. (For an even higher-fidelity offline
+voice, the optional XTTS-v2 engine is available separately -- see docs/XTTS.md.)
 
 Install:  ``pip install kokoro-onnx soundfile``
 Download: ``python -m breathsim.kokoro_tts --download``  (or call ``download()``)
@@ -23,8 +30,10 @@ logging.getLogger("phonemizer").setLevel(logging.ERROR)
 
 _BASE = ("https://github.com/thewh1teagle/kokoro-onnx/releases/download/"
          "model-files-v1.0/")
-MODEL_URL = _BASE + "kokoro-v1.0.onnx"
-VOICES_URL = _BASE + "voices-v1.0.bin"
+# fp32 full-precision model = the highest-quality Kokoro build (NOT the .fp16 /
+# .int8 variants, which are smaller but lower-fidelity). Keep this the fp32 file.
+MODEL_URL = _BASE + "kokoro-v1.0.onnx"          # ~310 MB, fp32 (max quality)
+VOICES_URL = _BASE + "voices-v1.0.bin"          # ~27 MB, full voice pack
 
 # Calm, clearly-vocalised voices for sleep narration, in preference order. A
 # British female leads (the app default); these top voices are the highest grade

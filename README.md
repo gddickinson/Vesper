@@ -62,8 +62,9 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   Human Body, Histories, Materials &amp; Making, Ideas &amp; Wonders, Myth &amp; Legend, the
   Polar Worlds, Weathers of the World, the Microscopic World, the Great Voyages, Grasslands
   of the World, Wetlands &amp; Marshes, the Night Garden, the Great Migrations, the Standing Stones, Great Canyons, Lullabies of the World, How the World Sleeps, Festivals of Light, Keepers of the Night, The Great Clocks, The Mindful Arts, and many more), plus procedural bedtime stories,
-  poetry nocturnes and a cognitive-shuffle sleep aid. Spoken by neural **Kokoro** TTS (or
-  macOS `say`) — with the narration voices **grouped by language** (English, Spanish, French,
+  poetry nocturnes and a cognitive-shuffle sleep aid. Spoken by neural **Kokoro** TTS
+  (the **fp32**, highest-quality build, fully offline; or the even-higher-fidelity opt-in
+  XTTS-v2, or macOS `say`) — with the narration voices **grouped by language** (English, Spanish, French,
   Hindi, Italian, Japanese, Portuguese, Chinese) so you can pick a narrator in yours —
   slowing and quietening as you drift off, and the **soundscape, the backdrop and the
   character all gently follow the words**.
@@ -103,9 +104,17 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   **Loving-Kindness (Metta)** (good wishes in widening circles), **guided imagery**
   (a "safe and peaceful place" you build and rest inside, sense by sense), a one-tap
   **Physiological-Sigh reset**; a warm, low-blue **Sleep
-  wind-down** that dims the screen on a melatonin-friendly curve; pink / brown noise; and
+  wind-down** that dims the screen on a melatonin-friendly curve; pink / brown noise and a
+  **Deep Sleep (Pink Noise)** bed (a soft ~0.8 Hz slow-wave swell); and
   gentle, opt-in bedtime notes — a **gratitude** "one good thing" and a **park-your-worries**
   tomorrow's-list, both shown to shorten sleep onset.
+- **CBT-I sleep program** (Sessions ▸ "Sleep program (CBT-I)…") — the first-line treatment for
+  chronic insomnia, made gentle: a **sleep diary** drives an efficiency-based **sleep window**
+  anchored to a fixed wake time (with the standard extend/tighten titration), a 0–100
+  **sleep-regularity** score, the stimulus-control rules and a rotating sleep-hygiene tip. Plus
+  four evidence-based guided sessions — **Let Go of Trying** (paradoxical intention), **Deeper
+  Sleep** (a deep-sleep hypnotic suggestion), **Awake in the Night** (the quarter-hour rule) and
+  **Put the Day to Rest** (constructive worry).
 - **Accessible &amp; tidy** — global **UI text-size**, a **calm-visuals (reduce-motion)**
   toggle (also softens + spaces out the characters' drowsy gestures), a **mono-audio**
   downmix for single-sided hearing, **narration captions**

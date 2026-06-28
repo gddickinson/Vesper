@@ -11,6 +11,7 @@ import Foundation
 final class NeuralNarrator: NSObject, ObservableObject {
     @Published var currentLine = ""
     @Published var isSpeaking = false
+    @Published var currentIndex = 0   // index of the line being spoken (for resume)
 
     private let engine = AVAudioEngine()
     private let player = AVAudioPlayerNode()
@@ -20,26 +21,41 @@ final class NeuralNarrator: NSObject, ObservableObject {
     /// Can this narrator actually speak right now?
     var isAvailable: Bool { NeuralTTS.isReady }
 
-    func speak(lines: [String], voiceID: String, rate: Float, linePause: Double) {
+    /// Speak a stream of lines. `windDown` (seconds, 0 = off) gradually slows and
+    /// softens delivery over that span — the desktop's sleep wind-down feel.
+    func speak(lines: [String], voiceID: String, rate: Float, linePause: Double,
+               windDown: Double = 0) {
         guard let backend = NeuralTTS.backend else { return }
         stop()
         token += 1
         let myToken = token
         isSpeaking = true
+        currentIndex = 0
+        let start = ProcessInfo.processInfo.systemUptime
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self else { return }
-            for line in lines {
+            for (idx, line) in lines.enumerated() {
                 if self.token != myToken { return }
-                let text = line.trimmingCharacters(in: .whitespacesAndNewlines)
+                let caption = line.trimmingCharacters(in: .whitespacesAndNewlines)
+                let text = Speakable.clean(line)        // speak words, not symbols
                 if text.isEmpty { continue }
-                guard let out = backend.synthesize(text: text, voiceID: voiceID, speed: rate),
-                      let buf = Self.buffer(out.samples, sampleRate: out.sampleRate)
+                // Ease level 1 -> 0.15 over `windDown`; map to a slower speed and
+                // a softer gain so the narration drifts toward sleep.
+                let lvl = windDown > 0
+                    ? max(0.15, 1.0 - 0.85 * min(1.0,
+                        (ProcessInfo.processInfo.systemUptime - start) / windDown))
+                    : 1.0
+                let speed = Float(min(1.2, max(0.55, Double(rate) * (0.72 + 0.28 * lvl))))
+                let gain = Float(0.72 * (0.30 + 0.70 * lvl))
+                guard let out = backend.synthesize(text: text, voiceID: voiceID, speed: speed),
+                      let buf = Self.buffer(out.samples, sampleRate: out.sampleRate, gain: gain)
                 else { continue }
                 DispatchQueue.main.async {
                     guard self.token == myToken else { return }
                     self.ensureGraph(format: buf.format)
-                    self.currentLine = text
+                    self.currentLine = caption          // captions keep the original
+                    self.currentIndex = idx
                     self.player.scheduleBuffer(buf, completionHandler: nil)
                     if linePause > 0,
                        let gap = Self.buffer(Array(repeating: 0,
@@ -78,15 +94,31 @@ final class NeuralNarrator: NSObject, ObservableObject {
         if !player.isPlaying { player.play() }
     }
 
-    private static func buffer(_ samples: [Float], sampleRate: Double) -> AVAudioPCMBuffer? {
+    /// Build a mono buffer, scaled by `gain`, with 10 ms raised-cosine edge fades
+    /// so each clip starts/stops without a click (matches the desktop narrator).
+    private static func buffer(_ samples: [Float], sampleRate: Double,
+                               gain: Float = 1) -> AVAudioPCMBuffer? {
         guard !samples.isEmpty,
               let fmt = AVAudioFormat(standardFormatWithSampleRate: sampleRate, channels: 1),
               let buf = AVAudioPCMBuffer(pcmFormat: fmt,
                                          frameCapacity: AVAudioFrameCount(samples.count))
         else { return nil }
-        buf.frameLength = AVAudioFrameCount(samples.count)
+        let n = samples.count
+        buf.frameLength = AVAudioFrameCount(n)
+        let nf = min(Int(sampleRate * 0.010), n / 2)   // 10 ms fade
+        let dst = buf.floatChannelData![0]
         samples.withUnsafeBufferPointer { p in
-            buf.floatChannelData![0].update(from: p.baseAddress!, count: samples.count)
+            for i in 0..<n {
+                var s = p[i] * gain
+                if nf > 0 {
+                    if i < nf {
+                        s *= 0.5 - 0.5 * cos(Float.pi * Float(i) / Float(nf))
+                    } else if i >= n - nf {
+                        s *= 0.5 - 0.5 * cos(Float.pi * Float(n - 1 - i) / Float(nf))
+                    }
+                }
+                dst[i] = s
+            }
         }
         return buf
     }

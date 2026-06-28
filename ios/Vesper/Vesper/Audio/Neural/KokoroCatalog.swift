@@ -11,6 +11,7 @@ import Foundation
 
 struct KokoroVoice: Identifiable, Hashable {
     let id: String          // Kokoro voice key, e.g. "af_heart"
+    let sid: Int            // speaker index inside voices.bin (THE source of truth)
     let name: String        // display, e.g. "Heart"
     let accent: String      // "US" / "UK"
     let female: Bool
@@ -19,34 +20,52 @@ struct KokoroVoice: Identifiable, Hashable {
 }
 
 enum KokoroCatalog {
-    /// A curated set of the Kokoro v1.0 voices (af = US female, am = US male,
-    /// bf = UK female, bm = UK male). More can be added freely — they all ship
-    /// inside the one voices file.
+    /// The 28 English voices of the Kokoro v1.0 family, each pinned to its real
+    /// speaker id (`sid`) inside `voices.bin`. The `sid` is the alphabetical
+    /// index of the voice key across the whole multilingual voices file
+    /// (af_* 0–10, am_* 11–19, bf_* 20–23, bm_* 24–27) — this is the order
+    /// sherpa-onnx's `kokoro-multi-lang-v1_0` uses, and it is the ONLY thing the
+    /// engine reads. Display order below is grouped for the picker; the `sid` is
+    /// what selects the actual speaker, so never infer it from list position.
     static let all: [KokoroVoice] = [
-        KokoroVoice(id: "af_heart",    name: "Heart",    accent: "US", female: true),
-        KokoroVoice(id: "af_bella",    name: "Bella",    accent: "US", female: true),
-        KokoroVoice(id: "af_nicole",   name: "Nicole",   accent: "US", female: true),
-        KokoroVoice(id: "af_sarah",    name: "Sarah",    accent: "US", female: true),
-        KokoroVoice(id: "af_sky",      name: "Sky",      accent: "US", female: true),
-        KokoroVoice(id: "af_aoede",    name: "Aoede",    accent: "US", female: true),
-        KokoroVoice(id: "af_kore",     name: "Kore",     accent: "US", female: true),
-        KokoroVoice(id: "af_nova",     name: "Nova",     accent: "US", female: true),
-        KokoroVoice(id: "am_adam",     name: "Adam",     accent: "US", female: false),
-        KokoroVoice(id: "am_michael",  name: "Michael",  accent: "US", female: false),
-        KokoroVoice(id: "am_fenrir",   name: "Fenrir",   accent: "US", female: false),
-        KokoroVoice(id: "am_puck",     name: "Puck",     accent: "US", female: false),
-        KokoroVoice(id: "am_onyx",     name: "Onyx",     accent: "US", female: false),
-        KokoroVoice(id: "bf_emma",     name: "Emma",     accent: "UK", female: true),
-        KokoroVoice(id: "bf_isabella", name: "Isabella", accent: "UK", female: true),
-        KokoroVoice(id: "bf_alice",    name: "Alice",    accent: "UK", female: true),
-        KokoroVoice(id: "bf_lily",     name: "Lily",     accent: "UK", female: true),
-        KokoroVoice(id: "bm_george",   name: "George",   accent: "UK", female: false),
-        KokoroVoice(id: "bm_daniel",   name: "Daniel",   accent: "UK", female: false),
-        KokoroVoice(id: "bm_lewis",    name: "Lewis",    accent: "UK", female: false),
-        KokoroVoice(id: "bm_fable",    name: "Fable",    accent: "UK", female: false),
+        // American female (af_) — sids 0–10
+        KokoroVoice(id: "af_heart",    sid: 3,  name: "Heart",    accent: "US", female: true),
+        KokoroVoice(id: "af_bella",    sid: 2,  name: "Bella",    accent: "US", female: true),
+        KokoroVoice(id: "af_nicole",   sid: 6,  name: "Nicole",   accent: "US", female: true),
+        KokoroVoice(id: "af_aoede",    sid: 1,  name: "Aoede",    accent: "US", female: true),
+        KokoroVoice(id: "af_kore",     sid: 5,  name: "Kore",     accent: "US", female: true),
+        KokoroVoice(id: "af_sarah",    sid: 9,  name: "Sarah",    accent: "US", female: true),
+        KokoroVoice(id: "af_nova",     sid: 7,  name: "Nova",     accent: "US", female: true),
+        KokoroVoice(id: "af_sky",      sid: 10, name: "Sky",      accent: "US", female: true),
+        KokoroVoice(id: "af_alloy",    sid: 0,  name: "Alloy",    accent: "US", female: true),
+        KokoroVoice(id: "af_jessica",  sid: 4,  name: "Jessica",  accent: "US", female: true),
+        KokoroVoice(id: "af_river",    sid: 8,  name: "River",    accent: "US", female: true),
+        // American male (am_) — sids 11–19
+        KokoroVoice(id: "am_adam",     sid: 11, name: "Adam",     accent: "US", female: false),
+        KokoroVoice(id: "am_michael",  sid: 16, name: "Michael",  accent: "US", female: false),
+        KokoroVoice(id: "am_fenrir",   sid: 14, name: "Fenrir",   accent: "US", female: false),
+        KokoroVoice(id: "am_puck",     sid: 18, name: "Puck",     accent: "US", female: false),
+        KokoroVoice(id: "am_onyx",     sid: 17, name: "Onyx",     accent: "US", female: false),
+        KokoroVoice(id: "am_echo",     sid: 12, name: "Echo",     accent: "US", female: false),
+        KokoroVoice(id: "am_eric",     sid: 13, name: "Eric",     accent: "US", female: false),
+        KokoroVoice(id: "am_liam",     sid: 15, name: "Liam",     accent: "US", female: false),
+        KokoroVoice(id: "am_santa",    sid: 19, name: "Santa",    accent: "US", female: false),
+        // British female (bf_) — sids 20–23
+        KokoroVoice(id: "bf_emma",     sid: 21, name: "Emma",     accent: "UK", female: true),
+        KokoroVoice(id: "bf_isabella", sid: 22, name: "Isabella", accent: "UK", female: true),
+        KokoroVoice(id: "bf_alice",    sid: 20, name: "Alice",    accent: "UK", female: true),
+        KokoroVoice(id: "bf_lily",     sid: 23, name: "Lily",     accent: "UK", female: true),
+        // British male (bm_) — sids 24–27
+        KokoroVoice(id: "bm_george",   sid: 26, name: "George",   accent: "UK", female: false),
+        KokoroVoice(id: "bm_fable",    sid: 25, name: "Fable",    accent: "UK", female: false),
+        KokoroVoice(id: "bm_daniel",   sid: 24, name: "Daniel",   accent: "UK", female: false),
+        KokoroVoice(id: "bm_lewis",    sid: 27, name: "Lewis",    accent: "UK", female: false),
     ]
 
     static func byID(_ id: String) -> KokoroVoice? { all.first { $0.id == id } }
+
+    /// The real speaker id for a Kokoro voice key (0 = first US female if unknown).
+    static func sid(forID id: String) -> Int { byID(id)?.sid ?? 0 }
 
     // Voice picker ids are prefixed so the engine can tell neural from system.
     static let pickerPrefix = "kokoro:"

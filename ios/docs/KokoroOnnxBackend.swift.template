@@ -21,26 +21,26 @@ final class KokoroOnnxBackend: NeuralTTSBackend {
               let tokens = KokoroModel.resolvedTokens?.path,
               let dataDir = KokoroModel.resolvedDataDir?.path else { return nil }
 
-        var kokoro = sherpaOnnxOfflineTtsKokoroModelConfig(
+        let kokoro = sherpaOnnxOfflineTtsKokoroModelConfig(
             model: KokoroModel.resolvedModel.path,
             voices: KokoroModel.resolvedVoices.path,
             tokens: tokens,
             dataDir: dataDir,
             lexicon: KokoroModel.resolvedLexicon   // "" is fine for espeak-only models
         )
-        var model = sherpaOnnxOfflineTtsModelConfig(
+        let model = sherpaOnnxOfflineTtsModelConfig(
             kokoro: kokoro, numThreads: 2, debug: 0, provider: "cpu")
-        var config = sherpaOnnxOfflineTtsConfig(model: model)
+        var config = sherpaOnnxOfflineTtsConfig(model: model)   // var: passed as &config below
         tts = SherpaOnnxOfflineTtsWrapper(config: &config)
     }
 
     func synthesize(text: String, voiceID: String, speed: Float)
         -> (samples: [Float], sampleRate: Double)? {
-        // `sid` indexes the speakers in voices.bin. KokoroCatalog order is
-        // best-effort for this model — if a voice sounds wrong, reorder the
-        // catalog (the audio is correct, only the label may be off).
-        let sid = KokoroCatalog.all.firstIndex { $0.id == voiceID } ?? 0
-        let audio = tts.generate(text: text, sid: Int(sid), speed: speed)
+        // `sid` indexes the speakers in voices.bin. KokoroCatalog pins each voice
+        // key to its REAL sid (Kokoro v1.0 alphabetical order: af 0–10, am 11–19,
+        // bf 20–23, bm 24–27) — never infer it from the display list position.
+        let sid = KokoroCatalog.sid(forID: voiceID)
+        let audio = tts.generate(text: text, sid: sid, speed: speed)
         guard !audio.samples.isEmpty else { return nil }
         return (audio.samples, Double(audio.sampleRate))   // Kokoro = 24000 Hz
     }

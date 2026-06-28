@@ -190,6 +190,129 @@ def open_shortcuts(win):
     return dlg
 
 
+def open_sleep_program(win):
+    """The CBT-I sleep program: your sleep-efficiency-driven window + rules."""
+    import datetime
+    from PySide6.QtCore import QTime
+    from PySide6.QtWidgets import QTimeEdit
+    from breathsim import cbti, store
+    dlg = QDialog(win)
+    dlg.setWindowTitle("Sleep program (CBT-I)")
+    dlg.setStyleSheet(win.styleSheet() or theme.STYLESHEET)
+    dlg.setMinimumWidth(440)
+    v = QVBoxLayout(dlg)
+    t = QLabel("Sleep program (CBT-I)")
+    t.setObjectName("title")
+    v.addWidget(t)
+    v.addWidget(muted("Evidence-based sleep-window guidance from your sleep diary. "
+                      "CBT-I is the first-line treatment for chronic insomnia."))
+    wake0 = int(store.load_settings().get("cbti_wake_minutes", 390))
+    row = QHBoxLayout()
+    row.addWidget(QLabel("Wake time"))
+    te = QTimeEdit(QTime(wake0 // 60, wake0 % 60))
+    te.setDisplayFormat("h:mm AP")
+    row.addWidget(te)
+    row.addStretch(1)
+    v.addLayout(row)
+    info = QLabel()
+    info.setWordWrap(True)
+    v.addWidget(info)
+    rules = QLabel("\n".join("•  " + r for r in cbti.RULES))
+    rules.setWordWrap(True)
+    rules.setStyleSheet(f"color:{theme.MUTED};")
+    v.addWidget(rules)
+    v.addWidget(muted("\U0001f4a1 " + cbti.tip(datetime.date.today().timetuple().tm_yday)))
+
+    def refresh():
+        wm = te.time().hour() * 60 + te.time().minute()
+        store.save_settings({"cbti_wake_minutes": wm})
+        p = cbti.plan(wm)
+        if p["ready"]:
+            info.setText(
+                f"<b>Sleep window:</b> {p['window_str']}<br>"
+                f"Efficiency {p['eff_pct']}% · slept {p['sleep_mins']//60}h "
+                f"{p['sleep_mins']%60}m · {p['nights']} nights · "
+                f"regularity {p['regularity']}/100<br>"
+                f"Earliest to bed tonight: <b>{cbti.clock(p['bedtime_minutes'])}</b> "
+                f"— not before you feel sleepy.<br><i>{p['titration']}</i>")
+        else:
+            info.setText(p["titration"])
+
+    te.timeChanged.connect(lambda *_: refresh())
+    refresh()
+    rowb = QHBoxLayout()
+    logb = QPushButton("Log last night…")
+    logb.clicked.connect(lambda: (_log_last_night(win), refresh()))
+    close = QPushButton("Close")
+    close.clicked.connect(dlg.accept)
+    rowb.addWidget(logb)
+    rowb.addWidget(close)
+    v.addLayout(rowb)
+    dlg.exec()
+
+
+def _log_last_night(win):
+    """A small morning sleep-diary form -> store.log_sleep."""
+    import datetime
+    from PySide6.QtCore import QTime
+    from PySide6.QtWidgets import QFormLayout, QSpinBox, QTimeEdit
+    from breathsim import store
+    dlg = QDialog(win)
+    dlg.setWindowTitle("Log last night")
+    dlg.setStyleSheet(win.styleSheet() or theme.STYLESHEET)
+    v = QVBoxLayout(dlg)
+    t = QLabel("Last night")
+    t.setObjectName("title")
+    v.addWidget(t)
+
+    def tedit(h, m):
+        e = QTimeEdit(QTime(h, m))
+        e.setDisplayFormat("h:mm AP")
+        return e
+
+    def spin(lo, hi, val):
+        s = QSpinBox()
+        s.setRange(lo, hi)
+        s.setValue(val)
+        return s
+
+    in_bed, tried = tedit(22, 45), tedit(23, 0)
+    final_wake, out_bed = tedit(6, 30), tedit(6, 45)
+    sol, awak, waso, qual = spin(0, 180, 20), spin(0, 20, 1), spin(0, 300, 15), spin(1, 5, 3)
+    form = QFormLayout()
+    form.addRow("Got into bed", in_bed)
+    form.addRow("Tried to sleep", tried)
+    form.addRow("Minutes to fall asleep", sol)
+    form.addRow("Times you woke", awak)
+    form.addRow("Minutes awake in the night", waso)
+    form.addRow("Final wake-up", final_wake)
+    form.addRow("Got out of bed", out_bed)
+    form.addRow("How rested (1-5)", qual)
+    v.addLayout(form)
+
+    def mins(e):
+        return e.time().hour() * 60 + e.time().minute()
+
+    def do_save():
+        store.log_sleep(dict(
+            day=datetime.date.today().isoformat(),
+            in_bed=mins(in_bed), tried=mins(tried), sol=sol.value(),
+            awakenings=awak.value(), waso=waso.value(),
+            final_wake=mins(final_wake), out_of_bed=mins(out_bed),
+            quality=qual.value(), note=""))
+        dlg.accept()
+
+    row = QHBoxLayout()
+    save = QPushButton("Save")
+    save.clicked.connect(do_save)
+    cancel = QPushButton("Cancel")
+    cancel.clicked.connect(dlg.reject)
+    row.addWidget(save)
+    row.addWidget(cancel)
+    v.addLayout(row)
+    dlg.exec()
+
+
 def open_about(win):
     dlg = QDialog(win)
     dlg.setWindowTitle("About")
