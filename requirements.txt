@@ -3,6 +3,7 @@
 
 PySide6>=6.5        # GUI
 numpy               # synthesis + frame buffers
+scipy               # filters for the procedural sound (breathsim/dsp.py)
 moderngl            # GPU face renderer (falls back to software if absent)
 sounddevice         # audio output + mic pitch (degrades to visual-only if absent)
 soundfile           # optional: load downloaded sample voices / write WAVs
