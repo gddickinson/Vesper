@@ -10,7 +10,7 @@ bowls are inharmonic with close modes that **beat** slowly. Triangles are nearly
 all high overtones. We model all of these with one configurable resonator.
 
 Each instrument is a ``kind="texture"`` voice (plugged in via
-``textures.register_generator``) that tolls slowly on its own -- a calm bell/gong
+``texture_registry.register_generator``) that tolls slowly on its own -- a calm bell/gong
 bed for meditation, chant or ambience. Registered as the **Bells & Gongs** group.
 """
 from __future__ import annotations
@@ -20,7 +20,7 @@ import math
 import numpy as np
 
 from . import dsp
-from .textures import register_generator
+from .texture_registry import register_generator
 from .voices import GROUP_BELLS, VoiceConfig, register
 
 TWO_PI = dsp.TWO_PI

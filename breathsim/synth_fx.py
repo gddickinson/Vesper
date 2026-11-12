@@ -5,7 +5,7 @@ Composite generators built from filtered coloured noise + scheduled events +
 seeded from the passed rng; only block-wise noise is generated per frame) and
 slow / low-contrast so it soothes rather than startles.
 
-Each is a ``kind="texture"`` voice (plugged in via ``textures.register_generator``);
+Each is a ``kind="texture"`` voice (plugged in via ``texture_registry.register_generator``);
 registered as the **Environmental FX** group. Mirrors `synth_drum.py`.
 """
 from __future__ import annotations
@@ -15,7 +15,7 @@ import math
 import numpy as np
 
 from . import dsp
-from .textures import register_generator
+from .texture_registry import register_generator
 from .voices import GROUP_FX, VoiceConfig, register
 
 TWO_PI = dsp.TWO_PI

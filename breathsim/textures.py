@@ -15,6 +15,9 @@ import math
 import numpy as np
 
 from . import dsp
+from .texture_registry import register_generator  # noqa: F401  (re-exported)
+from .texture_registry import seed_for as _seed_for
+from .texture_registry import make as _make
 from .voices import GROUP_NATURE, VoiceConfig, register
 
 TWO_PI = dsp.TWO_PI
@@ -296,30 +299,19 @@ class _SlowPulse:
         return np.column_stack([mono, mono])
 
 
-_GENS = {"campfire": _Campfire, "bowl": _Bowl, "chimes": _Chimes,
-         "crickets": _Crickets, "purr": _Purr, "womb": _Womb, "whale": _Whale,
-         "slowpulse": _SlowPulse}
-_SEED = {"campfire": 41, "bowl": 42, "chimes": 43, "crickets": 44, "purr": 45,
-         "womb": 46, "whale": 47, "slowpulse": 48}
-
-
-def register_generator(key, factory, seed):
-    """Plug an external texture generator in (e.g. cosmic.py's music engine).
-
-    ``factory(sr, rng)`` must return an object with ``step(tarr, frames) ->
-    (frames, 2)``. Lets other modules add ``kind="texture"`` voices without
-    importing into this file (avoids a cycle) or touching ``tracks.build_track``.
-    """
-    _GENS[key] = factory
-    _SEED[key] = seed
+for _key, _cls, _seed in (("campfire", _Campfire, 41), ("bowl", _Bowl, 42),
+                           ("chimes", _Chimes, 43), ("crickets", _Crickets, 44),
+                           ("purr", _Purr, 45), ("womb", _Womb, 46),
+                           ("whale", _Whale, 47), ("slowpulse", _SlowPulse, 48)):
+    register_generator(_key, _cls, _seed)
 
 
 class TextureTrack:
     def __init__(self, cfg: VoiceConfig, sr: int):
         self.cfg = cfg
         self.sr = sr
-        rng = np.random.default_rng(_SEED.get(cfg.texture, 11))
-        self.gen = _GENS[cfg.texture](sr, rng)
+        rng = np.random.default_rng(_seed_for(cfg.texture))
+        self.gen = _make(cfg.texture, sr, rng)
         self._t = 0.0
 
     def render(self, frames, s0, s1):

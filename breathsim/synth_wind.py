@@ -12,7 +12,7 @@ blocks):
   (slow attack), holds, and releases. Used for a wistful train whistle (a chord of
   pitches), a deep fog horn and a two-tone ship horn.
 
-Each is a ``kind="texture"`` voice (plugged in via ``textures.register_generator``);
+Each is a ``kind="texture"`` voice (plugged in via ``texture_registry.register_generator``);
 registered as the **Winds & Organs** group. Mirrors `synth_bell.py`.
 """
 from __future__ import annotations
@@ -22,7 +22,7 @@ import math
 import numpy as np
 
 from . import dsp
-from .textures import register_generator
+from .texture_registry import register_generator
 from .voices import GROUP_WIND, VoiceConfig, register
 
 TWO_PI = dsp.TWO_PI

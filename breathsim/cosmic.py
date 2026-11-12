@@ -22,7 +22,7 @@ import numpy as np
 
 from . import dsp
 from .reverb import Reverb
-from .textures import register_generator
+from .texture_registry import register_generator
 from .voices import GROUP_MUSIC, VoiceConfig, register
 
 TWO_PI = dsp.TWO_PI

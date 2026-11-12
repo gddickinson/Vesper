@@ -626,7 +626,9 @@ stimulus-control `RULES` and a rotating `tip`; surfaced by the **Sessions ▸ "S
 dialog `dialogs.open_sleep_program`) + **`sleeptech`** (4 evidence-based guided sessions),
 `tracks` (+ `rhythm`, **`textures`** — the `kind="texture"` event generators for the
 Campfire / Singing Bowl / Wind Chimes / Night Crickets / **Purr** ambiences;
-`textures.register_generator` lets other modules add `kind="texture"` voices),
+`texture_registry.register_generator` (a dependency-free registry, so any of these modules
+can be imported first; re-exported as `textures.register_generator`) lets other modules add
+`kind="texture"` voices),
 **`voices_cat`** — the **Cat** voice group (`GROUP_CAT`), and **`cosmic`** + **`reverb`**
 — the **Cosmic Music** generative engine (`GROUP_MUSIC`: Music of the Spheres ·
 Starlight Choir · Deep Space): endless, non-repeating, just-intonation pads scheduled on
@@ -764,7 +766,7 @@ book…" show the cast (speaker -> character + costume + source) with a **Re-cas
   `main.js`, `static_api.js`, `style_app.css`, `index.html`.
   Node tests: `engines.test.mjs` (every value vs the fixture), `sound_worklet.test.mjs` (synth RMS vs Python).
 - **tests/** — `test_web.py` (API, static build, fixture current, node tests), `test_noise_am.py`,
-  `test_requirements.py`. **scripts/screenshots.py** — Playwright smoke test + README shots (`docs/img/`).
+  `test_requirements.py`, `test_import_order.py` (each voice-registering module imports first, cleanly). **scripts/screenshots.py** — Playwright smoke test + README shots (`docs/img/`).
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

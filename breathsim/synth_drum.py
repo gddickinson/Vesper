@@ -8,7 +8,7 @@ meditation, chant or ambience. Some drums alternate hit types over a short patte
 (a djembe's bass/slap, a slit drum's two tones).
 
 Each drum is a ``kind="texture"`` voice (plugged in via
-``textures.register_generator``); registered as the **Drums** group and offered in
+``texture_registry.register_generator``); registered as the **Drums** group and offered in
 the effects slot. Mirrors `synth_bell.py`.
 """
 from __future__ import annotations
@@ -18,7 +18,7 @@ import math
 import numpy as np
 
 from . import dsp
-from .textures import register_generator
+from .texture_registry import register_generator
 from .voices import GROUP_DRUMS, VoiceConfig, register
 
 TWO_PI = dsp.TWO_PI
