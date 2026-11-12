@@ -72,6 +72,7 @@ class NoiseTrack(_PanMixin):
             self.statR = _make_static(ftype, sr, fc, q)
             self.brightR = dsp.OnePoleLP()
         self._init_pan()
+        self._am_phase = 0.0
 
     def _chain(self, noise, stat, bright, frames, amp, phase, tone=1.0):
         x = stat.process(noise.generate(frames))
@@ -82,9 +83,21 @@ class NoiseTrack(_PanMixin):
         x = bright.process(x, cutoff, self.sr)
         return x * amp
 
+    def _am(self, frames: int):
+        """Optional slow tremolo (``am_rate``/``am_depth``), e.g. the ~0.8 Hz
+        swell of "Deep Sleep (Pink Noise)"; same law as SynthBreathTrack."""
+        cfg = self.cfg
+        if cfg.am_rate <= 0.0 or cfg.am_depth <= 0.0:
+            return None
+        inc = dsp.TWO_PI * cfg.am_rate / self.sr
+        t = self._am_phase + inc * np.arange(1, frames + 1)
+        self._am_phase = float(t[-1] % dsp.TWO_PI)
+        return 1.0 - cfg.am_depth * 0.5 * (1.0 + np.sin(t))
+
     def render(self, frames: int, s0: BreathState, s1: BreathState):
         amp = np.linspace(_env_value(self.cfg, s0),
                           _env_value(self.cfg, s1), frames)
+        am = self._am(frames)
         tone = s0.tone_mod                       # naturalness: per-breath timbre
         left = self._chain(self.nL, self.statL, self.brightL, frames, amp,
                            s0.phase, tone)
@@ -101,6 +114,8 @@ class NoiseTrack(_PanMixin):
         else:
             out[:, 0] = left * pan[0] * SQRT2
             out[:, 1] = right * pan[1] * SQRT2
+        if am is not None:                       # tremolo after the brightness LP
+            out *= am[:, None]
         out *= self.cfg.gain
         return out
 
