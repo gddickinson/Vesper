@@ -743,6 +743,29 @@ Dramatized playback also swaps the **costume** per speaker; `cast.cast_summary` 
 book…" show the cast (speaker -> character + costume + source) with a **Re-cast** button
 (`tools/test_cast_summary.py`). The cast/dramatized-books thread is complete (CAST-1..CAST-5).
 
+## Web interface — `vesper/web/` (browser companion + static GitHub Pages site)
+- **run_web.py** — starts uvicorn on 127.0.0.1:8216. **requirements-web.txt** — pinned web/test deps.
+- **vesper/web/app.py** — FastAPI: `/` + `/static` + GET `/api/{info,patterns,voices,programs,modes,sleep,reference}`;
+  `STATIC_ENDPOINTS` are exported to JSON by **scripts/build_static.py** (Pages workflow
+  `.github/workflows/pages.yml`). No LLM / TTS / keys in the web layer (guarded by a test).
+- **vesper/web/catalog.py** — JSON views of the real core: `pattern_list`, `voice_lists` (noise-kind breath voices +
+  nature beds + the Singing Bowl / Wind Chimes / Slow-Wave Pulse textures, i.e. what the worklet can synthesise),
+  `program_list`, `mode_list`, `sleep_info`, `info` (real counts).
+- **vesper/web/reference.py** — `fixture()`: Python reference numbers (state_at, naturalness, controller, envelopes,
+  dsp filters, struck textures, seeded NoiseTrack RMS, wind-down / settle via a fake-app `SessionDirector`, sleep
+  timer). Written to `tests/fixtures/vesper_reference.json` + `web_voices.json` by **scripts/make_js_fixtures.py**.
+- **vesper/web/static/** — plain ES modules, no build step:
+  `breath_engine.js` (patterns/naturalness/controller/envelopes port) · `session_engine.js` (sleep timer, wind-down,
+  settle-in, program stepping) · `dsp_core.js` (RBJ biquads, lfilter-equivalent IIR, one-pole, coloured noise,
+  `Struck`) · `sound_worklet.js` (AudioWorkletProcessor: NoiseTrack + textures + soft clip) · `sound.js`
+  (`Soundscape`, main-thread driver) · `pacer.js` (`Pacer`: the browser BreathController + SessionDirector) ·
+  `scene.js` (canvas Orb + Night scenes) · pages `home.js`, `breathe.js` + `breathe_panel.js`, `patterns.js`,
+  `sounds.js`, `programs.js`, `verify.js` (+ `verify_checks.js`), `about.js` · kit files `core.js`, `style.css`,
+  `main.js`, `static_api.js`, `style_app.css`, `index.html`.
+  Node tests: `engines.test.mjs` (every value vs the fixture), `sound_worklet.test.mjs` (synth RMS vs Python).
+- **tests/** — `test_web.py` (API, static build, fixture current, node tests), `test_noise_am.py`,
+  `test_requirements.py`. **scripts/screenshots.py** — Playwright smoke test + README shots (`docs/img/`).
+
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.
 - **requirements.txt** / **README.md** — external pip deps + run instructions.

@@ -1,0 +1,46 @@
+/* Vesper accent palette (the desktop app's phase hues: teal inhale, lavender exhale, mint hold) and page styles. */
+:root { --accent:#69cfca; --accent2:#b79ce0; --accent3:#86e3c4; --glow:rgba(105,207,202,.14); }
+button, .btn, .seg button.on { color:#06201f; }
+main:focus, main:focus-visible { outline:none; }
+.h-small { font-size:26px; margin-bottom:4px; }
+
+/* home */
+.home-hero { display:grid; grid-template-columns:1fr 300px; gap:28px; align-items:center; }
+.hero-orb { height:300px; border-radius:50%; overflow:hidden; box-shadow:0 0 60px var(--glow); }
+.hero-orb canvas, .pace-stage canvas { display:block; width:100%; height:100%; }
+.door.a { border-top:2px solid var(--accent); } .door.b { border-top:2px solid var(--accent2); } .door.c { border-top:2px solid var(--accent3); }
+.chips { display:flex; flex-wrap:wrap; gap:8px; }
+.chip { display:inline-block; padding:6px 12px; border:1px solid var(--line); border-radius:20px; color:var(--ink); font-size:14px; background:rgba(12,16,32,.8); }
+.chip:hover { border-color:var(--accent); text-decoration:none; }
+
+/* breathe */
+.pace { display:grid; grid-template-columns:minmax(260px,1fr) 360px; gap:20px; align-items:start; }
+.pace-col { position:sticky; top:84px; }
+.pace-stage { height:calc(100vh - 210px); min-height:400px; max-height:760px; border-radius:10px; overflow:hidden; border:1px solid var(--line); background:#0a111e; box-shadow:0 0 50px var(--glow); }
+.readout { display:flex; flex-wrap:wrap; gap:6px 16px; font:13px var(--mono); color:var(--mute); margin-top:8px; }
+.readout b { color:var(--ink); font-weight:600; }
+.panel-tight { padding:12px 16px; }
+.grp { border-top:1px solid var(--line); padding:2px 0; }
+.grp:first-child { border-top:0; }
+.grp summary { cursor:pointer; padding:8px 0; font:600 13px var(--mono); text-transform:uppercase; letter-spacing:.1em; color:var(--accent); }
+.grp .body { padding-bottom:10px; }
+.check { display:flex; gap:8px; align-items:center; color:var(--ink); font-size:14px; }
+.btns { display:flex; flex-wrap:wrap; gap:6px; } .btns button { margin:6px 0 0; }
+.stage-say { font-style:italic; color:#c6d4ee; min-height:1.6em; }
+
+/* patterns + sounds + programs */
+.patgrid { grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); }
+.card canvas.env { display:block; width:100%; height:54px; margin-top:8px; }
+.card .mono { color:var(--accent3); }
+.card .acts { display:flex; gap:8px; flex-wrap:wrap; }
+.card .acts .btn, .card .acts button { margin:8px 0 0; padding:6px 12px; font-size:12px; }
+ol.stages { padding-left:20px; margin:8px 0 0; } ol.stages li { margin:4px 0; }
+.ok-row td:last-child { color:var(--good); }
+
+@media (max-width:900px) {
+  .pace { grid-template-columns:1fr; } .pace-col { position:static; }
+  .pace-stage { height:56vh; min-height:320px; }
+}
+@media (max-width:760px) {
+  .home-hero { grid-template-columns:1fr; } .hero-orb { height:240px; width:240px; margin:0 auto; }
+}

@@ -4786,3 +4786,24 @@ Also: made `kokoro_tts.py` explicit that it uses the **fp32** (highest-quality) 
 - **Background-sound toggles**, naturalness, morph/automation, spoken-cue picker.
 - **GPU face** (moderngl `*_gpu` modes) for smooth ICT/decimated; lip-sync
   visemes; persona/appearance picker.
+
+
+## Session — Web interface + static site (2026-11-12)
+
+Added a browser companion (`vesper/web/`, FastAPI on port 8216 + a static GitHub Pages export) focused on
+a polished subset: the breath pacer (22 patterns, paced bpm, naturalness, settle-in, Sleep wind-down,
+11 guided programs), canvas Orb/Night scenes, procedural sound in an AudioWorklet (12 breath voices,
+19 ambience beds incl. Singing Bowl / Wind Chimes / Slow-Wave Pulse) and the sleep timer. Pages: Home,
+Breathe, Patterns, Sounds, Programs, Verify, About.
+
+- JS port of patterns / naturalness / controller / envelopes / dsp / textures / session / sleeptimer,
+  checked against `tests/fixtures/vesper_reference.json` (Python): 12,029 values, worst rel. diff 6.8e-15.
+  Worklet synthesis RMS matches the seeded Python `NoiseTrack` within ~1% for 8 voices.
+- No LLM / Kokoro / XTTS / key handling in the web layer (test-guarded); those stay in the desktop app.
+- **Fix:** `NoiseTrack` ignored `am_rate`/`am_depth`, so "Deep Sleep (Pink Noise)" had no ~0.8 Hz swell
+  (tests/test_noise_am.py). **Fix:** requirements.txt lacked scipy (imported by breathsim/dsp.py).
+- Noted, not changed: importing `breathsim.textures` before `breathsim.voices` raises a circular-import
+  error (the app always imports voices first); the LLM default model is `claude-haiku-4-5-20251001`.
+- Verified: `pytest tests` 22 passed; node tests ok; the 75 `tools/test_*.py` scripts and `selftest.py`
+  pass; screenshots.py --static / --base all ok, no overflow at 390 px on any route; audio checked in
+  Chrome (worklet output non-silent for breath, noise bed, bowl and AM bed).

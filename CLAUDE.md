@@ -50,6 +50,10 @@ and **lip-syncs** the bedtime story. **Always read `INTERFACE.md` first.**
   cycling all modes × face/scene on **both faces** (`VESPER_FACE=cat` and default),
   asserting `threading.active_count()` stays stable. Calibrate any new voice gains.
 
+- Web companion: `python run_web.py` (port 8216); `vesper/web/` holds a JS port of the breath
+  clock/DSP/timers tested against Python (`python scripts/make_js_fixtures.py` after changing that core
+  logic; `pytest tests`). See INTERFACE.md "Web interface".
+
 ## Status
 At parity with (and well beyond) the legacy Tk app: 6 modes, 148 voices, 22 breath
 patterns, 11 guided programs, 66 chants, **213 sleep-lectures across 42 branches**,

@@ -39,3 +39,6 @@ secrets/
 
 # LLM-generated, user-installed plugins are local + experimental -- never committed.
 /plugins/
+
+# Static web site build output (scripts/build_static.py)
+site/

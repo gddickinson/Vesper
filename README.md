@@ -232,6 +232,48 @@ program and a character swap all stay in sync. Add a voice, a breath pattern, a 
 ambience, a guided program, a chant or a sleep-lecture by dropping in one small file; no
 engine changes needed.
 
+## Web version
+
+A browser companion lives in [`vesper/web/`](vesper/web/) and is published as a static site at
+**https://gddickinson.github.io/Vesper/**. It runs the part of Vesper that makes sense in a browser,
+for relaxation:
+
+- **Breathe**: the breath pacer. All 22 patterns or paced breathing at any rate, the optional
+  per-breath *naturalness*, the settle-in ease, a breathing **orb** (exhale rings, the coherence halo
+  near ~6 breaths/min) or a **night sky**, the Sleep **wind-down** and a **sleep timer** that fades
+  the sound out and pauses. The 11 guided programs run stage by stage with their instructions shown.
+- **Sounds**: 12 breath voices and 19 ambience beds synthesised live in an AudioWorklet from the same
+  recipes as `breathsim/tracks.py` and `textures.py` (filtered noise, struck bowls and chimes). No samples.
+- **Patterns**, **Programs**, **Verify** (the JavaScript port checked against Python in your browser)
+  and **About**.
+
+The breath clock, envelopes, filters and timers are a JavaScript port of `breathsim` (patterns,
+naturalness, controller, envelopes, dsp, textures, session) and `vesper/sleeptimer.py`, tested number by
+number against the Python code (about 12,000 values agree to ~1e-15), and the synthesised sound levels
+match the Python `NoiseTrack` to about 1%. The 3D head, narration, chants, lectures, books and the
+optional AI assistant stay in the desktop app; the web version calls no AI service and needs no key.
+
+```bash
+pip install -r requirements-web.txt
+python run_web.py                    # http://127.0.0.1:8216
+python -m pytest -q tests            # web API + fixture + node tests
+python scripts/build_static.py       # the static site in site/
+```
+
+<p align="center">
+  <img src="docs/img/breathe.png" width="820" alt="The web pacer: a breathing orb holding at the top of a box-breathing cycle, with the pattern, sound and sleep controls">
+</p>
+<table>
+  <tr>
+    <td align="center"><img src="docs/img/breathe_sleep.png" width="380" alt="Sleep mode in the browser: a night sky and moon with the wind-down running"><br><sub><b>Sleep</b>: night sky + wind-down</sub></td>
+    <td align="center"><img src="docs/img/sounds.png" width="380" alt="The Sounds page listing breath voices and ambience beds with their synthesis recipes"><br><sub><b>Sounds</b>: procedural voices and beds</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/img/patterns.png" width="380" alt="The Patterns page with volume and airflow curves per pattern"><br><sub><b>Patterns</b></sub></td>
+    <td align="center"><img src="docs/img/verify.png" width="380" alt="The Verify page showing every Python-vs-JavaScript check agreeing"><br><sub><b>Verify</b>: Python vs JavaScript</sub></td>
+  </tr>
+</table>
+
 ## License
 
 See [`LICENSE`](LICENSE). The avatar is rendered from the

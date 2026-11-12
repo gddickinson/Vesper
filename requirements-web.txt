@@ -1,0 +1,7 @@
+# Web interface + static site build (python run_web.py / scripts/build_static.py).
+fastapi==0.162.2
+httpx==0.28.1
+pytest==9.2.0
+uvicorn==0.54.0
+numpy==2.5.4
+scipy==1.18.1
