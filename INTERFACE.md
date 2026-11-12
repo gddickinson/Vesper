@@ -439,8 +439,8 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   `store.log_gratitude` / `gratitude_entries` / `gratitude_count` / `gratitude_last_date`
   (cap 200, 280-char clamp, malformed-safe). Offline test: `tools/test_gratitude.py`.
 - **worries.py** — the optional **bedtime "park your worries"** / tomorrow's-list note (Sessions ▸
-  "Park your worries…" + a "Bedtime worry-parking" toggle; off by default). Evidence: a brief to-do
-  brain-dump before bed shortens sleep onset (Scullin 2018). `should_offer` (pure gate),
+  "Park your worries…" + a "Bedtime worry-parking" toggle; off by default). Idea: a brief to-do
+  brain-dump before bed (after Scullin 2018). `should_offer` (pure gate),
   `ask_worries(win)` (a multi-line `QPlainTextEdit` Keep/Skip dialog → `store.log_worry`),
   `maybe_offer_bedtime` (Sleep-only, once-per-run, off by default). Backed by `store.log_worry` /
   `worry_entries` / `worry_count` / `worry_last_date` (cap 200, 1000-char clamp, separate "worries"
@@ -595,11 +595,11 @@ bed) + **`journey`** (a **guided-imagery** session -- "A Gentle Journey Downstre
 small boat on a calm river and let the **current carry you** -- nothing to row or steer -- watch the
 banks slip by, set each worry on the water to float away, then ease to rest, then `hypnosis.drift_tail`;
 its theme is *letting go of effort/control*, distinct from the static safe-place; Mountain Stream bed) +
-**`sleeptech`** (4 **evidence-based** guided sessions mirroring the iOS app: **Let Go of Trying**
-(*paradoxical intention* -- AASM "well-established"), **Deeper Sleep** (a *Cordi & Rasch* deep-sleep
-hypnotic suggestion -- ↑ slow-wave sleep; over the new **Deep Sleep (Pink Noise)** bed), **Awake in
-the Night** (*stimulus control* / the quarter-hour rule), **Put the Day to Rest** (*constructive worry*
-/ cognitive offloading, Scullin 2018); each closes on `hypnosis.drift_tail`; `names`/`has`/`ambience`/
+**`sleeptech`** (4 guided sleep sessions mirroring the iOS app, drawn from CBT-I and sleep-hypnosis
+techniques: **Let Go of Trying** (*paradoxical intention*), **Deeper Sleep** (a "sleep deeper"
+suggestion in the style of Cordi & Rasch's scripts; over the **Deep Sleep (Pink Noise)** bed), **Awake in
+the Night** (*stimulus control* / the quarter-hour rule), **Put the Day to Rest** (*constructive worry*,
+after Scullin 2018); each closes on `hypnosis.drift_tail`; `names`/`has`/`ambience`/
 `units(name, rng, guidance)`, registered via `stories.extra_names`) +
 **`hypnosis_topics`** (6 **themed self-help** hypnosis
 sessions reusing that arc with a different permissive suggestion block -- Letting Go of Stress
@@ -622,9 +622,9 @@ story; `build`/`connect`/`search`/`lectures_in`/`lines_of`/`stats`; CLI
 `personas`, `choir`, `session` (SessionDirector), `programs`, `phrases`, `store`
 (now also a **sleep diary**: `log_sleep`/`sleep_entries`/`clear_sleep_diary`), **`cbti`**
 (the **CBT-I sleep-window engine** -- `plan(wake_minutes)` turns the diary's sleep efficiency
-into a sleep-restriction window anchored to a fixed wake time + titration, a `regularity` score,
+into a suggested sleep window anchored to a fixed wake time + titration, a `regularity` score,
 stimulus-control `RULES` and a rotating `tip`; surfaced by the **Sessions ▸ "Sleep program (CBT-I)…"**
-dialog `dialogs.open_sleep_program`) + **`sleeptech`** (4 evidence-based guided sessions),
+dialog `dialogs.open_sleep_program`) + **`sleeptech`** (4 guided sleep sessions),
 `tracks` (+ `rhythm`, **`textures`** — the `kind="texture"` event generators for the
 Campfire / Singing Bowl / Wind Chimes / Night Crickets / **Purr** ambiences;
 `texture_registry.register_generator` (a dependency-free registry, so any of these modules
@@ -768,9 +768,15 @@ book…" show the cast (speaker -> character + costume + source) with a **Re-cas
   Node tests: `engines.test.mjs` (every value vs the fixture), `sound_worklet.test.mjs` (synth RMS vs Python).
 - **tests/** — `test_web.py` (API, static build, fixture current, node tests), `test_noise_am.py`,
   `test_requirements.py`, `test_import_order.py` (each voice-registering module imports first, cleanly), `test_doc_counts.py`
-  (README/CLAUDE.md counts match the code; fix with **scripts/doc_counts.py**). **scripts/screenshots.py** — Playwright smoke test + README shots (`docs/img/`).
+  (README/CLAUDE.md counts match the code; fix with **scripts/doc_counts.py**).
+  `test_health_claims.py` (no banned health/efficacy claim phrases in shipped content; the
+  disclaimer is on every surface), `test_llm_model.py` (the Claude request body, fake client). **scripts/screenshots.py** — Playwright smoke test + README shots (`docs/img/`).
 
 ## Other project files
+- **breathsim/disclaimer.py** — the one safety / not-medical-advice text (`TITLE`, `POINTS`, `TEXT`,
+  web footer `SHORT`, `SLEEP_PROGRAM_NOTE`), used by About, the first-run welcome, the CBT-I dialog,
+  the web API (`info.disclaimer`) and quoted in README.
+- **CHANGELOG.md** — user-facing changes (2026-11-12: health claims softened, disclaimer added).
 - **selftest.py** — headless voice + lecture checks against the vendored core.
 - **requirements.txt** / **README.md** — external pip deps + run instructions.
 - **data/stories.db** — generated SQLite story record (rebuilt on startup).

@@ -278,10 +278,10 @@ class _Whale:
 
 class _SlowPulse:
     """A soft, warm pink-noise wash that swells gently at ~0.8 Hz (about 48 pulses
-    a minute) -- an unhurried, open-loop throb to ease into deep sleep. (It is
-    simply soothing rhythmic sound, not anything clinically brain-locked.)"""
+    a minute) -- an unhurried, soothing rhythm to drift off to. (Just a gentle
+    sound: no claim about brain waves or sleep stages.)"""
 
-    RATE = 0.8                                     # pulse rate (Hz) ~ slow-wave-ish
+    RATE = 0.8                                     # pulse rate (Hz), slow and unhurried
     DEPTH = 0.38                                   # how deep the swell dips
 
     def __init__(self, sr, rng):
@@ -351,5 +351,5 @@ _t("Womb Heartbeat", "womb", 0.179,
 _t("Whale Song", "whale", 0.393,
    "Distant whale song: slow moans gliding over a deep, dark sea.")
 _t("Slow-Wave Pulse", "slowpulse", 0.176,
-   "A soft pink-noise wash that pulses gently, about 48 a minute, to ease into "
-   "deep sleep.")
+   "A soft pink-noise wash that pulses gently, about 48 a minute - an unhurried "
+   "rhythm to drift off to.")

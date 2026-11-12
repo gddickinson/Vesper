@@ -1,7 +1,6 @@
 """A gentle, optional **bedtime gratitude** note -- "one good thing about today".
 
-Evidence: a brief bedtime gratitude reflection eases pre-sleep worry and can
-improve sleep quality. This is deliberately tiny and kind: a single soft line you
+A brief bedtime gratitude reflection is a gentle way to end the day. This is deliberately tiny and kind: a single soft line you
 can type (or skip), kept only on this device, never scored. It is **off by
 default**; when on, it is offered once at the start of a Sleep session (and any
 time from the Sessions menu). Reuses the mood-check-in pattern; a kind count

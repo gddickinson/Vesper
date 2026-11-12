@@ -183,7 +183,7 @@ _mantra("Om Ah Hum",
 _mantra("Ra Ma Da Sa",
         [_S("Ra", "ah"), _S("Ma", "ah"), _S("Da", "ah"), _S("Sa", "ah"),
          _S("Sa", "ah"), _S("Say", "eh"), _S("So", "oh"), _S("Hung", "uh", "mm")],
-        desc="A Kundalini healing mantra (sun, moon, earth, infinity).",
+        desc="A Kundalini mantra traditionally chanted for healing (sun, moon, earth, infinity).",
         groups=[(0, 4), (4, 8)])
 _mantra("Om Gam Ganapataye",
         [_S("Om", "oh", "mm"), _S("Gam", "ah", "mm"), _S("Ga", "ah"),

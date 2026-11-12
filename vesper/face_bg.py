@@ -24,7 +24,7 @@ def _qc(hexstr, alpha=1.0):
 
 def warm_overlay(p, w, h, amount):
     """A warm, low-blue dimming wash for the Sleep wind-down. Over-blending this
-    dark amber both darkens the view and pulls the blue down — gentler on melatonin
+    dark amber both darkens the view and pulls the blue down — easier on night eyes
     than a cool screen. ``amount`` 0..1 grows as the session winds toward sleep."""
     if amount <= 0.0:
         return

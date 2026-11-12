@@ -2,11 +2,12 @@
 ``SleepDiary`` + ``CBTI`` modules.
 
 From the last ~7 logged nights it computes Time-In-Bed (TIB), Total Sleep Time
-(TST) and Sleep Efficiency (SE = TST/TIB), then prescribes a **sleep-restriction
-window** anchored to a fixed wake time, with the standard titration rule
-(SE >= 90% -> extend 15 min; <= 85% -> tighten 15 min; else hold). CBT-I is the
-first-line treatment for chronic insomnia (NICE 2025, AASM); the sleep diary +
-efficiency-driven window are its core. Pure + deterministic; diary persistence
+(TST) and Sleep Efficiency (SE = TST/TIB), then suggests a **sleep window**
+anchored to a fixed wake time, with the usual titration rule
+(SE >= 90% -> extend 15 min; <= 85% -> tighten 15 min; else hold), following the
+sleep-diary and sleep-restriction steps used in CBT-I (cognitive behavioural therapy
+for insomnia). A self-guided routine tool, not treatment: the dialog shows
+``disclaimer.SLEEP_PROGRAM_NOTE``. Pure + deterministic; diary persistence
 lives in :mod:`breathsim.store` (``log_sleep`` / ``sleep_entries``). Times are
 stored as minutes-from-midnight. See the agent memory ``vesper-sleep-science-upgrades``.
 """
@@ -26,14 +27,14 @@ RULES = [
 
 _TIPS = [
     "Caffeine has a ~5-6 hour half-life -- try to finish coffee by early afternoon.",
-    "A warm bath or shower 1-2 hours before bed helps your core temperature fall, cueing sleep.",
-    "Keep the bedroom cool (around 18C / 65F) -- a falling body temperature deepens sleep.",
-    "Alcohol fragments the second half of the night and suppresses REM, even if it helps you doze off.",
-    "Morning daylight is the strongest signal that sets tonight's sleep timing.",
-    "A consistent wake time matters more for health than the exact hours you sleep.",
+    "A warm bath or shower an hour or two before bed is a pleasant way to wind down.",
+    "Many people sleep more comfortably in a cool bedroom (around 18C / 65F).",
+    "Many people find a late drink leaves the night more broken, even if it helps them doze off.",
+    "Morning daylight helps set your body clock for the day ahead.",
+    "A steady wake time, even at weekends, helps many people settle into a rhythm.",
     "If you can't sleep, getting up beats lying there frustrated -- it keeps bed a cue for sleep.",
-    "Exercise helps you sleep deeper -- but finish vigorous workouts a few hours before bed.",
-    "A short to-do list before bed offloads tomorrow's worries and speeds sleep onset.",
+    "Daytime exercise can help you feel ready for sleep -- finish vigorous workouts a few hours before bed.",
+    "A short to-do list before bed can help you set tomorrow's worries down.",
 ]
 
 

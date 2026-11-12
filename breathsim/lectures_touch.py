@@ -78,7 +78,7 @@ SECTIONS = [
         "A warm hand laid upon a shoulder, a hug, the soft weight of an arm around us.",
         "Such gentle, kind touch releases calming signals that move quietly through the body.",
         "The racing heart begins to slow, and the breath grows long and easy.",
-        "The whole nervous system, listening, lowers its guard and lets the worry fall away.",
+        "The whole body, listening, lowers its guard and lets the worry fall away.",
         "It is touch saying, without a single word, you are not alone, and all is well.",
         "This is older than language, older than memory, woven into us from the first.",
         "Even a gentle weight upon the body can carry that same quiet reassurance.",

@@ -44,3 +44,4 @@ ol.stages { padding-left:20px; margin:8px 0 0; } ol.stages li { margin:4px 0; }
 @media (max-width:760px) {
   .home-hero { grid-template-columns:1fr; } .hero-orb { height:240px; width:240px; margin:0 auto; }
 }
+.foot .safety { max-width: 760px; margin: 0 auto 8px; line-height: 1.5; }

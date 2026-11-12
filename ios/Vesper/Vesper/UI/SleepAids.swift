@@ -14,7 +14,7 @@ enum SleepAids {
     static let names: [String] = [
         storyName, "Body Scan", "Yoga Nidra (NSDR)", "Loving-Kindness",
         "Safe Place", "Gentle River", "Cognitive Shuffle",
-        // — evidence-based CBT-I / hypnosis techniques —
+        // — sessions drawn from CBT-I / sleep-hypnosis techniques —
         "Let Go of Trying", "Deeper Sleep", "Awake in the Night", "Put the Day to Rest",
     ]
 
@@ -117,9 +117,8 @@ enum SleepAids {
         "Let go, and let the river carry you into sleep.",
     ]
 
-    /// Paradoxical intention — an AASM "well-established" insomnia treatment.
-    /// Letting go of the effort to sleep removes the performance anxiety that
-    /// keeps you awake; sleep is allowed to arrive on its own.
+    /// Based on paradoxical intention: gently giving up the effort to fall asleep,
+    /// so there is less pressure to "get it right"; sleep is allowed to arrive.
     private static let paradoxical = [
         "For these few minutes, you have permission to give up trying to sleep.",
         "You do not have to fall asleep tonight. You only have to rest.",
@@ -134,9 +133,8 @@ enum SleepAids {
         "Rest easy. Stay as awake as you like. There is all the time in the world.",
     ]
 
-    /// A "sleep deeper" hypnotic suggestion. Cordi & Rasch showed a deep-sleep
-    /// suggestion reliably increases slow-wave sleep and slow-wave activity in
-    /// receptive listeners, with calmer, more parasympathetic physiology.
+    /// A slow, permissive "sleep deeper" suggestion, in the style of the
+    /// sleep-hypnosis scripts used in research by Cordi & Rasch (2014).
     private static let deeperSleep = [
         "Let your breathing slow, and let every word settle gently into your body.",
         "With each breath out, you drift a little further down, into deeper rest.",
@@ -146,8 +144,8 @@ enum SleepAids {
         "As you sink, your sleep grows deeper. Long, slow waves of deep sleep.",
         "Your body knows how to do this. Let it carry you into deep, restoring sleep.",
         "Deeper now. Slower. Heavier. Wonderfully calm.",
-        "Tonight your sleep will be deep and unbroken, and you will wake refreshed.",
-        "Every breath takes you deeper. Down into the slow, healing depths of sleep.",
+        "Let tonight's sleep be deep and easy, and let the morning come gently.",
+        "Every breath takes you deeper. Down into the slow, restful depths of sleep.",
         "Let yourself go completely. Deep, deep sleep, all through the night.",
         "Drifting down… deeper… and deeper… into a full and restful sleep.",
     ]
@@ -171,8 +169,8 @@ enum SleepAids {
     ]
 
     /// Constructive worry / cognitive offloading — writing or naming tomorrow's
-    /// tasks before bed measurably speeds sleep onset (Scullin et al., 2018) by
-    /// emptying the open loops that keep the mind active.
+    /// tasks before bed so they can be set down for the night (the idea behind
+    /// Scullin et al., 2018).
     private static let putDayToRest = [
         "Before you sleep, let's set the day down, so your mind can rest.",
         "Bring to mind anything still turning over — a worry, a task, a loose end.",

@@ -8,8 +8,7 @@ route('about', async () => {
   <h1>Vesper</h1>
   <p class="lead">${esc(info.summary)} A glowing avatar breathes with you, lip-syncs a procedural bedtime storyteller,
   and is wrapped in fully procedural breath, voice, chant and nature sound, with no audio assets required.</p>
-  <div class="callout">Vesper is a relaxation tool. It is not a medical device and is not medical advice. If a pattern
-  makes you light-headed or uncomfortable, stop and breathe normally.</div>
+  <div class="callout" role="note"><b>Please breathe gently.</b> ${info.disclaimer.map(esc).join(' ')}</div>
   <h2>In this web version</h2>
   <ul>
     <li><b>The breath clock</b>: the ${info.patterns} patterns, paced breathing at any rate, the optional per-breath

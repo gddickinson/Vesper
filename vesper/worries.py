@@ -1,8 +1,8 @@
 """A gentle, optional **bedtime "park your worries"** note -- a tomorrow's-list.
 
-Evidence: writing a short to-do / worry list just before bed measurably shortens
-how long it takes to fall asleep (Scullin et al., 2018) -- setting tomorrow's
-concerns down on paper lets the mind stop rehearsing them. This is a small, kind
+The idea (explored by Scullin et al., 2018): writing a short to-do / worry list
+just before bed sets tomorrow's concerns down on paper, so the mind can stop
+rehearsing them. This is a small, kind
 brain-dump: jot whatever is on your mind for tomorrow (or skip), kept only on
 this device, never scored. It is **off by default**; when on, it is offered once
 at the start of a Sleep session (and any time from the Sessions menu). Mirrors

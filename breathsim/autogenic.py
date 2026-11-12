@@ -4,8 +4,8 @@ A gentle audio version of Johannes Schultz's classic autogenic training (1932):
 a sequence of soft, repeated self-suggestions that the body is **heavy**, then
 **warm**, the heartbeat **calm**, the breathing **easy**, the belly **warm** and
 the brow **cool** -- the six "standard exercises". The slow, repeated phrasing is
-the point: it quietly trains the relaxation response, easing the body toward rest.
-A genuinely evidence-based wind-down, alongside Body-Scan / PMR / NSDR / Hypnosis.
+the point: it invites the body to soften, easing toward rest.
+A classic, long-established relaxation method, alongside Body-Scan / PMR / NSDR / Hypnosis.
 
 Pure data + a generator of narrator units (the same ``{text, pause, phase, kind}``
 shape the storyteller uses); the shared soft sleep drift is reused from

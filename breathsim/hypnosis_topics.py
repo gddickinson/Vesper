@@ -1,6 +1,6 @@
 """Themed self-help sleep-hypnosis sessions (stress, confidence, focus...).
 
-Each session reuses the same evidence-grounded arc as :mod:`breathsim.hypnosis`
+Each session reuses the same arc as :mod:`breathsim.hypnosis`
 (induction -> deepening countdown -> permissive suggestions -> drift into sleep),
 swapping only the **suggestion block** for a gentle, present/future-tense theme.
 Because this is a *sleep* app, every theme is written to settle you and to wind
@@ -10,9 +10,8 @@ energising language. All suggestions are *permissive* ("you may notice...",
 "you can let...") rather than commanding.
 
 Honest framing: this is guided relaxation + gentle suggestion delivered as you
-fall asleep. It is a soothing self-help aid, not therapy or a cure; the evidence
-for hypnotic suggestion is promising and strongest for people who are naturally
-open to it. Surfaced through the ordinary storyteller (narration + lip-sync +
+fall asleep. It is a soothing self-help aid, not therapy or a cure. Surfaced
+through the ordinary storyteller (narration + lip-sync +
 a steady masking bed); listed as Sleep options via :mod:`breathsim.stories`.
 """
 from __future__ import annotations

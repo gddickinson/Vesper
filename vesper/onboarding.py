@@ -12,7 +12,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLabel,
                                QPushButton, QVBoxLayout)
 
-from breathsim import store
+from breathsim import disclaimer, store
 
 from . import theme
 
@@ -37,6 +37,7 @@ STEPS = [
      "breathing follow the circle: breathe in as it grows, out as it shrinks.\n\n"
      "There is nothing you need to get right. Just follow along gently, and let "
      "the sound carry you."),
+    (disclaimer.TITLE, "\n\n".join(disclaimer.POINTS)),
     ("Everything else is in the menus",
      "The menu bar holds every voice, pattern, scene, sound and guided session, "
      "along with your practice stats and the whole story library.\n\n"

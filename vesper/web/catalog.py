@@ -6,7 +6,7 @@ Chimes, Slow-Wave Pulse). The vocal-tract, chant, narration and LLM features sta
 """
 from __future__ import annotations
 
-from breathsim import lectures, modes, patterns, phrases, programs, voices
+from breathsim import disclaimer, lectures, modes, patterns, phrases, programs, voices
 
 from .. import sleeptimer
 
@@ -80,4 +80,4 @@ def info() -> dict:
             "modes": len(modes.MODES), "voices": v["total_voices"],
             "web_breath_voices": len(v["breath"]), "web_ambiences": len(v["ambience"]),
             "lectures": len(lectures.names()), "branches": len(lectures.categories()),
-            "phrases": len(phrases.names())}
+            "phrases": len(phrases.names()), "disclaimer": list(disclaimer.POINTS)}

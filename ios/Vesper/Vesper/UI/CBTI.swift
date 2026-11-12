@@ -3,8 +3,8 @@
 //  From the sleep diary's recent sleep efficiency and a fixed wake time it
 //  prescribes a time-in-bed window anchored to that wake time, with the standard
 //  titration rule (SE≥90% → extend 15 min; ≤85% → tighten 15 min; else hold).
-//  Pure, deterministic, testable. CBT-I is the first-line treatment for chronic
-//  insomnia (NICE 2025, AASM). See [[vesper-sleep-science-upgrades]].
+//  Pure, deterministic, testable. Follows the sleep-diary / sleep-window steps used
+//  in CBT-I; a self-guided routine tool, not medical treatment. See [[vesper-sleep-science-upgrades]].
 
 import Foundation
 
@@ -31,18 +31,18 @@ enum CBTI {
         "Get bright light soon after waking; keep the evening dim and warm.",
     ]
 
-    /// A rotating evidence-based sleep-hygiene tip (deterministic by the day).
+    /// A rotating sleep-hygiene tip (deterministic by the day).
     static func tip(for date: Date) -> String {
         let tips = [
             "Caffeine has a ~5–6 hour half-life — try to finish coffee by early afternoon.",
-            "A warm bath or shower 1–2 hours before bed helps your core temperature fall, cueing sleep.",
-            "Keep the bedroom cool (around 18°C / 65°F) — a falling body temperature deepens sleep.",
-            "Alcohol fragments the second half of the night and suppresses REM, even if it helps you doze off.",
-            "Morning daylight is the strongest signal that sets tonight's sleep timing.",
-            "A consistent wake time matters more for health than the exact hours you sleep.",
+            "A warm bath or shower an hour or two before bed is a pleasant way to wind down.",
+            "Many people sleep more comfortably in a cool bedroom (around 18°C / 65°F).",
+            "Many people find a late drink leaves the night more broken, even if it helps them doze off.",
+            "Morning daylight helps set your body clock for the day ahead.",
+            "A steady wake time, even at weekends, helps many people settle into a rhythm.",
             "If you can't sleep, getting up beats lying there frustrated — it keeps bed a cue for sleep.",
-            "Exercise helps you sleep deeper — but finish vigorous workouts a few hours before bed.",
-            "A short to-do list before bed offloads tomorrow's worries and speeds sleep onset.",
+            "Daytime exercise can help you feel ready for sleep — finish vigorous workouts a few hours before bed.",
+            "A short to-do list before bed can help you set tomorrow's worries down.",
             "Naps after about 3 pm can borrow from tonight's sleep pressure — keep them early and short.",
         ]
         let day = Calendar.current.ordinality(of: .day, in: .year, for: date) ?? 1

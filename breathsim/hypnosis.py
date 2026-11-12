@@ -1,7 +1,7 @@
 """Sleep Hypnosis: a slow, permissive guided hypnosis script for sleep onset.
 
-Evidence-grounded structure (the classic hypnotherapy arc, e.g. Cordi & Rasch,
-2014, who found hypnotic suggestion can deepen slow-wave sleep): **induction**
+Structure: the classic hypnotherapy arc (as in the sleep-hypnosis scripts used in
+research by Cordi & Rasch, 2014): **induction**
 (settle + slow breath + progressive head-to-toe relaxation) -> **deepening** (a
 10->1 countdown and a gentle descent image, with long silences as deepeners) ->
 **permissive sleep suggestions** -> **drift into sleep** (no re-alerting -- unlike
@@ -9,9 +9,8 @@ clinical hypnosis, a sleep script simply lets you go). Delivery is slow and
 *permissive* ("let...", "you may notice...") rather than commanding, with long
 pauses between lines.
 
-Honest framing: this is guided relaxation + gentle suggestion. The evidence is
-promising (strongest for people who are highly open to suggestion); it is a sleep
-aid, not a cure. Delivered through the ordinary storyteller (narration + the
+Honest framing: this is guided relaxation + gentle suggestion; a relaxation aid,
+not a treatment or a cure. Delivered through the ordinary storyteller (narration + the
 talking-head lip-sync + a steady ambience bed); surfaced as a Sleep option via
 :mod:`breathsim.stories` (``story_units`` dispatches here by :data:`NAME`).
 """

@@ -362,7 +362,7 @@ class _ActionsMixin:
 
     def set_always_warm(self, on):
         """Hold a gentle warm (low-blue) wash on at any time, for evening eye
-        comfort / melatonin-friendliness (persisted, off by default). Composes
+        comfort (persisted, off by default). Composes
         with the Sleep wind-down warmth, which still deepens beyond it."""
         self._always_warm = bool(on)
         from breathsim import store

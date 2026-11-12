@@ -146,17 +146,17 @@ def state_at(pattern: BreathPattern, t: float) -> BreathState:
 
 PRESETS = [
     BreathPattern("Coherent 5.5 (Resonance)", 5.5, 0, 5.5, 0,
-                  "Equal 5.5s in/out (~5.5 breaths/min). Calms the nervous "
-                  "system; the classic resonance-frequency pace."),
+                  "Equal 5.5s in/out (~5.5 breaths/min). A slow, steady rhythm "
+                  "many people find relaxing, often called resonance breathing."),
     BreathPattern("Box Breathing 4-4-4-4", 4, 4, 4, 4,
-                  "Equal inhale, hold, exhale, hold. Focus and calm; used by "
-                  "Navy SEALs and clinicians."),
+                  "Equal inhale, hold, exhale, hold, also called square "
+                  "breathing. An even, steady rhythm for settling and focus."),
     BreathPattern("4-7-8 Relaxing", 4, 7, 8, 0,
-                  "Dr Weil's relaxing breath. Long exhale soothes; great for "
-                  "winding down and sleep."),
+                  "The 4-7-8 count popularised by Dr Andrew Weil. The long "
+                  "exhale makes it a gentle way to wind down."),
     BreathPattern("Calming 4-6 (Long Exhale)", 4, 0, 6, 0,
-                  "Exhale longer than inhale to engage the parasympathetic "
-                  "'rest and digest' response."),
+                  "Exhale longer than inhale: an easy, unhurried rhythm many "
+                  "people find calming."),
     BreathPattern("Equal 4-4 (Sama Vritti)", 4, 0, 4, 0,
                   "Even inhale and exhale. Simple, steadying, good for "
                   "beginners."),
@@ -181,8 +181,8 @@ PRESETS = [
                   "Short inhale, long sighing exhale. Pairs well with the Sigh "
                   "and Haa voices to release tension."),
     BreathPattern("Physiological Sigh", 2.5, 1, 6, 0,
-                  "The fastest known calmer: a full inhale, a brief top-up catch, "
-                  "then a long slow exhale (a 4-phase take on the double inhale)."),
+                  "A full inhale, a brief top-up catch, then a long slow exhale "
+                  "(a 4-phase take on the double inhale). A quick way to pause."),
     BreathPattern("OM Chant 3-9", 3, 0, 9, 0,
                   "A long exhale for toning. Pair with a Chant or Hum voice and "
                   "let the sound carry the out-breath."),

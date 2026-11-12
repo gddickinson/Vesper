@@ -29,6 +29,14 @@ device, no neural voices, no 3D head — there's always a calm fallback.
 
 ---
 
+## Safety
+
+- Vesper is for relaxation only. It is not a medical device and not medical advice.
+- Breathe gently and comfortably. Stop and breathe normally if you feel dizzy, light-headed or uncomfortable.
+- If you have a health condition, talk to a doctor or other qualified professional before trying breathing exercises.
+- Patterns with breath holds or fast, forceful breathing are not suitable during pregnancy or for people with heart or respiratory (breathing) conditions.
+- Never use Vesper while driving, operating machinery, or anywhere it is unsafe to become drowsy.
+
 ## Highlights
 
 - **A living avatar** — the faceView ICT head rendered on the GPU (moderngl), with a soft
@@ -98,22 +106,23 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   tone and an on-screen sing-along.
 - **A sense of space** — an optional master **reverb** (room → hall → cathedral) that
   makes chant and song sound like they're in a real room.
-- **Evidence-based calm** — resonance breathing near **~6 breaths/min**, longer exhales,
+- **Gentle calm** — slow paced breathing near **~6 breaths/min**, longer exhales,
   **4-7-8 / box / physiological-sigh** patterns; guided **Body-Scan &amp; PMR**, **NSDR /
   Yoga Nidra**, **Autogenic Training** (heaviness · warmth · calm),
   **Loving-Kindness (Metta)** (good wishes in widening circles), **guided imagery**
   (a "safe and peaceful place" you build and rest inside, sense by sense), a one-tap
   **Physiological-Sigh reset**; a warm, low-blue **Sleep
-  wind-down** that dims the screen on a melatonin-friendly curve; pink / brown noise and a
-  **Deep Sleep (Pink Noise)** bed (a soft ~0.8 Hz slow-wave swell); and
+  wind-down** that gradually dims and warms the screen; pink / brown noise and a
+  **Deep Sleep (Pink Noise)** bed (a soft, slow ~0.8 Hz swell); and
   gentle, opt-in bedtime notes — a **gratitude** "one good thing" and a **park-your-worries**
-  tomorrow's-list, both shown to shorten sleep onset.
-- **CBT-I sleep program** (Sessions ▸ "Sleep program (CBT-I)…") — the first-line treatment for
-  chronic insomnia, made gentle: a **sleep diary** drives an efficiency-based **sleep window**
+  tomorrow's-list.
+- **Sleep program (CBT-I style)** (Sessions ▸ "Sleep program (CBT-I)…") — a gentle, self-guided take
+  on the sleep-diary and sleep-window steps used in CBT-I (not medical treatment): a **sleep diary**
+  drives an efficiency-based **sleep window**
   anchored to a fixed wake time (with the standard extend/tighten titration), a 0–100
   **sleep-regularity** score, the stimulus-control rules and a rotating sleep-hygiene tip. Plus
-  four evidence-based guided sessions — **Let Go of Trying** (paradoxical intention), **Deeper
-  Sleep** (a deep-sleep hypnotic suggestion), **Awake in the Night** (the quarter-hour rule) and
+  four guided sessions drawn from CBT-I and sleep-hypnosis techniques — **Let Go of Trying**
+  (paradoxical intention), **Deeper Sleep** (a "sleep deeper" suggestion), **Awake in the Night** (the quarter-hour rule) and
   **Put the Day to Rest** (constructive worry).
 - **Accessible &amp; tidy** — global **UI text-size**, a **calm-visuals (reduce-motion)**
   toggle (also softens + spaces out the characters' drowsy gestures), a **mono-audio**

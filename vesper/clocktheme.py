@@ -2,7 +2,7 @@
 
 Pure functions of the hour (0..23) so they are easy to test. The window applies a
 small warm/dim overlay that is neutral by day and a little warmer and dimmer in the
-evening and overnight (kinder on melatonin), and - only when no mode has been saved
+evening and overnight (easier on the eyes), and - only when no mode has been saved
 - opens in a mode that suits the time of day.
 """
 from __future__ import annotations

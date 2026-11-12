@@ -266,10 +266,10 @@ register(VoiceConfig(
 register(VoiceConfig(
     "Deep Sleep (Pink Noise)", GROUP_NATURE, noise="pink", env="volume",
     filt=("lowpass", 1600.0, 0.7), bright_base=1400.0, bright_mod=0.0,
-    am_rate=0.8, am_depth=0.35,                 # ~0.8 Hz slow-wave-ish swell
+    am_rate=0.8, am_depth=0.35,                 # a slow ~0.8 Hz swell
     floor=1.0, gain=0.16, width=0.9,            # calibrated like Pink/Brown (peak < 0.85)
-    description="Soft pink noise swelling gently at ~0.8 Hz - open-loop acoustic "
-                "stimulation shown to support slow-wave (deep) sleep."))
+    description="Soft pink noise swelling gently at ~0.8 Hz - a slow, even rise "
+                "and fall to drift off to."))
 
 register(VoiceConfig(
     "Cafe Murmur", GROUP_NATURE, noise="pink", env="volume",

@@ -299,7 +299,7 @@ class MainWindow(_ActionsMixin, _PitchMixin, _HourglassMixin, _CastMixin,
     def set_clock_light(self, on):
         self._clock_light = bool(on)
 
-    # Meditate guidance — two evidence-based styles, slow rotating cues.
+    # Meditate guidance — two classic styles, slow rotating cues.
     _MED_CUES = {
         "Focused attention": [
             "Rest your attention on the breath.",

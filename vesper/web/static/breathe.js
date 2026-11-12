@@ -8,8 +8,8 @@ import { Soundscape } from './sound.js';
 import { panelHtml, wirePanel, fmtT } from './breathe_panel.js';
 
 route('breathe', async (_args, q) => {
-  const [pats, voices, programs, modes, sleep] = await Promise.all(
-    ['/patterns', '/voices', '/programs', '/modes', '/sleep'].map(p => api(p)));
+  const [pats, voices, programs, modes, sleep, info] = await Promise.all(
+    ['/patterns', '/voices', '/programs', '/modes', '/sleep', '/info'].map(p => api(p)));
   const D = { pats, voices, programs, modes, sleep };
   const mode = modes.find(m => m.name === q.mode);
   const has = (l, n) => l.some(v => v.name === n);
@@ -29,7 +29,7 @@ route('breathe', async (_args, q) => {
       <div class="pace-stage"><canvas id="stage" role="img" aria-label="Breathing scene: grows as you breathe in, shrinks as you breathe out"></canvas></div>
       <div class="btns"><button id="go">Start</button><button id="reset" class="alt">Reset</button></div>
       <div class="readout" aria-live="off" id="readout"></div>
-      <p class="small mute">For relaxation. Breathe gently and comfortably; if you feel light-headed, stop and breathe normally.</p>
+      <div class="callout small" role="note"><b>Please breathe gently.</b> ${info.disclaimer.map(esc).join(' ')}</div>
     </div>
     <div class="panel panel-tight">${panelHtml(D, init)}</div>
   </div>`;

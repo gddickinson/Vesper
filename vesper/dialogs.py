@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (QDialog, QGridLayout, QHBoxLayout, QLabel,
                                QLineEdit, QListWidget, QListWidgetItem,
                                QPushButton, QTextEdit, QVBoxLayout)
 
-from breathsim import store, story_db
+from breathsim import disclaimer, store, story_db
 
 from . import theme
 from .widgets import LabeledSlider, muted
@@ -204,8 +204,9 @@ def open_sleep_program(win):
     t = QLabel("Sleep program (CBT-I)")
     t.setObjectName("title")
     v.addWidget(t)
-    v.addWidget(muted("Evidence-based sleep-window guidance from your sleep diary. "
-                      "CBT-I is the first-line treatment for chronic insomnia."))
+    v.addWidget(muted("A suggested sleep window from your sleep diary, following the "
+                      "sleep-restriction step used in CBT-I."))
+    v.addWidget(muted(disclaimer.SLEEP_PROGRAM_NOTE))
     wake0 = int(store.load_settings().get("cbti_wake_minutes", 390))
     row = QHBoxLayout()
     row.addWidget(QLabel("Wake time"))
@@ -328,6 +329,9 @@ def open_about(win):
         "Qt front-end.")
     body.setWordWrap(True)
     v.addWidget(body)
+    safety = QLabel(f"<b>{disclaimer.TITLE}</b><br>" + "<br>".join(disclaimer.POINTS))
+    safety.setWordWrap(True)
+    v.addWidget(safety)
     close = QPushButton("Close")
     close.clicked.connect(dlg.accept)
     v.addWidget(close)

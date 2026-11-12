@@ -1,18 +1,17 @@
-"""Evidence-based guided sleep techniques -- the desktop mirror of the iOS
-``SleepAids`` additions.  Four short spoken sessions drawn from the sleep-science
-literature, each a stream of soft narrator units (the same
+"""Guided sleep sessions -- the desktop mirror of the iOS ``SleepAids``
+additions.  Four short spoken sessions whose ideas come from techniques used in
+CBT-I and sleep hypnosis (relaxation aids, not treatment), each a stream of soft narrator units (the same
 ``{text, pause, phase, kind}`` shape the storyteller uses), closing on the shared
 soft drift into sleep (:func:`breathsim.hypnosis.drift_tail`):
 
-* **Let Go of Trying** -- *paradoxical intention*: an AASM "well-established"
-  insomnia treatment.  Releasing the effort to sleep dissolves the performance
-  anxiety that keeps you awake.
-* **Deeper Sleep** -- a *hypnotic "sleep deeper" suggestion* (Cordi & Rasch),
-  shown to increase slow-wave sleep and parasympathetic tone in receptive listeners.
+* **Let Go of Trying** -- based on *paradoxical intention*: gently giving up
+  the effort to fall asleep, so there is less pressure to "get it right".
+* **Deeper Sleep** -- a slow, permissive *"sleep deeper" suggestion*, in the
+  style of the sleep-hypnosis scripts used in research by Cordi & Rasch (2014).
 * **Awake in the Night** -- *stimulus control* / the quarter-hour rule, made kind,
   for the 3 a.m. waking: strengthen the bed-sleep bond without clock-watching.
-* **Put the Day to Rest** -- *constructive worry / cognitive offloading*: naming
-  tomorrow's tasks before bed measurably speeds sleep onset (Scullin et al., 2018).
+* **Put the Day to Rest** -- *constructive worry*: naming tomorrow's tasks
+  before bed so they can be set down (the idea behind Scullin et al., 2018).
 
 Pure data + generators; offline + testable.  Registered as Sleep storyteller
 options via :func:`breathsim.stories.extra_names`.
@@ -77,8 +76,8 @@ _DEEPER = [
     "As you sink, your sleep grows deeper. Long, slow waves of deep sleep.",
     "Your body knows how to do this. Let it carry you into deep, restoring sleep.",
     "Deeper now. Slower. Heavier. Wonderfully calm.",
-    "Tonight your sleep will be deep and unbroken, and you will wake refreshed.",
-    "Every breath takes you deeper. Down into the slow, healing depths of sleep.",
+    "Let tonight's sleep be deep and easy, and let the morning come gently.",
+    "Every breath takes you deeper. Down into the slow, restful depths of sleep.",
     "Let yourself go completely. Deep, deep sleep, all through the night.",
     "Drifting down, deeper, and deeper, into a full and restful sleep.",
 ]

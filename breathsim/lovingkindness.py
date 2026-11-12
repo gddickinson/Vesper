@@ -5,8 +5,8 @@ soft, repeated good wishes -- *may you be safe, may you be happy, may you be
 healthy, may you live with ease* -- offered first to yourself, then to someone
 you love, to someone neutral, to someone difficult, and at last to all beings
 everywhere.  The slow, repeated phrasing is the whole point: warmth practised on
-purpose, which the research links to calmer mood, more positive feeling and an
-easier settling at night.  A genuinely evidence-based practice, alongside
+purpose, which many people find a soft, kind way to end the day.  A traditional
+meditation practice, alongside
 Autogenic Training / Body-Scan / PMR / NSDR / Hypnosis.
 
 Pure data + a generator of narrator units (the same ``{text, pause, phase, kind}``

@@ -3,8 +3,8 @@
 //  ~7 nights we compute Time-In-Bed (TIB), Total Sleep Time (TST) and Sleep
 //  Efficiency (SE = TST/TIB), which drive the sleep-window (sleep-restriction)
 //  prescription in CBTI.swift. Persisted as JSON in UserDefaults (mirrors
-//  CustomPatterns). The sleep diary + efficiency-driven window are the core of
-//  evidence-based digital CBT-I. See [[vesper-sleep-science-upgrades]].
+//  CustomPatterns). The sleep diary + efficiency-driven window follow the steps
+//  used in CBT-I (a self-guided routine tool, not medical treatment). See [[vesper-sleep-science-upgrades]].
 
 import Foundation
 

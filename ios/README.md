@@ -6,6 +6,8 @@ a wrapper: the breath timing, procedural breath audio, and the breathing orb are
 re-built in Swift so the app runs fully on-device, offline, and — crucially for a
 sleep app — **keeps playing with the screen locked** (the `audio` background mode).
 
+**Safety:** Vesper is for relaxation only. It is not a medical device and not medical advice. Breathe gently and comfortably. Stop and breathe normally if you feel dizzy, light-headed or uncomfortable. If you have a health condition, talk to a doctor or other qualified professional before trying breathing exercises. Patterns with breath holds or fast, forceful breathing are not suitable during pregnancy or for people with heart or respiratory (breathing) conditions. Never use Vesper while driving, operating machinery, or anywhere it is unsafe to become drowsy.
+
 ## Screenshots
 
 | Metal breathing orb | Night-sky scene | Sleepy companion |
@@ -27,11 +29,13 @@ sleep app — **keeps playing with the screen locked** (the `audio` background m
   `#available`-guarded) compose a fresh, calming story — narrated by Kokoro —
   falling back to a written lecture when Apple Intelligence isn't present.
 - **Generative ambient pad** ("Dreamfield"): a slow evolving chord, click-free.
-- **HRV coherence (Meditate).** A breathing-band **coherence score + ring** and an
-  adaptive resonance pace, from Apple Health HR (guarded) or a breath-driven demo.
-- **Evidence-based sleep science.** Four guided sessions (paradoxical intention ·
-  deep-sleep hypnosis · stimulus control · constructive worry), a **Deep Sleep
-  pink-noise** bed, and a full **CBT-I program**: a sleep diary, a sleep-efficiency
+- **Heart coherence ring (Meditate).** A breathing-band **coherence score + ring** and an
+  adaptive paced-breathing rate, from Apple Health HR (guarded) or a breath-driven demo. A
+  relaxation display, not a medical measurement.
+- **Sleep sessions.** Four guided sessions drawn from CBT-I and sleep-hypnosis techniques
+  (paradoxical intention · a "sleep deeper" suggestion · stimulus control · constructive
+  worry), a **Deep Sleep pink-noise** bed, and a self-guided **CBT-I-style program** (not
+  medical treatment): a sleep diary, a sleep-efficiency
   -driven **sleep window** with a wake-time anchor, **wind-down reminders**, and a
   **sleep-regularity** score. (See [`Vesper/docs/HEALTHKIT_SETUP.md`](Vesper/docs/HEALTHKIT_SETUP.md).)
 - **Apple platform**: App Intents/Siri quick-start, daily reminders, streaks +

@@ -8,13 +8,13 @@ import Foundation
 enum Patterns {
     static let all: [BreathPattern] = [
         BreathPattern("Coherent 5.5 (Resonance)", 5.5, 0, 5.5, 0,
-            "Equal 5.5s in/out (~5.5 breaths/min). Calms the nervous system; the classic resonance-frequency pace."),
+            "Equal 5.5s in/out (~5.5 breaths/min). A slow, steady rhythm many people find relaxing, often called resonance breathing."),
         BreathPattern("Box Breathing 4-4-4-4", 4, 4, 4, 4,
-            "Equal inhale, hold, exhale, hold. Focus and calm; used by Navy SEALs and clinicians."),
+            "Equal inhale, hold, exhale, hold, also called square breathing. An even, steady rhythm for settling and focus."),
         BreathPattern("4-7-8 Relaxing", 4, 7, 8, 0,
-            "Dr Weil's relaxing breath. A long exhale soothes; great for winding down and sleep."),
+            "The 4-7-8 count popularised by Dr Andrew Weil. The long exhale makes it a gentle way to wind down."),
         BreathPattern("Calming 4-6 (Long Exhale)", 4, 0, 6, 0,
-            "Exhale longer than inhale to engage the parasympathetic 'rest and digest' response."),
+            "Exhale longer than inhale: an easy, unhurried rhythm many people find calming."),
         BreathPattern("Equal 4-4 (Sama Vritti)", 4, 0, 4, 0,
             "Even inhale and exhale. Simple, steadying, good for beginners."),
         BreathPattern("Deep Box 6-6-6-6", 6, 6, 6, 6,
@@ -32,7 +32,7 @@ enum Patterns {
         BreathPattern("Sigh Release 2-7", 2, 0, 7, 0,
             "A short inhale and a long sighing exhale to release tension."),
         BreathPattern("Physiological Sigh", 2.5, 1, 6, 0,
-            "The fastest known calmer: a full inhale, a brief top-up catch, then a long slow exhale."),
+            "A full inhale, a brief top-up catch, then a long slow exhale. A quick way to pause."),
         BreathPattern("Energising 6-2", 6, 0, 2, 0,
             "A long inhale and a quick exhale to feel alert and awake."),
         BreathPattern("Tummo (Vase) 5-6-6", 5, 6, 6, 0,
@@ -40,7 +40,7 @@ enum Patterns {
         BreathPattern("Sitali (Cooling) 5-1-6", 5, 1, 6, 0,
             "A slow cooling inhale and a soft exhale."),
         BreathPattern("Resonance 6/min (5-5)", 5, 0, 5, 0,
-            "Even 5s in / 5s out — exactly six breaths a minute, the heart-coherence sweet spot."),
+            "Even 5s in / 5s out — exactly six breaths a minute, the pace often used for resonance breathing."),
         BreathPattern("Even 5-5-5", 5, 5, 5, 0,
             "Inhale, hold, exhale in equal fives. A roomy, steadying triangle for focus."),
         BreathPattern("Relaxing 4-4-6-2", 4, 4, 6, 2,
@@ -56,8 +56,8 @@ enum Patterns {
 
 extension BreathPattern {
     /// A resonance / coherent pattern at `bpm` breaths per minute — equal inhale
-    /// and exhale, no holds (the HRV-coherence style of paced breathing). ~6/min
-    /// is the classic resonance-frequency sweet spot.
+    /// and exhale, no holds (resonance-style paced breathing). ~6/min is the pace
+    /// most often used for it.
     static func paced(bpm: Double) -> BreathPattern {
         let b = max(3.0, min(10.0, bpm))
         let half = (60.0 / b) / 2.0

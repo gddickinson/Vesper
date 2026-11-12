@@ -221,7 +221,7 @@ struct RootView: View {
                             .font(.system(size: 12, weight: .medium)).foregroundStyle(Theme.accent)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Slider(value: $vm.pacedBpm, in: 4.0...8.0, step: 0.5).tint(Theme.accent)
-                        Text("Resonance breathing — equal in and out. ~6/min is the HRV sweet spot.")
+                        Text("Resonance breathing — equal in and out. ~6/min is the usual pace.")
                             .font(.system(size: 11)).foregroundStyle(Theme.faint)
                     }
                 }
@@ -441,7 +441,7 @@ struct RootView: View {
                 }
                 Spacer()
             }
-            Text("Breathe slowly and evenly; the ring greens as your heart rhythm steadies. Uses Apple Health heart rate when enabled in Settings, otherwise a live demo.")
+            Text("Breathe slowly and evenly; the ring greens as your heart rhythm steadies. Uses Apple Health heart rate when enabled in Settings, otherwise a live demo. A relaxation display, not a medical measurement.")
                 .font(.system(size: 10)).foregroundStyle(Theme.faint)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -495,7 +495,7 @@ struct RootView: View {
                     .font(.system(size: 11)).foregroundStyle(Theme.faint)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            // sleep regularity (steady timing predicts health better than duration)
+            // sleep regularity (how steady your bed and wake times are)
             if let reg = CBTI.regularity() {
                 HStack(spacing: 6) {
                     Text("Sleep regularity").font(.system(size: 12)).foregroundStyle(Theme.muted)

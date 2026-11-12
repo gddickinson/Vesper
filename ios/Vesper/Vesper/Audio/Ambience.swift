@@ -23,7 +23,7 @@ struct AmbienceVoice: Identifiable, Hashable {
     let crackle: Float
     let gain: Float
     /// If > 0, a pure sine at this Hz (isochronic/solfeggio) replaces the noise
-    /// bed; the swell LFO (swellRate/swellDepth) becomes the entrainment pulse.
+    /// bed; the swell LFO (swellRate/swellDepth) becomes a soft pulse.
     let tone: Float
     /// If true, a slowly-evolving generative chord pad replaces the noise bed
     /// (detuned sine partials + per-tone LFOs + a drifting root + an LP sweep).
@@ -97,7 +97,7 @@ extension AmbienceVoice {
         AmbienceVoice(name: "Heavy Rain", colour: .white, filter: .lowpass, freq: 3200, q: 0.7,
                       sweepRate: 0, sweepDepth: 0, swellRate: 0.18, swellDepth: 0.22,
                       crackle: 0.4, gain: 0.42),
-        // — gentle entrainment / solfeggio tones (low level) —
+        // — gentle pulsed / solfeggio tones (low level; named after the pulse rate or pitch only) —
         AmbienceVoice(name: "Theta Pulse (6 Hz)", colour: .pink, filter: .lowpass, freq: 210, q: 0.7,
                       sweepRate: 0, sweepDepth: 0, swellRate: 6, swellDepth: 1.0,
                       crackle: 0, gain: 0.10, tone: 210),
@@ -110,8 +110,8 @@ extension AmbienceVoice {
         AmbienceVoice(name: "Solfeggio 432 Hz", colour: .pink, filter: .lowpass, freq: 432, q: 0.7,
                       sweepRate: 0, sweepDepth: 0, swellRate: 0.22, swellDepth: 0.3,
                       crackle: 0, gain: 0.08, tone: 432),
-        // — soft pink noise with a ~0.8 Hz swell: open-loop acoustic stimulation
-        //   shown to support slow-wave (deep) sleep (pink chosen for comfort) —
+        // — soft pink noise with a slow ~0.8 Hz swell to drift off to
+        //   (pink chosen for comfort) —
         AmbienceVoice(name: "Deep Sleep (Pink Noise)", colour: .pink, filter: .lowpass,
                       freq: 1600, q: 0.7, sweepRate: 0, sweepDepth: 0,
                       swellRate: 0.8, swellDepth: 0.35, crackle: 0, gain: 0.34),
@@ -186,7 +186,7 @@ final class AmbienceSynth {
         let dt = 1.0 / sr
         let targetLevel = max(0, min(1, level))
         for i in 0..<frames {
-            // amplitude swell (ocean / crickets) — or the entrainment pulse for tones
+            // amplitude swell (ocean / crickets) — or the soft pulse for tones
             var amp: Float = 1
             if voice.swellDepth > 0 {
                 swellPhase += voice.swellRate * dt
