@@ -88,7 +88,8 @@ scene; Sing/Chant can switch to the **pitch trainer** scene.
   (`llm_keys.resolve`: env → OS keychain → chmod-600 `~/.breathsim/llm.json` → session-only)
   else **Ollama** (local, **opt-in** via `enable_ollama` — no network unless asked) else a
   **null** provider (`available()` False). API: `available`/`backend_name`/`status`/`complete`/
-  `chat` (Claude over urllib, no SDK dep). `llm_keys` also exposes `set_session`/`set_file`/
+  `chat` (Claude over urllib, no SDK dep; default model `claude-haiku-5-5` at effort `low`,
+  overridable per call with `model=`; request body tested offline in `tests/test_llm_model.py`). `llm_keys` also exposes `set_session`/`set_file`/
   `set_keychain`/`clear`/`source`/`keychain_available`. **Key-safe:** the key is fetched lazily
   and never stored on a provider, never logged (errors `_sanitize`d), never committed/shipped;
   `mask()` shows only the last 4. No network at import. Offline safety test: `tools/test_llm.py`.

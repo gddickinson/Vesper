@@ -21,7 +21,11 @@ import urllib.request
 
 from . import llm_keys
 
-DEFAULT_CLAUDE_MODEL = "claude-haiku-4-5-20251001"   # cheap + fast; overridable
+DEFAULT_CLAUDE_MODEL = "claude-haiku-5-5"   # cheap + fast; override per call with model=
+# Claude Haiku 5.5 thinks by default (adaptive thinking) and that thinking counts toward
+# max_tokens, so the short-output callers (300-500 tokens) ask for low effort. Sent only
+# with the default model: an overriding older model (e.g. Haiku 4.5) rejects `effort`.
+DEFAULT_CLAUDE_EFFORT = "low"
 DEFAULT_OLLAMA_MODEL = "llama3.2"
 _ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
 _ANTHROPIC_VERSION = "2023-06-01"
@@ -88,8 +92,10 @@ def _claude_call(messages, system=None, tools=None, max_tokens=1024, model=None)
     key = llm_keys.resolve()
     if not key:
         raise LLMUnavailable("No Anthropic API key is set.")
-    body = {"model": model or DEFAULT_CLAUDE_MODEL,
-            "max_tokens": int(max_tokens), "messages": messages}
+    model = model or DEFAULT_CLAUDE_MODEL
+    body = {"model": model, "max_tokens": int(max_tokens), "messages": messages}
+    if model == DEFAULT_CLAUDE_MODEL and DEFAULT_CLAUDE_EFFORT:
+        body["output_config"] = {"effort": DEFAULT_CLAUDE_EFFORT}
     if system:
         body["system"] = system
     if tools:
