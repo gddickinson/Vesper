@@ -15,7 +15,7 @@ Read** — each with its own purpose-built control panel, visual scene and sound
 centre is a talking-head **avatar** (a 3D head, or one of **36 hand-drawn cartoon
 characters**) that breathes, blinks, gazes around, emotes, and narrates a library of **337
 soothing sleep-lectures** — or a whole **novel** — that gently follow the words on screen.
-<!-- counts: 337 lectures / 73 branches · 150 voices · 66 phrases · 7 modes · 36 characters · 28 costumes -->
+<!-- counts: 337 lectures / 73 branches · 151 voices · 66 phrases · 7 modes · 36 characters · 28 costumes -->
 
 It's a **self-contained** project: the entire audio / breath / voice / story engine is
 vendored at [`breathsim/`](breathsim/) (no sibling dependency); the PySide6 front-end
@@ -50,7 +50,7 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   visor / antennae / aerial), and its own narrator
   **voice + personality**. The bedtime storyteller can even pick a fitting character + costume per
   scene (a cosy bear for a hibernation tale, a wise owl for the night sky).
-- **Fully procedural sound** — **150 voices** synthesised in real time from noise, filters
+- **Fully procedural sound** — **151 voices** synthesised in real time from noise, filters
   and a vocal-tract (formant) model: realistic breath timbres, human voice, vocal
   exercises, pranayama, singing, a playful **Cat** voice family, and nature **ambiences**
   (ocean, rain, forest, a crackling campfire, a struck singing bowl, wind chimes, night
@@ -120,7 +120,7 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   downmix for single-sided hearing, **narration captions**
   (the spoken line shown on-screen for deaf / hard-of-hearing listeners), an
   **always-warm low-blue screen** for evening eye comfort, drag-and-drop file loading,
-  and a **searchable chooser** for the long lists (200+ stories, 150 voices).
+  and a **searchable chooser** for the long lists (200+ stories, 151 voices).
 - **Per-mode visual scenes** — a breathing **orb** (motes, exhale rings, a coherence halo
   near 6 bpm), a starry **night**, a moonlit **sea**, tone-reactive **ripples**, warm
   rising **lanterns** and a hushed **snowfall** (low-blue sleep beds), an on-screen

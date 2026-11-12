@@ -766,7 +766,8 @@ book…" show the cast (speaker -> character + costume + source) with a **Re-cas
   `main.js`, `static_api.js`, `style_app.css`, `index.html`.
   Node tests: `engines.test.mjs` (every value vs the fixture), `sound_worklet.test.mjs` (synth RMS vs Python).
 - **tests/** — `test_web.py` (API, static build, fixture current, node tests), `test_noise_am.py`,
-  `test_requirements.py`, `test_import_order.py` (each voice-registering module imports first, cleanly). **scripts/screenshots.py** — Playwright smoke test + README shots (`docs/img/`).
+  `test_requirements.py`, `test_import_order.py` (each voice-registering module imports first, cleanly), `test_doc_counts.py`
+  (README/CLAUDE.md counts match the code; fix with **scripts/doc_counts.py**). **scripts/screenshots.py** — Playwright smoke test + README shots (`docs/img/`).
 
 ## Other project files
 - **selftest.py** — headless voice + lecture checks against the vendored core.

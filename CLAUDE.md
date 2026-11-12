@@ -55,8 +55,10 @@ and **lip-syncs** the bedtime story. **Always read `INTERFACE.md` first.**
   logic; `pytest tests`). See INTERFACE.md "Web interface".
 
 ## Status
-At parity with (and well beyond) the legacy Tk app: 6 modes, 148 voices, 22 breath
-patterns, 11 guided programs, 66 chants, **213 sleep-lectures across 42 branches**,
-17 cartoon characters + costumes + per-character voices, optional XTTS voices, a
+At parity with (and well beyond) the legacy Tk app: 7 modes, 151 voices, 22 breath
+patterns, 11 guided programs, 66 chants, **337 sleep-lectures across 73 branches**,
+36 cartoon characters + costumes + per-character voices, optional XTTS voices, a
 master reverb space, and story-following soundscape/backdrop/character. Ongoing work
 is tracked in `UPDATES.md`; per-round notes in `SESSION_LOG.md`.
+The counts above and in README.md are generated: run `python scripts/doc_counts.py` after
+adding voices/lectures/characters (`tests/test_doc_counts.py` fails when they drift).
