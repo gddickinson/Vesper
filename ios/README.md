@@ -34,7 +34,7 @@ sleep app — **keeps playing with the screen locked** (the `audio` background m
   relaxation display, not a medical measurement.
 - **Sleep sessions.** Four guided sessions drawn from CBT-I and sleep-hypnosis techniques
   (paradoxical intention · a "sleep deeper" suggestion · stimulus control · constructive
-  worry), a **Deep Sleep pink-noise** bed, and a self-guided **CBT-I-style program** (not
+  worry), a **Pink Noise Swell** bed, and a self-guided **CBT-I-style program** (not
   medical treatment): a sleep diary, a sleep-efficiency
   -driven **sleep window** with a wake-time anchor, **wind-down reminders**, and a
   **sleep-regularity** score. (See [`Vesper/docs/HEALTHKIT_SETUP.md`](Vesper/docs/HEALTHKIT_SETUP.md).)

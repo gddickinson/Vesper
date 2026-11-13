@@ -22,7 +22,7 @@ struct AmbienceVoice: Identifiable, Hashable {
     /// Sparse crackle density 0…1 (fire).
     let crackle: Float
     let gain: Float
-    /// If > 0, a pure sine at this Hz (isochronic/solfeggio) replaces the noise
+    /// If > 0, a pure sine at this Hz (a soft pulsed or steady tone) replaces the noise
     /// bed; the swell LFO (swellRate/swellDepth) becomes a soft pulse.
     let tone: Float
     /// If true, a slowly-evolving generative chord pad replaces the noise bed
@@ -97,22 +97,22 @@ extension AmbienceVoice {
         AmbienceVoice(name: "Heavy Rain", colour: .white, filter: .lowpass, freq: 3200, q: 0.7,
                       sweepRate: 0, sweepDepth: 0, swellRate: 0.18, swellDepth: 0.22,
                       crackle: 0.4, gain: 0.42),
-        // — gentle pulsed / solfeggio tones (low level; named after the pulse rate or pitch only) —
-        AmbienceVoice(name: "Theta Pulse (6 Hz)", colour: .pink, filter: .lowpass, freq: 210, q: 0.7,
+        // — gentle pulsed / steady tones (low level; named after the pulse rate or pitch only) —
+        AmbienceVoice(name: "Soft Pulse (6 Hz)", colour: .pink, filter: .lowpass, freq: 210, q: 0.7,
                       sweepRate: 0, sweepDepth: 0, swellRate: 6, swellDepth: 1.0,
                       crackle: 0, gain: 0.10, tone: 210),
-        AmbienceVoice(name: "Delta Pulse (2.5 Hz)", colour: .pink, filter: .lowpass, freq: 130, q: 0.7,
+        AmbienceVoice(name: "Low Pulse (2.5 Hz)", colour: .pink, filter: .lowpass, freq: 130, q: 0.7,
                       sweepRate: 0, sweepDepth: 0, swellRate: 2.5, swellDepth: 1.0,
                       crackle: 0, gain: 0.10, tone: 130),
-        AmbienceVoice(name: "Solfeggio 528 Hz", colour: .pink, filter: .lowpass, freq: 528, q: 0.7,
+        AmbienceVoice(name: "528 Hz Tone", colour: .pink, filter: .lowpass, freq: 528, q: 0.7,
                       sweepRate: 0, sweepDepth: 0, swellRate: 0.25, swellDepth: 0.3,
                       crackle: 0, gain: 0.08, tone: 528),
-        AmbienceVoice(name: "Solfeggio 432 Hz", colour: .pink, filter: .lowpass, freq: 432, q: 0.7,
+        AmbienceVoice(name: "432 Hz Tone", colour: .pink, filter: .lowpass, freq: 432, q: 0.7,
                       sweepRate: 0, sweepDepth: 0, swellRate: 0.22, swellDepth: 0.3,
                       crackle: 0, gain: 0.08, tone: 432),
         // — soft pink noise with a slow ~0.8 Hz swell to drift off to
         //   (pink chosen for comfort) —
-        AmbienceVoice(name: "Deep Sleep (Pink Noise)", colour: .pink, filter: .lowpass,
+        AmbienceVoice(name: "Pink Noise Swell", colour: .pink, filter: .lowpass,
                       freq: 1600, q: 0.7, sweepRate: 0, sweepDepth: 0,
                       swellRate: 0.8, swellDepth: 0.35, crackle: 0, gain: 0.34),
         // — generative evolving pad —
@@ -120,7 +120,19 @@ extension AmbienceVoice {
                       freq: 1200, q: 0.7, sweepRate: 0, sweepDepth: 0,
                       swellRate: 0, swellDepth: 0, crackle: 0, gain: 0.55, pad: true),
     ]
-    static func byName(_ n: String) -> AmbienceVoice? { all.first { $0.name == n } }
+    /// Old names (saved in settings before the 2026-11-13 rename) -> current names.
+    static let renamed: [String: String] = [
+        "Theta Pulse (6 Hz)": "Soft Pulse (6 Hz)",          // legacy name
+        "Delta Pulse (2.5 Hz)": "Low Pulse (2.5 Hz)",       // legacy name
+        "Solfeggio 528 Hz": "528 Hz Tone",                  // legacy name
+        "Solfeggio 432 Hz": "432 Hz Tone",                  // legacy name
+        "Deep Sleep (Pink Noise)": "Pink Noise Swell",      // legacy name
+    ]
+    static func canonical(_ n: String) -> String { renamed[n] ?? n }
+    static func byName(_ n: String) -> AmbienceVoice? {
+        let c = canonical(n)
+        return all.first { $0.name == c }
+    }
 }
 
 final class AmbienceSynth {
@@ -196,7 +208,7 @@ final class AmbienceSynth {
 
             var s: Float
             if voice.tone > 0 {
-                // pure isochronic / solfeggio tone
+                // pure sine tone
                 tonePhase += voice.tone * dt
                 if tonePhase >= 1 { tonePhase -= 1 }
                 s = sin(2 * .pi * tonePhase)

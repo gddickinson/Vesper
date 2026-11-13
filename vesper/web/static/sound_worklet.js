@@ -1,7 +1,7 @@
 // AudioWorklet that synthesises Vesper's procedural sound in real time, sample by sample, with the same
 // recipes as breathsim/tracks.py NoiseTrack (coloured noise -> static biquad -> brightness one-pole ->
 // breath envelope -> auto-pan / tremolo -> gain) and breathsim/textures.py (Singing Bowl, Wind Chimes,
-// Slow-Wave Pulse). No samples are loaded. The page posts voice configs and the live breath levels.
+// Slow Swell). No samples are loaded. The page posts voice configs and the live breath levels.
 import { designers, IIR, OnePoleLP, Noise, Struck, mulberry, panGains, tremolo, TWO_PI,
   BOWL_PARTIALS, BOWL_NOTES, CHIME_PARTIALS, CHIME_NOTES, CHIME_BASE } from './dsp_core.js';
 

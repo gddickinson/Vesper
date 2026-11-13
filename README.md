@@ -113,7 +113,7 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   (a "safe and peaceful place" you build and rest inside, sense by sense), a one-tap
   **Physiological-Sigh reset**; a warm, low-blue **Sleep
   wind-down** that gradually dims and warms the screen; pink / brown noise and a
-  **Deep Sleep (Pink Noise)** bed (a soft, slow ~0.8 Hz swell); and
+  **Pink Noise Swell** bed (a soft, slow ~0.8 Hz swell); and
   gentle, opt-in bedtime notes — a **gratitude** "one good thing" and a **park-your-worries**
   tomorrow's-list.
 - **Sleep program (CBT-I style)** (Sessions ▸ "Sleep program (CBT-I)…") — a gentle, self-guided take
@@ -122,7 +122,7 @@ device, no neural voices, no 3D head — there's always a calm fallback.
   anchored to a fixed wake time (with the standard extend/tighten titration), a 0–100
   **sleep-regularity** score, the stimulus-control rules and a rotating sleep-hygiene tip. Plus
   four guided sessions drawn from CBT-I and sleep-hypnosis techniques — **Let Go of Trying**
-  (paradoxical intention), **Deeper Sleep** (a "sleep deeper" suggestion), **Awake in the Night** (the quarter-hour rule) and
+  (paradoxical intention), **Drifting Deeper** (a "sleep deeper" suggestion), **Awake in the Night** (the quarter-hour rule) and
   **Put the Day to Rest** (constructive worry).
 - **Accessible &amp; tidy** — global **UI text-size**, a **calm-visuals (reduce-motion)**
   toggle (also softens + spaces out the characters' drowsy gestures), a **mono-audio**

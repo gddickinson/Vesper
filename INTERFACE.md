@@ -596,8 +596,8 @@ small boat on a calm river and let the **current carry you** -- nothing to row o
 banks slip by, set each worry on the water to float away, then ease to rest, then `hypnosis.drift_tail`;
 its theme is *letting go of effort/control*, distinct from the static safe-place; Mountain Stream bed) +
 **`sleeptech`** (4 guided sleep sessions mirroring the iOS app, drawn from CBT-I and sleep-hypnosis
-techniques: **Let Go of Trying** (*paradoxical intention*), **Deeper Sleep** (a "sleep deeper"
-suggestion in the style of Cordi & Rasch's scripts; over the **Deep Sleep (Pink Noise)** bed), **Awake in
+techniques: **Let Go of Trying** (*paradoxical intention*), **Drifting Deeper** (a "sleep deeper"
+suggestion in the style of Cordi & Rasch's scripts; over the **Pink Noise Swell** bed), **Awake in
 the Night** (*stimulus control* / the quarter-hour rule), **Put the Day to Rest** (*constructive worry*,
 after Scullin 2018); each closes on `hypnosis.drift_tail`; `names`/`has`/`ambience`/
 `units(name, rng, guidance)`, registered via `stories.extra_names`) +
@@ -752,7 +752,7 @@ book…" show the cast (speaker -> character + costume + source) with a **Re-cas
   `STATIC_ENDPOINTS` are exported to JSON by **scripts/build_static.py** (Pages workflow
   `.github/workflows/pages.yml`). No LLM / TTS / keys in the web layer (guarded by a test).
 - **vesper/web/catalog.py** — JSON views of the real core: `pattern_list`, `voice_lists` (noise-kind breath voices +
-  nature beds + the Singing Bowl / Wind Chimes / Slow-Wave Pulse textures, i.e. what the worklet can synthesise),
+  nature beds + the Singing Bowl / Wind Chimes / Slow Swell textures, i.e. what the worklet can synthesise),
   `program_list`, `mode_list`, `sleep_info`, `info` (real counts).
 - **vesper/web/reference.py** — `fixture()`: Python reference numbers (state_at, naturalness, controller, envelopes,
   dsp filters, struck textures, seeded NoiseTrack RMS, wind-down / settle via a fake-app `SessionDirector`, sleep
@@ -776,7 +776,11 @@ book…" show the cast (speaker -> character + costume + source) with a **Re-cas
 - **breathsim/disclaimer.py** — the one safety / not-medical-advice text (`TITLE`, `POINTS`, `TEXT`,
   web footer `SHORT`, `SLEEP_PROGRAM_NOTE`), used by About, the first-run welcome, the CBT-I dialog,
   the web API (`info.disclaimer`) and quoted in README.
-- **CHANGELOG.md** — user-facing changes (2026-11-12: health claims softened, disclaimer added).
+- **breathsim/renames.py** — `RENAMED` old -> new sound/session names, `canonical(name)` and `migrate(json)`;
+  `store._read` migrates every saved file, `voices.get_voice` and `sleeptech` accept old names (iOS mirror:
+  `AmbienceVoice.canonical`, `SleepAids.canonical`). Test: `tests/test_renames.py`.
+- **CHANGELOG.md** — user-facing changes (2026-11-12: health claims softened, disclaimer added;
+  2026-11-13: claim-like sound/session names renamed).
 - **selftest.py** — headless voice + lecture checks against the vendored core.
 - **requirements.txt** / **README.md** — external pip deps + run instructions.
 - **data/stories.db** — generated SQLite story record (rebuilt on startup).

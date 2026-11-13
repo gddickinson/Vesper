@@ -10,7 +10,7 @@ import datetime as _dt
 import json
 import os
 
-from . import patterns, voices
+from . import patterns, renames, voices
 from .patterns import BreathPattern
 
 DIR = os.environ.get("BREATHSIM_HOME") or os.path.expanduser("~/.breathsim")
@@ -23,7 +23,7 @@ def _path(name):
 def _read(name, default):
     try:
         with open(_path(name)) as fh:
-            return json.load(fh)
+            return renames.migrate(json.load(fh))      # old sound/session names -> current
     except Exception:
         return default
 

@@ -2,7 +2,7 @@
 
 Only breath voices and ambience beds that the browser can synthesise faithfully are listed in
 `voices()`: the filtered-noise voices (tracks.NoiseTrack) and three textures (Singing Bowl, Wind
-Chimes, Slow-Wave Pulse). The vocal-tract, chant, narration and LLM features stay in the desktop app.
+Chimes, Slow Swell). The vocal-tract, chant, narration and LLM features stay in the desktop app.
 """
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from breathsim import disclaimer, lectures, modes, patterns, phrases, programs, 
 
 from .. import sleeptimer
 
-WEB_TEXTURES = ("Singing Bowl", "Wind Chimes", "Slow-Wave Pulse")
+WEB_TEXTURES = ("Singing Bowl", "Wind Chimes", "Slow Swell")
 CFG_KEYS = ("name", "group", "description", "kind", "noise", "filt", "bright_base", "bright_mod",
             "env", "floor", "gain", "width", "pan_rate", "pan_depth", "exhale_mul", "am_rate",
             "am_depth", "texture")

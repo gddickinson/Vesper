@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-11-13 — neutral names for sounds and a sleep session
+
+George approved renaming the names that still sounded like brain-state, sleep-depth or
+frequency-therapy claims. The sounds themselves are unchanged (same settings and texture IDs).
+
+| Old name | New name | Where |
+|---|---|---|
+| Slow-Wave Pulse | Slow Swell | desktop, web |
+| Deep Sleep (Pink Noise) | Pink Noise Swell | desktop, web, iOS |
+| Deeper Sleep (guided session) | Drifting Deeper | desktop, iOS |
+| Theta Pulse (6 Hz) | Soft Pulse (6 Hz) | iOS |
+| Delta Pulse (2.5 Hz) | Low Pulse (2.5 Hz) | iOS |
+| Solfeggio 528 Hz | 528 Hz Tone | iOS |
+| Solfeggio 432 Hz | 432 Hz Tone | iOS |
+
+Saved settings, presets and soundscapes that use an old name still load: the desktop maps old
+names on read (`breathsim/renames.py`, also used by `voices.get_voice` and the sleep sessions), and
+the iOS app maps its saved ambience and guided-session names (`AmbienceVoice.canonical`,
+`SleepAids.canonical`). `tests/test_health_claims.py` now fails if an old name reappears in
+user-visible text; `tests/test_renames.py` checks the aliases.
+
 ## 2026-11-12 — wording: health claims softened, safety disclaimer added
 
 George's decision: "Soften or remove all health claims, with disclaimers if kept."

@@ -183,7 +183,7 @@ def _textures_part():
 
 
 LEVEL_VOICES = ("Deep Calm", "Soft Whisper", "Sleepy Warm", "Ocean Waves", "Gentle Rain",
-                "Soft Rainstorm", "Brown Noise", "Deep Sleep (Pink Noise)")
+                "Soft Rainstorm", "Brown Noise", "Pink Noise Swell")
 
 
 def _levels_part(sr=48000, seconds=8.0, block=512):

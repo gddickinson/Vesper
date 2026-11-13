@@ -1,6 +1,6 @@
 """Regression: noise voices honour ``am_rate`` / ``am_depth`` (tremolo).
 
-"Deep Sleep (Pink Noise)" is a ``kind="noise"`` voice declared with
+"Pink Noise Swell" is a ``kind="noise"`` voice declared with
 ``am_rate=0.8, am_depth=0.35`` and described as swelling at ~0.8 Hz, but
 ``NoiseTrack`` used to ignore the AM fields, so it played as plain steady noise.
 """
@@ -42,7 +42,7 @@ def _peak_trough_ratio(x, rate):
 
 
 def test_deep_sleep_noise_swells_at_am_rate():
-    cfg = voices.get_voice("Deep Sleep (Pink Noise)")
+    cfg = voices.get_voice("Pink Noise Swell")
     assert cfg.kind == "noise" and cfg.am_rate == 0.8
     ratio = _peak_trough_ratio(_render(cfg), cfg.am_rate)
     # trough gain 1 - am_depth = 0.65 relative to the peaks

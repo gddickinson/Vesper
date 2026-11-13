@@ -6,7 +6,7 @@ soft drift into sleep (:func:`breathsim.hypnosis.drift_tail`):
 
 * **Let Go of Trying** -- based on *paradoxical intention*: gently giving up
   the effort to fall asleep, so there is less pressure to "get it right".
-* **Deeper Sleep** -- a slow, permissive *"sleep deeper" suggestion*, in the
+* **Drifting Deeper** -- a slow, permissive *"sleep deeper" suggestion*, in the
   style of the sleep-hypnosis scripts used in research by Cordi & Rasch (2014).
 * **Awake in the Night** -- *stimulus control* / the quarter-hour rule, made kind,
   for the 3 a.m. waking: strengthen the bed-sleep bond without clock-watching.
@@ -20,8 +20,10 @@ from __future__ import annotations
 
 import random
 
+from . import renames
+
 NAME_PARADOX = "Let Go of Trying"
-NAME_DEEPER = "Deeper Sleep"
+NAME_DEEPER = "Drifting Deeper"
 NAME_AWAKE = "Awake in the Night"
 NAME_WORRY = "Put the Day to Rest"
 
@@ -29,7 +31,7 @@ NAMES = [NAME_PARADOX, NAME_DEEPER, NAME_AWAKE, NAME_WORRY]
 
 _AMBIENCE = {
     NAME_PARADOX: "Brown Noise",
-    NAME_DEEPER: "Deep Sleep (Pink Noise)",
+    NAME_DEEPER: "Pink Noise Swell",
     NAME_AWAKE: "Brown Noise",
     NAME_WORRY: "Mountain Stream",
 }
@@ -40,11 +42,11 @@ def names():
 
 
 def has(name):
-    return name in NAMES
+    return renames.canonical(name) in NAMES
 
 
 def ambience(name):
-    return _AMBIENCE.get(name)
+    return _AMBIENCE.get(renames.canonical(name))
 
 
 def _u(text, pause, phase=None, kind="calm"):
@@ -125,7 +127,7 @@ def units(name, rng=None, guidance=True):
     sleep.  ``guidance`` keeps a couple of breath-paced breaths near the start
     (dropped when false), matching the other guided sessions."""
     rng = rng or random.Random()
-    lines = _SCRIPT.get(name)
+    lines = _SCRIPT.get(renames.canonical(name))
     if not lines:
         return
     yield _u(lines[0], 3600)

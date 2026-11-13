@@ -351,7 +351,7 @@ final class SessionViewModel: ObservableObject {
             ?? Patterns.default
         patternName = startPattern.name
         voiceName = d.string(forKey: "voice") ?? m.defaultVoice
-        ambienceName = d.string(forKey: "ambience") ?? m.defaultAmbience
+        ambienceName = AmbienceVoice.canonical(d.string(forKey: "ambience") ?? m.defaultAmbience)
         ambienceLevel = d.object(forKey: "ambienceLevel") as? Double ?? 0.5
         breathLevel = d.object(forKey: "breathLevel") as? Double ?? 0.8
         masterVolume = d.object(forKey: "master") as? Double ?? 0.9
@@ -362,7 +362,7 @@ final class SessionViewModel: ObservableObject {
         lectureBranch = d.string(forKey: "lectureBranch") ?? startLec.branch
         lectureTitle = startLec.title
         companionName = d.string(forKey: "companion") ?? Characters.default
-        sleepAid = d.string(forKey: "sleepAid") ?? SleepAids.storyName
+        sleepAid = SleepAids.canonical(d.string(forKey: "sleepAid") ?? SleepAids.storyName)
         programName = d.string(forKey: "programName") ?? Programs.none
         sessionMinutes = d.object(forKey: "minutes") as? Double ?? 0
         haptics = d.object(forKey: "haptics") as? Bool ?? true

@@ -34,6 +34,16 @@ BANNED = [
     "cures insomnia", "lowers stress", "lower your blood", "boosts your immune",
 ]
 
+# Old sound / session names that sounded like brain-state, sleep-depth or frequency-therapy
+# claims (George, 2026-11-13). They survive only as aliases so saved settings still load:
+# breathsim/renames.py and Swift lines marked "legacy name".
+OLD_NAMES = [
+    "Slow-Wave Pulse", "Theta Pulse", "Delta Pulse", "Solfeggio", "Deep Sleep (Pink Noise)",
+    "Deeper Sleep", "isochronic", "binaural beat",
+]
+ALIAS_FILES = {"breathsim/renames.py"}
+ALIAS_MARK = "legacy name"
+
 SCAN_GLOBS = [
     "README.md", "INTERFACE.md", "ios/README.md",
     "breathsim/**/*.py", "vesper/**/*.py", "vesper/web/static/*.js",
@@ -114,3 +124,31 @@ def test_web_footer_and_pages_use_the_shared_text():
 def test_desktop_about_and_first_run_show_disclaimer():
     for mod in ("vesper/dialogs.py", "vesper/onboarding.py"):
         assert "disclaimer." in (ROOT / mod).read_text(encoding="utf-8"), mod
+
+
+def test_old_claim_names_gone_from_user_text():
+    pat = re.compile("|".join(re.escape(b) for b in OLD_NAMES), re.IGNORECASE)
+    hits = []
+    for f in _files():
+        rel = f.relative_to(ROOT).as_posix()
+        if rel in ALIAS_FILES:
+            continue
+        for i, line in enumerate(f.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+            if ALIAS_MARK in line:
+                continue
+            for m in pat.finditer(line):
+                hits.append(f"{rel}:{i}: {m.group(0)!r}")
+    assert not hits, "renamed claim-like names still shown:\n" + "\n".join(hits)
+
+
+def test_old_claim_names_gone_from_registries_and_web_data():
+    import json
+    from breathsim import renames, stories, voices
+    from vesper.web import catalog
+    shown = set(voices.names()) | set(stories.extra_names())
+    assert not shown & set(renames.RENAMED), shown & set(renames.RENAMED)
+    blob = json.dumps([catalog.voice_lists(), catalog.program_list(), catalog.sleep_info(),
+                       catalog.pattern_list()])
+    blob += (ROOT / "tests/fixtures/web_voices.json").read_text(encoding="utf-8")
+    low = blob.lower()
+    assert not [n for n in OLD_NAMES if n.lower() in low]

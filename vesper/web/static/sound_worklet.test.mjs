@@ -30,7 +30,7 @@ for (const row of rows) {
   console.log(`${ok ? 'ok  ' : 'FAIL'} ${row.name}: RMS L/R JS ${jl.toFixed(4)}/${jr.toFixed(4)} vs Python ${row.rms_l.toFixed(4)}/${row.rms_r.toFixed(4)}`);
   if (!ok) bad++;
 }
-for (const name of ['Singing Bowl', 'Wind Chimes', 'Slow-Wave Pulse']) {
+for (const name of ['Singing Bowl', 'Wind Chimes', 'Slow Swell']) {
   const v = new TextureVoice(cfgOf(name), 48000, 42), n = 128, L = new Float64Array(n), R = new Float64Array(n);
   let peak = 0, sum = 0, cnt = 0;
   for (let b = 0; b < 48000 * 40 / n; b++) {

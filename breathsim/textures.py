@@ -350,6 +350,6 @@ _t("Womb Heartbeat", "womb", 0.179,
    "A muffled heartbeat over a soft blood-flow hush - the cosy sound of the womb.")
 _t("Whale Song", "whale", 0.393,
    "Distant whale song: slow moans gliding over a deep, dark sea.")
-_t("Slow-Wave Pulse", "slowpulse", 0.176,
+_t("Slow Swell", "slowpulse", 0.176,
    "A soft pink-noise wash that pulses gently, about 48 a minute - an unhurried "
    "rhythm to drift off to.")

@@ -85,7 +85,7 @@ class NoiseTrack(_PanMixin):
 
     def _am(self, frames: int):
         """Optional slow tremolo (``am_rate``/``am_depth``), e.g. the ~0.8 Hz
-        swell of "Deep Sleep (Pink Noise)"; same law as SynthBreathTrack."""
+        swell of "Pink Noise Swell"; same law as SynthBreathTrack."""
         cfg = self.cfg
         if cfg.am_rate <= 0.0 or cfg.am_depth <= 0.0:
             return None

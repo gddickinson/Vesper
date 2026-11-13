@@ -4824,3 +4824,15 @@ Breathe, Patterns, Sounds, Programs, Verify, About.
 - Verified: `pytest tests` 45 passed; CI=1 test_web 18 passed; node tests ok; 75 tools scripts pass
   (test_read_finished failed once in the batch run, passed 3/3 alone: intermittent, unrelated);
   selftest passed; screenshots --static (9 routes) and --base :8216 (8 routes) ok, 390 px overflow 0.
+
+## 2026-11-13 — neutral names for claim-like sounds / sessions (George approved)
+Renamed: Slow-Wave Pulse -> Slow Swell; Deep Sleep (Pink Noise) -> Pink Noise Swell; Deeper Sleep
+(guided session) -> Drifting Deeper; iOS Theta Pulse (6 Hz) -> Soft Pulse (6 Hz), Delta Pulse (2.5 Hz)
+-> Low Pulse (2.5 Hz), Solfeggio 528/432 Hz -> 528/432 Hz Tone. Sound settings and texture IDs unchanged.
+Old names still load: `breathsim/renames.py` (`store._read` migrates saved JSON; `voices.get_voice`,
+`sleeptech` accept old names); iOS `AmbienceVoice.canonical` / `SleepAids.canonical` on settings load
+(text only, not built). Fixtures regenerated. `tests/test_health_claims.py` bans the old names
+(alias lines exempt); `tests/test_renames.py` checks the aliases. Kept: pattern names such as
+"Cleansing 2-2 (Sharp)", "Sitali (Cooling)", "Yoga Nidra (NSDR)" (traditional names, not brain-state claims).
+Checks: pytest tests 51 passed; CI=1 test_web 18 passed; node engines + worklet ok; selftest passed;
+screenshots --static 8 routes ok, overflow 0.

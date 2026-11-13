@@ -47,7 +47,7 @@ def test_texture_voices_render_after_textures_first():
             "from breathsim import voices, tracks, patterns\n"
             "s0 = patterns.state_at(patterns.PRESETS[0], 0.0)\n"
             "s1 = patterns.state_at(patterns.PRESETS[0], 0.1)\n"
-            "for n in ('Singing Bowl', 'Slow-Wave Pulse', 'Music of the Spheres'):\n"
+            "for n in ('Singing Bowl', 'Slow Swell', 'Music of the Spheres'):\n"
             "    t = tracks.build_track(voices.get_voice(n), 44100)\n"
             "    out = t.render(1024, s0, s1)\n"
             "    assert np.isfinite(out).all()\n"
