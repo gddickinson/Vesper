@@ -15,6 +15,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from . import renames
+
 
 @dataclass
 class Stage:
@@ -54,7 +56,7 @@ def names():
 
 
 def get(name):
-    return _BY_NAME.get(name)
+    return _BY_NAME.get(name) or _BY_NAME.get(renames.canonical(name))
 
 
 # --- programs --------------------------------------------------------------
@@ -99,7 +101,7 @@ _add("Wim Hof (3 rounds)", "Power breaths, retention and recovery, three rounds.
              pattern=(2, 15, 2, 0), voice="Deep Calm"))])
 
 _add("Pranayama (15 min)", "Kapalabhati, bhastrika, balance, hum, OM, stillness.",
-     [_st("Kapalabhati", 2, "Cleansing breath of fire.", pattern="Breath of Fire",
+     [_st("Kapalabhati", 2, "Quick, sharp breaths through the nose.", pattern="Breath of Fire",
           voice="Breath of Fire", scene="orb", cue_style="Standard"),
       _st("Bhastrika", 2, "Energising bellows breath.",
           pattern="Bhastrika (Bellows)", voice="Bhastrika (Bellows)"),
@@ -164,13 +166,13 @@ _add("Body & Breath (10 min)", "A breath-paced body scan from feet to head.",
       _st("Whole body", 3, "Breathe through the whole body, completely at ease.",
           voice="Ocean Breath (Ujjayi)", pattern="Coherent 5.5 (Resonance)")])
 
-# NSDR / Yoga Nidra: a slow rotation of awareness through the body, then breath
-# and stillness. Non-sleep deep rest - monotone-calm cues with long, quiet pauses
+# Yoga Nidra: a slow rotation of awareness through the body, then breath
+# and stillness. Monotone-calm cues with long, quiet pauses
 # between them (each stage speaks once, then breath alone), closing toward rest.
-_add("NSDR / Yoga Nidra (12 min)",
-     "Non-sleep deep rest: a slow body rotation + breath, settling toward rest.",
+_add("Yoga Nidra (12 min)",
+     "A slow body rotation + breath, lying still and settling toward rest.",
      [_st("Settle in", 1.5, "Lie down on your back, and let yourself be "
-          "completely still. This is non-sleep deep rest. Make any last "
+          "completely still. This is a time to rest, awake. Make any last "
           "adjustments, then let the body grow heavy.",
           pattern="Calming 4-6 (Long Exhale)", voice="Sleepy Warm", scene="night",
           ambience="Soft Rainstorm", cue_style="Guided", volume=0.6),

@@ -12,21 +12,24 @@ enum SleepAids {
 
     /// Names for the Sleep "Guided" picker (story first).
     static let names: [String] = [
-        storyName, "Body Scan", "Yoga Nidra (NSDR)", "Loving-Kindness",
+        storyName, "Body Scan", "Yoga Nidra", "Loving-Kindness",
         "Safe Place", "Gentle River", "Cognitive Shuffle",
         // — sessions drawn from CBT-I / sleep-hypnosis techniques —
         "Let Go of Trying", "Drifting Deeper", "Awake in the Night", "Put the Day to Rest",
     ]
 
     /// Old names (saved in settings before the 2026-11-13 rename) -> current names.
-    static let renamed: [String: String] = ["Deeper Sleep": "Drifting Deeper"]  // legacy name
+    static let renamed: [String: String] = [
+        "Deeper Sleep": "Drifting Deeper",          // legacy name
+        "Yoga Nidra (NSDR)": "Yoga Nidra",          // legacy name
+    ]
     static func canonical(_ n: String) -> String { renamed[n] ?? n }
 
     /// Lines to narrate for a guided session, or nil to use the story.
     static func lines(for name: String) -> [String]? {
         switch canonical(name) {
         case "Body Scan":        return bodyScan
-        case "Yoga Nidra (NSDR)": return yogaNidra
+        case "Yoga Nidra":        return yogaNidra
         case "Loving-Kindness":  return lovingKindness
         case "Safe Place":       return safePlace
         case "Gentle River":     return gentleRiver

@@ -107,8 +107,8 @@ device, no neural voices, no 3D head — there's always a calm fallback.
 - **A sense of space** — an optional master **reverb** (room → hall → cathedral) that
   makes chant and song sound like they're in a real room.
 - **Gentle calm** — slow paced breathing near **~6 breaths/min**, longer exhales,
-  **4-7-8 / box / physiological-sigh** patterns; guided **Body-Scan &amp; PMR**, **NSDR /
-  Yoga Nidra**, **Autogenic Training** (heaviness · warmth · calm),
+  **4-7-8 / box / physiological-sigh** patterns; guided **Body-Scan &amp; PMR**, **Yoga
+  Nidra**, **Autogenic Training** (heaviness · warmth · calm),
   **Loving-Kindness (Metta)** (good wishes in widening circles), **guided imagery**
   (a "safe and peaceful place" you build and rest inside, sense by sense), a one-tap
   **Physiological-Sigh reset**; a warm, low-blue **Sleep

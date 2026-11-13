@@ -7,7 +7,7 @@ you love, to someone neutral, to someone difficult, and at last to all beings
 everywhere.  The slow, repeated phrasing is the whole point: warmth practised on
 purpose, which many people find a soft, kind way to end the day.  A traditional
 meditation practice, alongside
-Autogenic Training / Body-Scan / PMR / NSDR / Hypnosis.
+Autogenic Training / Body-Scan / PMR / Yoga Nidra / Hypnosis.
 
 Pure data + a generator of narrator units (the same ``{text, pause, phase, kind}``
 shape the storyteller uses); the shared soft sleep drift is reused from

@@ -1,7 +1,7 @@
 """Offline test for the guided-program stepping (breathsim/session.py).
 
 A SessionDirector drives every guided program (Wim Hof, pranayama, body-scan,
-vocal warm-up, NSDR, sleep wind-down, ...) by walking its Stages on the breath
+vocal warm-up, Yoga Nidra, sleep wind-down, ...) by walking its Stages on the breath
 clock: each stage starts cleanly at its time, applies its settings once and speaks
 its line, and the final stage simply holds once the program is over. This locks
 that stepping with a fake app + a controllable clock -- the setup, the transitions

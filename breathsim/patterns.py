@@ -16,6 +16,8 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
+from . import renames
+
 PHASE_INHALE = "inhale"
 PHASE_HOLD_FULL = "hold_full"
 PHASE_EXHALE = "exhale"
@@ -186,7 +188,7 @@ PRESETS = [
     BreathPattern("OM Chant 3-9", 3, 0, 9, 0,
                   "A long exhale for toning. Pair with a Chant or Hum voice and "
                   "let the sound carry the out-breath."),
-    BreathPattern("Cleansing 2-2 (Sharp)", 2, 0, 2, 0,
+    BreathPattern("Sharp 2-2", 2, 0, 2, 0,
                   "Brisk in and out for explosive/forceful breath voices. "
                   "Invigorating - keep it gentle at first."),
     BreathPattern("Long Tone 2-12 (Singers)", 2, 0, 12, 0,
@@ -213,6 +215,7 @@ DEFAULT_PATTERN = PRESETS[0]
 
 
 def preset_by_name(name: str) -> BreathPattern | None:
+    name = renames.canonical(name)                  # old (renamed) names still resolve
     for p in PRESETS:
         if p.name == name:
             return p

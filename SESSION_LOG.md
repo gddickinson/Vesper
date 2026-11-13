@@ -4836,3 +4836,11 @@ Old names still load: `breathsim/renames.py` (`store._read` migrates saved JSON;
 "Cleansing 2-2 (Sharp)", "Sitali (Cooling)", "Yoga Nidra (NSDR)" (traditional names, not brain-state claims).
 Checks: pytest tests 51 passed; CI=1 test_web 18 passed; node engines + worklet ok; selftest passed;
 screenshots --static 8 routes ok, overflow 0.
+
+## 2026-11-13 (cont.) — Sharp 2-2, Yoga Nidra
+Renamed pattern "Cleansing 2-2 (Sharp)" -> "Sharp 2-2", program "NSDR / Yoga Nidra (12 min)" ->
+"Yoga Nidra (12 min)" (courses updated), iOS session "Yoga Nidra (NSDR)" -> "Yoga Nidra"; the program no longer
+says "non-sleep deep rest", Kapalabhati stage no longer "cleansing". Aliases in `renames.RENAMED`
+(+ `patterns.preset_by_name`, `programs.get` resolve old names) and iOS `SleepAids.renamed`. "Sitali (Cooling)"
+kept. Banned "Cleansing 2-2", "NSDR", "non-sleep deep rest". Checks: pytest tests 51 passed; CI=1 test_web 18;
+node ok; tools/test_courses + test_programs pass; selftest passed; screenshots --static 8 routes ok.

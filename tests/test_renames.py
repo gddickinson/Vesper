@@ -1,7 +1,9 @@
 """Renamed sounds / sessions keep working under their old names (saved settings, presets).
 
 George, 2026-11-13: "Slow-Wave Pulse" -> "Slow Swell", "Deep Sleep (Pink Noise)" -> "Pink Noise
-Swell", "Deeper Sleep" -> "Drifting Deeper" (iOS also renames its pulse / 528 / 432 Hz beds).
+Swell", "Deeper Sleep" -> "Drifting Deeper", "Cleansing 2-2 (Sharp)" -> "Sharp 2-2",
+"NSDR / Yoga Nidra (12 min)" -> "Yoga Nidra (12 min)" (iOS also renames its pulse / 528 / 432 Hz
+beds and "Yoga Nidra (NSDR)").
 """
 import json
 import re
@@ -11,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from breathsim import renames, sleeptech, stories, voices  # noqa: E402
+from breathsim import patterns, programs, renames, sleeptech, stories, voices  # noqa: E402
 
 
 def test_new_names_registered_and_old_names_resolve():
@@ -22,6 +24,10 @@ def test_new_names_registered_and_old_names_resolve():
             assert stories.ambience_for(old) == stories.ambience_for(new) == "Pink Noise Swell"
             assert next(sleeptech.units(old, guidance=False)) == \
                 next(sleeptech.units(new, guidance=False))       # (units() never ends)
+        elif patterns.preset_by_name(new) is not None:
+            assert patterns.preset_by_name(old) is patterns.preset_by_name(new)
+        elif programs.get(new) is not None:
+            assert programs.get(old) is programs.get(new)
         else:
             assert voices.get_voice(new) is not None, new
             assert voices.get_voice(old) is voices.get_voice(new)
@@ -33,6 +39,7 @@ def test_migrate_rewrites_saved_json():
     saved = {"ambience": "Slow-Wave Pulse", "story": "Deeper Sleep", "volume": 0.5,
              "mix": {"Deep Sleep (Pink Noise)": 0.4, "Gentle Rain": 0.2},
              "presets": [{"ambience": "Deep Sleep (Pink Noise)"}],
+             "pattern": "Cleansing 2-2 (Sharp)", "program": "NSDR / Yoga Nidra (12 min)",
              "note": "Slow-Wave Pulse was nice"}
     out = renames.migrate(saved)
     assert out["ambience"] == "Slow Swell" and out["story"] == "Drifting Deeper"
@@ -40,6 +47,7 @@ def test_migrate_rewrites_saved_json():
     assert out["presets"][0]["ambience"] == "Pink Noise Swell"
     assert out["note"] == "Slow-Wave Pulse was nice"          # only whole names change
     assert out["volume"] == 0.5
+    assert out["pattern"] == "Sharp 2-2" and out["program"] == "Yoga Nidra (12 min)"
 
 
 def test_store_reads_migrate(tmp_path, monkeypatch):
@@ -60,3 +68,4 @@ def test_ios_aliases_cover_every_rename():
     assert "AmbienceVoice.canonical(" in vm and "SleepAids.canonical(" in vm
     aids = (ROOT / "ios/Vesper/Vesper/UI/SleepAids.swift").read_text(encoding="utf-8")
     assert '"Deeper Sleep": "Drifting Deeper"' in aids and "switch canonical(name)" in aids
+    assert '"Yoga Nidra (NSDR)": "Yoga Nidra"' in aids and '"Yoga Nidra", "Loving-Kindness"' in aids

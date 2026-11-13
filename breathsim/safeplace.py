@@ -5,7 +5,7 @@ place, engaging one sense at a time -- what you see, hear, feel, and smell there
 until the body lets go and the mind has somewhere safe to rest.  Guided imagery
 ("safe place" / "special place" visualisation) is a classic relaxation technique
 that many people find calming at bedtime, and it is distinct from the body
-relaxation of Autogenic Training / Body-Scan / PMR, the breath of NSDR, and the
+relaxation of Autogenic Training / Body-Scan / PMR, the breath of Yoga Nidra, and the
 warmth of Loving-Kindness: here the listener *builds a place* and rests inside it.
 
 Pure data + a generator of narrator units (the same ``{text, pause, phase, kind}``

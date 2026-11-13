@@ -68,12 +68,12 @@ def test_day_label():
 
 def test_apply_day_dispatch():
     c = courses.Course("T", "d", "Night", [
-        courses.Day("rest now", program="NSDR / Yoga Nidra (12 min)"),
+        courses.Day("rest now", program="Yoga Nidra (12 min)"),
         courses.Day("just sleep", mode="Sleep"),
     ])
     app = _FakeApp()
     courses.apply_day(app, c, 0)
-    assert app.programs == ["NSDR / Yoga Nidra (12 min)"], app.programs
+    assert app.programs == ["Yoga Nidra (12 min)"], app.programs
     assert app.speech.announced == ["rest now"], app.speech.announced
     assert app.modes == [] and app.ensured == 0
     courses.apply_day(app, c, 1)

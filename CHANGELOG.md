@@ -1,9 +1,12 @@
 # Changelog
 
-## 2026-11-13 — neutral names for sounds and a sleep session
+## 2026-11-13 — neutral names for sounds, patterns and sessions
 
 George approved renaming the names that still sounded like brain-state, sleep-depth or
-frequency-therapy claims. The sounds themselves are unchanged (same settings and texture IDs).
+frequency-therapy claims, or labels implying an effect ("cleansing", "NSDR" / "non-sleep deep rest").
+The sounds, timings and scripts are unchanged (same settings and texture IDs); the Yoga Nidra program's
+description and first line no longer say "non-sleep deep rest", and the Kapalabhati stage no longer
+says "cleansing". "Sitali (Cooling)" is kept (a traditional name; "cooling" describes the breath).
 
 | Old name | New name | Where |
 |---|---|---|
@@ -14,9 +17,13 @@ frequency-therapy claims. The sounds themselves are unchanged (same settings and
 | Delta Pulse (2.5 Hz) | Low Pulse (2.5 Hz) | iOS |
 | Solfeggio 528 Hz | 528 Hz Tone | iOS |
 | Solfeggio 432 Hz | 432 Hz Tone | iOS |
+| Cleansing 2-2 (Sharp) (breath pattern) | Sharp 2-2 | desktop, web |
+| NSDR / Yoga Nidra (12 min) (guided program) | Yoga Nidra (12 min) | desktop, web, courses |
+| Yoga Nidra (NSDR) (sleep session) | Yoga Nidra | iOS |
 
 Saved settings, presets and soundscapes that use an old name still load: the desktop maps old
-names on read (`breathsim/renames.py`, also used by `voices.get_voice` and the sleep sessions), and
+names on read (`breathsim/renames.py`, also used by `voices.get_voice`, `patterns.preset_by_name`,
+`programs.get` and the sleep sessions), and
 the iOS app maps its saved ambience and guided-session names (`AmbienceVoice.canonical`,
 `SleepAids.canonical`). `tests/test_health_claims.py` now fails if an old name reappears in
 user-visible text; `tests/test_renames.py` checks the aliases.

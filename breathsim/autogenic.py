@@ -5,7 +5,7 @@ a sequence of soft, repeated self-suggestions that the body is **heavy**, then
 **warm**, the heartbeat **calm**, the breathing **easy**, the belly **warm** and
 the brow **cool** -- the six "standard exercises". The slow, repeated phrasing is
 the point: it invites the body to soften, easing toward rest.
-A classic, long-established relaxation method, alongside Body-Scan / PMR / NSDR / Hypnosis.
+A classic, long-established relaxation method, alongside Body-Scan / PMR / Yoga Nidra / Hypnosis.
 
 Pure data + a generator of narrator units (the same ``{text, pause, phase, kind}``
 shape the storyteller uses); the shared soft sleep drift is reused from

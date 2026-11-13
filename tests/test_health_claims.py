@@ -35,11 +35,12 @@ BANNED = [
 ]
 
 # Old sound / session names that sounded like brain-state, sleep-depth or frequency-therapy
-# claims (George, 2026-11-13). They survive only as aliases so saved settings still load:
+# claims, or labels implying an effect such as "cleansing" / NSDR (George, 2026-11-13). They survive only as aliases so saved settings still load:
 # breathsim/renames.py and Swift lines marked "legacy name".
 OLD_NAMES = [
     "Slow-Wave Pulse", "Theta Pulse", "Delta Pulse", "Solfeggio", "Deep Sleep (Pink Noise)",
-    "Deeper Sleep", "isochronic", "binaural beat",
+    "Deeper Sleep", "isochronic", "binaural beat", "Cleansing 2-2", "NSDR",
+    "non-sleep deep rest",
 ]
 ALIAS_FILES = {"breathsim/renames.py"}
 ALIAS_MARK = "legacy name"
@@ -143,9 +144,11 @@ def test_old_claim_names_gone_from_user_text():
 
 def test_old_claim_names_gone_from_registries_and_web_data():
     import json
-    from breathsim import renames, stories, voices
+    from breathsim import courses, patterns, programs, renames, stories, voices
     from vesper.web import catalog
-    shown = set(voices.names()) | set(stories.extra_names())
+    shown = set(voices.names()) | set(stories.extra_names()) | set(programs.names())
+    shown |= {p.name for p in patterns.PRESETS}
+    shown |= {d.program for c in courses.COURSES for d in c.days if getattr(d, "program", None)}
     assert not shown & set(renames.RENAMED), shown & set(renames.RENAMED)
     blob = json.dumps([catalog.voice_lists(), catalog.program_list(), catalog.sleep_info(),
                        catalog.pattern_list()])

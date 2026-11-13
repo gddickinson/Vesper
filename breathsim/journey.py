@@ -6,7 +6,7 @@ steer, nothing to reach for, and nothing to do but watch the soft banks slip by
 and let go.  Its theme is **letting go of effort and control** -- the water does
 the work -- which makes it distinct from the *static* "Safe and Peaceful Place",
 the body relaxation of Autogenic Training / Body-Scan / PMR, and the breath of
-NSDR: here the listener is gently *moved*, and surrenders the steering.
+Yoga Nidra: here the listener is gently *moved*, and surrenders the steering.
 
 Pure data + a generator of narrator units (the same ``{text, pause, phase, kind}``
 shape the storyteller uses); the shared soft sleep drift is reused from
